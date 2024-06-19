@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchHomeData } from "../api";
 import { Helmet } from 'react-helmet';
-import { MainScreen, Mortgage } from "../components/home";
+import { About, MainScreen, Mortgage } from "../components/home";
 
 const Home = () => {
 
@@ -34,6 +34,9 @@ const Home = () => {
       </section>
       <section>
         <Mortgage />
+      </section>
+      <section>
+        <About />
       </section>
     </div>
   )

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { fetchHomeData } from "../../api";
 import { API_URL } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong  } from "@fortawesome/free-solid-svg-icons";
 
 interface Photo {
     id: number;
@@ -11,6 +11,7 @@ interface Photo {
         url: string;
     };
 }
+
 const Mortgage = () => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -34,19 +35,20 @@ const Mortgage = () => {
 
     useEffect(() => {
         fetchData();
-
-        const interval = setInterval(() => {
-            goToNextSlide();
-        }, 3500);
-
-        return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(goToNextSlide, 3000);
+        return () => clearInterval(interval);
+    }, [photos]);
+
     const goToNextSlide = () => {
-        setCurrentIndex(prevIndex =>
-            prevIndex === photos.length - 1 ? 0 : prevIndex + 1
-        );
+        setCurrentIndex(prevIndex => (prevIndex + 1) % photos.length);
     };
+
+    if (photos.length === 0) {
+        return null; 
+    }
 
     return (
         <div className="w-full max-w-[1111px] mx-auto mt-20">
@@ -58,22 +60,19 @@ const Mortgage = () => {
                     </div>
                     <div className="slider-container">
                         <div className="slider">
-                            {photos.length > 0 && (
-                                <img
-                                    src={`${API_URL}${photos[currentIndex].attributes.url}`}
-                                    alt={photos[currentIndex].attributes.name}
-                                    className="w-[350px]"
-                                />
-                            )}
+                            <img
+                                src={`${API_URL}${photos[currentIndex].attributes.url}`}
+                                alt={photos[currentIndex].attributes.name}
+                                className="w-[350px] transition-transform duration-500 ease-in-out"
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer  arrow-container">
-                  <a href="/" className="text-orange uppercase text-sm font-medium tracking-wider">Подробнее </a>
+                <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container">
+                    <a href="/" className="text-orange uppercase text-sm font-medium tracking-wider">Подробнее </a>
                     <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" /> 
-                  </div>
+                </div>
             </div>
-                          
         </div>
     );
 };
