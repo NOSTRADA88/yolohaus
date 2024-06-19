@@ -1,0 +1,100 @@
+
+@font-face {
+  font-display: swap;
+  font-family: "MuseoSansCyrl";
+  src: url(../public/font/museo_sans_cyrl_300.woff);
+  src: url(../public/font/museo_sans_cyrl_300.woff) format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "MuseoSansCyrl";
+  src: url(../public/font/museo_sans_cyrl_500.woff);
+  src: url(../public/font/museo_sans_cyrl_500.woff) format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "MuseoSansCyrl";
+  src: url(../public/font/museo_sans_cyrl_700.woff);
+  src: url(../public/font/museo_sans_cyrl_700.woff) format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+                        
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.filter-svg {
+  filter: invert(35%) sepia(79%) saturate(0%) hue-rotate(86deg) brightness(118%)
+    contrast(119%);
+}
+
+a:hover .filter-svg {
+  filter: invert(100%) sepia(79%) saturate(0%) hue-rotate(86deg)
+    brightness(118%) contrast(119%);
+}
+
+.parallelogram {
+  transform: skew(-20deg);
+}
+
+.noparallelogram {
+  transform: skew(20deg);
+}
+
+.submenu {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 0;
+  opacity: 0;
+  z-index: -1;
+  overflow: hidden;
+
+  left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.submenu-open {
+  height: auto;
+  opacity: 1;
+  z-index: 50;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.slider-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.slider {
+  display: flex;
+  overflow: hidden;
+}
+
+.slide {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.arrow-container:hover .arrow-icon {
+  transform: rotate(180deg);
+}
