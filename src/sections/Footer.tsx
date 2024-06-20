@@ -1,7 +1,11 @@
+import { Consultation } from "../components/footer"
 
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <div>
+      {/* <Consultation /> */}
+      Footer
+    </div>
   )
 }
 

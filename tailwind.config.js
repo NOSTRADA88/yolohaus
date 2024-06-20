@@ -23,6 +23,7 @@ module.exports = {
         maingray: '#2B2A29',
         lightgray: '#727272',
         lightwhite:"#F4F4F4",
+        contact: "#C4C4C4"
       }
     }
   },

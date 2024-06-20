@@ -14,8 +14,8 @@ const About = () => {
         try {
             const mainData = await fetchHomeData();
             setTitle(mainData.About.Title);
-            setTitleMini(mainData.About.TitleMini);
-            setDescription(mainData.About.DescriptionMini);
+            setTitleMini(mainData.About.Information[0].Title);
+            setDescription(mainData.About.Information[0].Description);
             setPhotoAbout(mainData.About.Photo.data.attributes.url)
 
         } catch (error) {
@@ -31,7 +31,7 @@ const About = () => {
         <div className="w-full max-w-[1111px] mx-auto mt-20">
             <h1 className="text-maingray font-museo font-bold text-3xl">{title}</h1>
             <div className="flex justify-between items-center">
-                <div className="flex flex-col w-[55%] ">
+                <div className="flex flex-col w-[60%] ">
                     <div className=" bg-lightwhite mt-8 p-5">
                         <div className="flex items-center">
                             <div className="">
@@ -40,9 +40,9 @@ const About = () => {
                         </div>
                     </div>
                     {description.map((item, index) => (
-                        <div key={index} className="mt-5">
+                        <div key={index} className="mt-5 ml-4 w-[85%]">
                             {item.children.map((child, childIndex) => (
-                                <p className="font-light text-sm font-museo  leading-relaxed text-justify" key={childIndex}>{child.text}</p>
+                                <p className="font-light text-sm font-museo leading-relaxed text-justify" key={childIndex}>{child.text}</p>
                             ))}
                         </div>
                     ))}
@@ -53,7 +53,7 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-10">
+                <div className="mt-6">
                     <img src={`${API_URL}${photoAbout}`} alt="photoAbout" className="" />
                 </div>
             </div>

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchHomeData } from "../api";
 import { Helmet } from 'react-helmet';
-import { About, MainScreen, Mortgage } from "../components/home";
+import { About, Contact, MainScreen, Mortgage, PopularProjects, Recommendation } from "../components/home";
 
 const Home = () => {
 
@@ -37,6 +37,15 @@ const Home = () => {
       </section>
       <section>
         <About />
+      </section>
+      {/* <section>
+        <PopularProjects />
+      </section> */}
+      <section>
+        <Recommendation />
+      </section>
+      <section>
+        <Contact />
       </section>
     </div>
   )

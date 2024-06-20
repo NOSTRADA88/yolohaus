@@ -98,3 +98,14 @@ a:hover .filter-svg {
 .arrow-container:hover .arrow-icon {
   transform: rotate(180deg);
 }
+.ymaps-2-1-79-ground-pane {
+  filter: grayscale(100%);
+}
+
+.ymaps-2-1-79-map-copyrights-promo {
+  display: none;
+}
+
+.ymaps-2-1-79-copyrights-pane {
+  display: none;
+}
