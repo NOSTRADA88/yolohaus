@@ -34,9 +34,9 @@ const About = () => {
                 <div className="flex flex-col w-[60%] ">
                     <div className=" bg-lightwhite mt-8 p-5">
                         <div className="flex items-center">
-                            <div className="">
+                          
                                 <p className="font-light text-xl font-museo leading-normal text-justify">{titleMini}</p>
-                            </div>
+                        
                         </div>
                     </div>
                     {description.map((item, index) => (

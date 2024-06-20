@@ -3,7 +3,10 @@ import { Consultation } from "../components/footer"
 const Footer = () => {
   return (
     <div>
-      {/* <Consultation /> */}
+      <div className="bg-orange">
+        <Consultation />
+      </div>
+
       Footer
     </div>
   )
