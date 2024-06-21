@@ -89,7 +89,7 @@ const Footer = () => {
           <div className="flex gap-6 items-center justify-between">
             <div className="flex gap-20">
               <p className="font-museo text-xs font-light text-white">© Компания Yolo Haus, 2020</p>
-              <a href="/" className="font-museo text-xs font-light text-white">Политика конфиденциальности</a>
+              <a href="/" className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
             </div>
             <div className="flex items-center gap-10">
               <div className="flex ">
