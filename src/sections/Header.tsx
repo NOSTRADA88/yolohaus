@@ -18,7 +18,7 @@ const Header = () => {
     try {
       const mainData = await fetchHeaderFooterData();
       setLogoCompany(mainData.CompanyLogo.data.attributes.url);
-      setDescription(mainData.Description)
+      setDescription(mainData.Description);
       setVkContent(mainData.socials.data[0].attributes.URL);
       setYoutubeContent(mainData.socials.data[1].attributes.URL);
       setVkIcon(mainData.socials.data[0].attributes.Photo.data.attributes.url);

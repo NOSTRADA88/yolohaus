@@ -40,6 +40,15 @@ a:hover .filter-svg {
   filter: invert(100%) sepia(79%) saturate(0%) hue-rotate(86deg)
     brightness(118%) contrast(119%);
 }
+.filter-footer-svg {
+  filter: invert(92%) sepia(7%) saturate(6%) hue-rotate(180deg) brightness(93%)
+    contrast(88%);
+}
+
+a:hover .filter-footer-svg {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg)
+    brightness(100%) contrast(100%);
+}
 
 .parallelogram {
   transform: skew(-20deg);
@@ -108,4 +117,17 @@ a:hover .filter-svg {
 
 .ymaps-2-1-79-copyrights-pane {
   display: none;
+}
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #EA9635;
+  border-radius: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  border-radius: 8px;
 }
