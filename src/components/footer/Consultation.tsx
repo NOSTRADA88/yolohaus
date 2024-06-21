@@ -53,11 +53,11 @@ const Consultation = () => {
   };
 
   return (
-    <div className="w-full pt-14 pb-10">
-      <div className="flex justify-center ml-[400px]">
+    <div className="w-full pt-14 pb-10  max-w-[1111px] mx-auto">
+      <div className="flex justify-center ">
         <div className="flex flex-col w-full  mx-auto  ">
           <h1 className="text-white font-museo font-bold text-3xl mb-4">Нужна консультация?</h1>
-          <p className="font-museo font-light text-sm text-white">
+          <p className="font-museo font-light text-sm text-white mr-20">
             Опытный специалист поможет разобраться во всех тонкостях домостроения
           </p>
           <form className="w-[80%]" onSubmit={handleSubmit(recordForm)} >
@@ -66,7 +66,7 @@ const Consultation = () => {
                 <div className="flex-grow ">
                   <input
                     type="text"
-                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray  bg-[#f9e0c3] "
+                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray  bg-[#f9e0c3]"
                     placeholder="Ваше имя"
                     {...register("author")}
                   />
@@ -88,7 +88,7 @@ const Consultation = () => {
               </div>
               <div className="w-full mt-2">
                 <textarea
-                  className="w-full h-16 max-h-40 p-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
+                  className="w-full h-16 max-h-24 p-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
                   placeholder="Ваше сообщение"
                   {...register("email")}
                 />
@@ -102,7 +102,7 @@ const Consultation = () => {
               <div className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-white hover:bg-orange hover:text-white transform parallelogram w-[140px] h-10 border-[1px] border-white">
                 <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">Отправить</p>
               </div>
-              <div className="ml-5">
+              <div className="ml-4">
               <p className="text-xs font-museo font-medium text-white">Отправляя форму, я даю согласие на обработку
             <br/> <a className="underline cursor-pointer " href="/"> персональных данных </a> </p>
             </div>
@@ -111,7 +111,7 @@ const Consultation = () => {
 
         </div>
 
-        <div className="ml-auto w-full">
+        <div className="w-full ">
           <img src={ConsultationPhoto} alt="photoAbout" className="w-full h-full " />
         </div>
       </div>
