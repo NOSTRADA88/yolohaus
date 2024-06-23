@@ -41,7 +41,8 @@ const Footer = () => {
     const thirdPart = phoneNumber.slice(10, 12);
 
     return (
-      <a href={`tel:${phoneNumber}`} className="text-white cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center">
+      <a href={`tel:${phoneNumber}`} className="text-white cursor-pointer transition-all duration-300 font-museo text-lg font-light
+       hover:text-orange flex items-center max-md:text-base">
         {countryCode} ({areaCode})
         <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
         {firstPart}-{secondPart}-{thirdPart}
@@ -67,12 +68,13 @@ const Footer = () => {
         <Consultation />
       </div>
       <div className="bg-maingray p-8 ">
-        <div className="w-full max-w-[1111px] mx-auto">
-          <div className="flex  gap-4 items-center mb-10 justify-between">
+        <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5 ">
+          <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col 
+          max-xl:mb-2 max-xl:gap-2">
             <a href="/">
               <img src={`${API_URL}${logoCompany}`} alt="logo" className="w-52 cursor-pointer" />
             </a>
-            <ul className="flex gap-6 items-center justify-center h-20">
+            <ul className="flex gap-6 items-center justify-center h-20 max-xl:gap-2 max-xl:h-16 max-[790px]:hidden">
               {filteredNavLinks.map((link, index) => (
                 <React.Fragment key={index}>
                   <li className="relative">
@@ -88,12 +90,12 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          <div className="flex gap-6 items-center justify-between">
-            <div className="flex gap-20">
+          <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
+            <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-[1050px]:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">{description}</p>
               <a href="/" className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
             </div>
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-10 max-[1050px]:flex-col max-[1050px]:gap-5">
               <div className="flex ">
                 <a href={youtubeContent} className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-lightgray rounded-full transition-all duration-300 hover:bg-orange">
                   <img src={`${API_URL}${youtubeIcon}`} alt="youtube" className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5" />

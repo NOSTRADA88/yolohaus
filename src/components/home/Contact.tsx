@@ -33,7 +33,7 @@ const Contact = () => {
     <YMaps>
       <div className="mt-14">
         <div className="absolute top-35 left-[calc((100%-1111px)/2)]  
-        bg-white shadow-xl px-8 py-6 w-[270px] h-[320px] mt-8 z-20">
+        bg-white shadow-xl px-8 py-6 w-[270px] h-[320px] mt-8 z-20 ">
           <div className=" w-full mb-15 overflow-hidden ">
             <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">адрес</span>
             <h1><a href="https://yandex.ru/maps/2/saint-petersburg/house/ulitsa_kompozitorov_12/Z0kYdQZkTk0GQFhqfXx0c35nYQ==/?indoorLevel=1&ll=30.314781%2C60.052245&z=17.09"

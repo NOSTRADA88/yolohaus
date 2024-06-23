@@ -53,14 +53,14 @@ const Consultation = () => {
   };
 
   return (
-    <div className="w-full pt-14 pb-10  max-w-[1111px] mx-auto">
-      <div className="flex justify-center ">
-        <div className="flex flex-col w-full  mx-auto  ">
-          <h1 className="text-white font-museo font-bold text-3xl mb-4">Нужна консультация?</h1>
+    <div className="w-full pt-14 pb-10  max-w-[1111px] mx-auto max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
+      <div className="flex justify-center max-[1111px]:flex-col ">
+        <div className="flex flex-col w-full mx-auto max-[1111px]:items-center max-md:items-start">
+          <h1 className="text-white font-museo font-bold text-3xl mb-4 max-md:text-2xl">Нужна консультация?</h1>
           <p className="font-museo font-light text-sm text-white mr-20">
             Опытный специалист поможет разобраться во всех тонкостях домостроения
           </p>
-          <form className="w-[80%]" onSubmit={handleSubmit(recordForm)} >
+          <form className="w-[80%] max-[1111px]:w-full " onSubmit={handleSubmit(recordForm)} >
             <div className="flex flex-col mt-10 mb-5">
               <div className="flex justify-between mb-2">
                 <div className="flex-grow ">
@@ -111,8 +111,8 @@ const Consultation = () => {
 
         </div>
 
-        <div className="w-full ">
-          <img src={ConsultationPhoto} alt="photoAbout" className="w-full h-full " />
+        <div className="w-full">
+          <img src={ConsultationPhoto} alt="photoAbout" className="w-full h-full" />
         </div>
       </div>
     </div>
