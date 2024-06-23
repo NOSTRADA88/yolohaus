@@ -6,6 +6,7 @@ import React from "react";
 
 const Footer = () => {
   const [logoCompany, setLogoCompany] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [vkContent, setVkContent] = useState<string>('');
   const [youtubeContent, setYoutubeContent] = useState<string>('');
   const [vkIcon, setVkIcon] = useState<string>('');
@@ -15,12 +16,13 @@ const Footer = () => {
   const fetchData = async () => {
     try {
       const mainData = await fetchHeaderFooterData();
-      setLogoCompany(mainData.CompanyLogo.data.attributes.url);
-      setVkContent(mainData.socials.data[0].attributes.URL);
-      setYoutubeContent(mainData.socials.data[1].attributes.URL);
-      setVkIcon(mainData.socials.data[0].attributes.Photo.data.attributes.url);
-      setYoutubeIcon(mainData.socials.data[1].attributes.Photo.data.attributes.url);
-      setPhoneNumber(mainData.PhoneNumber.PhoneNumber);
+      setLogoCompany(mainData.Footer.CompanyLogo.data.attributes.url);
+      setDescription(mainData.Footer.Text);
+      setVkContent(mainData.Footer.socials.data[0].attributes.URL);
+      setYoutubeContent(mainData.Footer.socials.data[1].attributes.URL);
+      setVkIcon(mainData.Footer.socials.data[0].attributes.Photo.data.attributes.url);
+      setYoutubeIcon(mainData.Footer.socials.data[1].attributes.Photo.data.attributes.url);
+      setPhoneNumber(mainData.Footer.PhoneNumber.PhoneNumber);
 
     } catch (error) {
       console.error('Ошибка запроса:', error);
@@ -88,7 +90,7 @@ const Footer = () => {
           </div>
           <div className="flex gap-6 items-center justify-between">
             <div className="flex gap-20">
-              <p className="font-museo text-xs font-light text-white">© Компания Yolo Haus, 2020</p>
+              <p className="font-museo text-xs font-light text-white">{description}</p>
               <a href="/" className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
             </div>
             <div className="flex items-center gap-10">

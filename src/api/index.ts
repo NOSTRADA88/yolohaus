@@ -4,7 +4,7 @@ import { API_URL, axiosInstanse } from "../constants";
 
 export const fetchHomeData = async () => {
     try {
-      const response = await axiosInstanse.get(`${API_URL}/api/glavnaya?populate=About.Photo&populate=About.Information&populate=Greetings.Photo&populate=Metadata&populate=Mortgage.Photos&populate=Recommendations.list.Icon&populate=Recommendations.list.BgPhoto&populate=ContactsMap.WorkTime&populate=PopularCottages.projects.Photos&populate=PopularCottages.projects.Parameters`);
+      const response = await axiosInstanse.get(`${API_URL}/api/glavnaya?populate=About.Photo&populate=About.Information&populate=Greetings.Photo&populate=Metadata&populate=Mortgage.Photos&populate=Recommendations.list.Icon&populate=Recommendations.list.BgPhoto&populate=ContactsMap.WorkTime&populate=PopularCottages.projects.Photos&populate=PopularCottages.projects.Parameters&populate=PopularCottages.projects.Complectation`);
       if (response.status === 200) {
         return response.data.data.attributes;
       } else {
@@ -19,9 +19,9 @@ export const fetchHomeData = async () => {
 
   export const fetchHeaderFooterData = async () => {
     try {
-      const response = await axiosInstanse.get(`${API_URL}/api/glavnaya?populate=HeaderFooter.socials.Photo&&populate=HeaderFooter.PhoneNumber&populate=HeaderFooter.CompanyLogo.Photo`);
+      const response = await axiosInstanse.get(`${API_URL}/api/glavnaya?populate=Header.socials.Photo&&populate=Header.PhoneNumber&populate=Header.CompanyLogo.Photo&populate=Footer.socials.Photo&&populate=Footer.PhoneNumber&populate=Footer.CompanyLogo.Photo`);
       if (response.status === 200) {
-        return response.data.data.attributes.HeaderFooter;
+        return response.data.data.attributes;
       } else {
         throw new Error('Данные не найдены');
       }

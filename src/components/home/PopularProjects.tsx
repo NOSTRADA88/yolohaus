@@ -22,6 +22,22 @@ const PopularProjects = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const getMinPrice = (complectation: any[]) => {
+    const prices = complectation.map(item => 
+      Math.min(
+        parseInt(item.BasePrice, 10), 
+        parseInt(item.StandartPrice, 10), 
+        parseInt(item.ComfortPrice, 10)
+      )
+    );
+    return Math.min(...prices);
+  };
+
+  const formatPrice = (price: { toLocaleString: (arg0: string) => any; }) => {
+    return price.toLocaleString('ru-RU');
+  };
+  
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20">
       <div className="flex justify-between items-center">
@@ -66,7 +82,7 @@ const PopularProjects = () => {
                   <p className="font-museo font-light text-sm text-maingray">{project.attributes.Parameters.Bedrooms}</p>
                 </div>
               </div>
-              <p className="font-museo mt-2 text-orange text-xl font-bold">Цена от { /* Добавьте цену здесь */}</p>
+              <p className="font-museo mt-2 text-orange text-xl font-bold">Цена от {formatPrice(getMinPrice(project.attributes.Complectation))} ₽</p>
             </div>
             <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white">
               <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">

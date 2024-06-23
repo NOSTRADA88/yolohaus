@@ -17,13 +17,13 @@ const Header = () => {
   const fetchData = async () => {
     try {
       const mainData = await fetchHeaderFooterData();
-      setLogoCompany(mainData.CompanyLogo.data.attributes.url);
-      setDescription(mainData.Description);
-      setVkContent(mainData.socials.data[0].attributes.URL);
-      setYoutubeContent(mainData.socials.data[1].attributes.URL);
-      setVkIcon(mainData.socials.data[0].attributes.Photo.data.attributes.url);
-      setYoutubeIcon(mainData.socials.data[1].attributes.Photo.data.attributes.url);
-      setPhoneNumber(mainData.PhoneNumber.PhoneNumber);
+      setLogoCompany(mainData.Header.CompanyLogo.data.attributes.url);
+      setDescription(mainData.Header.Text);
+      setVkContent(mainData.Header.socials.data[0].attributes.URL);
+      setYoutubeContent(mainData.Header.socials.data[1].attributes.URL);
+      setVkIcon(mainData.Header.socials.data[0].attributes.Photo.data.attributes.url);
+      setYoutubeIcon(mainData.Header.socials.data[1].attributes.Photo.data.attributes.url);
+      setPhoneNumber(mainData.Header.PhoneNumber.PhoneNumber);
 
     } catch (error) {
       console.error('Ошибка запроса:', error);

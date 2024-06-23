@@ -13,7 +13,7 @@ const Contact = () => {
       const mainData = await fetchHomeData();
       const phoneData = await fetchHeaderFooterData();
       setEmail(mainData.ContactsMap.Email);
-      setPhone(phoneData.PhoneNumber.PhoneNumber);
+      setPhone(phoneData.Header.PhoneNumber.PhoneNumber);
       setAddress(mainData.ContactsMap.Address);
 
     } catch (error) {
