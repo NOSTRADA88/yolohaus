@@ -57,15 +57,15 @@ const Recommendation = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-[1111px] mx-auto mt-20">
+    <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 ">
 
-      <h1 className=" text-maingray font-museo font-bold text-3xl">{title}</h1>
+      <h1 className=" text-maingray font-museo font-bold text-3xl max-md:text-2xl">{title}</h1>
 
-      <div className="grid grid-cols-4 mt-16">
+      <div className="grid grid-cols-4 mt-16 max-xl:grid-cols-2">
         {recommendations.map((item) => (
           <div
             key={item.id}
-            className="relative p-20 border transition-all bg-white hover:bg-cover group "
+            className="relative p-20 border transition-all bg-white hover:bg-cover group  max-xl:p-10"
             style={{
               backgroundImage: `url(${API_URL}${item.attributes.BgPhoto.data.attributes.url})`,
               backgroundSize: 'cover',
@@ -73,7 +73,6 @@ const Recommendation = () => {
             }}
           >
             <div className="absolute inset-0 bg-white group-hover:bg-transparent transition-all duration-500"></div>
-
             <img
               src={`${API_URL}${item.attributes.Icon.data.attributes.url}`}
               alt={item.attributes.Title}
@@ -81,7 +80,7 @@ const Recommendation = () => {
             />
             <div className="flex justify-center items-center">
               <h2 className="text-center text-maingray font-museo font-light text-lg mt-4 relative 
-            z-10 transition-opacity duration-500 group-hover:opacity-0">
+            z-10 transition-opacity duration-500 group-hover:opacity-0 max-md:text-base ">
                 {item.attributes.Title}
               </h2>
             </div>
@@ -95,14 +94,14 @@ const Recommendation = () => {
           </div>
         ))}
 
-        <div className="relative p-20 border bg-orange overflow-hidden">
+        <div className="relative p-20 border bg-orange overflow-hidden max-xl:p-10">
           <div className="relative w-full h-full overflow-hidden group hover:scale-150 
            hover:transition-all hover:duration-500 cursor-pointer">
             <img
               src={ReviewsIcon}
               alt="Отзывы"
-              className="w-full h-full object-contain"
-        
+              className="w-full h-full object-contain max-xl:w-[100px]"
+
             />
           </div>
           <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
