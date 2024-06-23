@@ -5,8 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
-    const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
-
+    const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);    
     return (
         <div className="w-full bg-lightwhite mt-8">
             <ul className="flex gap-6 items-center justify-center h-20">

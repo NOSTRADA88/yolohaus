@@ -51,24 +51,24 @@ const Mortgage = () => {
     }
 
     return (
-        <div className="w-full max-w-[1111px] mx-auto mt-20">
-            <h1 className="text-maingray font-museo font-bold text-3xl">{title}</h1>
-            <div className="w-full bg-lightwhite mt-8 p-5">
-                <div className="flex items-center">
-                    <div className="w-[55%]">
+        <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16">
+            <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl">{title}</h1>
+            <div className="w-full bg-lightwhite mt-8 p-5 ">
+                <div className="flex items-center max-md:flex-col">
+                    <div className="w-[55%] max-md:w-full max-md:mb-5">
                         <p className="font-light text-xl font-museo leading-normal text-justify">{description}</p>
                     </div>
-                    <div className="slider-container">
+                    <div className="slider-container">  
                         <div className="slider">
                             <img
                                 src={`${API_URL}${photos[currentIndex].attributes.url}`}
                                 alt={photos[currentIndex].attributes.name}
-                                className="w-[350px] transition-transform duration-500 ease-in-out"
+                                className="w-[350px] transition-transform duration-500 ease-in-out max-[1111px]:w-[300px]"
                             />
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container">
+                <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container max-md:mt-5">
                     <a href="/" className="text-orange uppercase text-sm font-medium tracking-wider">Подробнее </a>
                     <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" /> 
                 </div>

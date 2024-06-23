@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { Navbar } from "../components/header"
 import { fetchHeaderFooterData } from "../api";
 import { API_URL } from "../constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+
 
 const Header = () => {
 
@@ -42,7 +45,8 @@ const Header = () => {
     const thirdPart = phoneNumber.slice(10, 12);
 
     return (
-      <a href={`tel:${phoneNumber}`} className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center">
+      <a href={`tel:${phoneNumber}`} className="text-maingray cursor-pointer transition-all duration-300 font-museo
+       text-lg font-light hover:text-orange flex items-center max-md:text-base">
         {countryCode} ({areaCode})
         <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
         {firstPart}-{secondPart}-{thirdPart}
@@ -57,36 +61,45 @@ const Header = () => {
   const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = ({ phoneNumber }) => {
     return formatPhoneNumber(phoneNumber);
   };
-
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="w-full max-w-[1111px] mx-auto">
-      <div className="flex justify-between items-center mt-10 w-full max-w-[1111px] mx-auto">
-        <div className="flex  gap-4 items-center ">
+      <div className="flex justify-between items-center mt-10 max-xl:flex-col">
+        <div className="flex gap-4 items-center max-xl:mb-4 max-md:flex-col ">
+          <div className="hidden max-[1111px]:block absolute left-4 top-12 ">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              <FontAwesomeIcon icon={mobileMenuOpen ? faTimes : faBars} size="2x" className="text-maingray font-light" />
+            </button>
+          </div>
           <a href="/">
             <img src={`${API_URL}${logoCompany}`} alt="logo" className="w-52 cursor-pointer" />
           </a>
-          <p className="text-base font-museo font-light mb-4">{description}</p>
+          <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">{description}</p>
         </div>
-        <div className="flex gap-6 items-center mb-4">
-          <div className="flex items-center">
-            <a href={youtubeContent} className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange">
-              <img src={`${API_URL}${youtubeIcon}`} alt="youtube" className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5" />
-            </a>
-            <a href={vkContent} className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange">
-              <img src={`${API_URL}${vkIcon}`} alt="vk" className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5" />
-            </a>
+        <div className="flex gap-6 justify-center items-center max-md:flex-col max-md:gap-2">
+          <div className="flex gap-6 items-center mb-4  max-md:gap-2">
+            <div className="flex items-center">
+              <a href={youtubeContent} className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange">
+                <img src={`${API_URL}${youtubeIcon}`} alt="youtube" className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5" />
+              </a>
+              <a href={vkContent} className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange">
+                <img src={`${API_URL}${vkIcon}`} alt="vk" className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5" />
+              </a>
+            </div>
+            <PhoneNumberLink phoneNumber={phoneNumber} />
           </div>
-          <PhoneNumberLink phoneNumber={phoneNumber} />
-        </div>
-        <div className="flex gap-[3.5px] items-center mb-4">
-          <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
-          <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange hover:text-white transform parallelogram w-[172px] h-10 border-[1px] border-orange">
-            <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">Напишите нам</p>
+          <div className="flex gap-[3.5px] items-center mb-4">
+            <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
+            <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange hover:text-white transform parallelogram w-[172px] h-10 border-[1px] border-orange">
+              <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">Напишите нам</p>
+            </div>
           </div>
         </div>
       </div>
-      <Navbar />
+      {/* <div className="max-[1111px]:hidden">
+        <Navbar />
+      </div> */}
     </div>
   )
 }

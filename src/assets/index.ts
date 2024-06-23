@@ -5,6 +5,7 @@ import HouseArea  from './HouseArea.svg'
 import WidthHeight  from './Width-Height.svg'
 import ConstructionPeriod  from './ConstructionPeriod.svg'
 import Bedrooms  from './Bedrooms.svg'
+
 export {
     Yolo,
     ReviewsIcon,

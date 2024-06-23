@@ -38,15 +38,15 @@ const Home = () => {
       <section>
         <About />
       </section>
-      <section>
+      {/* <section>
         <PopularProjects />
-      </section>
-      <section>
+      </section> */}
+      {/* <section>
         <Recommendation />
-      </section>
-      <section>
+      </section> */}
+      {/* <section>
         <Contact />
-      </section>
+      </section> */}
     </div>
   )
 }

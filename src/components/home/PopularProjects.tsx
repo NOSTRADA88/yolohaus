@@ -5,6 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Bedrooms, ConstructionPeriod, HouseArea, WidthHeight } from "../../assets";
 
+
+interface Complectation {
+  id: number;
+  BasePrice: string;
+  StandartPrice: string;
+  ComfortPrice: string;
+}
+
 const PopularProjects = () => {
   const [title, setTitle] = useState<string>('');
   const [projects, setProjects] = useState<any[]>([]);
@@ -23,7 +31,7 @@ const PopularProjects = () => {
     fetchData();
   }, []);
 
-  const getMinPrice = (complectation: any[]) => {
+  const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map(item => 
       Math.min(
         parseInt(item.BasePrice, 10), 
@@ -34,7 +42,7 @@ const PopularProjects = () => {
     return Math.min(...prices);
   };
 
-  const formatPrice = (price: { toLocaleString: (arg0: string) => any; }) => {
+  const formatPrice = (price: number) => {
     return price.toLocaleString('ru-RU');
   };
   
