@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Navbar } from "../components/header"
+import { MobileMenu, Navbar } from "../components/header"
 import { fetchHeaderFooterData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +16,7 @@ const Header = () => {
   const [vkIcon, setVkIcon] = useState<string>('');
   const [youtubeIcon, setYoutubeIcon] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -61,13 +62,21 @@ const Header = () => {
   const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = ({ phoneNumber }) => {
     return formatPhoneNumber(phoneNumber);
   };
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [mobileMenuOpen]);
 
   return (
     <div className="w-full max-w-[1111px] mx-auto">
       <div className="flex justify-between items-center mt-10 max-xl:flex-col">
         <div className="flex gap-4 items-center max-xl:mb-4 max-md:flex-col ">
-          <div className="hidden max-[1111px]:block absolute left-4 top-12 ">
+          <div className="hidden max-[800px]:block absolute left-4 top-12 ">
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <FontAwesomeIcon icon={mobileMenuOpen ? faTimes : faBars} size="2x" className="text-maingray font-light" />
             </button>
@@ -97,9 +106,11 @@ const Header = () => {
           </div>
         </div>
       </div>
-      {/* <div className="max-[1111px]:hidden">
+      <div className="max-[800px]:hidden">
         <Navbar />
-      </div> */}
+      </div>
+      <MobileMenu isOpen={mobileMenuOpen} logoCompany={logoCompany} onClose={() => setMobileMenuOpen(false)} />
+      <div className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 pointer-events-none'}`} onClick={() => setMobileMenuOpen(false)}></div>
     </div>
   )
 }
