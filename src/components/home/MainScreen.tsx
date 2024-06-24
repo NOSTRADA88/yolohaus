@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchHomeData } from "../../api";
 import { API_URL } from "../../constants";
+import { Modal } from "../../sections/modal";
 
-const MainScreen = () => {
+type MainScreenProps = {
+    isModalOpen: boolean;
+    closeModal: () => void;
+    openModal: () => void;
+};
+
+const MainScreen = ({ isModalOpen, closeModal, openModal }: MainScreenProps) => {
     const [mainBanner, setMainBanner] = useState<string>('');
     const [titlePart1, setTitlePart1] = useState<string>('');
     const [titlePart2, setTitlePart2] = useState<string>('');
@@ -38,7 +45,7 @@ const MainScreen = () => {
                         <br />
                         <span className="text-3xl font-museo max-xl:text-2xl max-md:text-xl">{titlePart2}</span>
                     </h1>
-                    <div className="flex gap-[3.5px] items-center mt-24 max-xl:mt-10 max-md:mt-8  ">
+                    <div className="flex gap-[3.5px] items-center mt-24 max-xl:mt-10 max-md:mt-8" onClick={openModal}>
                         <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
                         <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange text-white transform parallelogram w-[187px] h-10 border-[1px] border-orange">
                             <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">заказать проект</p>
@@ -46,6 +53,9 @@ const MainScreen = () => {
                     </div>
                 </div>
             </div>
+            {isModalOpen && (
+                <Modal closeModal={closeModal} />
+            )}
         </div>
     )
 }

@@ -8,6 +8,7 @@ const Home = () => {
 
   const [metaTitle, setMetaTitle] = useState<string>('');
   const [metaDescription, setMetaDescription] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -23,6 +24,15 @@ const Home = () => {
     fetchData();
   }, []);
 
+  
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
       <Helmet>
@@ -30,7 +40,7 @@ const Home = () => {
         <meta name="description" content={metaDescription} />
       </Helmet>
       <section>
-        <MainScreen />
+        <MainScreen  isModalOpen={isModalOpen} closeModal={closeModal} openModal={openModal}/>
       </section>
       <section>
         <Mortgage />
@@ -44,9 +54,9 @@ const Home = () => {
       <section>
         <Recommendation />
       </section>
-      {/* <section>
+      <section>
         <Contact />
-      </section> */}
+      </section>
     </div>
   )
 }

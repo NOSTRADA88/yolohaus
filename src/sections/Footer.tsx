@@ -3,6 +3,7 @@ import { fetchHeaderFooterData } from "../api";
 import { Consultation } from "../components/footer"
 import { API_URL, navLinks } from "../constants";
 import React from "react";
+import { Modal } from "./modal";
 
 const Footer = () => {
   const [logoCompany, setLogoCompany] = useState<string>('');
@@ -12,6 +13,7 @@ const Footer = () => {
   const [vkIcon, setVkIcon] = useState<string>('');
   const [youtubeIcon, setYoutubeIcon] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -49,6 +51,15 @@ const Footer = () => {
       </a>
     );
   }
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
 
   interface PhoneNumberLinkProps {
     phoneNumber: string;
@@ -91,7 +102,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
-            <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-[1050px]:flex-col max-[1050px]:text-center">
+            <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">{description}</p>
               <a href="/" className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
             </div>
@@ -105,7 +116,7 @@ const Footer = () => {
                 </a>
               </div>
               <PhoneNumberLink phoneNumber={phoneNumber} />
-              <div className="flex gap-[3.5px] items-center ">
+              <div className="flex gap-[3.5px] items-center" onClick={openModal}>
                 <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
                 <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange hover:text-white transform parallelogram w-[172px] h-10 border-[1px] border-orange">
                   <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram text-white">Напишите нам</p>
@@ -115,7 +126,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
+      {isModalOpen && (
+        <Modal closeModal={closeModal} />
+      )}
     </div>
   )
 }

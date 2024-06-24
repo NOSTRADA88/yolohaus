@@ -5,6 +5,7 @@ import { fetchHeaderFooterData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Modal } from "./modal";
 
 
 const Header = () => {
@@ -17,6 +18,7 @@ const Header = () => {
   const [youtubeIcon, setYoutubeIcon] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -55,6 +57,14 @@ const Header = () => {
     );
   }
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  
   interface PhoneNumberLinkProps {
     phoneNumber: string;
   }
@@ -98,7 +108,7 @@ const Header = () => {
             </div>
             <PhoneNumberLink phoneNumber={phoneNumber} />
           </div>
-          <div className="flex gap-[3.5px] items-center mb-4">
+          <div className="flex gap-[3.5px] items-center mb-4" onClick={openModal}>
             <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
             <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange hover:text-white transform parallelogram w-[172px] h-10 border-[1px] border-orange">
               <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">Напишите нам</p>
@@ -111,6 +121,9 @@ const Header = () => {
       </div>
       <MobileMenu isOpen={mobileMenuOpen} logoCompany={logoCompany} onClose={() => setMobileMenuOpen(false)} />
       <div className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 pointer-events-none'}`} onClick={() => setMobileMenuOpen(false)}></div>
+      {isModalOpen && (
+       <Modal closeModal={closeModal}/>
+      )}
     </div>
   )
 }
