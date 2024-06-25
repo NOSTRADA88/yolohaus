@@ -90,3 +90,18 @@ export const fetchVacancyData = async () => {
     throw new Error(`Ошибка запроса`);
   }
 };
+
+
+export const fetchProjectsData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/proekty?populate=Metadata&populate=Icons.Photo&populate=spisok_proektovs.Photos&populate=spisok_proektovs.Metadata&populate=spisok_proektovs.Parameters&populate=spisok_proektovs.Complectation`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};

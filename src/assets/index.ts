@@ -5,6 +5,7 @@ import HouseArea  from './HouseArea.svg'
 import WidthHeight  from './Width-Height.svg'
 import ConstructionPeriod  from './ConstructionPeriod.svg'
 import Bedrooms  from './Bedrooms.svg'
+import BgVacancy  from './bgvacancy.png'
 
 export {
     Yolo,
@@ -13,5 +14,6 @@ export {
     HouseArea,
     WidthHeight,
     ConstructionPeriod,
-    Bedrooms
+    Bedrooms,
+    BgVacancy
 }

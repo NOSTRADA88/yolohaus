@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchHeaderFooterData } from "../api";
+import { fetchAboutData, fetchHeaderFooterData, fetchProjectsData } from "../api";
 import { Consultation } from "../components/footer"
 import { API_URL } from "../constants";
 import React from "react";
@@ -29,11 +29,11 @@ const Footer = () => {
 
 
       const aboutData = await fetchAboutData();
-      // const housesData = await fetchHousesData();
+      const projectsData = await fetchProjectsData();
 
       const updatedNavLinks = [
           { href: "/", label: "Главная" },
-          { href: "/", label: "Проекты и цены" },
+          { href: `/${projectsData.slug}`, label: "Проекты и цены" },
           {
               href: `/${aboutData.slug}`,
               label: "О компании",

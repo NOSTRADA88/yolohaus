@@ -37,7 +37,7 @@ const MainScreen = ({ isModalOpen, closeModal, openModal }: MainScreenProps) => 
     }, []);
     return (
         <div className="relative">
-            <div className="h-[472px] bg-cover bg-center relative max-xl:h-[350px] max-md:h-[300px] " style={{ backgroundImage: `url(${API_URL}${mainBanner})` }}>
+            <div className="h-[472px] bg-cover bg-center relative max-xl:h-[350px] max-md:h-[300px]" style={{ backgroundImage: `url(${API_URL}${mainBanner})` }}>
                 <div className="absolute inset-0 bg-[#2B2A29] opacity-70"></div>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
                     <h1 className="text-white font-bold text-center ">

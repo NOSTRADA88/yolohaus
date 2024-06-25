@@ -1,12 +1,15 @@
 
 import { useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../components/header"
-import { fetchAboutData, fetchGuaranteeData, fetchHeaderFooterData, fetchReviewsData, fetchVacancyData } from "../api";
+import { fetchAboutData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "./modal";
 
+interface PhoneNumberLinkProps {
+  phoneNumber: string;
+}
 
 const Header = () => {
 
@@ -37,11 +40,11 @@ const Header = () => {
       const reviewsData = await fetchReviewsData();
       const guaranteeData = await fetchGuaranteeData();
       const vacancyData = await fetchVacancyData();
-
+      const projectsData = await fetchProjectsData();
 
       const updatedNavLinks = [
         { href: "/", label: "Главная" },
-        { href: "/", label: "Проекты и цены" },
+        { href: `/${projectsData.slug}`, label: "Проекты и цены" },
         {
           href: `/${aboutData.slug}`,
           label: "О компании",
@@ -94,9 +97,6 @@ const Header = () => {
     setIsModalOpen(false);
   };
 
-  interface PhoneNumberLinkProps {
-    phoneNumber: string;
-  }
 
   const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = ({ phoneNumber }) => {
     return formatPhoneNumber(phoneNumber);

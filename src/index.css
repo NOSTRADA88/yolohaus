@@ -132,3 +132,25 @@ html::-webkit-scrollbar-track {
   border-radius: 8px;
 }
 
+.custom-list {
+  list-style: none;
+  position: relative;
+  padding-left: 20px; 
+}
+
+.custom-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.custom-list li::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 8px;
+  left: 0;
+  top: 7px;
+  background: #ea9635;
+  transform: skewX(-25deg);
+}

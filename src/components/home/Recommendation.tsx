@@ -2,13 +2,13 @@ import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEf
 import { fetchHomeData } from "../../api";
 import { API_URL } from "../../constants";
 import { ReviewsIcon } from "../../assets";
-// src/types.ts
-export interface Description {
+
+interface Description {
   type: string;
   children: { text: string, type: string }[];
 }
 
-export interface Icon {
+interface Icon {
   data: {
     id: number;
     attributes: {
@@ -17,7 +17,7 @@ export interface Icon {
   };
 }
 
-export interface BgPhoto {
+interface BgPhoto {
   data: {
     id: number;
     attributes: {
@@ -26,14 +26,14 @@ export interface BgPhoto {
   };
 }
 
-export interface RecommendationAttributes {
+interface RecommendationAttributes {
   Title: string;
   Description: Description[];
   Icon: Icon;
   BgPhoto: BgPhoto;
 }
 
-export interface Recommendation {
+interface Recommendation {
   id: number;
   attributes: RecommendationAttributes;
 }
