@@ -1,13 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { API_URL, navLinks } from "../../constants";
+import { API_URL } from "../../constants";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 type MobileMenuProps = {
   isOpen: boolean;
   onClose:() => void;
   logoCompany: string
+  navLinks:{ href: string; label: string; submenu?: { href: string; label: string }[] }[];
 };
-const MobileMenu = ({ isOpen, onClose, logoCompany }: MobileMenuProps) => {
+
+const MobileMenu = ({ isOpen, onClose, logoCompany, navLinks}: MobileMenuProps) => {
   return (
     <div className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50  border-r-4 border-r-orange
      transition-transform duration-300 ${isOpen ? 'transform translate-x-0' : 'transform -translate-x-full'}`}>

@@ -17,21 +17,3 @@ export const setAuthorizationHeader = () => {
 
 setAuthorizationHeader();
 
-
-
-export const navLinks = [
-    { href: "/", label: "Главная" },
-    { href: "/", label: "Проекты и цены" },
-    { href: "/", label: "О компании", submenu: [
-        { href: "/", label: "Блог" },
-        { href: "/", label: "Отзывы" },
-        { href: "/", label: "Гарантия" },
-        { href: "/", label: "Вакансии" }, 
-    ]},
-    { href: "/", label: "Построенные дома" },
-    { href: "/", label: "Услуги" },
-    { href: "/", label: "Акции" },
-    { href: "/", label: "Ипотека" },
-    { href: "/", label: "Контакты" },
-
-];

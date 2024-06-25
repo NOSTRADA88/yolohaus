@@ -1,6 +1,6 @@
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { fetchHomeData } from "../../api";
+import { fetchAboutData, fetchHomeData } from "../../api";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../constants";
 
@@ -10,13 +10,19 @@ const About = () => {
     const [titleMini, setTitleMini] = useState<string>('');
     const [description, setDescription] = useState<{ type: string, children: { text: string, type: string }[] }[]>([]);
     const [photoAbout, setPhotoAbout] = useState<string>('');
+    const [slugAbout, setSlugAbout] = useState<string>('');
+
+
     const fetchData = async () => {
         try {
             const mainData = await fetchHomeData();
             setTitle(mainData.About.Title);
             setTitleMini(mainData.About.Information[0].Title);
             setDescription(mainData.About.Information[0].Description);
-            setPhotoAbout(mainData.About.Photo.data.attributes.url)
+            setPhotoAbout(mainData.About.Photo.data.attributes.url);
+
+            const aboutData = await fetchAboutData();
+            setSlugAbout(aboutData.slug);
 
         } catch (error) {
             console.error('Ошибка запроса:', error);
@@ -46,7 +52,7 @@ const About = () => {
                     ))}
                     <div className=" bg-lightwhite mt-8 p-5">
                         <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer  arrow-container">
-                            <a href="/" className="text-orange uppercase text-sm font-medium tracking-wider">УЗНАТЬ БОЛЬШЕ </a>
+                            <a href={`/${slugAbout}`} className="text-orange uppercase text-sm font-medium tracking-wider">УЗНАТЬ БОЛЬШЕ </a>
                             <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
                         </div>
                     </div>

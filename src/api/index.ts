@@ -30,3 +30,63 @@ export const fetchHomeData = async () => {
       throw new Error(`Ошибка запроса`);
     }
   };
+
+  
+export const fetchAboutData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/o-kompanii?populate=Metadata&populate=About.Photo&populate=About.Information`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};
+
+
+export const fetchReviewsData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/otzyvy?populate=Metadata&populate=spisok_otzyvovs.Photo`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};
+
+
+export const fetchGuaranteeData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/garantiya?populate=Metadata&populate=Information&populate=Photo`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};
+
+
+export const fetchVacancyData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/vakansii?populate=Metadata&populate=vacancies`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};

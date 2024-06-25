@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchHeaderFooterData } from "../api";
+import { fetchAboutData, fetchHeaderFooterData } from "../api";
 import { Consultation } from "../components/footer"
-import { API_URL, navLinks } from "../constants";
+import { API_URL } from "../constants";
 import React from "react";
 import { Modal } from "./modal";
 
@@ -14,6 +14,7 @@ const Footer = () => {
   const [youtubeIcon, setYoutubeIcon] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState<{ href: string; label: string; submenu?: { href: string; label: string }[] }[]>([]);
 
   const fetchData = async () => {
     try {
@@ -26,6 +27,23 @@ const Footer = () => {
       setYoutubeIcon(mainData.Footer.socials.data[1].attributes.Photo.data.attributes.url);
       setPhoneNumber(mainData.Footer.PhoneNumber.PhoneNumber);
 
+
+      const aboutData = await fetchAboutData();
+      // const housesData = await fetchHousesData();
+
+      const updatedNavLinks = [
+          { href: "/", label: "Главная" },
+          { href: "/", label: "Проекты и цены" },
+          {
+              href: `/${aboutData.slug}`,
+              label: "О компании",
+          },
+          { href: "/", label: "Построенные дома" },
+          { href: "/", label: "Услуги" },
+          { href: "/", label: "Контакты" },
+      ];
+
+      setNavLinks(updatedNavLinks);
     } catch (error) {
       console.error('Ошибка запроса:', error);
     }

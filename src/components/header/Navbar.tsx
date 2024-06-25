@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { navLinks } from "../../constants"
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
-const Navbar = () => {
-    const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);    
+type NavbarProps = {
+    navLinks: { href: string; label: string; submenu?: { href: string; label: string }[] }[];
+};
+
+const Navbar = ({ navLinks }: NavbarProps) => {
+    const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
+
     return (
         <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2">
             <ul className="flex gap-6 items-center justify-center h-20 max-xl:gap-4 max-lg:gap-2">
@@ -22,7 +26,7 @@ const Navbar = () => {
                             >
                                 {link.label}
                                 {link.submenu && (
-                                    <FontAwesomeIcon icon={faChevronDown} className="ml-1 "   />
+                                    <FontAwesomeIcon icon={faChevronDown} className="ml-1 " />
                                 )}
                             </a>
                             {link.submenu && (

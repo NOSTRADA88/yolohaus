@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../components/header"
-import { fetchHeaderFooterData } from "../api";
+import { fetchAboutData, fetchGuaranteeData, fetchHeaderFooterData, fetchReviewsData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,8 @@ const Header = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState<{ href: string; label: string; submenu?: { href: string; label: string }[] }[]>([]);
+
 
   const fetchData = async () => {
     try {
@@ -31,6 +33,33 @@ const Header = () => {
       setYoutubeIcon(mainData.Header.socials.data[1].attributes.Photo.data.attributes.url);
       setPhoneNumber(mainData.Header.PhoneNumber.PhoneNumber);
 
+      const aboutData = await fetchAboutData();
+      const reviewsData = await fetchReviewsData();
+      const guaranteeData = await fetchGuaranteeData();
+      const vacancyData = await fetchVacancyData();
+
+
+      const updatedNavLinks = [
+        { href: "/", label: "Главная" },
+        { href: "/", label: "Проекты и цены" },
+        {
+          href: `/${aboutData.slug}`,
+          label: "О компании",
+          submenu: [
+            { href: "/", label: "Блог" },
+            { href: `/${reviewsData.slug}`, label: "Отзывы" },
+            { href: `/${guaranteeData.slug}`, label: "Гарантия" },
+            { href: `/${vacancyData.slug}`, label: "Вакансии" },
+          ]
+        },
+        { href: "/", label: "Построенные дома" },
+        { href: "/", label: "Услуги" },
+        { href: "/", label: "Акции" },
+        { href: "/", label: "Ипотека" },
+        { href: "/", label: "Контакты" },
+      ];
+
+      setNavLinks(updatedNavLinks);
     } catch (error) {
       console.error('Ошибка запроса:', error);
     }
@@ -64,7 +93,7 @@ const Header = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  
+
   interface PhoneNumberLinkProps {
     phoneNumber: string;
   }
@@ -117,12 +146,12 @@ const Header = () => {
         </div>
       </div>
       <div className="max-[800px]:hidden">
-        <Navbar />
+        <Navbar navLinks={navLinks}/>
       </div>
-      <MobileMenu isOpen={mobileMenuOpen} logoCompany={logoCompany} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu isOpen={mobileMenuOpen} logoCompany={logoCompany} onClose={() => setMobileMenuOpen(false)} navLinks={navLinks} />
       <div className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 pointer-events-none'}`} onClick={() => setMobileMenuOpen(false)}></div>
       {isModalOpen && (
-       <Modal closeModal={closeModal}/>
+        <Modal closeModal={closeModal} />
       )}
     </div>
   )
