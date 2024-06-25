@@ -3,7 +3,7 @@ import { fetchProjectsData } from "../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeftLong, faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 
 
 interface PhotoFormats {
@@ -96,6 +96,51 @@ const Projects = () => {
     const [sortByPopularity, setSortByPopularity] = useState(false);
     const [sortByArea, setSortByArea] = useState(false);
     const [sortByPrice, setSortByPrice] = useState(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const projectsPerPage = 6;
+    const totalPages = Math.ceil(projects.length / projectsPerPage);
+    const indexOfLastProject = currentPage * projectsPerPage;
+    const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+    const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+    const paginate = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+    };
+        
+    const renderPagination = () => {
+        if (totalPages <= 1) {
+            return null; 
+        }
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(
+                <span
+                    key={i}
+                    className={`cursor-pointer font-museo text-sm text-maingray  ${currentPage === i ? 'bg-orange text-white  px-2 py-1 font-bold' : 'hover:text-orange'}`}
+                    onClick={() => paginate(i)}
+                >
+                    {i}
+                </span>
+            );
+        }
+        return (
+            <div className="flex  justify-center items-center mt-20 gap-4">
+                <span
+                    className="cursor-pointer font-museo text-sm text-maingray hover:text-orange"
+                    onClick={() => paginate(currentPage - 1)}
+                >
+                      <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon" />     предыдущая страница
+                </span>
+                {pageNumbers}
+                <span
+                    className="cursor-pointer font-museo text-sm text-maingray hover:text-orange"
+                    onClick={() => paginate(currentPage + 1)}
+                >
+                    следующая страница    <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
+                </span>
+            </div>
+        );
+    };
+    
     const fetchData = async () => {
         try {
             const projectsData = await fetchProjectsData();
@@ -156,7 +201,7 @@ const Projects = () => {
                 <title>{metaTitle}</title>
                 <meta name="description" content={metaDescription} />
             </Helmet>
-            <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
+            <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
                 <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
                     <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">{title}</h1>
                     <div className="flex items-center">
@@ -191,7 +236,7 @@ const Projects = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-3 gap-8 mt-10">
-                    {projects.map(project => (
+                    {currentProjects.map(project => (
                         <div
                             key={project.id}
                             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5]
@@ -229,9 +274,11 @@ const Projects = () => {
                                     <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
                                 </div>
                             </div>
-                        </div>
+                        </div>            
                     ))}
-                </div></div>
+                </div>
+                {renderPagination()}
+            </div>
         </div>
     )
 }
