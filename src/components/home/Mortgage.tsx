@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { fetchHomeData } from "../../api";
@@ -17,6 +17,11 @@ const Mortgage = () => {
     const [description, setDescription] = useState<string>('');
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+    // TODO константы всегда должны быть перед хуками и функциями
+    const goToNextSlide = useCallback(() => {
+        setCurrentIndex(prevIndex => (prevIndex + 1) % photos.length);
+    }, [photos.length]);
 
     const fetchData = async () => {
         try {
@@ -37,14 +42,11 @@ const Mortgage = () => {
         fetchData();
     }, []);
 
+    // TODO прочитай про второй параметр хука useEffect список deps
     useEffect(() => {
         const interval = setInterval(goToNextSlide, 3000);
         return () => clearInterval(interval);
-    }, [photos]);
-
-    const goToNextSlide = () => {
-        setCurrentIndex(prevIndex => (prevIndex + 1) % photos.length);
-    };
+    }, [photos, goToNextSlide]);
 
     if (photos.length === 0) {
         return null; 

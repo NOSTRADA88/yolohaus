@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { MobileMenu, Navbar } from "../components/header"
 import { fetchAboutData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
@@ -24,23 +23,30 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [navLinks, setNavLinks] = useState<{ href: string; label: string; submenu?: { href: string; label: string }[] }[]>([]);
 
-
   const fetchData = async () => {
     try {
-      const mainData = await fetchHeaderFooterData();
-      setLogoCompany(mainData.Header.CompanyLogo.data.attributes.url);
-      setDescription(mainData.Header.Text);
-      setVkContent(mainData.Header.socials.data[0].attributes.URL);
-      setYoutubeContent(mainData.Header.socials.data[1].attributes.URL);
-      setVkIcon(mainData.Header.socials.data[0].attributes.Photo.data.attributes.url);
-      setYoutubeIcon(mainData.Header.socials.data[1].attributes.Photo.data.attributes.url);
-      setPhoneNumber(mainData.Header.PhoneNumber.PhoneNumber);
+      //TODO здесь нужно поиграться с параметрами загрузки данных. Где-то выгодно испольщовать lazy load
+      // Спойлер: вакансии и гарантия можно попробовать можно использовать с ленивой загрузкой.
+      // PromiseAll тут не самый оптимальный вариант, потому что клиенту не нужны сразу все данные.
+      // https://www.freecodecamp.org/news/react-performance-optimization-techniques/ - читаем, переводим, запоминаем.
+      // Другие секции и страницы тоже должны предерживать такого подхода.
+      // И не забудь про линтер: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData] = await Promise.all([
+        fetchHeaderFooterData(),
+        fetchAboutData(),
+        fetchReviewsData(),
+        fetchGuaranteeData(),
+        fetchVacancyData(),
+        fetchProjectsData()
+      ]);
 
-      const aboutData = await fetchAboutData();
-      const reviewsData = await fetchReviewsData();
-      const guaranteeData = await fetchGuaranteeData();
-      const vacancyData = await fetchVacancyData();
-      const projectsData = await fetchProjectsData();
+      setLogoCompany(headerFooterData.Header.CompanyLogo.data.attributes.url);
+      setDescription(headerFooterData.Header.Text);
+      setVkContent(headerFooterData.Header.socials.data[0].attributes.URL);
+      setYoutubeContent(headerFooterData.Header.socials.data[1].attributes.URL);
+      setVkIcon(headerFooterData.Header.socials.data[0].attributes.Photo.data.attributes.url);
+      setYoutubeIcon(headerFooterData.Header.socials.data[1].attributes.Photo.data.attributes.url);
+      setPhoneNumber(headerFooterData.Header.PhoneNumber.PhoneNumber);
 
       const updatedNavLinks = [
         { href: "/", label: "Главная" },
@@ -68,6 +74,7 @@ const Header = () => {
     }
   };
 
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -89,13 +96,13 @@ const Header = () => {
     );
   }
 
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
 
   const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = ({ phoneNumber }) => {
