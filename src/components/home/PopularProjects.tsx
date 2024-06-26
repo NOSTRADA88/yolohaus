@@ -3,7 +3,6 @@ import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
-// import { Link } from "react-router-dom";
 
 interface PhotoFormats {
   ext: string;

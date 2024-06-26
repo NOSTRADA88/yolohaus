@@ -23,7 +23,7 @@ const AboutCompany = () => {
             setTitleMiniTwo(aboutData.About.Information[1].Title);
             setDescription(aboutData.About.Information[0].Description);
             setDescriptionTwo(aboutData.About.Information[1].Description);
-            setPhotoAbout(aboutData.About.Photo.data.attributes.url)
+            setPhotoAbout(aboutData.About.Photo.data.attributes.url);
         } catch (error) {
             console.error('Ошибка запроса:', error);
         }

@@ -75,7 +75,7 @@ const Reviews = () => {
                 </div>
                 <div className="grid grid-cols-3 mt-10 gap-10 max-lg:grid-cols-1 max-lg:gap-8">
                     {reviews.map((review) => (
-                        <a href={review.attributes.URL}>
+                        <a href={review.attributes.URL} target="_blank">
                             <div key={review.id} className="flex justify-center items-center w-full h-full p-10
                              bg-lightwhite  hover:bg-orange cursor-pointer ">
                                 <img src={`${API_URL}${review.attributes.Photo.data.attributes.url}`} alt={review.attributes.Title} />

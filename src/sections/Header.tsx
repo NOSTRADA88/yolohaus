@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import { MobileMenu, Navbar } from "../components/header"
-import { fetchAboutData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
+import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -31,13 +31,14 @@ const Header = () => {
       // https://www.freecodecamp.org/news/react-performance-optimization-techniques/ - читаем, переводим, запоминаем.
       // Другие секции и страницы тоже должны предерживать такого подхода.
       // И не забудь про линтер: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
-      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData] = await Promise.all([
+      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
         fetchReviewsData(),
         fetchGuaranteeData(),
         fetchVacancyData(),
-        fetchProjectsData()
+        fetchProjectsData(),
+        fetchContactData(),
       ]);
 
       setLogoCompany(headerFooterData.Header.CompanyLogo.data.attributes.url);
@@ -56,7 +57,6 @@ const Header = () => {
           label: "О компании",
           submenu: [
             { href: "/", label: "Блог" },
-            { href: `/${reviewsData.slug}`, label: "Отзывы" },
             { href: `/${guaranteeData.slug}`, label: "Гарантия" },
             { href: `/${vacancyData.slug}`, label: "Вакансии" },
           ]
@@ -65,7 +65,8 @@ const Header = () => {
         { href: "/", label: "Услуги" },
         { href: "/", label: "Акции" },
         { href: "/", label: "Ипотека" },
-        { href: "/", label: "Контакты" },
+        { href: `/${reviewsData.slug}`, label: "Отзывы" },
+        { href:  `/${contactData.slug}`, label: "Контакты" },
       ];
 
       setNavLinks(updatedNavLinks);

@@ -2,7 +2,6 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museo_sans_cyrl_300.woff);
   src: url(../public/font/museo_sans_cyrl_300.woff) format("woff");
   font-weight: 300;
   font-style: normal;
@@ -11,7 +10,6 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museo_sans_cyrl_500.woff);
   src: url(../public/font/museo_sans_cyrl_500.woff) format("woff");
   font-weight: 500;
   font-style: normal;
@@ -20,11 +18,11 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museo_sans_cyrl_700.woff);
   src: url(../public/font/museo_sans_cyrl_700.woff) format("woff");
   font-weight: 700;
   font-style: normal;
 }
+
                         
 @tailwind base;
 @tailwind components;
@@ -153,4 +151,22 @@ html::-webkit-scrollbar-track {
   top: 7px;
   background: #ea9635;
   transform: skewX(-25deg);
+}
+
+.employee-photo-container {
+  position: relative;
+  z-index: 1;
+}
+
+.employee-photo-container img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.employee-details {
+  margin-top: 240px; 
+  background-color: #f0f0f0;
+  position: relative;
+
 }

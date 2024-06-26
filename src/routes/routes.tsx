@@ -1,10 +1,9 @@
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from '../layouts/layout';
-import { AboutCompany, Guarantee, Home, Projects, Vacancy } from "../page";
+import { AboutCompany, Contact, Guarantee, Home, Projects, Reviews, Vacancy } from "../page";
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchGuaranteeData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
-import Reviews from "../page/Reviews";
+import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
 
 const useRoutes = () => {
   const [slugAbout, setSlugAbout] = useState<string>('');
@@ -12,6 +11,7 @@ const useRoutes = () => {
   const [slugGuarantee, setSlugGuarantee] = useState<string>('');
   const [slugVacancy, setSlugVacancy] = useState<string>('');
   const [slugProjects, setSlugProjects] = useState<string>('');
+  const [slugContact, setSlugContact] = useState<string>('');
 
   const fetchData = async () => {
     try {
@@ -20,13 +20,14 @@ const useRoutes = () => {
       const guaranteeData = await fetchGuaranteeData();
       const vacancyData = await fetchVacancyData();
       const projectsData = await fetchProjectsData();
-
+      const contactData = await fetchContactData();
 
       setSlugAbout(aboutData.slug);
       setSlugReviews(reviewsData.slug);
       setSlugGuarantee(guaranteeData.slug);
       setSlugVacancy(vacancyData.slug);
-      setSlugProjects(projectsData.slug)
+      setSlugProjects(projectsData.slug);
+      setSlugContact(contactData.slug);
 
     } catch (error) {
       console.error('Ошибка запроса:', error);
@@ -46,6 +47,7 @@ const useRoutes = () => {
         <Route path={`/${slugGuarantee}`} element={<Layout><Guarantee /></Layout>} />
         <Route path={`/${slugVacancy}`} element={<Layout><Vacancy /></Layout>} />
         <Route path={`/${slugProjects}`} element={<Layout><Projects /></Layout>} />
+        <Route path={`/${slugContact}`} element={<Layout><Contact /></Layout>} />
       </Routes>
     </BrowserRouter>
   )

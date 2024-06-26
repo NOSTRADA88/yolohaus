@@ -105,3 +105,18 @@ export const fetchProjectsData = async () => {
     throw new Error(`Ошибка запроса`);
   }
 };
+
+
+export const fetchContactData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/kontakty?populate=Metadata&populate=Information.Photo&populate=WorkingTime&populate=employees.Photo&populate=productions`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+      console.log(error);
+    throw new Error(`Ошибка запроса`);
+  }
+};
