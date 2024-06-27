@@ -18,6 +18,7 @@ interface Production {
     attributes: {
         Name: string;
         Address: string;
+        YandexMapURL:string;
     }
 }
 
@@ -50,6 +51,7 @@ const Contact = () => {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
     const [address, setAddress] = useState<string>('');
+    const [urlAdressOffice, setUrlAdressOffice] = useState<string>('');
     const [weekdays, setWeekdays] = useState<string>('');
     const [weekends, setWeekends] = useState<string>('');
     const [productions, setProductions] = useState<Production[]>([]);
@@ -59,6 +61,7 @@ const Contact = () => {
     const fetchData = async () => {
         try {
             const contactData = await fetchContactData();
+
             setMetaTitle(contactData.Metadata.MetaTitle);
             setMetaDescription(contactData.Metadata.MetaDescription);
             setTitle(contactData.Title);
@@ -69,13 +72,14 @@ const Contact = () => {
             setWeekends(contactData.WorkingTime.Weekends);
             setProductions(contactData.productions.data);
             setEmployees(contactData.employees.data);
-            console.log(contactData.employees.data);
+
             const mainData = await fetchHomeData();
             const phoneData = await fetchHeaderFooterData();
+
             setEmail(mainData.ContactsMap.Email);
             setPhone(phoneData.Header.PhoneNumber.PhoneNumber);
             setAddress(mainData.ContactsMap.Address);
-
+            setUrlAdressOffice(mainData.ContactsMap.YandexMapURL);
         } catch (error) {
             console.error('Ошибка запроса:', error);
         }
@@ -101,7 +105,7 @@ const Contact = () => {
                     </div>
                 </div>
                 <ContactInfo titleMini={titleMini} description={description} address={address}
-                    phone={phone} email={email} photoContact={photoContact} weekdays={weekdays} weekends={weekends} />
+                    phone={phone} email={email} photoContact={photoContact} weekdays={weekdays} weekends={weekends} urlAdressOffice={urlAdressOffice}/>
                 <ProductionsList productions={productions} />
                 <EmployeeCard employees={employees} />
             </div>

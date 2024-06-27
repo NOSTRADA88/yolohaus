@@ -8,6 +8,7 @@ const Contact = () => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [address, setAddress] = useState<string>('');
+  const [urlAdressOffice, setUrlAdressOffice] = useState<string>('');
   const fetchData = async () => {
     try {
       const mainData = await fetchHomeData();
@@ -16,6 +17,7 @@ const Contact = () => {
       setPhone(phoneData.Header.PhoneNumber.PhoneNumber);
       setAddress(mainData.ContactsMap.Address);
 
+      setUrlAdressOffice(mainData.ContactsMap.YandexMapURL);
     } catch (error) {
       console.error('Ошибка запроса:', error);
     }
@@ -38,7 +40,7 @@ const Contact = () => {
          ">
           <div className=" w-full mb-15 overflow-hidden max-sm:text-center">
             <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">адрес</span>
-            <h1><a href="https://yandex.ru/maps/2/saint-petersburg/house/ulitsa_kompozitorov_12/Z0kYdQZkTk0GQFhqfXx0c35nYQ==/?indoorLevel=1&ll=30.314781%2C60.052245&z=17.09"
+            <h1><a href={`${urlAdressOffice}`}
               target="_blank" className="font-museo font-light text-sm leading-5 text-maingray mb-3 hover:text-orange cursor-pointer transition-all duration-300">
               {address}
             </a>
