@@ -6,7 +6,11 @@ import { API_URL } from "../../constants";
 import InputMask from 'react-input-mask';
 import { useLocation } from 'react-router-dom';
 
-const Consultation = () => {
+type ConsultationProps = {
+  slugPrivacy:string;
+}
+
+const Consultation = ({slugPrivacy}: ConsultationProps) => {
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
   const location = useLocation();
   const {
@@ -102,7 +106,7 @@ const Consultation = () => {
               </div>
               <div className="ml-4">
               <p className="text-xs font-museo font-medium text-white">Отправляя форму, я даю согласие на обработку
-            <br/> <a className="underline cursor-pointer " href="/"> персональных данных </a> </p>
+            <br/> <a className="underline cursor-pointer " href={`/${slugPrivacy}`}> персональных данных </a> </p>
             </div>
             </div>
           </form>

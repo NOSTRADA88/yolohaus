@@ -5,6 +5,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import InputMask from 'react-input-mask';
 import axios from "axios";
 import { API_URL } from "../../constants";
+import { fetchPrivacyPolicyData } from "../../api";
 
 type ModalProps = {
     closeModal: () => void;
@@ -13,6 +14,7 @@ type ModalProps = {
 const Modal = ({ closeModal }: ModalProps) => {
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [slugPrivacy, setSlugPrivacy] = useState<string>('');
 
     const {
         register,
@@ -72,6 +74,21 @@ const Modal = ({ closeModal }: ModalProps) => {
             document.body.style.overflow = 'auto';
         };
     }, []);
+
+    const fetchData = async () => {
+        try {
+          const privacyData = await fetchPrivacyPolicyData();
+          setSlugPrivacy(privacyData.slug);
+    
+        } catch (error) {
+          console.error('Ошибка запроса:', error);
+        }
+      };
+    
+      useEffect(() => {
+        fetchData();
+      }, []);
+    
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -150,7 +167,7 @@ const Modal = ({ closeModal }: ModalProps) => {
                             </div>
                         </div>
                         <p className="text-xs font-museo font-medium text-maingray text-center">Отправляя форму, я даю согласие на обработку
-                            <br /> <a className="underline cursor-pointer " href="/"> персональных данных </a> </p>
+                            <br /> <a className="underline cursor-pointer " href={`/${slugPrivacy}`}> персональных данных </a> </p>
                     </form>
                 </div>
             </div>

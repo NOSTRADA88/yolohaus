@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchHeaderFooterData, fetchProjectsData } from "../api";
+import { fetchAboutData, fetchHeaderFooterData, fetchProjectsData, fetchServicesData, fetchPrivacyPolicyData } from "../api";
 import { Consultation } from "../components/footer"
 import { API_URL } from "../constants";
 import React from "react";
@@ -16,6 +16,8 @@ const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [navLinks, setNavLinks] = useState<{ href: string; label: string; submenu?: { href: string; label: string }[] }[]>([]);
 
+  const [slugPrivacy, setSlugPrivacy] = useState<string>('');
+
   const fetchData = async () => {
     try {
       const mainData = await fetchHeaderFooterData();
@@ -30,6 +32,9 @@ const Footer = () => {
 
       const aboutData = await fetchAboutData();
       const projectsData = await fetchProjectsData();
+      const servicesData = await fetchServicesData();
+      const privacyData = await fetchPrivacyPolicyData();
+      setSlugPrivacy(privacyData.slug);
 
       const updatedNavLinks = [
           { href: "/", label: "Главная" },
@@ -39,7 +44,7 @@ const Footer = () => {
               label: "О компании",
           },
           { href: "/", label: "Построенные дома" },
-          { href: "/", label: "Услуги" },
+          { href:`/${servicesData.slug}`, label: "Услуги" },
           { href: "/", label: "Контакты" },
       ];
 
@@ -94,7 +99,7 @@ const Footer = () => {
   return (
     <div>
       <div className="bg-orange">
-        <Consultation />
+        <Consultation slugPrivacy={slugPrivacy}/>
       </div>
       <div className="bg-maingray p-8 ">
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5 ">
@@ -122,7 +127,7 @@ const Footer = () => {
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
             <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">{description}</p>
-              <a href="/" className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
+              <a href={`/${slugPrivacy}`} className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
             </div>
             <div className="flex items-center gap-10 max-[1050px]:flex-col max-[1050px]:gap-5">
               <div className="flex ">

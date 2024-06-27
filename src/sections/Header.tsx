@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../components/header"
-import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchVacancyData } from "../api";
+import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchPrivacyPolicyData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -31,7 +31,7 @@ const Header = () => {
       // https://www.freecodecamp.org/news/react-performance-optimization-techniques/ - читаем, переводим, запоминаем.
       // Другие секции и страницы тоже должны предерживать такого подхода.
       // И не забудь про линтер: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
-      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData] = await Promise.all([
+      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData, servicesData] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
         fetchReviewsData(),
@@ -39,6 +39,7 @@ const Header = () => {
         fetchVacancyData(),
         fetchProjectsData(),
         fetchContactData(),
+        fetchServicesData(),
       ]);
 
       setLogoCompany(headerFooterData.Header.CompanyLogo.data.attributes.url);
@@ -62,11 +63,11 @@ const Header = () => {
           ]
         },
         { href: "/", label: "Построенные дома" },
-        { href: "/", label: "Услуги" },
+        { href: `/${servicesData.slug}`, label: "Услуги" },
         { href: "/", label: "Акции" },
         { href: "/", label: "Ипотека" },
         { href: `/${reviewsData.slug}`, label: "Отзывы" },
-        { href:  `/${contactData.slug}`, label: "Контакты" },
+        { href: `/${contactData.slug}`, label: "Контакты" },
       ];
 
       setNavLinks(updatedNavLinks);
@@ -154,7 +155,7 @@ const Header = () => {
         </div>
       </div>
       <div className="max-[800px]:hidden">
-        <Navbar navLinks={navLinks}/>
+        <Navbar navLinks={navLinks} />
       </div>
       <MobileMenu isOpen={mobileMenuOpen} logoCompany={logoCompany} onClose={() => setMobileMenuOpen(false)} navLinks={navLinks} />
       <div className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 pointer-events-none'}`} onClick={() => setMobileMenuOpen(false)}></div>

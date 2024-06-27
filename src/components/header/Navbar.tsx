@@ -12,7 +12,7 @@ const Navbar = ({ navLinks }: NavbarProps) => {
 
     return (
         <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2">
-            <ul className="flex gap-4 items-center justify-center h-20 max-xl:gap-4 max-lg:gap-2">
+            <ul className="flex gap-4 items-center justify-center h-20 max-xl:gap-2 max-lg:gap-1">
                 {navLinks.map((link, index) => (
                     <React.Fragment key={index}>
                         <li
