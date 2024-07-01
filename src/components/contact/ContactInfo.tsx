@@ -16,7 +16,7 @@ interface ContactInfoProps {
     titleMini: string;
     description: DescriptionItem[];
     address: string;
-    urlAdressOffice: string;
+    urlAddressOffice: string;
     phone: string;
     email: string;
     photoContact: string;
@@ -24,7 +24,7 @@ interface ContactInfoProps {
     weekends: string;
 }
 
-const ContactInfo = ({ titleMini, description, address, urlAdressOffice, phone, email, photoContact, weekdays, weekends }: ContactInfoProps) => {
+const ContactInfo = ({ titleMini, description, address, urlAddressOffice, phone, email, photoContact, weekdays, weekends }: ContactInfoProps) => {
 
     function formatPhoneNumber(number: string) {
         return number.replace(/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 ($2) $3-$4-$5');
@@ -65,13 +65,13 @@ const ContactInfo = ({ titleMini, description, address, urlAdressOffice, phone, 
             <div className="grid grid-cols-1 gap-3 mt-5 max-xl:grid-cols-2 max-xl:gap-10 max-sm:grid-cols-1 max-sm:gap-3">
                 <div>
                     <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">адрес</span>
-                    <h1><a href={`${urlAdressOffice}`}
+                    <h1><a rel="noopener noreferrer" href={`${urlAddressOffice}`}
                         target="_blank" className="font-museo font-light text-sm leading-5 text-maingray mb-3 hover:text-orange cursor-pointer transition-all duration-300">
                         {address}
                     </a>
                     </h1>
                     <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container max-md:mt-5">
-                        <a href={`${urlAdressOffice}`}
+                        <a rel="noopener noreferrer" href={`${urlAddressOffice}`}
                             target="_blank" className="text-orange uppercase text-sm font-medium tracking-wider">Посмотреть на карте </a>
                         <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
                     </div>

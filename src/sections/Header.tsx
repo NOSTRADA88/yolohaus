@@ -25,12 +25,6 @@ const Header = () => {
 
   const fetchData = async () => {
     try {
-      //TODO здесь нужно поиграться с параметрами загрузки данных. Где-то выгодно испольщовать lazy load
-      // Спойлер: вакансии и гарантия можно попробовать можно использовать с ленивой загрузкой.
-      // PromiseAll тут не самый оптимальный вариант, потому что клиенту не нужны сразу все данные.
-      // https://www.freecodecamp.org/news/react-performance-optimization-techniques/ - читаем, переводим, запоминаем.
-      // Другие секции и страницы тоже должны предерживать такого подхода.
-      // И не забудь про линтер: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
       const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData, servicesData] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),

@@ -40,7 +40,7 @@ const Contact = () => {
          ">
           <div className=" w-full mb-15 overflow-hidden max-sm:text-center">
             <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">адрес</span>
-            <h1><a href={`${urlAdressOffice}`}
+            <h1><a rel="noopener noreferrer" href={`${urlAdressOffice}`}
               target="_blank" className="font-museo font-light text-sm leading-5 text-maingray mb-3 hover:text-orange cursor-pointer transition-all duration-300">
               {address}
             </a>
@@ -49,7 +49,7 @@ const Contact = () => {
           <div className=" w-full mb-15 overflow-hidden mt-2 max-sm:text-center">
             <span className="  font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact  mb-6">телефон</span>
             <h1 className='mb-3'>
-              <a href={`tel:${phone}`} className="font-museo font-light text-sm leading-5 tracking-wider text-maingray hover:text-orange cursor-pointer 
+              <a rel="noopener noreferrer" href={`tel:${phone}`} className="font-museo font-light text-sm leading-5 tracking-wider text-maingray hover:text-orange cursor-pointer
               transition-all duration-300 ">  {formatPhoneNumber(phone)}</a>
             </h1>
           </div>
@@ -57,7 +57,7 @@ const Contact = () => {
           <div className=" w-full mb-15 overflow-hidden max-sm:text-center">
             <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-6">E-mail</span>
             <h1 className='mb-4'>
-              <a href={`mailto:${email}`} className="font-museo font-light text-sm leading-5 text-maingray hover:text-orange cursor-pointer transition-all duration-300">{email}</a>
+              <a rel="noopener noreferrer" href={`mailto:${email}`} className="font-museo font-light text-sm leading-5 text-maingray hover:text-orange cursor-pointer transition-all duration-300">{email}</a>
             </h1> </div>
           <div className="flex gap-[3.5px] items-center mt-2 max-sm:justify-center">
             <div className="parallelogram h-10 border-l-[1px] border-orange"></div>

@@ -18,7 +18,7 @@ const Mortgage = () => {
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-    // TODO константы всегда должны быть перед хуками и функциями
+
     const goToNextSlide = useCallback(() => {
         setCurrentIndex(prevIndex => (prevIndex + 1) % photos.length);
     }, [photos.length]);
@@ -42,7 +42,6 @@ const Mortgage = () => {
         fetchData();
     }, []);
 
-    // TODO прочитай про второй параметр хука useEffect список deps
     useEffect(() => {
         const interval = setInterval(goToNextSlide, 3000);
         return () => clearInterval(interval);
