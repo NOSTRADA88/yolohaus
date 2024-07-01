@@ -3,22 +3,17 @@ import { ConsultationPhoto } from "../../assets";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { API_URL } from "../../constants";
-import InputMask from 'react-input-mask';
-import { Link, useLocation } from 'react-router-dom';
+import InputMask from "react-input-mask";
+import { Link, useLocation } from "react-router-dom";
 
 type ConsultationProps = {
-  slugPrivacy:string;
-}
+  slugPrivacy: string;
+};
 
-const Consultation = ({slugPrivacy}: ConsultationProps) => {
+const Consultation = ({ slugPrivacy }: ConsultationProps) => {
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
   const location = useLocation();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-  } = useForm()
+  const { register, handleSubmit, reset, setValue } = useForm();
 
   const recordForm: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -29,15 +24,11 @@ const Consultation = ({slugPrivacy}: ConsultationProps) => {
       } else {
         data.text = "Запись на консультацию";
       }
-      const response = await axios.post(
-        `${API_URL}/api/feedback/store`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/feedback/store`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status === 200) {
         console.log("Данные успешно отправлены");
@@ -55,14 +46,24 @@ const Consultation = ({slugPrivacy}: ConsultationProps) => {
   };
 
   return (
-    <div className={`w-full pt-14 pb-10 max-w-[1111px] mx-auto max-[1111px]:px-12 max-sm:px-5 ${location.pathname === '/' ? 'max-sm:pt-52' : ''}`}>
+    <div
+      className={`w-full pt-14 pb-10 max-w-[1111px] mx-auto max-[1111px]:px-12 max-sm:px-5 ${
+        location.pathname === "/" ? "max-sm:pt-52" : ""
+      }`}
+    >
       <div className="flex justify-center max-[1111px]:flex-col ">
         <div className="flex flex-col w-full mx-auto max-[1111px]:items-center max-md:items-start">
-          <h1 className="text-white font-museo font-bold text-3xl mb-4 max-md:text-2xl">Нужна консультация?</h1>
+          <h1 className="text-white font-museo font-bold text-3xl mb-4 max-md:text-2xl">
+            Нужна консультация?
+          </h1>
           <p className="font-museo font-light text-sm text-white mr-20">
-            Опытный специалист поможет разобраться во всех тонкостях домостроения
+            Опытный специалист поможет разобраться во всех тонкостях
+            домостроения
           </p>
-          <form className="w-[80%] max-[1111px]:w-full " onSubmit={handleSubmit(recordForm)} >
+          <form
+            className="w-[80%] max-[1111px]:w-full "
+            onSubmit={handleSubmit(recordForm)}
+          >
             <div className="flex flex-col mt-10 mb-5">
               <div className="flex justify-between mb-2">
                 <div className="flex-grow ">
@@ -102,23 +103,37 @@ const Consultation = ({slugPrivacy}: ConsultationProps) => {
             <div className="flex gap-[3.5px] items-center mb-4">
               <div className="parallelogram h-10 border-l-[1px] border-white"></div>
               <div className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-white hover:bg-orange hover:text-white transform parallelogram w-[140px] h-10 border-[1px] border-white">
-                <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">Отправить</p>
+                <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">
+                  Отправить
+                </p>
               </div>
               <div className="ml-4">
-              <p className="text-xs font-museo font-medium text-white">Отправляя форму, я даю согласие на обработку
-            <br/> <Link className="underline cursor-pointer " to={`/${slugPrivacy}`}> персональных данных </Link> </p>
-            </div>
+                <p className="text-xs font-museo font-medium text-white">
+                  Отправляя форму, я даю согласие на обработку
+                  <br />{" "}
+                  <Link
+                    className="underline cursor-pointer "
+                    to={`/${slugPrivacy}`}
+                  >
+                    {" "}
+                    персональных данных{" "}
+                  </Link>{" "}
+                </p>
+              </div>
             </div>
           </form>
-
         </div>
 
         <div className="w-full">
-          <img src={ConsultationPhoto} alt="photoAbout" className="w-full h-full" />
+          <img
+            src={ConsultationPhoto}
+            alt="photoAbout"
+            className="w-full h-full"
+          />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Consultation;
