@@ -27,7 +27,6 @@ const PrivacyPolicy = () => {
             setTitle(privacyData.Title);
             setDescription(privacyData.Description);
 
-            console.log(privacyData.Description)
         } catch (error) {
             console.error('Ошибка запроса:', error);
         }
