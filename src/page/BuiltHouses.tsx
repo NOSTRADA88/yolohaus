@@ -1,17 +1,115 @@
 import { useEffect, useState } from "react";
-import { fetchBuiltHousesData, fetchProjectsData } from "../api";
+import { fetchBuiltHousesData } from "../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../constants";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeftLong,
+  faArrowRightLong,
+} from "@fortawesome/free-solid-svg-icons";
+
+interface PhotoAttributes {
+  name: string;
+  url: string;
+}
+
+interface Photo {
+  id: number;
+  attributes: PhotoAttributes;
+}
+
+interface HousesAttributes {
+  Title: string;
+  isRecommended: boolean;
+  slug: string;
+  Photos: {
+    data: Photo[];
+  };
+  Parameters: {
+    id: number;
+    Area: string;
+    Location: string;
+    Days: number;
+  };
+  Complectation: {
+    id: number;
+    Description: {
+      type: string;
+      children: {
+        text: string;
+        type: string;
+      }[];
+    }[];
+    BasePrice: string;
+    StandartPrice: string;
+    ComfortPrice: string;
+  }[];
+}
+
+interface Houses {
+  id: number;
+  attributes: HousesAttributes;
+}
 
 const BuiltHouses = () => {
   const [metaTitle, setMetaTitle] = useState<string>("");
   const [metaDescription, setMetaDescription] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [houses, setHouses] = useState<any[]>([]);
+  const [houses, setHouses] = useState<Houses[]>([]);
+  const [HouseArea, setHouseArea] = useState<string>("");
+  const [Location, setLocation] = useState<string>("");
+  const [ConstructionPeriod, setConstructionPeriod] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const projectsPerPage = 6;
+  const totalPages = Math.ceil(houses.length / projectsPerPage);
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const currentProjects = houses.slice(indexOfFirstProject, indexOfLastProject);
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const renderPagination = () => {
+    if (totalPages <= 1) {
+      return null;
+    }
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(
+        <span
+          key={i}
+          className={`cursor-pointer font-museo text-sm text-maingray  ${
+            currentPage === i
+              ? "bg-orange text-white  px-2 py-1 font-bold"
+              : "hover:text-orange"
+          }`}
+          onClick={() => paginate(i)}
+        >
+          {i}
+        </span>
+      );
+    }
+    return (
+      <div className="flex  justify-center items-center mt-20 gap-4">
+        <span
+          className="cursor-pointer font-museo text-sm font-light text-maingray hover:text-orange"
+          onClick={() => paginate(currentPage - 1)}
+        >
+          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon" />{" "}
+          предыдущая страница
+        </span>
+        {pageNumbers}
+        <span
+          className="cursor-pointer font-museo text-sm font-light  text-maingray hover:text-orange"
+          onClick={() => paginate(currentPage + 1)}
+        >
+          следующая страница{" "}
+          <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
+        </span>
+      </div>
+    );
+  };
   const fetchData = async () => {
     try {
       const builtData = await fetchBuiltHousesData();
@@ -19,7 +117,9 @@ const BuiltHouses = () => {
       setMetaDescription(builtData.Metadata.MetaDescription);
       setTitle(builtData.title);
       setHouses(builtData.built_houses.data);
-      console.log(builtData.built_houses.data);
+      setLocation(builtData.Icons.data[0].attributes.url);
+      setHouseArea(builtData.Icons.data[1].attributes.url);
+      setConstructionPeriod(builtData.Icons.data[2].attributes.url);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -54,8 +154,11 @@ const BuiltHouses = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
-          {houses.map((house) => (
-            <div key={house.id} className="flex flex-col mt-8">
+          {currentProjects.map((house) => (
+            <div
+              key={house.id}
+              className="flex flex-col mt-8 group cursor-pointer"
+            >
               <div className="employee-photo-container">
                 <img
                   src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
@@ -64,7 +167,7 @@ const BuiltHouses = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <div className="houses-details bg-gray-100 ml-14 px-10 py-6 pt-[50px] max-[800px]:ml-4 max-[800px]:pt-2  ">
+                <div className="houses-details bg-gray-100 ml-10 px-6 py-6 pt-[50px] max-[800px]:ml-4 max-[800px]:pt-2   ">
                   <div className="text-orange transition-all duration-300 absolute right-5 top-5">
                     <div className=" cursor-pointer arrow-container">
                       <Link to="/">
@@ -76,30 +179,48 @@ const BuiltHouses = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 max-sm:grid-cols-2 items-end max-[450px]:grid-cols-1">
-                    <h3 className="font-museo font-light text-base mb-4 mt-2">
+                    <h3 className="font-museo font-bold text-base mb-4 mt-2  text-maingray  group-hover:text-orange cursor-pointer">
                       {house.attributes.Title}
                     </h3>
-                    <p className=" mb-4 font-museo font-light text-sm leading-5 text-maingray">
-                      {/* {house.attributes.Specialisation} */}
-                    </p>
-
-                    <p
-                      className=" font-museo font-light text-sm leading-5 text-maingray 
-                        hover:text-orange cursor-pointer transition-all duration-300"
-                    >
-                      <span className="mr-2">
-                        <FontAwesomeIcon
-                          icon={faPhone}
-                          className="text-orange arrow-icon"
+                    <div className="flex gap-10">
+                      <div className="flex gap-2">
+                        <img
+                          src={`${API_URL}${HouseArea}`}
+                          alt="Construction Period"
+                          className="w-4 h-4"
                         />
-                      </span>
-                    </p>
+                        <p className="font-museo font-light text-sm text-maingray">
+                          {house.attributes.Parameters.Area}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <img
+                          src={`${API_URL}${ConstructionPeriod}`}
+                          alt="Construction Period"
+                          className="w-4 h-4"
+                        />
+                        <p className="font-museo font-light text-sm text-maingray">
+                          {house.attributes.Parameters.Days} дней
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <img
+                        src={`${API_URL}${Location}`}
+                        alt="Construction Period"
+                        className="w-4 h-4"
+                      />
+                      <p className="font-museo font-light text-sm text-maingray">
+                        {house.attributes.Parameters.Location}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        {renderPagination()}
       </div>
     </div>
   );

@@ -179,7 +179,7 @@ export const fetchPrivacyPolicyData = async () => {
 export const fetchBuiltHousesData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/postroennye-doma?populate=Metadata&populate=built_houses.Metadata&populate=built_houses.Parameters&populate=built_houses.BuildingTechnology&populate=built_houses.Photos&populate=built_houses.YouTube`
+      `${API_URL}/api/postroennye-doma?populate=Metadata&populate=built_houses.Metadata&populate=built_houses.Parameters&populate=built_houses.BuildingTechnology&populate=built_houses.Photos&populate=built_houses.YouTube&populate=Icons`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
