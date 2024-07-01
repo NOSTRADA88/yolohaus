@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchGuaranteeData } from "../api";
 import { API_URL } from "../constants";
+import { Link } from "react-router-dom";
 
 
 const Guarantee = () => {
@@ -52,8 +53,8 @@ const Guarantee = () => {
                 <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10">
                     <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">{title}</h1>
                     <div className="flex items-center">
-                        <a href="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 ">Главная / </a>
-                        <a href={`/${slugAbout}`} className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "> {titleAbout} / </a>
+                        <Link to="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 ">Главная / </Link>
+                        <Link to={`/${slugAbout}`} className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "> {titleAbout} / </Link>
                         <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs"> {title}</p>
                     </div>
                 </div>

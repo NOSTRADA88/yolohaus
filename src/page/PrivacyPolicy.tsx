@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchPrivacyPolicyData } from "../api";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 interface Child {
     text: string;
@@ -39,16 +40,16 @@ const PrivacyPolicy = () => {
     const renderTextWithHighlights = (text: string) => {
         const parts = text.split(/(YoloHaus)/);
         return parts.map((part, index) =>
-          part === "YoloHaus" ? (
-            <a key={index} href="/" className="text-orange underline">
-              {part}
-            </a>
-          ) : (
-            part
-          )
+            part === "YoloHaus" ? (
+                <Link key={index} to="/" className="text-orange underline">
+                    {part}
+                </Link>
+            ) : (
+                part
+            )
         );
-      };
-    
+    };
+
     return (
         <div>
             <Helmet>
@@ -60,7 +61,7 @@ const PrivacyPolicy = () => {
                 <div className="flex justify-between max-[680px]:flex-col max-sm:gap-4 ">
                     <h1 className="text-maingray font-museo font-bold text-3xl max-[900px]:text-2xl">{title}</h1>
                     <div className="flex items-center">
-                        <a href="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </a>
+                        <Link to="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </Link>
                         <p className="ml-1 font-museo font-light text-sm text-lightgray max-[900px]:text-xs"> {title}</p>
                     </div>
                 </div>
@@ -68,9 +69,9 @@ const PrivacyPolicy = () => {
                     {description.map((paragraph, index) => (
                         <p key={index} className="text-justify mb-6 ">
                             {paragraph.children.map((child, childIndex) => (
-                                <span key={childIndex}  className="font-museo text-sm"
-                                style={{ fontWeight: child.bold ? 'bold' : 'light' }}>
-                                         {renderTextWithHighlights(child.text)}
+                                <span key={childIndex} className="font-museo text-sm"
+                                    style={{ fontWeight: child.bold ? 'bold' : 'light' }}>
+                                    {renderTextWithHighlights(child.text)}
                                 </span>
                             ))}
                         </p>

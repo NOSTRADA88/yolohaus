@@ -4,7 +4,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import InputMask from 'react-input-mask';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 type ConsultationProps = {
   slugPrivacy:string;
@@ -106,7 +106,7 @@ const Consultation = ({slugPrivacy}: ConsultationProps) => {
               </div>
               <div className="ml-4">
               <p className="text-xs font-museo font-medium text-white">Отправляя форму, я даю согласие на обработку
-            <br/> <a className="underline cursor-pointer " href={`/${slugPrivacy}`}> персональных данных </a> </p>
+            <br/> <Link className="underline cursor-pointer " to={`/${slugPrivacy}`}> персональных данных </Link> </p>
             </div>
             </div>
           </form>

@@ -1,9 +1,11 @@
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import Layout from '../layouts/layout';
-import { AboutCompany, Contact, Guarantee, Home, Projects, Reviews, ServiceDetail, Services, Vacancy, PrivacyPolicy} from "../page";
+import { AboutCompany, Contact, Guarantee, Home, Projects, Reviews, ServiceDetail, Services, Vacancy, PrivacyPolicy, BuiltHouses } from "../page";
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchPrivacyPolicyData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchVacancyData } from "../api";
+import { fetchAboutData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchPrivacyPolicyData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchVacancyData } from "../api";
+import ScrollToTop from "../components/ScrollToTop";
+
 
 const useRoutes = () => {
   const [slugAbout, setSlugAbout] = useState<string>('');
@@ -14,6 +16,7 @@ const useRoutes = () => {
   const [slugContact, setSlugContact] = useState<string>('');
   const [slugServices, setSlugServices] = useState<string>('');
   const [slugPrivacy, setSlugPrivacy] = useState<string>('');
+  const [slugBuilt, setSlugBuilt] = useState<string>('');
 
   const fetchData = async () => {
     try {
@@ -25,6 +28,7 @@ const useRoutes = () => {
       const contactData = await fetchContactData();
       const servicesData = await fetchServicesData();
       const privacyData = await fetchPrivacyPolicyData();
+      const builtData = await fetchBuiltHousesData();
 
       setSlugAbout(aboutData.slug);
       setSlugReviews(reviewsData.slug);
@@ -34,6 +38,7 @@ const useRoutes = () => {
       setSlugContact(contactData.slug);
       setSlugServices(servicesData.slug);
       setSlugPrivacy(privacyData.slug);
+      setSlugBuilt(builtData.slug);
 
     } catch (error) {
       console.error('Ошибка запроса:', error);
@@ -44,8 +49,17 @@ const useRoutes = () => {
     fetchData();
   }, []);
 
+
+  const ServiceDetailRoute = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const servicesSlug = slug || '';
+
+    return <ServiceDetail servicesSlug={servicesSlug} />;
+  };
+
   return (
     <BrowserRouter>
+        <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path={`/${slugAbout}`} element={<Layout><AboutCompany /></Layout>} />
@@ -55,8 +69,9 @@ const useRoutes = () => {
         <Route path={`/${slugProjects}`} element={<Layout><Projects /></Layout>} />
         <Route path={`/${slugContact}`} element={<Layout><Contact /></Layout>} />
         <Route path={`/${slugServices}`} element={<Layout><Services /></Layout>} />
-        <Route path={`/uslugi/:slug`} element={<Layout><ServiceDetail /></Layout>} />
+        <Route path={`/${slugServices}/:slug`} element={<Layout><ServiceDetailRoute /></Layout>} />
         <Route path={`/${slugPrivacy}`} element={<Layout><PrivacyPolicy /></Layout>} />
+        <Route path={`/${slugBuilt}`} element={<Layout><BuiltHouses /></Layout>} />
       </Routes>
     </BrowserRouter>
   )

@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet"
 import { fetchContactData, fetchHeaderFooterData, fetchHomeData } from "../api";
 
 import { ContactInfo, EmployeeCard, ProductionsList } from "../components/contact";
+import { Link } from "react-router-dom";
 
 interface DescriptionItem {
     type: string;
@@ -100,7 +101,7 @@ const Contact = () => {
                 <div className="flex justify-between max-sm:flex-col max-sm:gap-4 ">
                     <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">{title}</h1>
                     <div className="flex items-center">
-                        <a href="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </a>
+                        <Link to="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </Link>
                         <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs"> {title}</p>
                     </div>
                 </div>

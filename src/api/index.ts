@@ -123,29 +123,59 @@ export const fetchContactData = async () => {
 
 export const fetchServicesData = async () => {
   try {
-      const response = await axiosInstanse.get(`${API_URL}/api/uslugi?populate=Metadata&populate=services.Photo&populate=services.Card.Photo&populate=services.Metadata`);
-      if (response.status === 200) {
-          return response.data.data.attributes;
-      } else {
-          throw new Error('Данные не найдены');
-      }
+    const response = await axiosInstanse.get(`${API_URL}/api/uslugi?populate=Metadata&populate=services.Photo`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
   } catch (error) {
-      console.log(error);
-      throw new Error('Ошибка запроса');
+    console.log(error);
+    throw new Error('Ошибка запроса');
+  }
+};
+
+export const fetchServicesDetailsData = async (servicesSlug: string) => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/uslugi?populate[services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[services][populate][Card][populate][Photo]=*&populate[services][populate][Metadata]=*`);
+    if (response.status === 200 && response.data.data) {
+      return response.data.data.attributes.services.data[0].attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+    console.error('Ошибка запроса:', error);
+    throw new Error('Ошибка запроса');
   }
 };
 
 
 export const fetchPrivacyPolicyData = async () => {
   try {
-      const response = await axiosInstanse.get(`${API_URL}/api/politika-konfidenczialnosti?populate=Metadata`);
-      if (response.status === 200) {
-          return response.data.data.attributes;
-      } else {
-          throw new Error('Данные не найдены');
-      }
+    const response = await axiosInstanse.get(`${API_URL}/api/politika-konfidenczialnosti?populate=Metadata`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
   } catch (error) {
-      console.log(error);
-      throw new Error('Ошибка запроса');
+    console.log(error);
+    throw new Error('Ошибка запроса');
+  }
+};
+
+
+
+export const fetchBuiltHousesData = async () => {
+  try {
+    const response = await axiosInstanse.get(`${API_URL}/api/postroennye-doma?populate=Metadata&populate=built_houses.Metadata&populate=built_houses.Parameters&populate=built_houses.BuildingTechnology&populate=built_houses.Photos&populate=built_houses.YouTube`);
+    if (response.status === 200) {
+      return response.data.data.attributes;
+    } else {
+      throw new Error('Данные не найдены');
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error('Ошибка запроса');
   }
 };

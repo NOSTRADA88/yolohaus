@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom";
 
 type NavbarProps = {
     navLinks: { href: string; label: string; submenu?: { href: string; label: string }[] }[];
@@ -20,15 +21,14 @@ const Navbar = ({ navLinks }: NavbarProps) => {
                             onMouseLeave={() => setDropdownIndex(null)}
                             className="relative"
                         >
-                            <a
-                                href={link.href}
+                            <Link to={link.href} 
                                 className="text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
                             >
                                 {link.label}
                                 {link.submenu && (
                                     <FontAwesomeIcon icon={faChevronDown} className="ml-1 " />
                                 )}
-                            </a>
+                            </Link>
                             {link.submenu && (
                                 <ul
                                     className={`submenu absolute left-0 transition-all duration-300 bg-lightwhite  ${dropdownIndex === index ? 'submenu-open' : 'hidden'}`}
@@ -36,9 +36,10 @@ const Navbar = ({ navLinks }: NavbarProps) => {
                                 >
                                     {link.submenu.map((sublink, subIndex) => (
                                         <li key={subIndex} className="whitespace-nowrap">
-                                            <a href={sublink.href} className="block px-4 py-1 text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider">
+                                            <Link rel="noopener noreferrer" 
+                                            to={sublink.href} className="block px-4 py-1 text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider">
                                                 {sublink.label}
-                                            </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>

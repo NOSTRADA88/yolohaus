@@ -52,7 +52,7 @@ const EmployeeCard = ({ employees }: EmployeeCardProps) => {
                                         {employee.attributes.FullName.split(' ').slice(1).join(' ')}
                                     </h3>
                                     <p className=" mb-4 font-museo font-light text-sm leading-5 text-maingray">{employee.attributes.Specialisation}</p>
-                        
+
                                     <p className=" font-museo font-light text-sm leading-5 text-maingray 
                         hover:text-orange cursor-pointer transition-all duration-300">
                                         <span className="mr-2"><FontAwesomeIcon icon={faPhone} className="text-orange arrow-icon" /></span>

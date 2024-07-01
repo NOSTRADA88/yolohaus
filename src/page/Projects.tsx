@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong, faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 
 interface PhotoFormats {
@@ -205,7 +206,7 @@ const Projects = () => {
                 <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
                     <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">{title}</h1>
                     <div className="flex items-center">
-                        <a href="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 ">Главная / </a>
+                        <Link to="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 ">Главная / </Link>
                         <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs"> {title}</p>
                     </div>
                 </div>
@@ -270,7 +271,7 @@ const Projects = () => {
                             </div>
                             <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
                                 <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
-                                    <a href="/" className="uppercase text-sm font-medium tracking-wider">Посмотреть проект</a>
+                                    <Link to="/" className="uppercase text-sm font-medium tracking-wider">Посмотреть проект</Link>
                                     <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
                                 </div>
                             </div>

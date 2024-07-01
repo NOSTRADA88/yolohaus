@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../components/header"
-import { fetchAboutData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchPrivacyPolicyData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchVacancyData } from "../api";
+import { fetchAboutData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchPrivacyPolicyData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +25,7 @@ const Header = () => {
 
   const fetchData = async () => {
     try {
-      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData, servicesData] = await Promise.all([
+      const [headerFooterData, aboutData, reviewsData, guaranteeData, vacancyData, projectsData, contactData, servicesData, builtData] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
         fetchReviewsData(),
@@ -34,6 +34,8 @@ const Header = () => {
         fetchProjectsData(),
         fetchContactData(),
         fetchServicesData(),
+        fetchBuiltHousesData(),
+
       ]);
 
       setLogoCompany(headerFooterData.Header.CompanyLogo.data.attributes.url);
@@ -56,7 +58,7 @@ const Header = () => {
             { href: `/${vacancyData.slug}`, label: "Вакансии" },
           ]
         },
-        { href: "/", label: "Построенные дома" },
+        { href: `/${builtData.slug}`, label: "Построенные дома" },
         { href: `/${servicesData.slug}`, label: "Услуги" },
         { href: "/", label: "Акции" },
         { href: "/", label: "Ипотека" },

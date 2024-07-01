@@ -1,4 +1,5 @@
 import AboutCompany from "./AboutCompany"
+import BuiltHouses from "./BuiltHouses"
 import Contact from "./Contact"
 import Guarantee from "./Guarantee"
 import Home from "./Home"
@@ -19,5 +20,6 @@ export {
     Contact, 
     Services,
     ServiceDetail,
-    PrivacyPolicy
+    PrivacyPolicy,
+    BuiltHouses
 }

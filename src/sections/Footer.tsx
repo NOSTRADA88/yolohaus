@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchHeaderFooterData, fetchProjectsData, fetchServicesData, fetchPrivacyPolicyData } from "../api";
+import { fetchAboutData, fetchHeaderFooterData, fetchProjectsData, fetchServicesData, fetchPrivacyPolicyData, fetchBuiltHousesData, fetchContactData } from "../api";
 import { Consultation } from "../components/footer"
 import { API_URL } from "../constants";
 import React from "react";
 import { Modal } from "./modal";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [logoCompany, setLogoCompany] = useState<string>('');
@@ -35,17 +36,18 @@ const Footer = () => {
       const servicesData = await fetchServicesData();
       const privacyData = await fetchPrivacyPolicyData();
       setSlugPrivacy(privacyData.slug);
-
+      const builtData = await fetchBuiltHousesData();
+      const contactData = await fetchContactData();
       const updatedNavLinks = [
-          { href: "/", label: "Главная" },
-          { href: `/${projectsData.slug}`, label: "Проекты и цены" },
-          {
-              href: `/${aboutData.slug}`,
-              label: "О компании",
-          },
-          { href: "/", label: "Построенные дома" },
-          { href:`/${servicesData.slug}`, label: "Услуги" },
-          { href: "/", label: "Контакты" },
+        { href: "/", label: "Главная" },
+        { href: `/${projectsData.slug}`, label: "Проекты и цены" },
+        {
+          href: `/${aboutData.slug}`,
+          label: "О компании",
+        },
+        { href: `/${builtData.slug}`, label: "Построенные дома" },
+        { href: `/${servicesData.slug}`, label: "Услуги" },
+        { href: `/${contactData.slug}`, label: "Контакты" },
       ];
 
       setNavLinks(updatedNavLinks);
@@ -99,7 +101,7 @@ const Footer = () => {
   return (
     <div>
       <div className="bg-orange">
-        <Consultation slugPrivacy={slugPrivacy}/>
+        <Consultation slugPrivacy={slugPrivacy} />
       </div>
       <div className="bg-maingray p-8 ">
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5 ">
@@ -112,12 +114,12 @@ const Footer = () => {
               {filteredNavLinks.map((link, index) => (
                 <React.Fragment key={index}>
                   <li className="relative">
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className="text-white hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                   <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>
                 </React.Fragment>
@@ -127,7 +129,8 @@ const Footer = () => {
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
             <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">{description}</p>
-              <a href={`/${slugPrivacy}`} className="font-museo text-xs font-light text-white hover:text-orange">Политика конфиденциальности</a>
+              <Link to={`/${slugPrivacy}`} className="font-museo text-xs font-light text-white hover:text-orange">
+                Политика конфиденциальности</Link>
             </div>
             <div className="flex items-center gap-10 max-[1050px]:flex-col max-[1050px]:gap-5">
               <div className="flex ">

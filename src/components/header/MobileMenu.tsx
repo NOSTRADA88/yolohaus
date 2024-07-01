@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { API_URL } from "../../constants";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 type MobileMenuProps = {
   isOpen: boolean;
@@ -24,18 +25,18 @@ const MobileMenu = ({ isOpen, onClose, logoCompany, navLinks}: MobileMenuProps) 
           {navLinks.map((link, index) => (
             <li key={index} className="w-[192px] ">
               <div className="relative parallelogram h-10 flex items-center justify-center bg-lightwhite before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:bg-lightwhite before:transform before:-skew-x-12">
-                <a href={link.href} className="relative z-10 text-maingray noparallelogram
+                <Link to={link.href} className="relative z-10 text-maingray noparallelogram
                  hover:text-orange transition-all duration-300 font-museo font-medium text-sm uppercase tracking-wider transform ">
                   {link.label}
-                </a>
+                </Link>
               </div>
               {link.submenu && (
                 <ul className="mt-2 w-full">
                   {link.submenu.map((sublink, subIndex) => (
                     <li key={subIndex} className="w-full">
-                      <a href={sublink.href} className="block text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider bg-lightwhite px-4 py-1">
+                      <Link to={sublink.href} className="block text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider bg-lightwhite px-4 py-1">
                         {sublink.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

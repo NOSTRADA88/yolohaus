@@ -24,6 +24,7 @@ const Services = () => {
     const [title, setTitle] = useState<string>('');
     const [services, setServices] = useState<Service[]>([]);
     const [slugServices, setSlugServices] = useState<string>('');
+    
     const fetchData = async () => {
         try {
             const servicesData = await fetchServicesData();
@@ -52,7 +53,7 @@ const Services = () => {
                 <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
                     <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">{title}</h1>
                     <div className="flex items-center">
-                        <a href="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </a>
+                        <Link to="/" className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300">Главная / </Link>
                         <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">{title}</p>
                     </div>
                 </div>
@@ -73,15 +74,15 @@ const Services = () => {
                                         />
                                     )}
                                 </div>
-                                <div className="absolute bottom-10 left-10   bg-white p-4 hover:shadow-md w-[280px] max-[1000px]:w-[240px]
+                                <div className="absolute bottom-10 left-10 bg-white p-4 hover:shadow-md w-[280px] max-[1000px]:w-[240px]
                                 max-[950px]:w-[300px] max-[950px]:left-24 max-[850px]:left-8 max-[850px]:w-[260px] max-md:w-[220px] max-[500px]:w-[350px]
-                                max-[500px]:left-10       max-[400px]:w-[280px]       max-[400px]:left-5
+                                max-[500px]:left-10  max-[400px]:w-[280px] max-[400px]:left-5
 
                                 h-[60px] flex items-center">
                                     <div className="flex justify-between items-center w-full">
-                                        <a href="/" className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium">
+                                        <Link to="/" className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium">
                                             {service.attributes.Title}
-                                        </a>
+                                        </Link>
                                         <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
                                     </div>
                                 </div>

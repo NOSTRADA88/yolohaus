@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { fetchAboutData, fetchHomeData } from "../../api";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../constants";
+import { Link } from "react-router-dom";
 
 
 const About = () => {
@@ -52,7 +53,7 @@ const About = () => {
                     ))}
                     <div className=" bg-lightwhite mt-8 p-5">
                         <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer  arrow-container">
-                            <a href={`/${slugAbout}`} className="text-orange uppercase text-sm font-medium tracking-wider">УЗНАТЬ БОЛЬШЕ </a>
+                            <Link to={`/${slugAbout}`} className="text-orange uppercase text-sm font-medium tracking-wider">УЗНАТЬ БОЛЬШЕ </Link>
                             <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
                         </div>
                     </div>

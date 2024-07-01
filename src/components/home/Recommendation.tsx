@@ -1,7 +1,8 @@
 import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
-import { fetchHomeData } from "../../api";
+import { fetchHomeData, fetchReviewsData } from "../../api";
 import { API_URL } from "../../constants";
 import { ReviewsIcon } from "../../assets";
+import { Link } from "react-router-dom";
 
 interface Description {
   type: string;
@@ -41,12 +42,15 @@ interface Recommendation {
 const Recommendation = () => {
   const [title, setTitle] = useState<string>('');
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [slugReviews, setSlugReviews] = useState<string>('');
 
   const fetchData = async () => {
     try {
       const mainData = await fetchHomeData();
+      const reviewsData = await fetchReviewsData();
       setTitle(mainData.Recommendations.Title);
       setRecommendations(mainData.Recommendations.list.data);
+      setSlugReviews(reviewsData.slug)
     } catch (error) {
       console.error('Ошибка запроса:', error);
     }
@@ -67,7 +71,7 @@ const Recommendation = () => {
           <div
             key={item.id}
             className="relative p-20  border transition-all bg-white hover:bg-cover group"
-            style={{  
+            style={{
               backgroundImage: `url(${API_URL}${item.attributes.BgPhoto.data.attributes.url})`,
               backgroundSize: 'cover',
               backgroundRepeat: 'no-repeat'
@@ -94,7 +98,7 @@ const Recommendation = () => {
           </div>
         ))}
 
-        <div className="relative p-20 border bg-orange overflow-hidden ">
+        <Link to={`/${slugReviews}`} className="relative p-20 border bg-orange overflow-hidden ">
           <div className="relative w-full h-full overflow-hidden group hover:scale-150 hover:transition-all hover:duration-500 cursor-pointer ">
             <div className="flex justify-center items-center ">
               <img
@@ -109,9 +113,9 @@ const Recommendation = () => {
               Отзывы
             </h2>
           </div>
-        </div>
+        </Link>
       </div>
-    </div>
+    </div >
   );
 }
 

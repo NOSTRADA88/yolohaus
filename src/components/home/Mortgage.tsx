@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { fetchHomeData } from "../../api";
 import { API_URL } from "../../constants";
+import { Link } from "react-router-dom";
 
 interface Photo {
     id: number;
@@ -70,7 +71,7 @@ const Mortgage = () => {
                     </div>
                 </div>
                 <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container max-md:mt-5">
-                    <a href="/" className="text-orange uppercase text-sm font-medium tracking-wider">Подробнее </a>
+                    <Link to="/" className="text-orange uppercase text-sm font-medium tracking-wider">Подробнее </Link>
                     <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" /> 
                 </div>
             </div>

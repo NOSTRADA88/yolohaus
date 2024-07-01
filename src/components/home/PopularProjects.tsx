@@ -3,6 +3,7 @@ import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 interface PhotoFormats {
   ext: string;
@@ -134,7 +135,7 @@ const PopularProjects = () => {
         <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl">{title}</h1>
         <div className=" bg-lightwhite p-5 max-md:w-full">
           <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
-            <a href={`/${slugProjects}`} className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs">Все проекты </a>
+            <Link to={`/${slugProjects}`} className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs">Все проекты </Link>
             <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
           </div>
         </div>
@@ -173,7 +174,7 @@ const PopularProjects = () => {
             </div>
             <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
               <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
-                <a href="/" className="uppercase text-sm font-medium tracking-wider">Посмотреть проект</a>
+                <Link to="/" className="uppercase text-sm font-medium tracking-wider">Посмотреть проект</Link>
                 <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
               </div>
             </div>

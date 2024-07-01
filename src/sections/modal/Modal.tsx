@@ -6,6 +6,7 @@ import InputMask from 'react-input-mask';
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { fetchPrivacyPolicyData } from "../../api";
+import { Link } from "react-router-dom";
 
 type ModalProps = {
     closeModal: () => void;
@@ -167,7 +168,7 @@ const Modal = ({ closeModal }: ModalProps) => {
                             </div>
                         </div>
                         <p className="text-xs font-museo font-medium text-maingray text-center">Отправляя форму, я даю согласие на обработку
-                            <br /> <a className="underline cursor-pointer " href={`/${slugPrivacy}`}> персональных данных </a> </p>
+                            <br /> <Link className="underline cursor-pointer " to={`/${slugPrivacy}`}> персональных данных </Link> </p>
                     </form>
                 </div>
             </div>
