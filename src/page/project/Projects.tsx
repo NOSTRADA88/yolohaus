@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { fetchProjectsData } from "../api";
+
 import { Helmet } from "react-helmet";
-import { API_URL } from "../constants";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeftLong,
   faArrowRightLong,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { fetchProjectsData } from "../../api";
+import { API_URL } from "../../constants";
 
 interface PhotoFormats {
   url: string;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchBuiltHousesData } from "../api";
+import { fetchBuiltHousesData } from "../../api";
 import { Helmet } from "react-helmet";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

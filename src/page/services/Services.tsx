@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchServicesData } from "../api";
+import { fetchServicesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 

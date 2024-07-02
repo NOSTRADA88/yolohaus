@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchServicesData, fetchServicesDetailsData } from "../api";
+import { fetchServicesData, fetchServicesDetailsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { ContactBanner } from "../sections/banner";
-import { API_URL } from "../constants";
+import { ContactBanner } from "../../sections/banner";
+import { API_URL } from "../../constants";
 
 interface CardDescriptionText {
   type: "text";

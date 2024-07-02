@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData, fetchVacancyData } from "../api";
-import { ActiveVacancies, Switch } from "../components/vacancy";
+import { fetchAboutData, fetchVacancyData } from "../../api";
+import { ActiveVacancies, Switch } from "../../components/vacancy";
 import { Link, useLocation } from "react-router-dom";
-import { ContactBanner } from "../sections/banner";
+import { ContactBanner } from "../../sections/banner";
 
 type ListItem = {
   type: string;

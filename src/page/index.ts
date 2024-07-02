@@ -1,25 +1,21 @@
-import AboutCompany from "./AboutCompany"
-import BuiltHouses from "./BuiltHouses"
-import Contact from "./Contact"
-import Guarantee from "./Guarantee"
-import Home from "./Home"
-import PrivacyPolicy from "./PrivacyPolicy"
-import Projects from "./Projects"
-import Reviews from "./Reviews"
-import ServiceDetail from "./ServiceDetail"
-import Services from "./Services"
-import Vacancy from "./Vacancy"
+import AboutCompany from "./about/AboutCompany";
+import Contact from "./Contact";
+import Guarantee from "./about/Guarantee";
+import Home from "./Home";
+import PrivacyPolicy from "./PrivacyPolicy";
+import Reviews from "./Reviews";
+import ServiceDetail from "./services/ServiceDetail";
+import Services from "./services/Services";
+import Vacancy from "./about/Vacancy";
 
 export {
-    Home, 
-    AboutCompany,
-    Guarantee,
-    Vacancy,
-    Projects,
-    Reviews,
-    Contact, 
-    Services,
-    ServiceDetail,
-    PrivacyPolicy,
-    BuiltHouses
-}
+  Home,
+  AboutCompany,
+  Guarantee,
+  Vacancy,
+  Reviews,
+  Contact,
+  Services,
+  ServiceDetail,
+  PrivacyPolicy,
+};
