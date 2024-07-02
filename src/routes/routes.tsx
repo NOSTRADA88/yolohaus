@@ -25,7 +25,7 @@ import {
 } from "../api";
 import ScrollToTop from "../components/ScrollToTop";
 import { Projects } from "../page/project";
-import { BuiltHouses } from "../page/built";
+import { BuiltHouses, HouseDetail } from "../page/built";
 
 const useRoutes = () => {
   const [slugAbout, setSlugAbout] = useState<string>("");
@@ -75,6 +75,12 @@ const useRoutes = () => {
     return <ServiceDetail servicesSlug={servicesSlug} />;
   };
 
+  const HouseDetailRoute = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const houseSlug = slug || "";
+
+    return <HouseDetail houseSlug={houseSlug} />;
+  };
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -164,6 +170,14 @@ const useRoutes = () => {
           element={
             <Layout>
               <BuiltHouses />
+            </Layout>
+          }
+        />
+        <Route
+          path={`/${slugBuilt}/:slug`}
+          element={
+            <Layout>
+              <HouseDetailRoute />
             </Layout>
           }
         />

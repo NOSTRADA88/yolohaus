@@ -191,3 +191,19 @@ export const fetchBuiltHousesData = async () => {
     throw new Error("Ошибка запроса");
   }
 };
+
+export const fetchHousesDetailsData = async (houseSlug: string) => {
+  try {
+    const response = await axiosInstanse.get(
+      `${API_URL}/api/postroennye-doma?populate[built_houses][filters][slug][$eq]=${houseSlug}&populate[Metadata]=*&populate[built_houses][populate][Parameters]=*&populate[built_houses][populate][Metadata]=*&populate[built_houses][populate][BuildingTechnology]=*&populate[built_houses][populate][Photos]=*`
+    );
+    if (response.status === 200) {
+      return response.data.data.attributes.built_houses;
+    } else {
+      throw new Error("Данные не найдены");
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error("Ошибка запроса");
+  }
+};

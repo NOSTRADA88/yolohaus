@@ -60,6 +60,7 @@ const BuiltHouses = () => {
   const [HouseArea, setHouseArea] = useState<string>("");
   const [Location, setLocation] = useState<string>("");
   const [ConstructionPeriod, setConstructionPeriod] = useState<string>("");
+  const [slugBuilt, setSlugBuilt] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const projectsPerPage = 6;
   const totalPages = Math.ceil(houses.length / projectsPerPage);
@@ -120,6 +121,7 @@ const BuiltHouses = () => {
       setLocation(builtData.Icons.data[0].attributes.url);
       setHouseArea(builtData.Icons.data[1].attributes.url);
       setConstructionPeriod(builtData.Icons.data[2].attributes.url);
+      setSlugBuilt(builtData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -156,7 +158,7 @@ const BuiltHouses = () => {
         <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
           {currentProjects.map((house) => (
             <Link
-              to="/"
+              to={`/${slugBuilt}/${house.attributes.slug}`}
               key={house.id}
               className="flex flex-col mt-8 group cursor-pointer"
             >

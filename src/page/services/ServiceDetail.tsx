@@ -56,6 +56,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   const [descriptionInfo, setDescriptionInfo] = useState<CardDescription[]>([]);
   const [titleServices, setTitleServices] = useState<string>("");
   const [slugServices, setSlugServices] = useState<string>("");
+
   const fetchData = async () => {
     try {
       const detailsData = await fetchServicesDetailsData(servicesSlug);
