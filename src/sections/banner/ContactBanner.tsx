@@ -4,11 +4,31 @@ import { fetchHeaderFooterData } from "../../api";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
 
+interface CardDescriptionText {
+  type: "text";
+  text: string;
+}
+
+interface CardDescriptionListItem {
+  type: "list-item";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionList {
+  type: "list";
+  format: "unordered"; // or "ordered" if applicable
+  children: CardDescriptionListItem[];
+}
+
+interface CardDescriptionParagraph {
+  type: "paragraph";
+  children: CardDescriptionText[];
+}
+
+type CardDescription = CardDescriptionParagraph | CardDescriptionList;
+
 interface ContactBannerProps {
-  descriptionInfo?: {
-    type: string;
-    children: { text: string; type: string }[];
-  }[];
+  descriptionInfo?: CardDescription[];
 }
 const formatPhoneNumber = (number: string) => {
   return number.replace(
@@ -47,17 +67,30 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
   return (
     <div>
       {descriptionInfo && descriptionInfo.length > 0 ? (
-        <div className="mt-14">
+        <div className="mt-14 max-sm:mt-8">
           {descriptionInfo.map((item, index) => (
             <div key={index}>
-              {item.children.map((child, childIndex) => (
-                <p
-                  className="font-museo text-maingray font-light text-sm max-sm:text-xs"
-                  key={childIndex}
-                >
-                  {child.text}
+              {item.type === "paragraph" && (
+                <p className="font-museo text-maingray font-light text-sm max-sm:text-xs">
+                  {item.children.map((child, childIndex) => (
+                    <span key={childIndex}>{child.text}</span>
+                  ))}
                 </p>
-              ))}
+              )}
+              {item.type === "list" && (
+                <ul className="custom-list">
+                  {item.children.map((listItem, idx) => (
+                    <li
+                      key={idx}
+                      className="font-museo text-sm leading-relaxed font-light mb-2"
+                    >
+                      {listItem.children.map((textItem, i) => (
+                        <span key={i}>{textItem.text}</span>
+                      ))}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
           <div className="relative">
@@ -84,7 +117,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
                     <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
                     <div
                       className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange text-white 
-                      hover:text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange"
+              hover:text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange"
                     >
                       <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">
                         Напишите нам

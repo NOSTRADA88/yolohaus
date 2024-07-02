@@ -76,7 +76,7 @@ const Services = () => {
           </div>
         </div>
         <div
-          className="grid grid-cols-3 mt-10 gap-20  max-xl:gap-10 max-[1000px]:gap-5 max-[950px]:grid-cols-2
+          className="grid grid-cols-3 mt-10 gap-20  max-xl:gap-10  max-[950px]:grid-cols-2
                  max-[500px]:grid-cols-1  "
         >
           {services.map((service) => (
@@ -108,7 +108,7 @@ const Services = () => {
                 >
                   <div className="flex justify-between items-center w-full">
                     <Link
-                      to="/"
+                      to={`/${slugServices}/${service.attributes.slug}`}
                       className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium"
                     >
                       {service.attributes.Title}

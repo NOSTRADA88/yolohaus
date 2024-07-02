@@ -155,7 +155,8 @@ const BuiltHouses = () => {
 
         <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
           {currentProjects.map((house) => (
-            <div
+            <Link
+              to="/"
               key={house.id}
               className="flex flex-col mt-8 group cursor-pointer"
             >
@@ -217,7 +218,7 @@ const BuiltHouses = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         {renderPagination()}
