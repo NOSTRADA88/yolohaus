@@ -7,6 +7,7 @@ import {
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
+import { API_URL } from "../../constants";
 
 interface HouseDetailProps {
   houseSlug: string;
@@ -98,9 +99,9 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col mt-20">
-          <div className="flex justify-between max-xl:flex-col">
-            <SliderHouses />
+        <div className="flex flex-col mt-20 max-md:mt-10">
+          <div className="flex justify-between max-lg:flex-col">
+            <SliderHouses houses={houses} />
             <OptionsHouses houses={houses} />
           </div>
           <AboutHouses houses={houses} slugBuilt={slugBuilt} />

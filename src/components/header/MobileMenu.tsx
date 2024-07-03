@@ -51,6 +51,7 @@ const MobileMenu = ({
               <div className="relative parallelogram h-10 flex items-center justify-center bg-lightwhite before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:bg-lightwhite before:transform before:-skew-x-12">
                 <Link
                   to={link.href}
+                  onClick={onClose}
                   className="relative z-10 text-maingray noparallelogram
                  hover:text-orange transition-all duration-300 font-museo font-medium text-sm uppercase tracking-wider transform "
                 >
@@ -62,6 +63,7 @@ const MobileMenu = ({
                   {link.submenu.map((sublink, subIndex) => (
                     <li key={subIndex} className="w-full">
                       <Link
+                        onClick={onClose}
                         to={sublink.href}
                         className="block text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider bg-lightwhite px-4 py-1"
                       >
