@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Modal } from "../../sections/modal";
 
-interface HousesData {
+interface DetailsData {
   id: number;
   attributes: {
     YouTube: string | null;
@@ -59,11 +59,17 @@ interface HousesData {
   };
 }
 
+interface Complectation {
+  id: number;
+  BasePrice: string;
+  StandartPrice: string;
+  ComfortPrice: string;
+}
 type OptionsHousesProps = {
-  houses: HousesData[];
+  details: DetailsData[];
 };
 
-const OptionsHouses = ({ houses }: OptionsHousesProps) => {
+const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = useCallback(() => {
     setIsModalOpen(true);
@@ -73,27 +79,41 @@ const OptionsHouses = ({ houses }: OptionsHousesProps) => {
     setIsModalOpen(false);
   }, []);
 
+  const getMinPrice = (complectation: Complectation[]): number => {
+    const prices = complectation.map((item) =>
+      Math.min(
+        parseInt(item.BasePrice, 10),
+        parseInt(item.StandartPrice, 10),
+        parseInt(item.ComfortPrice, 10)
+      )
+    );
+    return Math.min(...prices);
+  };
+
+  const formatPrice = (price: number) => {
+    return price.toLocaleString("ru-RU");
+  };
   return (
     <div className="w-full">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
         Параметры
       </h2>
-      {houses.map((house) => (
-        <div key={house.id} className="">
-          {house.attributes.Parameters.Area && (
+      {details.map((detail) => (
+        <div key={detail.id} className="">
+          {detail.attributes.Parameters.Area && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Площадь
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.Area}
+                  {detail.attributes.Parameters.Area}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.BuildingTechnology && (
+          {detail.attributes.BuildingTechnology && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
@@ -101,139 +121,140 @@ const OptionsHouses = ({ houses }: OptionsHousesProps) => {
                 </p>
 
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.BuildingTechnology.BuildingTechnology}
+                  {detail.attributes.BuildingTechnology.BuildingTechnology}
                 </p>
               </div>
 
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.Parameters.Days && (
+          {detail.attributes.Parameters.Days && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Срок строительства
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.Days}
+                  {detail.attributes.Parameters.Days}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.Parameters.Location && (
+          {detail.attributes.Parameters.Location && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Расположение
                 </p>
                 <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
-                  {house.attributes.Parameters.Location}
+                  {detail.attributes.Parameters.Location}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.Parameters.HouseArea && (
+          {detail.attributes.Parameters.HouseArea && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Площадь дома
                 </p>
                 <p className="font-museo font-light text-base text-maingray ">
-                  {house.attributes.Parameters.HouseArea}
+                  {detail.attributes.Parameters.HouseArea}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.Parameters.BuiltUpArea && (
+          {detail.attributes.Parameters.BuiltUpArea && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Площадь застройки
                 </p>
                 <p className="font-museo font-light text-base text-maingray ">
-                  {house.attributes.Parameters.BuiltUpArea}
+                  {detail.attributes.Parameters.BuiltUpArea}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-             {house.attributes.Parameters.Width && house.attributes.Parameters.Height && (
+          {detail.attributes.Parameters.Width &&
+            detail.attributes.Parameters.Height && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Габариты дома
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray  ">
+                    {detail.attributes.Parameters.Width} x{" "}
+                    {detail.attributes.Parameters.Height}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+          {detail.attributes.Parameters.Floors && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
-                Габариты дома
-                </p>
-                <p className="font-museo font-light text-base text-maingray  ">
-                {house.attributes.Parameters.Width} x {" "}
-                {house.attributes.Parameters.Height}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {house.attributes.Parameters.Floors && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                Количество этажей
+                  Количество этажей
                 </p>
                 <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
-                  {house.attributes.Parameters.Floors}
+                  {detail.attributes.Parameters.Floors}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-           {house.attributes.Parameters.KitchenLivingRoomArea && (
+          {detail.attributes.Parameters.KitchenLivingRoomArea && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
-                Площадь кухни-гостиной
+                  Площадь кухни-гостиной
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.KitchenLivingRoomArea}
+                  {detail.attributes.Parameters.KitchenLivingRoomArea}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-          {house.attributes.Parameters.Bedrooms && (
+          {detail.attributes.Parameters.Bedrooms && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
-                Количество спален
+                  Количество спален
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.Bedrooms}
+                  {detail.attributes.Parameters.Bedrooms}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-            {house.attributes.Parameters.Toilets && (
+          {detail.attributes.Parameters.Toilets && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
-                Количество санузлов
+                  Количество санузлов
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.Toilets}
+                  {detail.attributes.Parameters.Toilets}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
           )}
-           {house.attributes.Parameters.TerraceAndPorchArea && (
+          {detail.attributes.Parameters.TerraceAndPorchArea && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
-                Площадь террасы и крыльца
+                  Площадь террасы и крыльца
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {house.attributes.Parameters.TerraceAndPorchArea}
+                  {detail.attributes.Parameters.TerraceAndPorchArea}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
@@ -241,21 +262,35 @@ const OptionsHouses = ({ houses }: OptionsHousesProps) => {
           )}
         </div>
       ))}
-      <div
-        className="flex gap-[3.5px] items-center mb-4 mt-5"
-        onClick={openModal}
-      >
-        <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
+      <div className="flex items-center  justify-between">
+        {details.map((detail) => (
+          <div key={detail.id} className="">
+            {detail.attributes.Complectation && (
+              <>
+                <p className="font-museo  text-orange text-xl font-bold">
+                  от {formatPrice(getMinPrice(detail.attributes.Complectation))}{" "}
+                  ₽
+                </p>
+              </>
+            )}
+          </div>
+        ))}
         <div
-          className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange text-white 
-              hover:text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange"
+          className="flex gap-[3.5px] items-center mb-4 mt-5"
+          onClick={openModal}
         >
-          <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">
-            Заказать
-          </p>
+          <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
+          <div
+            className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange text-white 
+              hover:text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange"
+          >
+            <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">
+              Заказать
+            </p>
+          </div>
         </div>
+        {isModalOpen && <Modal closeModal={closeModal} />}
       </div>
-      {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
 };

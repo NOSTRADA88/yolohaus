@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { fetchProjectDetailData, fetchProjectsData } from "../../api";
-import { AboutHouses, OptionsHouses, SliderHouses } from "../../components/builtHouses";
+import { OptionsHouses, SliderHouses } from "../../components/builtHouses";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import Technology from "../../components/projects/Technology";
 
 
 interface ProjectsDetailProps {
     projectsSlug: string;
   }
   
-  interface HousesData {
+  interface DetailsData {
     id: number;
     attributes: {
       YouTube: string | null;
@@ -71,7 +72,7 @@ const ProjectsDetail =  ({ projectsSlug }: ProjectsDetailProps) => {
     const [title, setTitle] = useState<string>("");
     const [slugProjects, setSlugProjects] = useState<string>("");
     const [titleProjects, setTitleProjects] = useState<string>("");
-    const [projects, setProjects] = useState<HousesData[]>([]);
+    const [projects, setProjects] = useState<DetailsData[]>([]);
 
 
     const fetchData = async () => {
@@ -124,9 +125,10 @@ const ProjectsDetail =  ({ projectsSlug }: ProjectsDetailProps) => {
           </div>
           <div className="flex flex-col mt-20 max-md:mt-10">
             <div className="flex justify-between max-lg:flex-col">
-              <SliderHouses houses={projects} />
-              <OptionsHouses houses={projects}  />
+              <SliderHouses details={projects} />
+              <OptionsHouses details={projects}  />
             </div>
+            <Technology />
           </div>
         </div>
       </div>

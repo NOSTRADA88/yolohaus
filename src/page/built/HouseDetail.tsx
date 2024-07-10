@@ -127,10 +127,10 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
         </div>
         <div className="flex flex-col mt-20 max-md:mt-10">
           <div className="flex justify-between max-lg:flex-col">
-            <SliderHouses houses={houses} />
-            <OptionsHouses houses={houses}/>
+            <SliderHouses details={houses} />
+            <OptionsHouses details={houses}/>
           </div>
-          <AboutHouses houses={houses} slugBuilt={slugBuilt} />
+          <AboutHouses details={houses} slugBuilt={slugBuilt} />
         </div>
       </div>
     </div>

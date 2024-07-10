@@ -150,7 +150,8 @@ const PopularProjects = () => {
       </div>
       <div className="grid grid-cols-3 gap-8 mt-10">
         {projects.map((project) => (
-          <div
+          <Link
+          to={`/${slugProjects}/${project.attributes.slug}`}
             key={project.id}
             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-[350px]:w-[280px] max-[350px]:h-[380px]
             transition-all duration-300 hover:shadow-2xl"
@@ -216,7 +217,7 @@ const PopularProjects = () => {
             <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
               <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
                 <Link
-                  to="/"
+                   to={`/${slugProjects}/${project.attributes.slug}`}
                   className="uppercase text-sm font-medium tracking-wider"
                 >
                   Посмотреть проект
@@ -227,7 +228,7 @@ const PopularProjects = () => {
                 />
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

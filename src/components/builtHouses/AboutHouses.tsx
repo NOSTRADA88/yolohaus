@@ -2,7 +2,7 @@ import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-interface HousesData {
+interface DetailsData {
   id: number;
   attributes: {
     YouTube: string | null;
@@ -58,16 +58,16 @@ interface HousesData {
 }
 
 type AboutHousesProps = {
-  houses: HousesData[];
+  details: DetailsData[];
   slugBuilt: string;
 };
-const AboutHouses = ({ houses, slugBuilt }: AboutHousesProps) => {
+const AboutHouses = ({ details, slugBuilt }: AboutHousesProps) => {
   return (
     <div>
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
         О проекте
       </h2>
-      {houses[0]?.attributes.Description.map((paragraph, index) => (
+      {details[0]?.attributes.Description.map((paragraph, index) => (
         <p
           key={index}
           className="font-museo font-light text-base text-maingray text-justify mb-5"
