@@ -8,13 +8,39 @@ interface HousesData {
     YouTube: string | null;
     slug: string;
     Title: string;
-    Discription: { type: string; children: { text: string; type: string }[] }[];
+    Description: { type: string; children: { text: string; type: string }[] }[];
     Parameters: {
       id: number;
       Area: string;
       Location: string;
       Days: number;
+      HouseArea: string;
+      BuiltUpArea: string;
+      Floors: number;
+      KitchenLivingRoomArea: string;
+      Bedrooms: number;
+      Toilets: number;
+      TerraceAndPorchArea: string;
+      Width: string;
+      Height: string;
+      ConstructionPeriod: string;
     };
+    Complectation: {
+      id: number;
+      Description: { type: string; children: { text: string; type: string }[] }[];
+      BasePrice: string;
+      StandartPrice: string;
+      ComfortPrice: string;
+      Slug: {
+        id: number;
+        BuildingTechnology: string;
+      };
+      Metadata: {
+        id: number;
+        MetaTitle: string;
+        MetaDescription: string;
+      };
+    }[];
     BuildingTechnology: {
       id: number;
       BuildingTechnology: string;
@@ -41,7 +67,7 @@ const AboutHouses = ({ houses, slugBuilt }: AboutHousesProps) => {
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
         О проекте
       </h2>
-      {houses[0]?.attributes.Discription.map((paragraph, index) => (
+      {houses[0]?.attributes.Description.map((paragraph, index) => (
         <p
           key={index}
           className="font-museo font-light text-base text-maingray text-justify mb-5"

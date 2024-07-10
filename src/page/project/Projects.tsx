@@ -79,6 +79,7 @@ const Projects = () => {
   const [metaTitle, setMetaTitle] = useState<string>("");
   const [metaDescription, setMetaDescription] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [slugProjects, setSlugProjects] = useState<string>("");
   const [projects, setProjects] = useState<Project[]>([]);
   const [HouseArea, setHouseArea] = useState<string>("");
   const [WidthHeight, setWidthHeight] = useState<string>("");
@@ -152,6 +153,7 @@ const Projects = () => {
       setConstructionPeriod(projectsData.Icons.data[1].attributes.url);
       setWidthHeight(projectsData.Icons.data[2].attributes.url);
       setBedrooms(projectsData.Icons.data[3].attributes.url);
+      setSlugProjects(projectsData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -252,7 +254,7 @@ const Projects = () => {
         </div>
         <div className="grid grid-cols-3 gap-8 mt-10">
           {currentProjects.map((project) => (
-            <div
+            <Link       to={`/${slugProjects}/${project.attributes.slug}`}
               key={project.id}
               className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5]
                              w-[350px] h-[360px] transition-all duration-300 hover:shadow-2xl max-[350px]:w-[280px] max-[350px]:h-[380px]"
@@ -317,7 +319,7 @@ const Projects = () => {
               <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
                 <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
                   <Link
-                    to="/"
+                       to={`/${slugProjects}/${project.attributes.slug}`}
                     className="uppercase text-sm font-medium tracking-wider"
                   >
                     Посмотреть проект
@@ -328,7 +330,7 @@ const Projects = () => {
                   />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         {renderPagination()}

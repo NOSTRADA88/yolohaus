@@ -173,7 +173,7 @@ const BuiltHouses = () => {
                 <div className="houses-details bg-gray-100 ml-10 px-6 py-6 pt-[50px] max-[800px]:ml-4 max-[800px]:pt-2   ">
                   <div className="text-orange transition-all duration-300 absolute right-5 top-5">
                     <div className=" cursor-pointer arrow-container">
-                      <Link to="/">
+                      <Link to={`/${slugBuilt}/${house.attributes.slug}`}>
                         <FontAwesomeIcon
                           icon={faArrowRightLong}
                           className="arrow-icon text-xl"

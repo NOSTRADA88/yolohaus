@@ -7,25 +7,50 @@ import {
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
-import { API_URL } from "../../constants";
+
 
 interface HouseDetailProps {
   houseSlug: string;
 }
-
 interface HousesData {
   id: number;
   attributes: {
     YouTube: string | null;
     slug: string;
     Title: string;
-    Discription: { type: string; children: { text: string; type: string }[] }[];
+    Description: { type: string; children: { text: string; type: string }[] }[];
     Parameters: {
       id: number;
       Area: string;
       Location: string;
       Days: number;
+      HouseArea: string;
+      BuiltUpArea: string;
+      Floors: number;
+      KitchenLivingRoomArea: string;
+      Bedrooms: number;
+      Toilets: number;
+      TerraceAndPorchArea: string;
+      Width: string;
+      Height: string;
+      ConstructionPeriod: string;
     };
+    Complectation: {
+      id: number;
+      Description: { type: string; children: { text: string; type: string }[] }[];
+      BasePrice: string;
+      StandartPrice: string;
+      ComfortPrice: string;
+      Slug: {
+        id: number;
+        BuildingTechnology: string;
+      };
+      Metadata: {
+        id: number;
+        MetaTitle: string;
+        MetaDescription: string;
+      };
+    }[];
     BuildingTechnology: {
       id: number;
       BuildingTechnology: string;
@@ -41,6 +66,7 @@ interface HousesData {
     };
   };
 }
+
 const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
   const [metaTitle, setMetaTitle] = useState<string>("");
   const [metaDescription, setMetaDescription] = useState<string>("");
@@ -102,7 +128,7 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
         <div className="flex flex-col mt-20 max-md:mt-10">
           <div className="flex justify-between max-lg:flex-col">
             <SliderHouses houses={houses} />
-            <OptionsHouses houses={houses} />
+            <OptionsHouses houses={houses}/>
           </div>
           <AboutHouses houses={houses} slugBuilt={slugBuilt} />
         </div>

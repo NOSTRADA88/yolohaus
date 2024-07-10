@@ -24,7 +24,7 @@ import {
   fetchVacancyData,
 } from "../api";
 import ScrollToTop from "../components/ScrollToTop";
-import { Projects } from "../page/project";
+import { Projects, ProjectsDetail } from "../page/project";
 import { BuiltHouses, HouseDetail } from "../page/built";
 
 const useRoutes = () => {
@@ -81,6 +81,13 @@ const useRoutes = () => {
 
     return <HouseDetail houseSlug={houseSlug} />;
   };
+
+  const ProjectsDetailRoute = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const projectsSlug = slug || "";
+
+    return <ProjectsDetail projectsSlug={projectsSlug} />;
+  };
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -130,6 +137,14 @@ const useRoutes = () => {
           element={
             <Layout>
               <Projects />
+            </Layout>
+          }
+        />
+          <Route
+          path={`/${slugProjects}/:slug`}
+          element={
+            <Layout>
+              <ProjectsDetailRoute />
             </Layout>
           }
         />
