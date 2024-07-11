@@ -78,7 +78,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
           <img
             key={index}
             src={`${API_URL}${photo}`}
-            alt={`Photo ${index}`}
+            alt={`${index}`}
             className="absolute top-0 left-0 w-full h-full object-cover object-center cursor-pointer"
             style={{
               opacity: index === activePhotoIndex ? 1 : 0,
@@ -151,7 +151,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
           </button>
           <img
             src={`${API_URL}${photos[activePhotoIndex]}`}
-            alt={`Photo ${activePhotoIndex}`}
+            alt={`${activePhotoIndex}`}
             className="max-w-full max-h-full transition duration-500 "
             style={{ cursor: "auto" }}
           />
@@ -172,7 +172,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
             >
               <img
                 src={`${API_URL}${photos[thumbnailIndex]}`}
-                alt={`Photo ${thumbnailIndex}`}
+                alt={`${thumbnailIndex}`}
                 className="w-full h-full object-cover transition duration-500"
               />
             </div>
