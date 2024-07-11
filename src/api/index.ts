@@ -207,3 +207,20 @@ export const fetchHousesDetailsData = async (houseSlug: string) => {
     throw new Error("Ошибка запроса");
   }
 };
+
+
+export const fetchProjectDetailData = async (projetsSlug: string) => {
+  try {
+    const response = await axiosInstanse.get(
+      `${API_URL}/api/proekty?populate[spisok_proektovs][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[spisok_proektovs][populate][Parameters]=*&populate[spisok_proektovs][populate][Metadata]=*&populate[spisok_proektovs][populate][Complectation][populate]=Slug,Metadata&populate[spisok_proektovs][populate][Photos]=*`
+    );
+    if (response.status === 200) {
+      return response.data.data.attributes.spisok_proektovs;
+    } else {
+      throw new Error("Данные не найдены");
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error("Ошибка запроса");
+  }
+};

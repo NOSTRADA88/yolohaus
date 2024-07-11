@@ -6,7 +6,7 @@ import {
   faArrowRightLong,
 } from "@fortawesome/free-solid-svg-icons";
 
-interface HousesData {
+interface DetailsData {
   id: number;
   attributes: {
     Photos: {
@@ -21,12 +21,12 @@ interface HousesData {
 }
 
 type SliderHousesProps = {
-  houses: HousesData[];
+  details: DetailsData[];
 };
 
-const SliderHouses = ({ houses }: SliderHousesProps) => {
-  const photos = houses.flatMap((house) =>
-    house.attributes.Photos.data.map((photo) => photo.attributes.url)
+const SliderHouses = ({ details }: SliderHousesProps) => {
+  const photos = details.flatMap((detail) =>
+    detail.attributes.Photos.data.map((photo) => photo.attributes.url)
   );
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
