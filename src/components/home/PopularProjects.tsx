@@ -112,25 +112,24 @@ const PopularProjects = () => {
     fetchData();
   }, []);
 
-  
-const parsePrice = (price: string | null): number => {
-  return price ? parseInt(price.replace(/\D/g, ''), 10) : Infinity;
-};
+  const parsePrice = (price: string | null): number => {
+    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
+  };
 
-const getMinPrice = (complectation: Complectation[]): number => {
-  const prices = complectation.map((item) =>
-    Math.min(
-      parsePrice(item.BasePrice),
-      parsePrice(item.StandartPrice),
-      parsePrice(item.ComfortPrice)
-    )
-  );
-  return Math.min(...prices);
-};
+  const getMinPrice = (complectation: Complectation[]): number => {
+    const prices = complectation.map((item) =>
+      Math.min(
+        parsePrice(item.BasePrice),
+        parsePrice(item.StandartPrice),
+        parsePrice(item.ComfortPrice)
+      )
+    );
+    return Math.min(...prices);
+  };
 
-const formatPrice = (price: number) => {
-  return price.toLocaleString("ru-RU");
-};
+  const formatPrice = (price: number) => {
+    return price.toLocaleString("ru-RU");
+  };
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16">
       <div className="flex justify-between items-center max-md:flex-col max-md:items-start max-md:gap-6">
@@ -152,19 +151,20 @@ const formatPrice = (price: number) => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-8 mt-10">
-      {projects.slice(0, 6).map((project) => (
+      <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
+        {projects.slice(0, 6).map((project) => (
           <Link
-          to={`/${slugProjects}/${project.attributes.slug}`}
+            to={`/${slugProjects}/${project.attributes.slug}`}
             key={project.id}
-            className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-[350px]:w-[280px] max-[350px]:h-[380px]
+            className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-xl:w-full  max-md:h-full
+            max-[350px]:w-[280px] max-[350px]:h-[380px]
             transition-all duration-300 hover:shadow-2xl"
           >
             {" "}
             <img
               src={`${API_URL}${project.attributes.Photos.data[0].attributes.formats.large.url}`}
               alt={project.attributes.Photos.data[0].attributes.name}
-              className="object-cover  w-[350px] h-[180px]"
+              className="object-cover w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
             />
             <div className="p-4">
               <h2 className="font-museo font-bold text-2xl text-maingray">
@@ -221,7 +221,7 @@ const formatPrice = (price: number) => {
             <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
               <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
                 <Link
-                   to={`/${slugProjects}/${project.attributes.slug}`}
+                  to={`/${slugProjects}/${project.attributes.slug}`}
                   className="uppercase text-sm font-medium tracking-wider"
                 >
                   Посмотреть проект

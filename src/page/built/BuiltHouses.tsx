@@ -111,23 +111,43 @@ const BuiltHouses = () => {
     return (
       <div className="flex justify-center items-center mt-20 gap-4">
         <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
             currentPage === 1
-              ? "cursor-not-allowed text-gray-400"
+              ? "text-opacity-60 cursor-auto"
               : "hover:text-orange"
           }`}
           onClick={
             currentPage === 1 ? undefined : () => paginate(currentPage - 1)
           }
         >
-          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon" />{" "}
+          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon " />{" "}
           предыдущая страница
         </span>
+        <FontAwesomeIcon
+          icon={faArrowLeftLong}
+          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
+            currentPage === 1 ? "text-opacity-60 cursor-auto" : ""
+          }`}
+          onClick={
+            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
+          }
+        />{" "}
         {pageNumbers}
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+        <FontAwesomeIcon
+          icon={faArrowRightLong}
+          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
+            currentPage === totalPages ? "text-opacity-60 cursor-auto" : ""
+          }`}
+          onClick={
             currentPage === totalPages
-              ? "cursor-not-allowed text-gray-400"
+              ? undefined
+              : () => paginate(currentPage + 1)
+          }
+        />{" "}
+        <span
+          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
+            currentPage === totalPages
+              ? "text-opacity-60 cursor-auto"
               : "hover:text-orange"
           }`}
           onClick={
@@ -198,12 +218,15 @@ const BuiltHouses = () => {
                 <img
                   src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
                   alt={house.attributes.Photos.data[0].attributes.name}
-                  className="w-[280px] h-[207px] object-cover object-center"
+                  className="w-[280px] h-[207px] object-cover object-center max-md:w-[85%] max-sm:w-[90%] max-[400px]:w-[85%]"
                 />
               </div>
               <div className="flex flex-col">
-                <div className="houses-details bg-gray-100 ml-10 px-6 py-6 pt-[50px] max-[800px]:ml-4 max-[800px]:pt-2   ">
-                  <div className="text-orange transition-all duration-300 absolute right-5 top-5">
+                <div
+                  className="houses-details bg-gray-100 ml-10 px-6 h-[180px] pt-[50px] max-[800px]:ml-4 max-[800px]:pt-12  max-md:pt-14 max-xl:h-[200px] 
+                max-sm:h-[180px]   max-[350px]:h-[200px]"
+                >
+                  <div className="text-orange transition-all duration-300 absolute right-5 top-5 max-[800px]:right-3">
                     <div className=" cursor-pointer arrow-container">
                       <Link to={`/${slugBuilt}/${house.attributes.slug}`}>
                         <FontAwesomeIcon
@@ -213,8 +236,8 @@ const BuiltHouses = () => {
                       </Link>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 max-sm:grid-cols-2 items-end max-[450px]:grid-cols-1">
-                    <h3 className="font-museo font-bold text-base mb-4 mt-2  text-maingray  group-hover:text-orange cursor-pointer">
+                  <div className="grid grid-cols-1  items-end ">
+                    <h3 className="font-museo font-bold text-base mb-4 mt-2 text-maingray  group-hover:text-orange cursor-pointer">
                       {house.attributes.Title}
                     </h3>
                     <div className="flex gap-10">

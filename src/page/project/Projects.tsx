@@ -138,23 +138,43 @@ const Projects = () => {
     return (
       <div className="flex justify-center items-center mt-20 gap-4">
         <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
             currentPage === 1
-              ? "cursor-not-allowed text-gray-400"
+              ? "text-opacity-60 cursor-auto"
               : "hover:text-orange"
           }`}
           onClick={
             currentPage === 1 ? undefined : () => paginate(currentPage - 1)
           }
         >
-          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon" />{" "}
+          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon " />{" "}
           предыдущая страница
         </span>
+        <FontAwesomeIcon
+          icon={faArrowLeftLong}
+          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
+            currentPage === 1 ? "text-opacity-60 cursor-auto" : ""
+          }`}
+          onClick={
+            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
+          }
+        />{" "}
         {pageNumbers}
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+        <FontAwesomeIcon
+          icon={faArrowRightLong}
+          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
+            currentPage === totalPages ? "text-opacity-60 cursor-auto" : ""
+          }`}
+          onClick={
             currentPage === totalPages
-              ? "cursor-not-allowed text-gray-400"
+              ? undefined
+              : () => paginate(currentPage + 1)
+          }
+        />{" "}
+        <span
+          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
+            currentPage === totalPages
+              ? "text-opacity-60 cursor-auto"
               : "hover:text-orange"
           }`}
           onClick={
@@ -266,6 +286,7 @@ const Projects = () => {
   const resetSort = () => {
     setSortBy(null);
     setSortDirection("asc");
+    setCurrentPage(1);
   };
 
   return (
@@ -356,13 +377,14 @@ const Projects = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mt-10">
+        <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {currentProjects.map((project) => (
             <Link
               to={`/${slugProjects}/${project.attributes.slug}`}
               key={project.id}
-              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5]
-                             w-[350px] h-[360px] transition-all duration-300 hover:shadow-2xl max-[350px]:w-[280px] max-[350px]:h-[380px]"
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-xl:w-full  max-md:h-full
+              max-[350px]:w-[280px] max-[350px]:h-[380px]
+              transition-all duration-300 hover:shadow-2xl"
             >
               <div className="relative max-w-full ">
                 {project.attributes.Photos.data.slice(0, 1).map((photo) => (
@@ -376,7 +398,7 @@ const Projects = () => {
                     <img
                       src={`${API_URL}${photo.attributes.formats.large.url}`}
                       alt={photo.attributes.name}
-                      className="object-cover  w-[350px] h-[180px]"
+                      className="object-cover w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
                     />
                   </LazyLoad>
                 ))}
