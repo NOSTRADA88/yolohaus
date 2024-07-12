@@ -65,14 +65,14 @@ const Header = () => {
 
       setLogoCompany(headerFooterData.Header.CompanyLogo.data.attributes.url);
       setDescription(headerFooterData.Header.Text);
-      setVkContent(headerFooterData.Header.socials.data[0].attributes.URL);
-      setYoutubeContent(headerFooterData.Header.socials.data[1].attributes.URL);
+      setVkContent(headerFooterData.Header.Socials.data[0].attributes.URL);
+      setYoutubeContent(headerFooterData.Header.Socials.data[1].attributes.URL);
       setVkIcon(
-        headerFooterData.Header.socials.data[0].attributes.Photo.data.attributes
+        headerFooterData.Header.Socials.data[0].attributes.Photo.data.attributes
           .url
       );
       setYoutubeIcon(
-        headerFooterData.Header.socials.data[1].attributes.Photo.data.attributes
+        headerFooterData.Header.Socials.data[1].attributes.Photo.data.attributes
           .url
       );
       setPhoneNumber(headerFooterData.Header.PhoneNumber.PhoneNumber);

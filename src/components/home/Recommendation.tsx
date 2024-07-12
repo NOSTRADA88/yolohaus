@@ -49,7 +49,7 @@ const Recommendation = () => {
       const mainData = await fetchHomeData();
       const reviewsData = await fetchReviewsData();
       setTitle(mainData.Recommendations.Title);
-      setRecommendations(mainData.Recommendations.list.data);
+      setRecommendations(mainData.Recommendations.List.data);
       setSlugReviews(reviewsData.slug)
     } catch (error) {
       console.error('Ошибка запроса:', error);

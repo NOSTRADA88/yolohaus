@@ -40,8 +40,8 @@ const Services = () => {
       const servicesData = await fetchServicesData();
       setMetaTitle(servicesData.Metadata.MetaTitle);
       setMetaDescription(servicesData.Metadata.MetaDescription);
-      setTitle(servicesData.title);
-      setServices(servicesData.services.data);
+      setTitle(servicesData.Title);
+      setServices(servicesData.Services.data);
       setSlugServices(servicesData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);

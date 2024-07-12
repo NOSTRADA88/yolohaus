@@ -3,7 +3,7 @@ import { API_URL, axiosInstanse } from "../constants";
 export const fetchHomeData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/glavnaya?populate=About.Photo&populate=About.Information&populate=Greetings.Photo&populate=Metadata&populate=Mortgage.Photos&populate=Recommendations.list.Icon&populate=Recommendations.list.BgPhoto&populate=ContactsMap.WorkTime&populate=PopularCottages.projects.Photos&populate=PopularCottages.projects.Parameters&populate=PopularCottages.projects.Complectation`
+      `${API_URL}/api/glavnaya?populate=About.Photo&populate=About.Information&populate=Greetings.Photo&populate=Metadata&populate=Mortgage.Photos&populate=Recommendations.List.Icon&populate=Recommendations.List.BgPhoto&populate=ContactsMap.WorkTime&populate=PopularCottages.projects.Photos&populate=PopularCottages.projects.Parameters&populate=PopularCottages.projects.Complectation`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -19,7 +19,7 @@ export const fetchHomeData = async () => {
 export const fetchHeaderFooterData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/glavnaya?populate=Header.socials.Photo&&populate=Header.PhoneNumber&populate=Header.CompanyLogo.Photo&populate=Footer.socials.Photo&&populate=Footer.PhoneNumber&populate=Footer.CompanyLogo.Photo`
+      `${API_URL}/api/glavnaya?populate=Header.Socials.Photo&&populate=Header.PhoneNumber&populate=Header.CompanyLogo.Photo&populate=Footer.Socials.Photo&&populate=Footer.PhoneNumber&populate=Footer.CompanyLogo.Photo`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -83,7 +83,7 @@ export const fetchGuaranteeData = async () => {
 export const fetchVacancyData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/vakansii?populate=Metadata&populate=vacancies`
+      `${API_URL}/api/vakansii?populate=Metadata&populate=Vacancies`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -99,7 +99,7 @@ export const fetchVacancyData = async () => {
 export const fetchProjectsData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/proekty?populate=Metadata&populate=Icons.Photo&populate=spisok_proektovs.Photos&populate=spisok_proektovs.Metadata&populate=spisok_proektovs.Parameters&populate=spisok_proektovs.Complectation`
+      `${API_URL}/api/proekty?populate=Metadata&populate=Icons.Photo&populate=ProjectsList.Photos&populate=ProjectsList.Metadata&populate=ProjectsList.Parameters&populate=ProjectsList.Complectation`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -115,7 +115,7 @@ export const fetchProjectsData = async () => {
 export const fetchContactData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/kontakty?populate=Metadata&populate=Information.Photo&populate=WorkingTime&populate=employees.Photo&populate=productions`
+      `${API_URL}/api/kontakty?populate=Metadata&populate=Information.Photo&populate=WorkingTime&populate=Employees.Photo&populate=Productions`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -131,7 +131,7 @@ export const fetchContactData = async () => {
 export const fetchServicesData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/uslugi?populate=Metadata&populate=services.Photo`
+      `${API_URL}/api/uslugi?populate=Metadata&populate=Services.Photo`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -147,10 +147,10 @@ export const fetchServicesData = async () => {
 export const fetchServicesDetailsData = async (servicesSlug: string) => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/uslugi?populate[services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[services][populate][Card][populate][Photo]=*&populate[services][populate][Metadata]=*`
+      `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
     );
     if (response.status === 200 && response.data.data) {
-      return response.data.data.attributes.services;
+      return response.data.data.attributes.Services;
     } else {
       throw new Error("Данные не найдены");
     }
@@ -179,7 +179,7 @@ export const fetchPrivacyPolicyData = async () => {
 export const fetchBuiltHousesData = async () => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/postroennye-doma?populate=Metadata&populate=built_houses.Metadata&populate=built_houses.Parameters&populate=built_houses.BuildingTechnology&populate=built_houses.Photos&populate=built_houses.YouTube&populate=Icons`
+      `${API_URL}/api/postroennye-doma?populate=Metadata&populate=BuiltHouses.Metadata&populate=BuiltHouses.Parameters&populate=BuiltHouses.BuildingTechnology&populate=BuiltHouses.Photos&populate=BuiltHouses.YouTube&populate=Icons`
     );
     if (response.status === 200) {
       return response.data.data.attributes;
@@ -195,10 +195,10 @@ export const fetchBuiltHousesData = async () => {
 export const fetchHousesDetailsData = async (houseSlug: string) => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/postroennye-doma?populate[built_houses][filters][slug][$eq]=${houseSlug}&populate[Metadata]=*&populate[built_houses][populate][Parameters]=*&populate[built_houses][populate][Metadata]=*&populate[built_houses][populate][BuildingTechnology]=*&populate[built_houses][populate][Photos]=*`
+      `${API_URL}/api/postroennye-doma?populate[BuiltHouses][filters][slug][$eq]=${houseSlug}&populate[Metadata]=*&populate[BuiltHouses][populate][Parameters]=*&populate[BuiltHouses][populate][Metadata]=*&populate[BuiltHouses][populate][BuildingTechnology]=*&populate[BuiltHouses][populate][Photos]=*`
     );
     if (response.status === 200) {
-      return response.data.data.attributes.built_houses;
+      return response.data.data.attributes.BuiltHouses;
     } else {
       throw new Error("Данные не найдены");
     }
@@ -212,10 +212,10 @@ export const fetchHousesDetailsData = async (houseSlug: string) => {
 export const fetchProjectDetailData = async (projetsSlug: string) => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/proekty?populate[spisok_proektovs][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[spisok_proektovs][populate][Parameters]=*&populate[spisok_proektovs][populate][Metadata]=*&populate[spisok_proektovs][populate][Complectation][populate]=Slug,Metadata&populate[spisok_proektovs][populate][Photos]=*`
+      `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata&populate[ProjectsList][populate][Photos]=*`
     );
     if (response.status === 200) {
-      return response.data.data.attributes.spisok_proektovs;
+      return response.data.data.attributes.ProjectsList;
     } else {
       throw new Error("Данные не найдены");
     }

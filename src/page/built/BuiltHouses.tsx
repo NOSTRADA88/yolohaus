@@ -117,7 +117,7 @@ const BuiltHouses = () => {
       setMetaTitle(builtData.Metadata.MetaTitle);
       setMetaDescription(builtData.Metadata.MetaDescription);
       setTitle(builtData.title);
-      setHouses(builtData.built_houses.data);
+      setHouses(builtData.BuiltHouses.data);
       setLocation(builtData.Icons.data[0].attributes.url);
       setHouseArea(builtData.Icons.data[1].attributes.url);
       setConstructionPeriod(builtData.Icons.data[2].attributes.url);

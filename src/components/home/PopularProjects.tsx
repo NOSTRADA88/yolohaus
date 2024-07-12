@@ -112,21 +112,25 @@ const PopularProjects = () => {
     fetchData();
   }, []);
 
-  const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) =>
-      Math.min(
-        parseInt(item.BasePrice, 10),
-        parseInt(item.StandartPrice, 10),
-        parseInt(item.ComfortPrice, 10)
-      )
-    );
-    return Math.min(...prices);
-  };
+  
+const parsePrice = (price: string | null): number => {
+  return price ? parseInt(price.replace(/\D/g, ''), 10) : Infinity;
+};
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("ru-RU");
-  };
+const getMinPrice = (complectation: Complectation[]): number => {
+  const prices = complectation.map((item) =>
+    Math.min(
+      parsePrice(item.BasePrice),
+      parsePrice(item.StandartPrice),
+      parsePrice(item.ComfortPrice)
+    )
+  );
+  return Math.min(...prices);
+};
 
+const formatPrice = (price: number) => {
+  return price.toLocaleString("ru-RU");
+};
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16">
       <div className="flex justify-between items-center max-md:flex-col max-md:items-start max-md:gap-6">

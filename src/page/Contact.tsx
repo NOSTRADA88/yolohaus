@@ -71,8 +71,8 @@ const Contact = () => {
             setPhotoContact(contactData.Information.Photo.data.attributes.formats.large.url);
             setWeekdays(contactData.WorkingTime.Weekdays);
             setWeekends(contactData.WorkingTime.Weekends);
-            setProductions(contactData.productions.data);
-            setEmployees(contactData.employees.data);
+            setProductions(contactData.Productions.data);
+            setEmployees(contactData.Employees.data);
 
             const mainData = await fetchHomeData();
             const phoneData = await fetchHeaderFooterData();

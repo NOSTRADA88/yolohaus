@@ -53,6 +53,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   const [metaTitle, setMetaTitle] = useState<string>("");
   const [metaDescription, setMetaDescription] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [titleMini, setTitleMini] = useState<string>("");
   const [descriptionInfo, setDescriptionInfo] = useState<CardDescription[]>([]);
   const [titleServices, setTitleServices] = useState<string>("");
   const [slugServices, setSlugServices] = useState<string>("");
@@ -67,9 +68,9 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
       setTitle(detailsData.data[0].attributes.Title);
       setDescriptionInfo(detailsData.data[0].attributes.ServiceDescription);
       setServices(detailsData.data[0].attributes.Card);
-
+      setTitleMini(detailsData.data[0].attributes.Header);
       const servicesData = await fetchServicesData();
-      setTitleServices(servicesData.title);
+      setTitleServices(servicesData.Title);
       setSlugServices(servicesData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -112,10 +113,9 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
         </div>
         <ContactBanner descriptionInfo={descriptionInfo} />
         <div className="mt-20">
-          {/*    <h2 className="font-museo font-bold text-2xl max-md:text-xl">
-            {" "}
-            Заголовок{" "}
-          </h2> */}
+             <h2 className="font-museo font-bold text-2xl max-md:text-xl">
+           {titleMini}
+          </h2>
           <div className="grid grid-cols-3 gap-6 mt-10 max-lg:grid-cols-2 max-md:grid-cols-1">
             {services.length > 0 &&
               services.map((service) => (

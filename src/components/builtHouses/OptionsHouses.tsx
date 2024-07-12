@@ -78,18 +78,22 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
-
+  
+  const parsePrice = (price: string | null): number => {
+    return price ? parseInt(price.replace(/\D/g, ''), 10) : Infinity;
+  };
+  
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) =>
       Math.min(
-        parseInt(item.BasePrice, 10),
-        parseInt(item.StandartPrice, 10),
-        parseInt(item.ComfortPrice, 10)
+        parsePrice(item.BasePrice),
+        parsePrice(item.StandartPrice),
+        parsePrice(item.ComfortPrice)
       )
     );
     return Math.min(...prices);
   };
-
+  
   const formatPrice = (price: number) => {
     return price.toLocaleString("ru-RU");
   };

@@ -148,7 +148,7 @@ const Projects = () => {
       setMetaTitle(projectsData.Metadata.MetaTitle);
       setMetaDescription(projectsData.Metadata.MetaDescription);
       setTitle(projectsData.Title);
-      setProjects(projectsData.spisok_proektovs.data);
+      setProjects(projectsData.ProjectsList.data);
       setHouseArea(projectsData.Icons.data[0].attributes.url);
       setConstructionPeriod(projectsData.Icons.data[1].attributes.url);
       setWidthHeight(projectsData.Icons.data[2].attributes.url);
@@ -181,17 +181,21 @@ const Projects = () => {
     setSortByPopularity(false);
   };
 
+  const parsePrice = (price: string | null): number => {
+    return price ? parseInt(price.replace(/\D/g, ''), 10) : Infinity;
+  };
+  
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) =>
       Math.min(
-        parseInt(item.BasePrice, 10),
-        parseInt(item.StandartPrice, 10),
-        parseInt(item.ComfortPrice, 10)
+        parsePrice(item.BasePrice),
+        parsePrice(item.StandartPrice),
+        parsePrice(item.ComfortPrice)
       )
     );
     return Math.min(...prices);
   };
-
+  
   const formatPrice = (price: number) => {
     return price.toLocaleString("ru-RU");
   };

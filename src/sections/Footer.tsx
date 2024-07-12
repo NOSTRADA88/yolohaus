@@ -24,10 +24,10 @@ const Footer = () => {
       const mainData = await fetchHeaderFooterData();
       setLogoCompany(mainData.Footer.CompanyLogo.data.attributes.url);
       setDescription(mainData.Footer.Text);
-      setVkContent(mainData.Footer.socials.data[0].attributes.URL);
-      setYoutubeContent(mainData.Footer.socials.data[1].attributes.URL);
-      setVkIcon(mainData.Footer.socials.data[0].attributes.Photo.data.attributes.url);
-      setYoutubeIcon(mainData.Footer.socials.data[1].attributes.Photo.data.attributes.url);
+      setVkContent(mainData.Footer.Socials.data[0].attributes.URL);
+      setYoutubeContent(mainData.Footer.Socials.data[1].attributes.URL);
+      setVkIcon(mainData.Footer.Socials.data[0].attributes.Photo.data.attributes.url);
+      setYoutubeIcon(mainData.Footer.Socials.data[1].attributes.Photo.data.attributes.url);
       setPhoneNumber(mainData.Footer.PhoneNumber.PhoneNumber);
 
 

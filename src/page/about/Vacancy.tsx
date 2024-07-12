@@ -55,7 +55,7 @@ const Vacancy = () => {
       setTitle(vacancyData.Title);
       setTitleAbout(aboutData.Title);
       setSlugAbout(aboutData.slug);
-      setVacancies(vacancyData.vacancies.data);
+      setVacancies(vacancyData.Vacancies.data);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
