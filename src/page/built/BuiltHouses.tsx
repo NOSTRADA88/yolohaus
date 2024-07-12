@@ -66,44 +66,75 @@ const BuiltHouses = () => {
   const totalPages = Math.ceil(houses.length / projectsPerPage);
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+
   const currentProjects = houses.slice(indexOfFirstProject, indexOfLastProject);
+
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   const renderPagination = () => {
     if (totalPages <= 1) {
       return null;
     }
+
     const pageNumbers = [];
+    const range = 2; // Количество страниц, отображаемых до и после текущей
+
     for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(
+      if (
+        i === 1 || // первая страница
+        i === totalPages || // последняя страница
+        (i >= currentPage - range && i <= currentPage + range) // страницы вокруг текущей
+      ) {
+        pageNumbers.push(
+          <span
+            key={i}
+            className={`cursor-pointer font-museo text-sm text-maingray ${
+              currentPage === i
+                ? "bg-orange text-white px-2 py-1 font-bold"
+                : "hover:text-orange"
+            }`}
+            onClick={() => paginate(i)}
+          >
+            {i}
+          </span>
+        );
+      } else if (
+        i === currentPage - range - 1 || // страница перед диапазоном
+        i === currentPage + range + 1 // страница после диапазона
+      ) {
+        pageNumbers.push(<span key={i}>...</span>);
+      }
+    }
+
+    return (
+      <div className="flex justify-center items-center mt-20 gap-4">
         <span
-          key={i}
-          className={`cursor-pointer font-museo text-sm text-maingray  ${
-            currentPage === i
-              ? "bg-orange text-white  px-2 py-1 font-bold"
+          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+            currentPage === 1
+              ? "cursor-not-allowed text-gray-400"
               : "hover:text-orange"
           }`}
-          onClick={() => paginate(i)}
-        >
-          {i}
-        </span>
-      );
-    }
-    return (
-      <div className="flex  justify-center items-center mt-20 gap-4">
-        <span
-          className="cursor-pointer font-museo text-sm font-light text-maingray hover:text-orange"
-          onClick={() => paginate(currentPage - 1)}
+          onClick={
+            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
+          }
         >
           <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon" />{" "}
           предыдущая страница
         </span>
         {pageNumbers}
         <span
-          className="cursor-pointer font-museo text-sm font-light  text-maingray hover:text-orange"
-          onClick={() => paginate(currentPage + 1)}
+          className={`cursor-pointer font-museo text-sm font-light text-maingray ${
+            currentPage === totalPages
+              ? "cursor-not-allowed text-gray-400"
+              : "hover:text-orange"
+          }`}
+          onClick={
+            currentPage === totalPages
+              ? undefined
+              : () => paginate(currentPage + 1)
+          }
         >
           следующая страница{" "}
           <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
@@ -111,6 +142,7 @@ const BuiltHouses = () => {
       </div>
     );
   };
+
   const fetchData = async () => {
     try {
       const builtData = await fetchBuiltHousesData();

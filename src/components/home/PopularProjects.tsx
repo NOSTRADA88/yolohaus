@@ -153,7 +153,7 @@ const formatPrice = (price: number) => {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-8 mt-10">
-        {projects.map((project) => (
+      {projects.slice(0, 6).map((project) => (
           <Link
           to={`/${slugProjects}/${project.attributes.slug}`}
             key={project.id}
@@ -170,8 +170,8 @@ const formatPrice = (price: number) => {
               <h2 className="font-museo font-bold text-2xl text-maingray">
                 {project.attributes.Title}
               </h2>
-              <div className="flex gap-3 mt-4">
-                <div className="flex gap-2">
+              <div className="flex gap-[9px] mt-4">
+                <div className="flex gap-[4px]">
                   <img
                     src={`${API_URL}${HouseArea}`}
                     alt="House Area"
@@ -181,7 +181,7 @@ const formatPrice = (price: number) => {
                     {project.attributes.Parameters.HouseArea}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-[4px]">
                   <img
                     src={`${API_URL}${WidthHeight}`}
                     alt="Width and Height"
@@ -192,7 +192,7 @@ const formatPrice = (price: number) => {
                     {project.attributes.Parameters.Height}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-[4px]">
                   <img
                     src={`${API_URL}${ConstructionPeriod}`}
                     alt="Construction Period"
@@ -202,7 +202,7 @@ const formatPrice = (price: number) => {
                     {project.attributes.Parameters.ConstructionPeriod} дней
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-[4px]">
                   <img
                     src={`${API_URL}${Bedrooms}`}
                     alt="Bedrooms"
