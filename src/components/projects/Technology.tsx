@@ -25,6 +25,16 @@ interface Project {
   };
 }
 
+interface DescriptionChild {
+  text: string;
+  bold?: boolean;
+}
+
+interface Description {
+  type: string;
+  children: DescriptionChild[];
+}
+
 interface TechnologyProps {
   complectations: Project[];
 }
@@ -39,7 +49,6 @@ const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
   const renderTable = () => {
     if (!selectedTechnology) return null;
 
-    // Filter complectations based on the selected technology
     const filteredComplectations = complectations.filter((project) => {
       const projectComplectations = project.complectations?.data || [];
       return projectComplectations.some((complectation) =>
@@ -47,20 +56,36 @@ const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
       );
     });
 
+    function convertDescriptionToElements(
+      description: Description[]
+    ): React.ReactNode[] {
+      return description.map((desc, index) => (
+        <p key={index}>
+          {desc.children.map((child, childIndex) => (
+            <span key={childIndex} className={child.bold ? "font-bold " : ""}>
+              {child.text}
+            </span>
+          ))}
+        </p>
+      ));
+    }
     return (
-      <table className="w-full">
+      <table
+        className="w-full border-separate"
+        style={{ borderSpacing: "4px" }}
+      >
         <thead>
-          <tr>
-            <th className="bg-[#E9E9E9] font-museo text-maingray text-base">
+          <tr className="h-10">
+            <th className="bg-[#E9E9E9] font-museo text-maingray text-base w-[274px] text-left p-5">
               Комплектация
             </th>
-            <th className="bg-orange font-museo text-white text-base">
+            <th className="bg-orange font-museo text-white text-base w-[274px]">
               Базовая
             </th>
-            <th className="bg-[#E0861D] font-museo text-white text-base">
+            <th className="bg-[#E0861D] font-museo text-white text-base w-[274px]">
               Стандарт
             </th>
-            <th className="bg-[#BF6F12] font-museo text-white text-base">
+            <th className="bg-[#BF6F12] font-museo text-white text-base w-[274px]">
               Комфорт
             </th>
           </tr>
@@ -97,18 +122,27 @@ const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
 
             return (
               <React.Fragment key={project.id}>
-                <tr>
-                  <td className="font-museo text-maingray text-base font-bold">
+                <tr className="h-16">
+                  <td className="font-museo text-maingray text-base font-bold p-5">
                     Цена
                   </td>
-                  <td className="text-center">{basePrice}</td>
-                  <td className="text-center">{standardPrice}</td>
-                  <td className="text-center">{comfortPrice}</td>
+                  <td className="text-center font-museo text-orange text-xl font-bold">
+                    {basePrice}
+                  </td>
+                  <td className="text-center font-museo text-orange text-xl font-bold">
+                    {standardPrice}
+                  </td>
+                  <td className="text-center font-museo text-orange text-xl font-bold">
+                    {comfortPrice}
+                  </td>
                 </tr>
 
                 {allEquipmentTypes.map((type) => (
-                  <tr key={type}>
-                    <td className="font-museo text-maingray text-base font-bold">
+                  <tr
+                    key={type}
+                    className="odd:bg-[#EEEEEE] even:bg-gray-100 align-top"
+                  >
+                    <td className="font-museo text-maingray text-base font-bold p-5">
                       {type}
                     </td>
                     {["Базовая", "Стандарт", "Комфорт"].map((category) => {
@@ -135,12 +169,17 @@ const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
                         : null;
 
                       return (
-                        <td className="text-left" key={category}>
-                          {equipment
-                            ? equipment.Description.map((desc) =>
-                                desc.children.map((text) => text.text).join(" ")
-                              ).join(" ")
-                            : "—"}
+                        <td
+                          className="text-left p-5 align-top font-museo text-sm text-maingray font-light"
+                          key={category}
+                        >
+                          {equipment ? (
+                            convertDescriptionToElements(equipment.Description)
+                          ) : (
+                            <p className="text-center p-5 align-top font-museo text-sm text-maingray font-light">
+                              —
+                            </p>
+                          )}
                         </td>
                       );
                     })}
