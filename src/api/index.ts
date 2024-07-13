@@ -208,11 +208,10 @@ export const fetchHousesDetailsData = async (houseSlug: string) => {
   }
 };
 
-
 export const fetchProjectDetailData = async (projetsSlug: string) => {
   try {
     const response = await axiosInstanse.get(
-      `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata&populate[ProjectsList][populate][Photos]=*`
+      `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata,complectations.Equipment,DescriptionList&populate[ProjectsList][populate][Photos]=*`
     );
     if (response.status === 200) {
       return response.data.data.attributes.ProjectsList;

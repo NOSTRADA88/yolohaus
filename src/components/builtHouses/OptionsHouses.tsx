@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 import { Modal } from "../../sections/modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 
 interface DetailsData {
   id: number;
@@ -8,6 +10,10 @@ interface DetailsData {
     slug: string;
     Title: string;
     Description: { type: string; children: { text: string; type: string }[] }[];
+    ShortDescription: {
+      type: string;
+      children: { text: string; type: string }[];
+    }[];
     Parameters: {
       id: number;
       Area: string;
@@ -78,11 +84,11 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
-  
+
   const parsePrice = (price: string | null): number => {
-    return price ? parseInt(price.replace(/\D/g, ''), 10) : Infinity;
+    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
-  
+
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) =>
       Math.min(
@@ -93,10 +99,11 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
     );
     return Math.min(...prices);
   };
-  
+
   const formatPrice = (price: number) => {
     return price.toLocaleString("ru-RU");
   };
+
   return (
     <div className="w-full">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
@@ -266,7 +273,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
           )}
         </div>
       ))}
-      <div className="flex items-center  justify-between">
+      <div className="flex items-center justify-between">
         {details.map((detail) => (
           <div key={detail.id} className="">
             {detail.attributes.Complectation && (
@@ -293,8 +300,36 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
             </p>
           </div>
         </div>
-        {isModalOpen && <Modal closeModal={closeModal} />}
       </div>
+      <div>
+        {details[0]?.attributes.ShortDescription && (
+          <>
+            <div className="py-3">
+              {details[0].attributes.ShortDescription?.map((desc, index) => (
+                <p
+                  key={index}
+                  className="font-museo font-light text-base text-maingray"
+                >
+                  {desc.children.map((child, idx) => child.text).join("")}
+                </p>
+              ))}
+              <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer  arrow-container">
+                <a
+                  href="#"
+                  className="text-orange uppercase text-sm font-medium tracking-wider"
+                >
+                  Подробнее
+                </a>
+                <FontAwesomeIcon
+                  icon={faArrowRightLong}
+                  className="text-orange arrow-icon"
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
 };

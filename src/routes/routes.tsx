@@ -140,14 +140,14 @@ const useRoutes = () => {
             </Layout>
           }
         />
-          {/* <Route
+        <Route
           path={`/${slugProjects}/:slug`}
           element={
             <Layout>
               <ProjectsDetailRoute />
             </Layout>
           }
-        /> */}
+        />
         <Route
           path={`/${slugContact}`}
           element={

@@ -8,7 +8,6 @@ import {
   SliderHouses,
 } from "../../components/builtHouses";
 
-
 interface HouseDetailProps {
   houseSlug: string;
 }
@@ -19,6 +18,10 @@ interface HousesData {
     slug: string;
     Title: string;
     Description: { type: string; children: { text: string; type: string }[] }[];
+    ShortDescription: {
+      type: string;
+      children: { text: string; type: string }[];
+    }[];
     Parameters: {
       id: number;
       Area: string;
@@ -37,7 +40,10 @@ interface HousesData {
     };
     Complectation: {
       id: number;
-      Description: { type: string; children: { text: string; type: string }[] }[];
+      Description: {
+        type: string;
+        children: { text: string; type: string }[];
+      }[];
       BasePrice: string;
       StandartPrice: string;
       ComfortPrice: string;
@@ -128,9 +134,9 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
         <div className="flex flex-col mt-20 max-md:mt-10">
           <div className="flex justify-between max-lg:flex-col">
             <SliderHouses details={houses} />
-            <OptionsHouses details={houses}/>
+            <OptionsHouses details={houses} />
           </div>
-          <AboutHouses details={houses} slugBuilt={slugBuilt} />
+          <AboutHouses details={houses} slug={slugBuilt} />
         </div>
       </div>
     </div>
