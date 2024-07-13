@@ -108,6 +108,7 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
   const [titleProjects, setTitleProjects] = useState<string>("");
   const [projects, setProjects] = useState<DetailsData[]>([]);
   const [complectations, setComplectations] = useState<Project[]>([]);
+
   const fetchData = async () => {
     try {
       const projectData = await fetchProjectDetailData(projectsSlug);
@@ -120,7 +121,6 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
       const projectsData = await fetchProjectsData();
       setTitleProjects(projectsData.Title);
       setSlugProjects(projectsData.slug);
-
       setComplectations(projectData.data[0].attributes.Complectation);
     } catch (error) {
       console.error("Ошибка запроса:", error);
