@@ -273,7 +273,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
           )}
         </div>
       ))}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between max-[400px]:flex-col  max-[400px]:items-start max-[400px]:mt-8 ">
         {details.map((detail) => (
           <div key={detail.id} className="">
             {detail.attributes.Complectation && (
