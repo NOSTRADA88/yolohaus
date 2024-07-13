@@ -122,7 +122,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
 
       {isFullscreen && (
         <div
-          className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer "
+          className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer p-20"
           onClick={closeFullscreen}
         >
           <button
