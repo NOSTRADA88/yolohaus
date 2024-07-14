@@ -1,4 +1,4 @@
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchHomeData, fetchReviewsData } from "../../api";
 import { API_URL } from "../../constants";
 import { ReviewsIcon } from "../../assets";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 interface Description {
   type: string;
-  children: { text: string, type: string }[];
+  children: { text: string; type: string }[];
 }
 
 interface Icon {
@@ -34,15 +34,15 @@ interface RecommendationAttributes {
   BgPhoto: BgPhoto;
 }
 
-interface Recommendation {
+interface Recommendations {
   id: number;
   attributes: RecommendationAttributes;
 }
 
 const Recommendation = () => {
-  const [title, setTitle] = useState<string>('');
-  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-  const [slugReviews, setSlugReviews] = useState<string>('');
+  const [title, setTitle] = useState<string>("");
+  const [recommendations, setRecommendations] = useState<Recommendations[]>([]);
+  const [slugReviews, setSlugReviews] = useState<string>("");
 
   const fetchData = async () => {
     try {
@@ -50,9 +50,9 @@ const Recommendation = () => {
       const reviewsData = await fetchReviewsData();
       setTitle(mainData.Recommendations.Title);
       setRecommendations(mainData.Recommendations.List.data);
-      setSlugReviews(reviewsData.slug)
+      setSlugReviews(reviewsData.slug);
     } catch (error) {
-      console.error('Ошибка запроса:', error);
+      console.error("Ошибка запроса:", error);
     }
   };
 
@@ -73,8 +73,8 @@ const Recommendation = () => {
             className="relative p-20  border transition-all bg-white hover:bg-cover group"
             style={{
               backgroundImage: `url(${API_URL}${item.attributes.BgPhoto.data.attributes.url})`,
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat'
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
             }}
           >
             <div className="absolute inset-0 bg-white group-hover:bg-transparent transition-all duration-500"></div>
@@ -90,7 +90,10 @@ const Recommendation = () => {
             </div>
             <div className="absolute inset-0 bg-gray-800 bg-opacity-70 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-4 z-10">
               {item.attributes.Description.map((desc, index) => (
-                <p key={index} className="mb-1 text-white text-center font-museo font-medium text-xs">
+                <p
+                  key={index}
+                  className="mb-1 text-white text-center font-museo font-medium text-xs"
+                >
                   {desc.children[0].text}
                 </p>
               ))}
@@ -98,7 +101,10 @@ const Recommendation = () => {
           </div>
         ))}
 
-        <Link to={`/${slugReviews}`} className="relative p-20 border bg-orange overflow-hidden ">
+        <Link
+          to={`/${slugReviews}`}
+          className="relative p-20 border bg-orange overflow-hidden "
+        >
           <div className="relative w-full h-full overflow-hidden group hover:scale-150 hover:transition-all hover:duration-500 cursor-pointer ">
             <div className="flex justify-center items-center ">
               <img
@@ -115,8 +121,8 @@ const Recommendation = () => {
           </div>
         </Link>
       </div>
-    </div >
+    </div>
   );
-}
+};
 
 export default Recommendation;

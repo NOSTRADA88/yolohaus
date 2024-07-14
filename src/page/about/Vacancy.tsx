@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchVacancyData } from "../../api";
 import { ActiveVacancies, Switch } from "../../components/vacancy";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ContactBanner } from "../../sections/banner";
 
 type ListItem = {
@@ -32,7 +32,7 @@ type VacancyAttribute = {
   }[];
 };
 
-type Vacancy = {
+type Vacancies = {
   id: number;
   attributes: VacancyAttribute;
 };
@@ -44,7 +44,7 @@ const Vacancy = () => {
   const [titleAbout, setTitleAbout] = useState<string>("");
   const [slugAbout, setSlugAbout] = useState<string>("");
   const [activeTab, setActiveTab] = useState<TabType>("activeVacancies");
-  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [vacancies, setVacancies] = useState<Vacancies[]>([]);
   const fetchData = async () => {
     try {
       const vacancyData = await fetchVacancyData();

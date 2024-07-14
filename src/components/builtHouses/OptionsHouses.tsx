@@ -77,6 +77,16 @@ type OptionsHousesProps = {
 
 const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const scrollToMore = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const element = document.getElementById("more");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const openModal = useCallback(() => {
     setIsModalOpen(true);
   }, []);
@@ -315,7 +325,8 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
               ))}
               <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer  arrow-container">
                 <a
-                  href="#"
+                  href="#more"
+                  onClick={scrollToMore}
                   className="text-orange uppercase text-sm font-medium tracking-wider"
                 >
                   Подробнее

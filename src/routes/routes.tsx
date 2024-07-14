@@ -88,6 +88,7 @@ const useRoutes = () => {
 
     return <ProjectsDetail projectsSlug={projectsSlug} />;
   };
+
   return (
     <BrowserRouter>
       <ScrollToTop />

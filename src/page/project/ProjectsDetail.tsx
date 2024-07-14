@@ -16,7 +16,7 @@ interface ProjectsDetailProps {
 interface DetailsData {
   id: number;
   attributes: {
-    YouTube: string | null;
+    YouTube: string;
     slug: string;
     Title: string;
     Description: { type: string; children: { text: string; type: string }[] }[];
@@ -95,6 +95,15 @@ interface Project {
   BasePrice?: string;
   StandartPrice?: string;
   ComfortPrice?: string;
+  Metadata: {
+    id: number;
+    MetaTitle: string;
+    MetaDescription: string;
+  };
+  Slug: {
+    id: number;
+    BuildingTechnology: string;
+  };
   complectations: {
     data: Complectation[];
   };
@@ -125,6 +134,15 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
+  };
+
+  const updateTitle = (technology: string) => {
+    const newTitle = `${title} из ${technology}`;
+    const newMetaTitle = ` ${title} из ${technology}`;
+    const newMetaDescription = `Yolohaus дом под ключ. ${title} из ${technology}`;
+    setTitle(newTitle);
+    setMetaTitle(newMetaTitle);
+    setMetaDescription(newMetaDescription);
   };
 
   useEffect(() => {
@@ -168,7 +186,12 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
           <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
             Технология строительства
           </h2>
-          <Technology complectations={complectations} />
+          <Technology
+            updateTitle={updateTitle}
+            complectations={complectations}
+            currentProjectSlug={projectsSlug}
+            slugProjects={slugProjects}
+          />
           <div className="mt-10">
             <AboutHouses details={projects} slug={slugProjects} />
           </div>

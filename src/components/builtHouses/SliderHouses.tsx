@@ -5,19 +5,47 @@ import {
   faArrowLeftLong,
   faArrowRightLong,
 } from "@fortawesome/free-solid-svg-icons";
+import { Youtube } from "../../assets";
+
+interface PhotoData {
+  id: number;
+  attributes: {
+    url: string;
+  };
+}
+
+interface YouTubeData {
+  url: string;
+  title: string;
+  thumbnail: string;
+  mime: string;
+  rawData: {
+    html: string;
+  };
+}
 
 interface DetailsData {
   id: number;
   attributes: {
     Photos: {
-      data: {
-        id: number;
-        attributes: {
-          url: string;
-        };
-      }[];
+      data: PhotoData[];
     };
+    YouTube?: string; // JSON string containing YouTube data
   };
+}
+
+type MediaItem = PhotoMediaItem | VideoMediaItem;
+
+interface PhotoMediaItem {
+  type: "photo";
+  url: string;
+}
+
+interface VideoMediaItem {
+  type: "video";
+  url: string;
+  thumbnail: string;
+  embedHtml: string;
 }
 
 type SliderHousesProps = {
@@ -25,28 +53,61 @@ type SliderHousesProps = {
 };
 
 const SliderHouses = ({ details }: SliderHousesProps) => {
-  const photos = details.flatMap((detail) =>
-    detail.attributes.Photos.data.map((photo) => photo.attributes.url)
-  );
-  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const mediaItems: MediaItem[] = details.flatMap((detail) => {
+    const photos: PhotoMediaItem[] = detail.attributes.Photos.data.map(
+      (photo) => ({
+        type: "photo",
+        url: photo.attributes.url,
+      })
+    );
+
+    const youTubeData: YouTubeData | null = detail.attributes.YouTube
+      ? JSON.parse(detail.attributes.YouTube)
+      : null;
+
+    const videos: VideoMediaItem[] = youTubeData
+      ? [
+          {
+            type: "video",
+            url: youTubeData.url,
+            thumbnail: youTubeData.thumbnail,
+            embedHtml: youTubeData.rawData.html
+              .replace(/width="\d+"/, 'width="100%"')
+              .replace(/height="\d+"/, 'height="100%"'),
+          },
+        ]
+      : [];
+
+    return [...photos, ...videos];
+  });
+
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenOpacity, setFullscreenOpacity] = useState(0);
 
   const handleThumbnailClick = (index: number) => {
-    setActivePhotoIndex(index);
+    setActiveMediaIndex(index);
   };
 
   const handlePrevClick = () => {
-    setActivePhotoIndex((prevIndex) =>
-      prevIndex === 0 ? photos.length - 1 : prevIndex - 1
-    );
+    setFullscreenOpacity(0);
+    setTimeout(() => {
+      setActiveMediaIndex((prevIndex) =>
+        prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1
+      );
+      setFullscreenOpacity(1);
+    }, 300);
   };
 
   const handleNextClick = () => {
-    setActivePhotoIndex((prevIndex) =>
-      prevIndex === photos.length - 1 ? 0 : prevIndex + 1
-    );
+    setFullscreenOpacity(0);
+    setTimeout(() => {
+      setActiveMediaIndex((prevIndex) =>
+        prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1
+      );
+      setFullscreenOpacity(1);
+    }, 300);
   };
-
   const openFullscreen = () => {
     setIsFullscreen(true);
   };
@@ -57,10 +118,6 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
     if (event.target === event.currentTarget) {
       setIsFullscreen(false);
     }
-  };
-
-  const handleFullscreenClick = () => {
-    openFullscreen();
   };
 
   useEffect(() => {
@@ -74,19 +131,47 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
   return (
     <div className="relative pr-10 mb-10 max-xl:pr-5 max-lg:pr-0">
       <div className="w-[700px] h-[500px] relative overflow-hidden max-xl:w-[620px] max-lg:w-full max-md:h-[400px] max-sm:h-[250px]">
-        {photos.map((photo, index) => (
-          <img
-            key={index}
-            src={`${API_URL}${photo}`}
-            alt={`${index}`}
-            className="absolute top-0 left-0 w-full h-full object-cover object-center cursor-pointer"
-            style={{
-              opacity: index === activePhotoIndex ? 1 : 0,
-              transition: "opacity 0.5s ease-in-out",
-            }}
-            onClick={handleFullscreenClick}
-          />
-        ))}
+        {mediaItems.map((media, index) => {
+          if (media.type === "photo") {
+            return (
+              <img
+                key={index}
+                src={`${API_URL}${media.url}`}
+                alt={`${index}`}
+                className="absolute top-0 left-0 w-full h-full object-cover object-center cursor-pointer"
+                style={{
+                  opacity: index === activeMediaIndex ? 1 : 0,
+                  transition: "opacity 0.5s ease-in-out",
+                }}
+                onClick={() => openFullscreen()}
+              />
+            );
+          } else if (media.type === "video") {
+            return (
+              <div
+                key={index}
+                className="absolute top-0 left-0 flex justify-center items-center cursor-pointer w-full h-full"
+                style={{
+                  opacity: index === activeMediaIndex ? 1 : 0,
+                  transition: "opacity 0.5s ease-in-out",
+                }}
+                onClick={() => {
+                  openFullscreen();
+                }}
+              >
+                <img
+                  src={media.thumbnail}
+                  alt={`Thumbnail for video ${index}`}
+                  className="w-full h-full object-cover transition duration-500"
+                />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+                  <img src={Youtube} className="w-20" alt="youtube" />
+                </div>
+              </div>
+            );
+          }
+          return null;
+        })}
         <button
           onClick={handlePrevClick}
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
@@ -106,11 +191,11 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
           />
         </button>
         <div className="flex justify-center absolute bottom-4 left-0 right-0">
-          {photos.map((_, index) => (
+          {mediaItems.map((_, index) => (
             <span
               key={index}
               className={`h-3 w-3 rounded-full mx-1 cursor-pointer ${
-                index === activePhotoIndex
+                index === activeMediaIndex
                   ? "bg-white"
                   : "border-white border-[1px]"
               }`}
@@ -133,11 +218,11 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
           </button>
           <button
             onClick={handlePrevClick}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300 "
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
           >
             <FontAwesomeIcon
               icon={faArrowLeftLong}
-              className="text-orange arrow-icon "
+              className="text-orange arrow-icon"
             />
           </button>
           <button
@@ -149,32 +234,62 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
               className="text-orange arrow-icon"
             />
           </button>
-          <img
-            src={`${API_URL}${photos[activePhotoIndex]}`}
-            alt={`${activePhotoIndex}`}
-            className="max-w-full max-h-full transition duration-500 "
-            style={{ cursor: "auto" }}
-          />
+          {mediaItems[activeMediaIndex].type === "photo" ? (
+            <img
+              src={`${API_URL}${mediaItems[activeMediaIndex].url}`}
+              alt={`${activeMediaIndex}`}
+              className="max-w-full max-h-full"
+              style={{
+                opacity: fullscreenOpacity, // Use state for opacity
+                transition: "opacity 0.5s ease-in-out",
+                cursor: "auto",
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: (mediaItems[activeMediaIndex] as VideoMediaItem)
+                  .embedHtml,
+              }}
+              className="w-full h-full"
+            />
+          )}
         </div>
       )}
       <div className="grid grid-cols-3 gap-3 mt-4 overflow-hidden">
-        {photos.slice(0, 3).map((_, index) => {
-          const thumbnailIndex = (activePhotoIndex + index) % photos.length;
+        {mediaItems.slice(0, 3).map((_, index) => {
+          const thumbnailIndex = (activeMediaIndex + index) % mediaItems.length;
           return (
             <div
               key={index}
               className={`w-full h-32 max-md:h-20 relative cursor-pointer ${
-                thumbnailIndex === activePhotoIndex
+                thumbnailIndex === activeMediaIndex
                   ? "border-2 border-orange"
                   : ""
               }`}
               onClick={() => handleThumbnailClick(thumbnailIndex)}
             >
-              <img
-                src={`${API_URL}${photos[thumbnailIndex]}`}
-                alt={`${thumbnailIndex}`}
-                className="w-full h-full object-cover transition duration-500"
-              />
+              {mediaItems[thumbnailIndex].type === "photo" ? (
+                <img
+                  src={`${API_URL}${mediaItems[thumbnailIndex].url}`}
+                  alt={`${thumbnailIndex}`}
+                  className="w-full h-full object-cover transition duration-500"
+                />
+              ) : (
+                <div className="relative w-full h-full">
+                  <img
+                    src={
+                      (mediaItems[thumbnailIndex] as VideoMediaItem).thumbnail
+                    }
+                    alt={`thumbnail-${thumbnailIndex}`}
+                    className="w-full h-full object-cover transition duration-500"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <img src={Youtube} className="w-14" alt="youtube" />
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}

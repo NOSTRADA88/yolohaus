@@ -1,19 +1,7 @@
-import Yolo from './yolo.png'
-import ReviewsIcon from './reviews-icon.svg'
-import ConsultationPhoto from './photo-consultation.png'
-import HouseArea  from './HouseArea.svg'
-import WidthHeight  from './Width-Height.svg'
-import ConstructionPeriod  from './ConstructionPeriod.svg'
-import Bedrooms  from './Bedrooms.svg'
-import BgVacancy  from './bgvacancy.png'
+import Yolo from "./yolo.png";
+import ReviewsIcon from "./reviews-icon.svg";
+import ConsultationPhoto from "./photo-consultation.png";
+import BgVacancy from "./bgvacancy.png";
+import Youtube from "./pngwing.com.png";
 
-export {
-    Yolo,
-    ReviewsIcon,
-    ConsultationPhoto,
-    HouseArea,
-    WidthHeight,
-    ConstructionPeriod,
-    Bedrooms,
-    BgVacancy
-}
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube };

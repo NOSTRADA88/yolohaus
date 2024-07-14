@@ -20,6 +20,11 @@ interface Project {
   BasePrice?: string;
   StandartPrice?: string;
   ComfortPrice?: string;
+
+  Slug: {
+    id: number;
+    BuildingTechnology: string;
+  };
   complectations: {
     data: Complectation[];
   };
@@ -37,9 +42,17 @@ interface Description {
 
 interface TechnologyProps {
   complectations: Project[];
+  currentProjectSlug: string;
+  slugProjects: string;
+  updateTitle: (technology: string) => void;
 }
 
-const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
+const Technology: React.FC<TechnologyProps> = ({
+  complectations,
+  currentProjectSlug,
+  slugProjects,
+  updateTitle,
+}) => {
   const [selectedTechnology, setSelectedTechnology] = useState<string>("");
 
   const handleTechnologySelect = (technology: string) => {
@@ -197,10 +210,18 @@ const Technology: React.FC<TechnologyProps> = ({ complectations }) => {
       </div>
     );
   };
-
+  const slugs = complectations.map(
+    (completion) => completion.Slug.BuildingTechnology
+  );
   return (
     <div>
-      <SwitchTechnology onTechnologySelect={handleTechnologySelect} />
+      <SwitchTechnology
+        onTechnologySelect={handleTechnologySelect}
+        slugs={slugs}
+        currentProjectSlug={currentProjectSlug}
+        slugProjects={slugProjects}
+        updateTitle={updateTitle}
+      />
       {renderTable()}
     </div>
   );

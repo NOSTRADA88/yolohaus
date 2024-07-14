@@ -14,7 +14,7 @@ interface HouseDetailProps {
 interface HousesData {
   id: number;
   attributes: {
-    YouTube: string | null;
+    YouTube: string;
     slug: string;
     Title: string;
     Description: { type: string; children: { text: string; type: string }[] }[];

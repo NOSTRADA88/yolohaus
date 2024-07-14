@@ -79,7 +79,7 @@ type AboutHousesProps = {
 
 const AboutHouses = ({ details, slug }: AboutHousesProps) => {
   return (
-    <div>
+    <div id="more">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
         О проекте
       </h2>

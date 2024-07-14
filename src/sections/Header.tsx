@@ -6,7 +6,6 @@ import {
   fetchContactData,
   fetchGuaranteeData,
   fetchHeaderFooterData,
-  fetchPrivacyPolicyData,
   fetchProjectsData,
   fetchReviewsData,
   fetchServicesData,
