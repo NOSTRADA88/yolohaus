@@ -79,13 +79,13 @@ const BuiltHouses = () => {
     }
 
     const pageNumbers = [];
-    const range = 2; // Количество страниц, отображаемых до и после текущей
+    const range = 2;
 
     for (let i = 1; i <= totalPages; i++) {
       if (
-        i === 1 || // первая страница
-        i === totalPages || // последняя страница
-        (i >= currentPage - range && i <= currentPage + range) // страницы вокруг текущей
+        i === 1 ||
+        i === totalPages ||
+        (i >= currentPage - range && i <= currentPage + range)
       ) {
         pageNumbers.push(
           <span
@@ -101,8 +101,8 @@ const BuiltHouses = () => {
           </span>
         );
       } else if (
-        i === currentPage - range - 1 || // страница перед диапазоном
-        i === currentPage + range + 1 // страница после диапазона
+        i === currentPage - range - 1 ||
+        i === currentPage + range + 1
       ) {
         pageNumbers.push(<span key={i}>...</span>);
       }

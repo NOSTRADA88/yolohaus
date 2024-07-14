@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -205,7 +204,7 @@ const Projects = () => {
 
       const mainData = await fetchHomeData();
       setPopular(mainData.PopularCottages.projects.data);
-      console.log(popular);
+
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }

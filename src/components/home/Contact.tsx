@@ -8,7 +8,7 @@ const Contact = () => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [address, setAddress] = useState<string>('');
-  const [urlAdressOffice, setUrlAdressOffice] = useState<string>('');
+  const [urlAddressOffice, setUrlAddressOffice] = useState<string>('');
   const fetchData = async () => {
     try {
       const mainData = await fetchHomeData();
@@ -16,8 +16,7 @@ const Contact = () => {
       setEmail(mainData.ContactsMap.Email);
       setPhone(phoneData.Header.PhoneNumber.PhoneNumber);
       setAddress(mainData.ContactsMap.Address);
-
-      setUrlAdressOffice(mainData.ContactsMap.YandexMapURL);
+      setUrlAddressOffice(mainData.ContactsMap.YandexMapURL);
     } catch (error) {
       console.error('Ошибка запроса:', error);
     }
@@ -40,7 +39,7 @@ const Contact = () => {
          ">
           <div className=" w-full mb-15 overflow-hidden max-sm:text-center">
             <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">адрес</span>
-            <h1><a rel="noopener noreferrer" href={`${urlAdressOffice}`}
+            <h1><a rel="noopener noreferrer" href={`${urlAddressOffice}`}
               target="_blank" className="font-museo font-light text-sm leading-5 text-maingray mb-3 hover:text-orange cursor-pointer transition-all duration-300">
               {address}
             </a>
@@ -67,7 +66,7 @@ const Contact = () => {
           </div>
         </div>
         <div className="">
-          <Map className={'w-full h-[390px]  '} defaultState={{ center: [60.051894, 30.313452], zoom: 15 }}>
+          <Map className={'w-full h-[390px]'} defaultState={{ center: [60.051894, 30.313452], zoom: 15 }}>
             <Placemark geometry={[60.051894, 30.313452]}
               options={{
                 iconLayout: "default#image",
