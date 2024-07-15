@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface SwitchTechnologyProps {
   onTechnologySelect: (technology: string) => void;
@@ -16,54 +16,75 @@ const SwitchTechnology = ({
   currentProjectSlug,
   slugProjects,
 }: SwitchTechnologyProps) => {
-  const [selectedTechnology, setSelectedTechnology] = useState<string>("");
-
-  const handleTechnologySelect = (technology: string) => {
-    setSelectedTechnology(technology);
-    onTechnologySelect(technology);
-    updateTitle(technology);
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const technologyNames = ["СИП", "Каркас", "Газобетон"];
+  const technologySlugs = ["sip", "karkas", "gazobeton"];
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const selectedTech = technologySlugs.find((slug) =>
+      currentPath.endsWith(`-${slug}`)
+    );
+    if (selectedTech) {
+      const techIndex = technologySlugs.indexOf(selectedTech);
+      const selectedTechnology = technologyNames[techIndex];
+      onTechnologySelect(selectedTechnology);
+      updateTitle(selectedTechnology);
+    }
+  }, [location.pathname]);
+
+  const handleTechnologySelect = (
+    technology: string,
+    technologySlug: string
+  ) => {
+    onTechnologySelect(technology);
+    updateTitle(technology);
+
+    const newURL = constructURL(currentProjectSlug, technologySlug);
+    navigate(newURL, { replace: true });
+  };
 
   const constructURL = (baseSlug: string, technologySlug: string) => {
-    const technologySlugs = ["sip", "karkas", "gazobeton"];
     let newSlug = baseSlug;
-
     technologySlugs.forEach((slug) => {
-      if (newSlug.includes(`-${slug}`)) {
-        newSlug = newSlug.replace(`-${slug}`, `-${technologySlug}`);
-      }
+      newSlug = newSlug.replace(new RegExp(`-${slug}$`), "");
     });
+    return `/${slugProjects}/${newSlug}-${technologySlug}`;
+  };
 
-    if (!newSlug.includes(`-${technologySlug}`)) {
-      newSlug = `${newSlug}-${technologySlug}`;
-    }
-
-    return `/${slugProjects}/${newSlug}`;
+  const getCurrentTechnology = () => {
+    const currentPath = location.pathname;
+    const selectedTech = technologySlugs.find((slug) =>
+      currentPath.endsWith(`-${slug}`)
+    );
+    return selectedTech
+      ? technologyNames[technologySlugs.indexOf(selectedTech)]
+      : "";
   };
 
   return (
     <div className="flex gap-2 mt-5 mb-5">
       {technologyNames.map((technology, index) => (
-        <Link
+        <button
           key={technology}
-          to={constructURL(currentProjectSlug, slugs[index])}
           className={`border flex items-center justify-center w-[191px] h-[47px] cursor-pointer hover:border-orange ${
-            selectedTechnology === technology ? "bg-orange" : ""
+            getCurrentTechnology() === technology ? "bg-orange" : ""
           }`}
-          onClick={() => handleTechnologySelect(technology)}
+          onClick={() => handleTechnologySelect(technology, slugs[index])}
         >
           <p
             className={`font-museo text-lg text-maingray font-bold transition-all duration-300 ${
-              selectedTechnology === technology ? "text-white" : ""
+              getCurrentTechnology() === technology ? "text-white" : ""
             }`}
           >
             {technology}
           </p>
-        </Link>
+        </button>
       ))}
     </div>
   );
 };
+
 export default SwitchTechnology;

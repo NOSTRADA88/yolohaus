@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Layout from "../layouts/layout";
 import {
   AboutCompany,
@@ -96,15 +102,26 @@ const useRoutes = () => {
 
   const ProjectsDetailRoute = () => {
     const { slug } = useParams<{ slug: string }>();
-    const projectsSlug = slug || "";
+    const location = useLocation();
+
+    const urlParts = location.pathname.split("/").pop()?.split("-") || [];
+    const technologySlug = urlParts[urlParts.length - 1];
+    const baseProjectSlug = urlParts.slice(0, -1).join("-");
+
+    const isTechnology = ["sip", "karkas", "gazobeton"].includes(
+      technologySlug
+    );
+    const projectsSlug = isTechnology ? baseProjectSlug : slug || "";
 
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <ProjectsDetail projectsSlug={projectsSlug} />
+        <ProjectsDetail
+          projectsSlug={projectsSlug}
+          initialTechnology={isTechnology ? technologySlug : undefined}
+        />
       </Suspense>
     );
   };
-
   return (
     <BrowserRouter>
       <ScrollToTop />

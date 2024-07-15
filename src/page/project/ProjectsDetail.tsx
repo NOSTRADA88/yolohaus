@@ -5,12 +5,13 @@ import {
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
 
 interface ProjectsDetailProps {
   projectsSlug: string;
+  initialTechnology?: string;
 }
 
 interface DetailsData {
@@ -109,7 +110,10 @@ interface Project {
   };
 }
 
-const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
+const ProjectsDetail = ({
+  projectsSlug,
+  initialTechnology,
+}: ProjectsDetailProps) => {
   const [projectData, setProjectData] = useState({
     metaTitle: "",
     metaDescription: "",
@@ -120,22 +124,43 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
     complectations: [] as Project[],
   });
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [intermediateTitle, setIntermediateTitle] = useState<string>("");
+
   const fetchData = async () => {
     try {
       const projectDetailData = await fetchProjectDetailData(projectsSlug);
       const projectsData = await fetchProjectsData();
-      const newProjectData = {
-        metaTitle: projectDetailData.data[0].attributes.Metadata.MetaTitle,
-        metaDescription:
-          projectDetailData.data[0].attributes.Metadata.MetaDescription,
-        title: projectDetailData.data[0].attributes.Title,
-        projects: projectDetailData.data,
-        complectations: projectDetailData.data[0].attributes.Complectation,
-        titleProjects: projectsData.Title,
-        slugProjects: projectsData.slug,
-      };
 
-      setProjectData(newProjectData);
+      if (projectDetailData.data && projectDetailData.data.length > 0) {
+        const newProjectData = {
+          metaTitle: projectDetailData.data[0].attributes.Metadata.MetaTitle,
+          metaDescription:
+            projectDetailData.data[0].attributes.Metadata.MetaDescription,
+          title: projectDetailData.data[0].attributes.Title,
+          projects: projectDetailData.data,
+          complectations: projectDetailData.data[0].attributes.Complectation,
+          titleProjects: projectsData.Title,
+          slugProjects: projectsData.slug,
+        };
+
+        setProjectData(newProjectData);
+        setIntermediateTitle(projectDetailData.data[0].attributes.Title);
+
+        const urlParts = location.pathname.split("-");
+        const technologyFromUrl = urlParts[urlParts.length - 1];
+        if (["sip", "karkas", "gazobeton"].includes(technologyFromUrl)) {
+          const technologyMap = {
+            sip: "СИП",
+            karkas: "Каркас",
+            gazobeton: "Газобетон",
+          };
+          updateTitle(
+            technologyMap[technologyFromUrl as keyof typeof technologyMap],
+            projectDetailData.data[0].attributes.Title
+          );
+        }
+      }
 
       setLoading(false);
     } catch (error) {
@@ -144,9 +169,13 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
     }
   };
 
-  const updateTitle = (technology: string) => {
+  const updateTitle = (technology: string, initialTitle?: string) => {
     const technologyNames = ["СИП", "Каркас", "Газобетон"];
-    let { title, metaTitle, metaDescription } = projectData;
+    let { metaTitle, metaDescription, title } = projectData;
+
+    if (initialTitle) {
+      title = initialTitle;
+    }
 
     technologyNames.forEach((name) => {
       title = title.replace(` из ${name}`, "");
@@ -155,7 +184,7 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
     });
 
     title = `${title} из ${technology}`;
-    metaTitle = `${metaTitle} из ${technology}`;
+    metaTitle = `${title}`;
     metaDescription = `Yolohaus дом под ключ. ${title}`;
 
     setProjectData((prevData) => ({
@@ -167,8 +196,25 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [projectsSlug]);
+    const fetchDataAndSetTitle = async () => {
+      await fetchData();
+      if (initialTechnology) {
+        const technologyMap = {
+          sip: "СИП",
+          karkas: "Каркас",
+          gazobeton: "Газобетон",
+        };
+        if (projectData.projects.length > 0) {
+          updateTitle(
+            technologyMap[initialTechnology as keyof typeof technologyMap],
+            projectData.projects[0].attributes.Title
+          );
+        }
+      }
+    };
+
+    fetchDataAndSetTitle();
+  }, [projectsSlug, initialTechnology, location.pathname]);
 
   if (loading) {
     return (
@@ -177,7 +223,6 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
       </div>
     );
   }
-
   return (
     <div>
       <Helmet>
@@ -203,11 +248,20 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
               {" "}
               {projectData.titleProjects} /{" "}
             </Link>
+            {initialTechnology && (
+              <Link
+                to={`/${projectData.slugProjects}/${projectsSlug}`}
+                className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              >
+                {intermediateTitle} /{" "}
+              </Link>
+            )}
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {projectData.title}
             </p>
           </div>
         </div>
+
         <div className="flex flex-col mt-20 max-md:mt-10">
           {projectData.projects.length > 0 && (
             <>
@@ -219,10 +273,11 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
                 Технология строительства
               </h2>
               <Technology
-                updateTitle={updateTitle}
+                updateTitle={(technology) => updateTitle(technology)}
                 complectations={projectData.complectations}
                 currentProjectSlug={projectsSlug}
                 slugProjects={projectData.slugProjects}
+                initialTechnology={initialTechnology}
               />
               <div className="mt-10">
                 <AboutHouses

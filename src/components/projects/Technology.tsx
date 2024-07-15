@@ -45,6 +45,7 @@ interface TechnologyProps {
   currentProjectSlug: string;
   slugProjects: string;
   updateTitle: (technology: string) => void;
+  initialTechnology?: string;
 }
 
 const Technology: React.FC<TechnologyProps> = ({
@@ -52,6 +53,7 @@ const Technology: React.FC<TechnologyProps> = ({
   currentProjectSlug,
   slugProjects,
   updateTitle,
+  initialTechnology,
 }) => {
   const [selectedTechnology, setSelectedTechnology] = useState<string>("");
 
@@ -221,8 +223,8 @@ const Technology: React.FC<TechnologyProps> = ({
         currentProjectSlug={currentProjectSlug}
         slugProjects={slugProjects}
         updateTitle={updateTitle}
-      />
-      {renderTable()}
+      />{" "}
+      {initialTechnology && <>{renderTable()}</>}
     </div>
   );
 };
