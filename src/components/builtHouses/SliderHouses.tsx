@@ -30,7 +30,7 @@ interface DetailsData {
     Photos: {
       data: PhotoData[];
     };
-    YouTube?: string; // JSON string containing YouTube data
+    YouTube?: string;
   };
 }
 
@@ -131,8 +131,8 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
   }, [isFullscreen]);
 
   return (
-    <div className="relative pr-10 mb-10 max-xl:pr-5 max-lg:pr-0">
-      <div className="w-[700px] h-[450px] relative overflow-hidden max-xl:w-[620px] max-lg:w-full max-md:h-[400px] max-sm:h-[250px]">
+    <div className="relative pr-5 mb-10 max-xl:pr-5 max-lg:pr-0">
+      <div className="w-[750px] h-[450px] relative overflow-hidden max-xl:w-[620px] max-lg:w-full max-md:h-[400px] max-sm:h-[250px]">
         {mediaItems.map((media, index) => {
           if (media.type === "photo") {
             return (
@@ -140,7 +140,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 key={index}
                 src={`${API_URL}${media.url}`}
                 alt={`${index}`}
-                className="absolute top-0 left-0 w-full h-full object-center cursor-pointer"
+                className="absolute top-0 left-0 w-full h-full object-center cursor-pointer max-sm:object-cover"
                 style={{
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
@@ -152,7 +152,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
             return (
               <div
                 key={index}
-                className="absolute top-0 left-0 flex justify-center items-center cursor-pointer w-full h-full"
+                className="absolute top-0 left-0 flex justify-center items-center cursor-pointer w-full h-full max-sm:object-cover"
                 style={{
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
@@ -207,7 +207,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
 
       {isFullscreen && (
         <div
-          className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer p-20"
+          className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 flex justify-center items-center z-50 cursor-pointer p-20 max-sm:p-5"
           onClick={closeFullscreen}
         >
           <button
@@ -238,7 +238,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
             <img
               src={`${API_URL}${mediaItems[activeMediaIndex].url}`}
               alt={`${activeMediaIndex}`}
-              className="max-w-full max-h-full"
+              className="max-w-full max-h-full "
               style={{
                 opacity: fullscreenOpacity,
                 transition: "opacity 0.5s ease-in-out",
@@ -273,7 +273,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={`${API_URL}${mediaItems[thumbnailIndex].url}`}
                   alt={`${thumbnailIndex}`}
-                  className="w-full h-full  transition duration-500"
+                  className="w-full h-full  transition duration-500 max-sm:object-cover"
                 />
               ) : (
                 <div className="relative w-full h-full">
@@ -282,7 +282,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                       (mediaItems[thumbnailIndex] as VideoMediaItem).thumbnail
                     }
                     alt={`thumbnail-${thumbnailIndex}`}
-                    className="w-full h-full  transition duration-500"
+                    className="w-full h-full  transition duration-500 max-sm:object-cover"
                     style={{ objectFit: "cover" }}
                   />
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

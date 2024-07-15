@@ -116,172 +116,174 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
 
   return (
     <div className="w-full">
-      <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
-        Параметры
-      </h2>
       {details.map((detail) => (
-        <div key={detail.id} className="">
-          {detail.attributes.Parameters.Area && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Площадь
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.Area}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.BuildingTechnology && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Технология
-                </p>
-
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.BuildingTechnology.BuildingTechnology}
-                </p>
-              </div>
-
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.Days && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Срок строительства
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.Days}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.Location && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Расположение
-                </p>
-                <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
-                  {detail.attributes.Parameters.Location}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.HouseArea && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Площадь дома
-                </p>
-                <p className="font-museo font-light text-base text-maingray ">
-                  {detail.attributes.Parameters.HouseArea}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.BuiltUpArea && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Площадь застройки
-                </p>
-                <p className="font-museo font-light text-base text-maingray ">
-                  {detail.attributes.Parameters.BuiltUpArea}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.Width &&
-            detail.attributes.Parameters.Height && (
+        <>
+          <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
+            Параметры
+          </h2>
+          <div key={detail.id} className="">
+            {detail.attributes.Parameters.Area && (
               <>
                 <div className="flex justify-between items-center py-3">
                   <p className=" font-museo font-bold text-base text-maingray">
-                    Габариты дома
+                    Площадь
                   </p>
-                  <p className="font-museo font-light text-base text-maingray  ">
-                    {detail.attributes.Parameters.Width} x{" "}
-                    {detail.attributes.Parameters.Height}
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.Area}
                   </p>
                 </div>
                 <hr className="border-[#C4C4C4]" />
               </>
             )}
-          {detail.attributes.Parameters.Floors && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Количество этажей
-                </p>
-                <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
-                  {detail.attributes.Parameters.Floors}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.KitchenLivingRoomArea && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Площадь кухни-гостиной
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.KitchenLivingRoomArea}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.Bedrooms && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Количество спален
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.Bedrooms}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.Toilets && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Количество санузлов
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.Toilets}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-          {detail.attributes.Parameters.TerraceAndPorchArea && (
-            <>
-              <div className="flex justify-between items-center py-3">
-                <p className=" font-museo font-bold text-base text-maingray">
-                  Площадь террасы и крыльца
-                </p>
-                <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.TerraceAndPorchArea}
-                </p>
-              </div>
-              <hr className="border-[#C4C4C4]" />
-            </>
-          )}
-        </div>
+            {detail.attributes.BuildingTechnology && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Технология
+                  </p>
+
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.BuildingTechnology.BuildingTechnology}
+                  </p>
+                </div>
+
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.Days && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Срок строительства
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.Days}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.Location && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Расположение
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
+                    {detail.attributes.Parameters.Location}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.HouseArea && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Площадь дома
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray ">
+                    {detail.attributes.Parameters.HouseArea}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.BuiltUpArea && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Площадь застройки
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray ">
+                    {detail.attributes.Parameters.BuiltUpArea}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.Width &&
+              detail.attributes.Parameters.Height && (
+                <>
+                  <div className="flex justify-between items-center py-3">
+                    <p className=" font-museo font-bold text-base text-maingray">
+                      Габариты дома
+                    </p>
+                    <p className="font-museo font-light text-base text-maingray  ">
+                      {detail.attributes.Parameters.Width} x{" "}
+                      {detail.attributes.Parameters.Height}
+                    </p>
+                  </div>
+                  <hr className="border-[#C4C4C4]" />
+                </>
+              )}
+            {detail.attributes.Parameters.Floors && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Количество этажей
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
+                    {detail.attributes.Parameters.Floors}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.KitchenLivingRoomArea && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Площадь кухни-гостиной
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.KitchenLivingRoomArea}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.Bedrooms && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Количество спален
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.Bedrooms}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.Toilets && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Количество санузлов
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.Toilets}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+            {detail.attributes.Parameters.TerraceAndPorchArea && (
+              <>
+                <div className="flex justify-between items-center py-3">
+                  <p className=" font-museo font-bold text-base text-maingray">
+                    Площадь террасы и крыльца
+                  </p>
+                  <p className="font-museo font-light text-base text-maingray">
+                    {detail.attributes.Parameters.TerraceAndPorchArea}
+                  </p>
+                </div>
+                <hr className="border-[#C4C4C4]" />
+              </>
+            )}
+          </div>
+        </>
       ))}
       <div className="flex items-center justify-between max-[400px]:flex-col  max-[400px]:items-start max-[400px]:mt-8 ">
         {details.map((detail) => (
