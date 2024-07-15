@@ -135,11 +135,22 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
       console.error("Ошибка запроса:", error);
     }
   };
-
   const updateTitle = (technology: string) => {
-    const newTitle = `${title} из ${technology}`;
-    const newMetaTitle = ` ${title} из ${technology}`;
-    const newMetaDescription = `Yolohaus дом под ключ. ${title} из ${technology}`;
+    const technologyNames = ["СИП", "Каркас", "Газобетон"];
+
+    let newTitle = title;
+    let newMetaTitle = metaTitle;
+    let newMetaDescription = metaDescription;
+    technologyNames.forEach((name) => {
+      newTitle = newTitle.replace(` из ${name}`, "");
+      newMetaTitle = newMetaTitle.replace(` из ${name}`, "");
+      newMetaDescription = newMetaDescription.replace(` из ${name}`, "");
+    });
+
+    newTitle = `${newTitle} из ${technology}`;
+    newMetaTitle = `${newMetaTitle} из ${technology}`;
+    newMetaDescription = `Yolohaus дом под ключ. ${newTitle}`;
+
     setTitle(newTitle);
     setMetaTitle(newMetaTitle);
     setMetaDescription(newMetaDescription);
@@ -148,6 +159,7 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div>
       <Helmet>

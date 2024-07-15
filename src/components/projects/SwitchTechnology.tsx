@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface SwitchTechnologyProps {
-  onTechnologySelect: (technology: string) => void; // Обновлено
+  onTechnologySelect: (technology: string) => void;
   slugs: string[];
   updateTitle: (technology: string) => void;
   currentProjectSlug: string;
@@ -26,12 +26,28 @@ const SwitchTechnology = ({
 
   const technologyNames = ["СИП", "Каркас", "Газобетон"];
 
+  const constructURL = (baseSlug: string, technologySlug: string) => {
+    const technologySlugs = ["sip", "karkas", "gazobeton"];
+    let newSlug = baseSlug;
+
+    technologySlugs.forEach((slug) => {
+      if (newSlug.includes(`-${slug}`)) {
+        newSlug = newSlug.replace(`-${slug}`, `-${technologySlug}`);
+      }
+    });
+
+    if (!newSlug.includes(`-${technologySlug}`)) {
+      newSlug = `${newSlug}-${technologySlug}`;
+    }
+    return `/${slugProjects}/${newSlug}`;
+  };
+
   return (
     <div className="flex gap-2 mt-5 mb-5">
       {technologyNames.map((technology, index) => (
         <Link
           key={technology}
-          to={`/${slugProjects}/${currentProjectSlug}-${slugs[index]}`}
+          to={constructURL(currentProjectSlug, slugs[index])}
           className={`border flex items-center justify-center w-[191px] h-[47px] cursor-pointer hover:border-orange ${
             selectedTechnology === technology ? "bg-orange" : ""
           }`}
