@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeftLong,
-  faArrowRightLong,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
@@ -90,105 +86,11 @@ const Projects = () => {
     null
   );
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const projectsPerPage = 6;
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
-
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const renderPagination = () => {
-    if (totalPages <= 1) {
-      return null;
-    }
-
-    const pageNumbers = [];
-    const range = 2;
-
-    for (let i = 1; i <= totalPages; i++) {
-      if (
-        i === 1 ||
-        i === totalPages ||
-        (i >= currentPage - range && i <= currentPage + range)
-      ) {
-        pageNumbers.push(
-          <span
-            key={i}
-            className={`cursor-pointer font-museo text-sm text-maingray ${
-              currentPage === i
-                ? "bg-orange text-white px-2 py-1 font-bold"
-                : "hover:text-orange"
-            }`}
-            onClick={() => paginate(i)}
-          >
-            {i}
-          </span>
-        );
-      } else if (
-        i === currentPage - range - 1 ||
-        i === currentPage + range + 1
-      ) {
-        pageNumbers.push(<span key={i}>...</span>);
-      }
-    }
-
-    return (
-      <div className="flex justify-center items-center mt-20 gap-4">
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
-            currentPage === 1
-              ? "text-opacity-60 cursor-auto"
-              : "hover:text-orange"
-          }`}
-          onClick={
-            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
-          }
-        >
-          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon " />{" "}
-          предыдущая страница
-        </span>
-        <FontAwesomeIcon
-          icon={faArrowLeftLong}
-          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
-            currentPage === 1 ? "text-opacity-60 cursor-auto" : ""
-          }`}
-          onClick={
-            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
-          }
-        />{" "}
-        {pageNumbers}
-        <FontAwesomeIcon
-          icon={faArrowRightLong}
-          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
-            currentPage === totalPages ? "text-opacity-60 cursor-auto" : ""
-          }`}
-          onClick={
-            currentPage === totalPages
-              ? undefined
-              : () => paginate(currentPage + 1)
-          }
-        />{" "}
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
-            currentPage === totalPages
-              ? "text-opacity-60 cursor-auto"
-              : "hover:text-orange"
-          }`}
-          onClick={
-            currentPage === totalPages
-              ? undefined
-              : () => paginate(currentPage + 1)
-          }
-        >
-          следующая страница{" "}
-          <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
-        </span>
-      </div>
-    );
-  };
-
+  const [visibleProjects, setVisibleProjects] = useState<Project[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEndOfList, setIsEndOfList] = useState(false);
+  const projectsPerPage = 9;
   const fetchData = async () => {
     try {
       const projectsData = await fetchProjectsData();
@@ -201,10 +103,13 @@ const Projects = () => {
       setWidthHeight(projectsData.Icons.data[2].attributes.url);
       setBedrooms(projectsData.Icons.data[3].attributes.url);
       setSlugProjects(projectsData.slug);
-
+      applySorting(projectsData.ProjectsList.data);
       const mainData = await fetchHomeData();
       setPopular(mainData.PopularCottages.projects.data);
 
+      setVisibleProjects(
+        projectsData.ProjectsList.data.slice(0, projectsPerPage)
+      );
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -214,6 +119,48 @@ const Projects = () => {
     fetchData();
   }, []);
 
+  const loadMoreProjects = () => {
+    const nextPage = currentPage + 1;
+    const sortedProjects = sortProjects(projects);
+    const newProjects = sortedProjects.slice(0, nextPage * projectsPerPage);
+
+    setVisibleProjects(newProjects);
+    setCurrentPage(nextPage);
+    setIsEndOfList(newProjects.length >= sortedProjects.length);
+  };
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 500 &&
+      !isLoading &&
+      !isEndOfList
+    ) {
+      setIsLoading(true);
+      setTimeout(() => {
+        loadMoreProjects();
+        setIsLoading(false);
+      }, 500);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading, isEndOfList, projects, sortBy, sortDirection]);
+  useEffect(() => {
+    const sortedProjects = sortProjects(projects);
+    setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
+    setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
+  }, [sortBy, sortDirection, projects, currentPage]);
+
+  const applySorting = (projectsToSort: Project[]) => {
+    const sortedProjects = sortProjects(projectsToSort);
+    setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
+    setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
+  };
+  useEffect(() => {
+    setCurrentPage(1);
+    applySorting(projects);
+  }, [sortBy, sortDirection, projects]);
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) => {
       const basePrice = item.BasePrice
@@ -232,8 +179,8 @@ const Projects = () => {
     return Math.min(...prices);
   };
 
-  const sortProjects = (projects: Project[]) => {
-    let sortedProjects = [...projects];
+  const sortProjects = (projectsToSort: Project[]) => {
+    let sortedProjects = [...projectsToSort];
     const popularSet = new Set(popular.map((p) => p.id));
 
     if (sortBy === "popularity") {
@@ -271,12 +218,7 @@ const Projects = () => {
       setSortBy(criteria);
       setSortDirection("asc");
     }
-    setCurrentPage(1);
   };
-  const currentProjects = sortProjects(projects).slice(
-    (currentPage - 1) * projectsPerPage,
-    currentPage * projectsPerPage
-  );
 
   const formatPrice = (price: number) => {
     return price.toLocaleString("ru-RU");
@@ -285,7 +227,6 @@ const Projects = () => {
   const resetSort = () => {
     setSortBy(null);
     setSortDirection("asc");
-    setCurrentPage(1);
   };
 
   return (
@@ -377,7 +318,7 @@ const Projects = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
-          {currentProjects.map((project) => (
+          {visibleProjects.map((project) => (
             <Link
               to={`/${slugProjects}/${project.attributes.slug}`}
               key={project.id}
@@ -390,7 +331,7 @@ const Projects = () => {
                   <LazyLoad
                     key={photo.id}
                     height={200}
-                    offset={100}
+                    offset={300}
                     once
                     placeholder={<div className="w-full h-full bg-gray-300" />}
                   >
@@ -477,7 +418,11 @@ const Projects = () => {
             </Link>
           ))}
         </div>
-        {renderPagination()}
+        {isLoading && (
+          <div className="flex justify-center items-center mt-8 mb-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+          </div>
+        )}
       </div>
     </div>
   );

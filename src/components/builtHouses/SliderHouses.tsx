@@ -108,7 +108,9 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
       setFullscreenOpacity(1);
     }, 300);
   };
+
   const openFullscreen = () => {
+    setFullscreenOpacity(1); // Ensure opacity is set when entering fullscreen
     setIsFullscreen(true);
   };
 
@@ -130,7 +132,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
 
   return (
     <div className="relative pr-10 mb-10 max-xl:pr-5 max-lg:pr-0">
-      <div className="w-[700px] h-[500px] relative overflow-hidden max-xl:w-[620px] max-lg:w-full max-md:h-[400px] max-sm:h-[250px]">
+      <div className="w-[700px] h-[450px] relative overflow-hidden max-xl:w-[620px] max-lg:w-full max-md:h-[400px] max-sm:h-[250px]">
         {mediaItems.map((media, index) => {
           if (media.type === "photo") {
             return (
@@ -155,9 +157,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
                 }}
-                onClick={() => {
-                  openFullscreen();
-                }}
+                onClick={() => openFullscreen()}
               >
                 <img
                   src={media.thumbnail}
@@ -273,7 +273,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={`${API_URL}${mediaItems[thumbnailIndex].url}`}
                   alt={`${thumbnailIndex}`}
-                  className="w-full h-full transition duration-500"
+                  className="w-full h-full  transition duration-500"
                 />
               ) : (
                 <div className="relative w-full h-full">
@@ -282,7 +282,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                       (mediaItems[thumbnailIndex] as VideoMediaItem).thumbnail
                     }
                     alt={`thumbnail-${thumbnailIndex}`}
-                    className="w-full h-full transition duration-500"
+                    className="w-full h-full  transition duration-500"
                     style={{ objectFit: "cover" }}
                   />
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
