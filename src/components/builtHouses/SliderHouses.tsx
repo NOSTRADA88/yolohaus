@@ -110,7 +110,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
   };
 
   const openFullscreen = () => {
-    setFullscreenOpacity(1); // Ensure opacity is set when entering fullscreen
+    setFullscreenOpacity(1);
     setIsFullscreen(true);
   };
 
@@ -240,7 +240,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
               alt={`${activeMediaIndex}`}
               className="max-w-full max-h-full"
               style={{
-                opacity: fullscreenOpacity, // Use state for opacity
+                opacity: fullscreenOpacity,
                 transition: "opacity 0.5s ease-in-out",
                 cursor: "auto",
               }}

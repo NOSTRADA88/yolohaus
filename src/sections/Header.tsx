@@ -175,6 +175,8 @@ const Header = () => {
             <div className="flex items-center">
               <a
                 href={youtubeContent}
+                target="_blank"
+                rel="noreferrer"
                 className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange"
               >
                 <img
@@ -185,6 +187,8 @@ const Header = () => {
               </a>
               <a
                 href={vkContent}
+                target="_blank"
+                rel="noreferrer"
                 className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange"
               >
                 <img

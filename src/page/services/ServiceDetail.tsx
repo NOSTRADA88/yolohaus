@@ -89,7 +89,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
+          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl leading-10">
             {title}
           </h1>
           <div className="flex items-center">
@@ -113,8 +113,8 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
         </div>
         <ContactBanner descriptionInfo={descriptionInfo} />
         <div className="mt-20">
-             <h2 className="font-museo font-bold text-2xl max-md:text-xl">
-           {titleMini}
+          <h2 className="font-museo font-bold text-2xl max-md:text-xl ">
+            {titleMini}
           </h2>
           <div className="grid grid-cols-3 gap-6 mt-10 max-lg:grid-cols-2 max-md:grid-cols-1">
             {services.length > 0 &&
