@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
-import { fetchHomeData, fetchReviewsData } from "../../api";
 import { API_URL } from "../../constants";
 import { ReviewsIcon } from "../../assets";
 import { Link } from "react-router-dom";
-
-interface Description {
+export interface Description {
   type: string;
   children: { text: string; type: string }[];
 }
 
-interface Icon {
+export interface Icon {
   data: {
     id: number;
     attributes: {
@@ -18,7 +15,7 @@ interface Icon {
   };
 }
 
-interface BgPhoto {
+export interface BgPhoto {
   data: {
     id: number;
     attributes: {
@@ -27,39 +24,29 @@ interface BgPhoto {
   };
 }
 
-interface RecommendationAttributes {
+export interface RecommendationAttributes {
   Title: string;
   Description: Description[];
   Icon: Icon;
   BgPhoto: BgPhoto;
 }
 
-interface Recommendations {
+export interface Recommendations {
   id: number;
   attributes: RecommendationAttributes;
 }
 
-const Recommendation = () => {
-  const [title, setTitle] = useState<string>("");
-  const [recommendations, setRecommendations] = useState<Recommendations[]>([]);
-  const [slugReviews, setSlugReviews] = useState<string>("");
+interface RecommendationProps {
+  title: string;
+  recommendations: Recommendations[];
+  slugReviews: string;
+}
 
-  const fetchData = async () => {
-    try {
-      const mainData = await fetchHomeData();
-      const reviewsData = await fetchReviewsData();
-      setTitle(mainData.Recommendations.Title);
-      setRecommendations(mainData.Recommendations.List.data);
-      setSlugReviews(reviewsData.slug);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+const Recommendation = ({
+  title,
+  recommendations,
+  slugReviews,
+}: RecommendationProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl max-md:leading-normal max-sm:pr-10">

@@ -4,37 +4,60 @@ import { fetchAboutData, fetchGuaranteeData } from "../../api";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 
+interface Child {
+  text: string;
+  type: string;
+}
+
+interface DescriptionItem {
+  type: string;
+  children: Child[];
+}
+
+interface GuaranteeData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleAbout: string;
+  slugAbout: string;
+  titleMini: string;
+  description: DescriptionItem[];
+  titleMiniTwo: string;
+  descriptionTwo: DescriptionItem[];
+  photoGuarantee: string;
+}
+
 const Guarantee = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [titleAbout, setTitleAbout] = useState<string>("");
-  const [slugAbout, setSlugAbout] = useState<string>("");
-  const [titleMini, setTitleMini] = useState<string>("");
-  const [description, setDescription] = useState<
-    { type: string; children: { text: string; type: string }[] }[]
-  >([]);
-  const [titleMiniTwo, setTitleMiniTwo] = useState<string>("");
-  const [descriptionTwo, setDescriptionTwo] = useState<
-    { type: string; children: { text: string; type: string }[] }[]
-  >([]);
-  const [photoGuarantee, setPhotoGuarantee] = useState<string>("");
+  const [guaranteeData, setGuaranteeData] = useState<GuaranteeData>({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    titleAbout: "",
+    slugAbout: "",
+    titleMini: "",
+    description: [],
+    titleMiniTwo: "",
+    descriptionTwo: [],
+    photoGuarantee: "",
+  });
 
   const fetchData = async () => {
     try {
-      const guaranteeData = await fetchGuaranteeData();
-      const aboutData = await fetchAboutData();
+      const guaranteeDataResponse = await fetchGuaranteeData();
+      const aboutDataResponse = await fetchAboutData();
 
-      setMetaTitle(guaranteeData.Metadata.MetaTitle);
-      setMetaDescription(guaranteeData.Metadata.MetaDescription);
-      setTitle(guaranteeData.Title);
-      setTitleAbout(aboutData.Title);
-      setSlugAbout(aboutData.slug);
-      setTitleMini(guaranteeData.Information[0].Title);
-      setTitleMiniTwo(guaranteeData.Information[1].Title);
-      setDescription(guaranteeData.Information[0].Description);
-      setDescriptionTwo(guaranteeData.Information[1].Description);
-      setPhotoGuarantee(guaranteeData.Photo.data.attributes.url);
+      setGuaranteeData({
+        metaTitle: guaranteeDataResponse.Metadata.MetaTitle,
+        metaDescription: guaranteeDataResponse.Metadata.MetaDescription,
+        title: guaranteeDataResponse.Title,
+        titleAbout: aboutDataResponse.Title,
+        slugAbout: aboutDataResponse.slug,
+        titleMini: guaranteeDataResponse.Information[0].Title,
+        description: guaranteeDataResponse.Information[0].Description,
+        titleMiniTwo: guaranteeDataResponse.Information[1].Title,
+        descriptionTwo: guaranteeDataResponse.Information[1].Description,
+        photoGuarantee: guaranteeDataResponse.Photo.data.attributes.url,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -47,14 +70,14 @@ const Guarantee = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{guaranteeData.metaTitle}</title>
+        <meta name="description" content={guaranteeData.metaDescription} />
       </Helmet>
 
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
+      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10">
-          <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">
-            {title}
+          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl ">
+            {guaranteeData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -64,15 +87,15 @@ const Guarantee = () => {
               Главная /{" "}
             </Link>
             <Link
-              to={`/${slugAbout}`}
+              to={`/${guaranteeData.slugAbout}`}
               className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
             >
               {" "}
-              {titleAbout} /{" "}
+              {guaranteeData.titleAbout} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {" "}
-              {title}
+              {guaranteeData.title}
             </p>
           </div>
         </div>
@@ -81,11 +104,11 @@ const Guarantee = () => {
             <div className=" bg-lightwhite p-5">
               <div className="flex items-center">
                 <p className="font-light text-xl font-museo leading-normal text-justify">
-                  {titleMini}
+                  {guaranteeData.titleMini}
                 </p>
               </div>
             </div>
-            {description.map((item, index) => (
+            {guaranteeData.description.map((item, index) => (
               <div key={index} className="mt-5 ml-4 w-[85%]">
                 {item.children.map((child, childIndex) => (
                   <p
@@ -100,8 +123,8 @@ const Guarantee = () => {
           </div>
           <div className="mt-6 max-xl:hidden">
             <img
-              src={`${API_URL}${photoGuarantee}`}
-              alt="photoAbout"
+              src={`${API_URL}${guaranteeData.photoGuarantee}`}
+              alt="photoGuarantee"
               className="w-[540px]"
             />
           </div>
@@ -109,11 +132,11 @@ const Guarantee = () => {
         <div className=" bg-lightwhite mt-8 p-5">
           <div className="flex items-center">
             <p className="font-light text-xl font-museo leading-normal text-justify">
-              {titleMiniTwo}
+              {guaranteeData.titleMiniTwo}
             </p>
           </div>
         </div>
-        {descriptionTwo.map((item, index) => (
+        {guaranteeData.descriptionTwo.map((item, index) => (
           <div key={index} className="mt-5 ml-4 max-sm:w-[85%]">
             {item.children.map((child, childIndex) => (
               <p

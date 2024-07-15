@@ -48,30 +48,45 @@ interface ServiceDetailProps {
   servicesSlug: string;
 }
 
+interface ServiceState {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleMini: string;
+  descriptionInfo: CardDescription[];
+  titleServices: string;
+  slugServices: string;
+  services: ServiceData[];
+}
+
 const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
-  const [services, setServices] = useState<ServiceData[]>([]);
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [titleMini, setTitleMini] = useState<string>("");
-  const [descriptionInfo, setDescriptionInfo] = useState<CardDescription[]>([]);
-  const [titleServices, setTitleServices] = useState<string>("");
-  const [slugServices, setSlugServices] = useState<string>("");
+  const [serviceData, setServiceData] = useState<ServiceState>({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    titleMini: "",
+    descriptionInfo: [],
+    titleServices: "",
+    slugServices: "",
+    services: [],
+  });
 
   const fetchData = async () => {
     try {
       const detailsData = await fetchServicesDetailsData(servicesSlug);
-      setMetaTitle(detailsData.data[0].attributes.Metadata.MetaTitle);
-      setMetaDescription(
-        detailsData.data[0].attributes.Metadata.MetaDescription
-      );
-      setTitle(detailsData.data[0].attributes.Title);
-      setDescriptionInfo(detailsData.data[0].attributes.ServiceDescription);
-      setServices(detailsData.data[0].attributes.Card);
-      setTitleMini(detailsData.data[0].attributes.Header);
       const servicesData = await fetchServicesData();
-      setTitleServices(servicesData.Title);
-      setSlugServices(servicesData.slug);
+
+      setServiceData({
+        metaTitle: detailsData.data[0].attributes.Metadata.MetaTitle,
+        metaDescription:
+          detailsData.data[0].attributes.Metadata.MetaDescription,
+        title: detailsData.data[0].attributes.Title,
+        descriptionInfo: detailsData.data[0].attributes.ServiceDescription,
+        services: detailsData.data[0].attributes.Card,
+        titleMini: detailsData.data[0].attributes.Header,
+        titleServices: servicesData.Title,
+        slugServices: servicesData.slug,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -84,13 +99,13 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{serviceData.metaTitle}</title>
+        <meta name="description" content={serviceData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
           <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl leading-10">
-            {title}
+            {serviceData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -100,25 +115,25 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
               Главная /{" "}
             </Link>
             <Link
-              to={`/${slugServices}`}
+              to={`/${serviceData.slugServices}`}
               className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
             >
               {" "}
-              {titleServices} /{" "}
+              {serviceData.titleServices} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {title}
+              {serviceData.title}
             </p>
           </div>
         </div>
-        <ContactBanner descriptionInfo={descriptionInfo} />
+        <ContactBanner descriptionInfo={serviceData.descriptionInfo} />
         <div className="mt-20">
           <h2 className="font-museo font-bold text-2xl max-md:text-xl ">
-            {titleMini}
+            {serviceData.titleMini}
           </h2>
           <div className="grid grid-cols-3 gap-6 mt-10 max-lg:grid-cols-2 max-md:grid-cols-1">
-            {services.length > 0 &&
-              services.map((service) => (
+            {serviceData.services.length > 0 &&
+              serviceData.services.map((service) => (
                 <div key={service.id} className="mb-4 border border-[#E5E5E5] ">
                   {service.Photo && service.Photo.data && (
                     <img

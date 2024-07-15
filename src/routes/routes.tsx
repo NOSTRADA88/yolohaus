@@ -11,7 +11,8 @@ import {
   Vacancy,
   PrivacyPolicy,
 } from "../page";
-import { useEffect, useState } from "react";
+
+import { Suspense, useEffect, useState } from "react";
 import {
   fetchAboutData,
   fetchBuiltHousesData,
@@ -24,10 +25,17 @@ import {
   fetchVacancyData,
 } from "../api";
 import ScrollToTop from "../components/ScrollToTop";
-import { Projects, ProjectsDetail } from "../page/project";
-import { BuiltHouses, HouseDetail } from "../page/built";
+import { Projects } from "../page/project";
+import { BuiltHouses } from "../page/built";
+
+import { ErrorPage } from "../page/error";
+import React from "react";
 
 const useRoutes = () => {
+  const HouseDetail = React.lazy(() => import("../page/built/HouseDetail"));
+  const ProjectsDetail = React.lazy(
+    () => import("../page/project/ProjectsDetail")
+  );
   const [slugAbout, setSlugAbout] = useState<string>("");
   const [slugReviews, setSlugReviews] = useState<string>("");
   const [slugGuarantee, setSlugGuarantee] = useState<string>("");
@@ -77,16 +85,24 @@ const useRoutes = () => {
 
   const HouseDetailRoute = () => {
     const { slug } = useParams<{ slug: string }>();
-    const houseSlug = slug || "";
+    const houseSlug = slug ?? "";
 
-    return <HouseDetail houseSlug={houseSlug} />;
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <HouseDetail houseSlug={houseSlug} />
+      </Suspense>
+    );
   };
 
   const ProjectsDetailRoute = () => {
     const { slug } = useParams<{ slug: string }>();
     const projectsSlug = slug || "";
 
-    return <ProjectsDetail projectsSlug={projectsSlug} />;
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProjectsDetail projectsSlug={projectsSlug} />
+      </Suspense>
+    );
   };
 
   return (
@@ -149,6 +165,7 @@ const useRoutes = () => {
             </Layout>
           }
         />
+
         <Route
           path={`/${slugContact}`}
           element={
@@ -197,6 +214,14 @@ const useRoutes = () => {
             </Layout>
           }
         />
+        <Route
+          path="/:random"
+          element={
+            <Layout>
+              <ErrorPage />
+            </Layout>
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

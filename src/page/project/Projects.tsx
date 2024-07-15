@@ -72,16 +72,18 @@ interface Complectation {
 }
 
 const Projects = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [slugProjects, setSlugProjects] = useState<string>("");
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [popular, setPopular] = useState<Project[]>([]);
-  const [HouseArea, setHouseArea] = useState<string>("");
-  const [WidthHeight, setWidthHeight] = useState<string>("");
-  const [ConstructionPeriod, setConstructionPeriod] = useState<string>("");
-  const [Bedrooms, setBedrooms] = useState<string>("");
+  const [projectData, setProjectData] = useState({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    slugProjects: "",
+    projects: [] as Project[],
+    popular: [] as Project[],
+    HouseArea: "",
+    WidthHeight: "",
+    ConstructionPeriod: "",
+    Bedrooms: "",
+  });
   const [sortBy, setSortBy] = useState<"popularity" | "area" | "price" | null>(
     null
   );
@@ -94,18 +96,20 @@ const Projects = () => {
   const fetchData = async () => {
     try {
       const projectsData = await fetchProjectsData();
-      setMetaTitle(projectsData.Metadata.MetaTitle);
-      setMetaDescription(projectsData.Metadata.MetaDescription);
-      setTitle(projectsData.Title);
-      setProjects(projectsData.ProjectsList.data);
-      setHouseArea(projectsData.Icons.data[0].attributes.url);
-      setConstructionPeriod(projectsData.Icons.data[1].attributes.url);
-      setWidthHeight(projectsData.Icons.data[2].attributes.url);
-      setBedrooms(projectsData.Icons.data[3].attributes.url);
-      setSlugProjects(projectsData.slug);
-      applySorting(projectsData.ProjectsList.data);
       const mainData = await fetchHomeData();
-      setPopular(mainData.PopularCottages.projects.data);
+      setProjectData({
+        metaTitle: projectsData.Metadata.MetaTitle,
+        metaDescription: projectsData.Metadata.MetaDescription,
+        title: projectsData.Title,
+        slugProjects: projectsData.slug,
+        projects: projectsData.ProjectsList.data,
+        popular: mainData.PopularCottages.projects.data,
+        HouseArea: projectsData.Icons.data[0].attributes.url,
+        ConstructionPeriod: projectsData.Icons.data[1].attributes.url,
+        WidthHeight: projectsData.Icons.data[2].attributes.url,
+        Bedrooms: projectsData.Icons.data[3].attributes.url,
+      });
+      applySorting(projectsData.ProjectsList.data);
 
       setVisibleProjects(
         projectsData.ProjectsList.data.slice(0, projectsPerPage)
@@ -121,7 +125,7 @@ const Projects = () => {
 
   const loadMoreProjects = () => {
     const nextPage = currentPage + 1;
-    const sortedProjects = sortProjects(projects);
+    const sortedProjects = sortProjects(projectData.projects);
     const newProjects = sortedProjects.slice(0, nextPage * projectsPerPage);
 
     setVisibleProjects(newProjects);
@@ -145,12 +149,12 @@ const Projects = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading, isEndOfList, projects, sortBy, sortDirection]);
+  }, [isLoading, isEndOfList, projectData.projects, sortBy, sortDirection]);
   useEffect(() => {
-    const sortedProjects = sortProjects(projects);
+    const sortedProjects = sortProjects(projectData.projects);
     setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
     setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
-  }, [sortBy, sortDirection, projects, currentPage]);
+  }, [sortBy, sortDirection, projectData.projects, currentPage]);
 
   const applySorting = (projectsToSort: Project[]) => {
     const sortedProjects = sortProjects(projectsToSort);
@@ -159,8 +163,8 @@ const Projects = () => {
   };
   useEffect(() => {
     setCurrentPage(1);
-    applySorting(projects);
-  }, [sortBy, sortDirection, projects]);
+    applySorting(projectData.projects);
+  }, [sortBy, sortDirection, projectData.projects]);
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) => {
       const basePrice = item.BasePrice
@@ -181,7 +185,7 @@ const Projects = () => {
 
   const sortProjects = (projectsToSort: Project[]) => {
     let sortedProjects = [...projectsToSort];
-    const popularSet = new Set(popular.map((p) => p.id));
+    const popularSet = new Set(projectData.popular.map((p) => p.id));
 
     if (sortBy === "popularity") {
       sortedProjects.sort((a, b) => {
@@ -232,13 +236,13 @@ const Projects = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{projectData.metaTitle}</title>
+        <meta name="description" content={projectData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
           <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">
-            {title}
+            {projectData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -249,7 +253,7 @@ const Projects = () => {
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {" "}
-              {title}
+              {projectData.title}
             </p>
           </div>
         </div>
@@ -320,7 +324,7 @@ const Projects = () => {
         <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {visibleProjects.map((project) => (
             <Link
-              to={`/${slugProjects}/${project.attributes.slug}`}
+              to={`/${projectData.slugProjects}/${project.attributes.slug}`}
               key={project.id}
               className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-xl:w-full  max-md:h-full
               max-[350px]:w-[280px] max-[350px]:h-[380px]
@@ -342,7 +346,7 @@ const Projects = () => {
                     />
                   </LazyLoad>
                 ))}
-                {popular.some((p) => p.id === project.id) && (
+                {projectData.popular.some((p) => p.id === project.id) && (
                   <span className="absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded-md">
                     Популярное
                   </span>
@@ -355,7 +359,7 @@ const Projects = () => {
                 <div className="flex gap-[9px] mt-4">
                   <div className="flex gap-[4px]">
                     <img
-                      src={`${API_URL}${HouseArea}`}
+                      src={`${API_URL}${projectData.HouseArea}`}
                       alt="House Area"
                       className="w-4 h-4"
                     />
@@ -366,7 +370,7 @@ const Projects = () => {
                   </div>
                   <div className="flex gap-[4px]">
                     <img
-                      src={`${API_URL}${WidthHeight}`}
+                      src={`${API_URL}${projectData.WidthHeight}`}
                       alt="Width and Height"
                       className="w-4 h-4"
                     />
@@ -377,7 +381,7 @@ const Projects = () => {
                   </div>
                   <div className="flex gap-[4px]">
                     <img
-                      src={`${API_URL}${ConstructionPeriod}`}
+                      src={`${API_URL}${projectData.ConstructionPeriod}`}
                       alt="Construction Period"
                       className="w-4 h-4"
                     />
@@ -387,7 +391,7 @@ const Projects = () => {
                   </div>
                   <div className="flex gap-[4px]">
                     <img
-                      src={`${API_URL}${Bedrooms}`}
+                      src={`${API_URL}${projectData.Bedrooms}`}
                       alt="Bedrooms"
                       className="w-4 h-4"
                     />
@@ -404,7 +408,7 @@ const Projects = () => {
               <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
                 <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
                   <Link
-                    to={`/${slugProjects}/${project.attributes.slug}`}
+                    to={`/${projectData.slugProjects}/${project.attributes.slug}`}
                     className="uppercase text-sm font-medium tracking-wider"
                   >
                     Посмотреть проект

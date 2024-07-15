@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
@@ -82,36 +80,25 @@ interface Complectation {
   ComfortPrice: string;
 }
 
-const PopularProjects = () => {
-  const [title, setTitle] = useState<string>("");
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [HouseArea, setHouseArea] = useState<string>("");
-  const [WidthHeight, setWidthHeight] = useState<string>("");
-  const [ConstructionPeriod, setConstructionPeriod] = useState<string>("");
-  const [Bedrooms, setBedrooms] = useState<string>("");
-  const [slugProjects, setSlugProjects] = useState<string>("");
+interface PopularProjectsProps {
+  title: string;
+  projects: Project[];
+  houseAreaIcon: string;
+  widthHeightIcon: string;
+  constructionPeriodIcon: string;
+  bedroomsIcon: string;
+  slugProjects: string;
+}
 
-  const fetchData = async () => {
-    try {
-      const mainData = await fetchHomeData();
-      setTitle(mainData.PopularCottages.Title);
-      setProjects(mainData.PopularCottages.projects.data);
-
-      const projectData = await fetchProjectsData();
-      setHouseArea(projectData.Icons.data[0].attributes.url);
-      setConstructionPeriod(projectData.Icons.data[1].attributes.url);
-      setWidthHeight(projectData.Icons.data[2].attributes.url);
-      setBedrooms(projectData.Icons.data[3].attributes.url);
-      setSlugProjects(projectData.slug);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+const PopularProjects = ({
+  title,
+  projects,
+  houseAreaIcon,
+  widthHeightIcon,
+  constructionPeriodIcon,
+  bedroomsIcon,
+  slugProjects,
+}: PopularProjectsProps) => {
   const parsePrice = (price: string | null): number => {
     return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
@@ -130,6 +117,7 @@ const PopularProjects = () => {
   const formatPrice = (price: number) => {
     return price.toLocaleString("ru-RU");
   };
+
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16">
       <div className="flex justify-between items-center max-md:flex-col max-md:items-start max-md:gap-6">
@@ -160,7 +148,6 @@ const PopularProjects = () => {
             max-[350px]:w-[280px] max-[350px]:h-[380px]
             transition-all duration-300 hover:shadow-2xl"
           >
-            {" "}
             <img
               src={`${API_URL}${project.attributes.Photos.data[0].attributes.formats.large.url}`}
               alt={project.attributes.Photos.data[0].attributes.name}
@@ -173,7 +160,7 @@ const PopularProjects = () => {
               <div className="flex gap-[9px] mt-4">
                 <div className="flex gap-[4px]">
                   <img
-                    src={`${API_URL}${HouseArea}`}
+                    src={`${API_URL}${houseAreaIcon}`}
                     alt="House Area"
                     className="w-4 h-4"
                   />
@@ -183,7 +170,7 @@ const PopularProjects = () => {
                 </div>
                 <div className="flex gap-[4px]">
                   <img
-                    src={`${API_URL}${WidthHeight}`}
+                    src={`${API_URL}${widthHeightIcon}`}
                     alt="Width and Height"
                     className="w-4 h-4"
                   />
@@ -194,7 +181,7 @@ const PopularProjects = () => {
                 </div>
                 <div className="flex gap-[4px]">
                   <img
-                    src={`${API_URL}${ConstructionPeriod}`}
+                    src={`${API_URL}${constructionPeriodIcon}`}
                     alt="Construction Period"
                     className="w-4 h-4"
                   />
@@ -204,7 +191,7 @@ const PopularProjects = () => {
                 </div>
                 <div className="flex gap-[4px]">
                   <img
-                    src={`${API_URL}${Bedrooms}`}
+                    src={`${API_URL}${bedroomsIcon}`}
                     alt="Bedrooms"
                     className="w-4 h-4"
                   />

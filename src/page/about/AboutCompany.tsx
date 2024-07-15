@@ -4,31 +4,57 @@ import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 
-const AboutCompany = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [titleMini, setTitleMini] = useState<string>("");
-  const [description, setDescription] = useState<
-    { type: string; children: { text: string; type: string }[] }[]
-  >([]);
-  const [titleMiniTwo, setTitleMiniTwo] = useState<string>("");
-  const [descriptionTwo, setDescriptionTwo] = useState<
-    { type: string; children: { text: string; type: string }[] }[]
-  >([]);
-  const [photoAbout, setPhotoAbout] = useState<string>("");
+interface DescriptionItem {
+  type: string;
+  children: { text: string; type: string }[];
+}
 
+interface Child {
+  text: string;
+  type: string;
+}
+
+interface DescriptionItem {
+  type: string;
+  children: Child[];
+}
+
+interface AboutData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleMini: string;
+  description: DescriptionItem[];
+  titleMiniTwo: string;
+  descriptionTwo: DescriptionItem[];
+  photoAbout: string;
+}
+
+const AboutCompany = () => {
+  const [aboutData, setAboutData] = useState<AboutData>({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    titleMini: "",
+    description: [],
+    titleMiniTwo: "",
+    descriptionTwo: [],
+    photoAbout: "",
+  });
   const fetchData = async () => {
     try {
-      const aboutData = await fetchAboutData();
-      setMetaTitle(aboutData.Metadata.MetaTitle);
-      setMetaDescription(aboutData.Metadata.MetaDescription);
-      setTitle(aboutData.Title);
-      setTitleMini(aboutData.About.Information[0].Title);
-      setTitleMiniTwo(aboutData.About.Information[1].Title);
-      setDescription(aboutData.About.Information[0].Description);
-      setDescriptionTwo(aboutData.About.Information[1].Description);
-      setPhotoAbout(aboutData.About.Photo.data.attributes.url);
+      const aboutDataResponse = await fetchAboutData();
+
+      setAboutData({
+        metaTitle: aboutDataResponse.Metadata.MetaTitle,
+        metaDescription: aboutDataResponse.Metadata.MetaDescription,
+        title: aboutDataResponse.Title,
+        titleMini: aboutDataResponse.About.Information[0].Title,
+        description: aboutDataResponse.About.Information[0].Description,
+        titleMiniTwo: aboutDataResponse.About.Information[1].Title,
+        descriptionTwo: aboutDataResponse.About.Information[1].Description,
+        photoAbout: aboutDataResponse.About.Photo.data.attributes.url,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -41,14 +67,14 @@ const AboutCompany = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{aboutData.metaTitle}</title>
+        <meta name="description" content={aboutData.metaDescription} />
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 ">
           <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl">
-            {title}
+            {aboutData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -59,7 +85,7 @@ const AboutCompany = () => {
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {" "}
-              {title}
+              {aboutData.title}
             </p>
           </div>
         </div>
@@ -68,11 +94,11 @@ const AboutCompany = () => {
             <div className=" bg-lightwhite p-5">
               <div className="flex items-center">
                 <p className="font-light text-xl font-museo leading-normal text-justify">
-                  {titleMini}
+                  {aboutData.titleMini}
                 </p>
               </div>
             </div>
-            {description.map((item, index) => (
+            {aboutData.description.map((item, index) => (
               <div key={index} className="mt-5 ml-4 w-[85%]">
                 {item.children.map((child, childIndex) => (
                   <p
@@ -87,7 +113,7 @@ const AboutCompany = () => {
           </div>
           <div className="mt-[66px] max-xl:hidden">
             <img
-              src={`${API_URL}${photoAbout}`}
+              src={`${API_URL}${aboutData.photoAbout}`}
               alt="photoAbout"
               className=""
             />
@@ -96,11 +122,11 @@ const AboutCompany = () => {
         <div className=" bg-lightwhite mt-8 p-5">
           <div className="flex items-center">
             <p className="font-light text-xl font-museo leading-normal text-justify">
-              {titleMiniTwo}
+              {aboutData.titleMiniTwo}
             </p>
           </div>
         </div>
-        {descriptionTwo.map((item, index) => (
+        {aboutData.descriptionTwo.map((item, index) => (
           <div key={index} className="mt-5 ml-4 max-sm:w-[85%]">
             {item.children.map((child, childIndex) => (
               <p

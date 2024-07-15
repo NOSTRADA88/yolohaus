@@ -6,43 +6,76 @@ import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 
-interface Service {
-  id: number;
-  attributes: {
-    Title: string;
-    slug: string;
-    ServiceDescription: {
-      type: string;
-      children: { text: string; type: string }[];
-    }[];
-    Metadata: { MetaTitle: string; MetaDescription: string };
-    Card: {
-      Title: string;
-      Description: {
-        type: string;
-        children: { text: string; type: string }[];
-      }[];
-      Photo: { data: any };
-    }[];
-    Photo: { data: any };
+interface DescriptionText {
+  type: string;
+  text: string;
+}
+
+interface ServiceDescription {
+  type: string;
+  children: DescriptionText[];
+}
+
+interface ServiceCard {
+  Title: string;
+  Description: ServiceDescription[];
+  Photo: {
+    data: {
+      attributes: {
+        url: string;
+        Title: string;
+      };
+    };
   };
 }
 
+interface ServiceAttributes {
+  Title: string;
+  slug: string;
+  ServiceDescription: ServiceDescription[];
+  Metadata: { MetaTitle: string; MetaDescription: string };
+  Card: ServiceCard[];
+  Photo: {
+    data: {
+      attributes: {
+        url: string;
+      };
+    };
+  };
+}
+
+interface Service {
+  id: number;
+  attributes: ServiceAttributes;
+}
+
+interface ServicesData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  services: Service[];
+  slugServices: string;
+}
+
 const Services = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [services, setServices] = useState<Service[]>([]);
-  const [slugServices, setSlugServices] = useState<string>("");
+  const [servicesData, setServicesData] = useState<ServicesData>({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    services: [],
+    slugServices: "",
+  });
 
   const fetchData = async () => {
     try {
-      const servicesData = await fetchServicesData();
-      setMetaTitle(servicesData.Metadata.MetaTitle);
-      setMetaDescription(servicesData.Metadata.MetaDescription);
-      setTitle(servicesData.Title);
-      setServices(servicesData.Services.data);
-      setSlugServices(servicesData.slug);
+      const servicesDataResponse = await fetchServicesData();
+      setServicesData({
+        metaTitle: servicesDataResponse.Metadata.MetaTitle,
+        metaDescription: servicesDataResponse.Metadata.MetaDescription,
+        title: servicesDataResponse.Title,
+        services: servicesDataResponse.Services.data,
+        slugServices: servicesDataResponse.slug,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -55,13 +88,13 @@ const Services = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{servicesData.metaTitle}</title>
+        <meta name="description" content={servicesData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
           <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {title}
+            {servicesData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -71,17 +104,17 @@ const Services = () => {
               Главная /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {title}
+              {servicesData.title}
             </p>
           </div>
         </div>
         <div
-          className="grid grid-cols-3 mt-10 gap-20  max-xl:gap-10  max-[950px]:grid-cols-2
-                 max-[500px]:grid-cols-1  "
+          className="grid grid-cols-3 mt-10 gap-20 max-xl:gap-10 max-[950px]:grid-cols-2
+                 max-[500px]:grid-cols-1"
         >
-          {services.map((service) => (
+          {servicesData.services.map((service) => (
             <Link
-              to={`/${slugServices}/${service.attributes.slug}`}
+              to={`/${servicesData.slugServices}/${service.attributes.slug}`}
               key={service.id}
             >
               <div className="relative group">
@@ -100,15 +133,14 @@ const Services = () => {
                   )}
                 </div>
                 <div
-                  className="absolute bottom-10 left-10 bg-white p-4   group-hover:shadow-md w-[280px] max-[1000px]:w-[240px]
+                  className="absolute bottom-10 left-10 bg-white p-4 group-hover:shadow-md w-[280px] max-[1000px]:w-[240px]
                                 max-[950px]:w-[300px] max-[950px]:left-24 max-[850px]:left-8 max-[850px]:w-[260px] max-md:w-[220px] max-[500px]:w-[350px]
                                 max-[500px]:left-10  max-[400px]:w-[280px] max-[400px]:left-5
-
                                 h-[60px] flex items-center"
                 >
                   <div className="flex justify-between items-center w-full">
                     <Link
-                      to={`/${slugServices}/${service.attributes.slug}`}
+                      to={`/${servicesData.slugServices}/${service.attributes.slug}`}
                       className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium"
                     >
                       {service.attributes.Title}

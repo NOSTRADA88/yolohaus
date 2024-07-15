@@ -38,24 +38,30 @@ type Vacancies = {
 };
 type TabType = "activeVacancies" | "brigade";
 const Vacancy = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [titleAbout, setTitleAbout] = useState<string>("");
-  const [slugAbout, setSlugAbout] = useState<string>("");
+  const [data, setData] = useState({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    titleAbout: "",
+    slugAbout: "",
+    vacancies: [] as Vacancies[],
+  });
+
   const [activeTab, setActiveTab] = useState<TabType>("activeVacancies");
-  const [vacancies, setVacancies] = useState<Vacancies[]>([]);
+
   const fetchData = async () => {
     try {
       const vacancyData = await fetchVacancyData();
       const aboutData = await fetchAboutData();
 
-      setMetaTitle(vacancyData.Metadata.MetaTitle);
-      setMetaDescription(vacancyData.Metadata.MetaDescription);
-      setTitle(vacancyData.Title);
-      setTitleAbout(aboutData.Title);
-      setSlugAbout(aboutData.slug);
-      setVacancies(vacancyData.Vacancies.data);
+      setData({
+        metaTitle: vacancyData.Metadata.MetaTitle,
+        metaDescription: vacancyData.Metadata.MetaDescription,
+        title: vacancyData.Title,
+        titleAbout: aboutData.Title,
+        slugAbout: aboutData.slug,
+        vacancies: vacancyData.Vacancies.data,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -68,14 +74,14 @@ const Vacancy = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{data.metaTitle}</title>
+        <meta name="description" content={data.metaDescription} />
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
           <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {title}
+            {data.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -85,21 +91,21 @@ const Vacancy = () => {
               Главная /{" "}
             </Link>
             <Link
-              to={`/${slugAbout}`}
+              to={`/${data.slugAbout}`}
               className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
             >
               {" "}
-              {titleAbout} /{" "}
+              {data.titleAbout} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {" "}
-              {title}
+              {data.title}
             </p>
           </div>
         </div>
         <Switch activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === "activeVacancies" && (
-          <ActiveVacancies vacancies={vacancies} />
+          <ActiveVacancies vacancies={data.vacancies} />
         )}
         {activeTab === "brigade" && <ContactBanner />}
       </div>

@@ -39,6 +39,7 @@ const SwitchTechnology = ({
     if (!newSlug.includes(`-${technologySlug}`)) {
       newSlug = `${newSlug}-${technologySlug}`;
     }
+
     return `/${slugProjects}/${newSlug}`;
   };
 

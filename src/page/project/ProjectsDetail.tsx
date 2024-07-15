@@ -110,66 +110,84 @@ interface Project {
 }
 
 const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [slugProjects, setSlugProjects] = useState<string>("");
-  const [titleProjects, setTitleProjects] = useState<string>("");
-  const [projects, setProjects] = useState<DetailsData[]>([]);
-  const [complectations, setComplectations] = useState<Project[]>([]);
-
+  const [projectData, setProjectData] = useState({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    slugProjects: "",
+    titleProjects: "",
+    projects: [] as DetailsData[],
+    complectations: [] as Project[],
+  });
+  const [loading, setLoading] = useState(true);
   const fetchData = async () => {
     try {
-      const projectData = await fetchProjectDetailData(projectsSlug);
-      setMetaTitle(projectData.data[0].attributes.Metadata.MetaTitle);
-      setMetaDescription(
-        projectData.data[0].attributes.Metadata.MetaDescription
-      );
-      setTitle(projectData.data[0].attributes.Title);
-      setProjects(projectData.data);
+      const projectDetailData = await fetchProjectDetailData(projectsSlug);
       const projectsData = await fetchProjectsData();
-      setTitleProjects(projectsData.Title);
-      setSlugProjects(projectsData.slug);
-      setComplectations(projectData.data[0].attributes.Complectation);
+      const newProjectData = {
+        metaTitle: projectDetailData.data[0].attributes.Metadata.MetaTitle,
+        metaDescription:
+          projectDetailData.data[0].attributes.Metadata.MetaDescription,
+        title: projectDetailData.data[0].attributes.Title,
+        projects: projectDetailData.data,
+        complectations: projectDetailData.data[0].attributes.Complectation,
+        titleProjects: projectsData.Title,
+        slugProjects: projectsData.slug,
+      };
+
+      setProjectData(newProjectData);
+
+      setLoading(false);
     } catch (error) {
       console.error("Ошибка запроса:", error);
+      setLoading(false);
     }
   };
+
   const updateTitle = (technology: string) => {
     const technologyNames = ["СИП", "Каркас", "Газобетон"];
+    let { title, metaTitle, metaDescription } = projectData;
 
-    let newTitle = title;
-    let newMetaTitle = metaTitle;
-    let newMetaDescription = metaDescription;
     technologyNames.forEach((name) => {
-      newTitle = newTitle.replace(` из ${name}`, "");
-      newMetaTitle = newMetaTitle.replace(` из ${name}`, "");
-      newMetaDescription = newMetaDescription.replace(` из ${name}`, "");
+      title = title.replace(` из ${name}`, "");
+      metaTitle = metaTitle.replace(` из ${name}`, "");
+      metaDescription = metaDescription.replace(` из ${name}`, "");
     });
 
-    newTitle = `${newTitle} из ${technology}`;
-    newMetaTitle = `${newMetaTitle} из ${technology}`;
-    newMetaDescription = `Yolohaus дом под ключ. ${newTitle}`;
+    title = `${title} из ${technology}`;
+    metaTitle = `${metaTitle} из ${technology}`;
+    metaDescription = `Yolohaus дом под ключ. ${title}`;
 
-    setTitle(newTitle);
-    setMetaTitle(newMetaTitle);
-    setMetaDescription(newMetaDescription);
+    setProjectData((prevData) => ({
+      ...prevData,
+      title,
+      metaTitle,
+      metaDescription,
+    }));
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [projectsSlug]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{projectData.metaTitle}</title>
+        <meta name="description" content={projectData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
           <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {title}
+            {projectData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -179,34 +197,41 @@ const ProjectsDetail = ({ projectsSlug }: ProjectsDetailProps) => {
               Главная /{" "}
             </Link>
             <Link
-              to={`/${slugProjects}`}
+              to={`/${projectData.slugProjects}`}
               className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
             >
               {" "}
-              {titleProjects} /{" "}
+              {projectData.titleProjects} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {title}
+              {projectData.title}
             </p>
           </div>
         </div>
         <div className="flex flex-col mt-20 max-md:mt-10">
-          <div className="flex justify-between max-lg:flex-col">
-            <SliderHouses details={projects} />
-            <OptionsHouses details={projects} />
-          </div>
-          <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
-            Технология строительства
-          </h2>
-          <Technology
-            updateTitle={updateTitle}
-            complectations={complectations}
-            currentProjectSlug={projectsSlug}
-            slugProjects={slugProjects}
-          />
-          <div className="mt-10">
-            <AboutHouses details={projects} slug={slugProjects} />
-          </div>
+          {projectData.projects.length > 0 && (
+            <>
+              <div className="flex justify-between max-lg:flex-col">
+                <SliderHouses details={projectData.projects} />
+                <OptionsHouses details={projectData.projects} />
+              </div>
+              <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
+                Технология строительства
+              </h2>
+              <Technology
+                updateTitle={updateTitle}
+                complectations={projectData.complectations}
+                currentProjectSlug={projectsSlug}
+                slugProjects={projectData.slugProjects}
+              />
+              <div className="mt-10">
+                <AboutHouses
+                  details={projectData.projects}
+                  slug={projectData.slugProjects}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

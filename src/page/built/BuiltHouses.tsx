@@ -53,21 +53,26 @@ interface Houses {
 }
 
 const BuiltHouses = () => {
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [houses, setHouses] = useState<Houses[]>([]);
-  const [HouseArea, setHouseArea] = useState<string>("");
-  const [Location, setLocation] = useState<string>("");
-  const [ConstructionPeriod, setConstructionPeriod] = useState<string>("");
-  const [slugBuilt, setSlugBuilt] = useState<string>("");
+  const [houseData, setHouseData] = useState({
+    metaTitle: "",
+    metaDescription: "",
+    title: "",
+    houses: [] as Houses[],
+    HouseArea: "",
+    Location: "",
+    ConstructionPeriod: "",
+    slugBuilt: "",
+  });
   const [currentPage, setCurrentPage] = useState<number>(1);
   const projectsPerPage = 6;
-  const totalPages = Math.ceil(houses.length / projectsPerPage);
+  const totalPages = Math.ceil(houseData.houses.length / projectsPerPage);
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
 
-  const currentProjects = houses.slice(indexOfFirstProject, indexOfLastProject);
+  const currentProjects = houseData.houses.slice(
+    indexOfFirstProject,
+    indexOfLastProject
+  );
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -166,14 +171,17 @@ const BuiltHouses = () => {
   const fetchData = async () => {
     try {
       const builtData = await fetchBuiltHousesData();
-      setMetaTitle(builtData.Metadata.MetaTitle);
-      setMetaDescription(builtData.Metadata.MetaDescription);
-      setTitle(builtData.title);
-      setHouses(builtData.BuiltHouses.data);
-      setLocation(builtData.Icons.data[0].attributes.url);
-      setHouseArea(builtData.Icons.data[1].attributes.url);
-      setConstructionPeriod(builtData.Icons.data[2].attributes.url);
-      setSlugBuilt(builtData.slug);
+
+      setHouseData({
+        metaTitle: builtData.Metadata.MetaTitle,
+        metaDescription: builtData.Metadata.MetaDescription,
+        title: builtData.title,
+        houses: builtData.BuiltHouses.data,
+        Location: builtData.Icons.data[0].attributes.url,
+        HouseArea: builtData.Icons.data[1].attributes.url,
+        ConstructionPeriod: builtData.Icons.data[2].attributes.url,
+        slugBuilt: builtData.slug,
+      });
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -185,13 +193,13 @@ const BuiltHouses = () => {
   return (
     <div>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{houseData.metaTitle}</title>
+        <meta name="description" content={houseData.metaDescription} />
       </Helmet>{" "}
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
           <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">
-            {title}
+            {houseData.title}
           </h1>
           <div className="flex items-center">
             <Link
@@ -202,7 +210,7 @@ const BuiltHouses = () => {
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
               {" "}
-              {title}
+              {houseData.title}
             </p>
           </div>
         </div>
@@ -210,7 +218,7 @@ const BuiltHouses = () => {
         <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
           {currentProjects.map((house) => (
             <Link
-              to={`/${slugBuilt}/${house.attributes.slug}`}
+              to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
               key={house.id}
               className="flex flex-col mt-8 group cursor-pointer"
             >
@@ -228,7 +236,9 @@ const BuiltHouses = () => {
                 >
                   <div className="text-orange transition-all duration-300 absolute right-5 top-5 max-[800px]:right-3">
                     <div className=" cursor-pointer arrow-container">
-                      <Link to={`/${slugBuilt}/${house.attributes.slug}`}>
+                      <Link
+                        to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
+                      >
                         <FontAwesomeIcon
                           icon={faArrowRightLong}
                           className="arrow-icon text-xl"
@@ -243,7 +253,7 @@ const BuiltHouses = () => {
                     <div className="flex gap-10">
                       <div className="flex gap-2">
                         <img
-                          src={`${API_URL}${HouseArea}`}
+                          src={`${API_URL}${houseData.HouseArea}`}
                           alt="Construction Period"
                           className="w-4 h-4"
                         />
@@ -253,7 +263,7 @@ const BuiltHouses = () => {
                       </div>
                       <div className="flex gap-2">
                         <img
-                          src={`${API_URL}${ConstructionPeriod}`}
+                          src={`${API_URL}${houseData.ConstructionPeriod}`}
                           alt="Construction Period"
                           className="w-4 h-4"
                         />
