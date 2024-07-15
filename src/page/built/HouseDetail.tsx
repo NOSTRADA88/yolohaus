@@ -80,7 +80,7 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
     title: "",
     slugBuilt: "",
     titleBuilt: "",
-    houses: [],
+    houses: [] as HousesData[],
   });
 
   const fetchData = async () => {

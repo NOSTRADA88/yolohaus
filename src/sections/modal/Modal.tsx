@@ -12,7 +12,7 @@ type ModalProps = {
 };
 
 const Modal = ({ closeModal }: ModalProps) => {
-  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+  const [, setErrors] = useState<{ [key: string]: string[] }>({});
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [slugPrivacy, setSlugPrivacy] = useState<string>("");
 
@@ -25,10 +25,8 @@ const Modal = ({ closeModal }: ModalProps) => {
     formState: { errors: formErrors },
     setError,
   } = useForm();
-  const { name, phone, message } = watch(); // Используем объектный деструктуринг
-
+  const { name, phone, message } = watch();
   const recordForm: SubmitHandler<FieldValues> = async (data) => {
-    // Проверка на заполненность полей
     if (!name || !phone || !message) {
       if (!name)
         setError("name", { type: "manual", message: "Введите ваше имя" });
@@ -53,7 +51,6 @@ const Modal = ({ closeModal }: ModalProps) => {
       formData.append("message", data.message);
       formData.append("url", data.url);
 
-      // Append multiple files
       selectedFiles.forEach((file) => {
         formData.append("files", file);
       });
@@ -192,7 +189,9 @@ const Modal = ({ closeModal }: ModalProps) => {
                 <label htmlFor="fileInput" className="cursor-pointer">
                   <div className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange hover:bg-white text-white hover:text-maingray transform w-[140px] h-10 border-[1px] border-orange">
                     <p className="text-sm font-museo font-medium">
-                      Загрузить файлы
+                      {selectedFiles.length > 0
+                        ? `Загружено: ${selectedFiles.length}`
+                        : "Загрузить файлы"}
                     </p>
                   </div>
                 </label>

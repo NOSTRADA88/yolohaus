@@ -1,138 +1,11 @@
 import { API_URL, axiosInstanse } from "../constants";
 
-export const fetchHomeData = async () => {
+const fetchData = async (endpoint: string, populateParams: string) => {
   try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/glavnaya?populate=About.Photo&populate=About.Information&populate=Greetings.Photo&populate=Metadata&populate=Mortgage.Photos&populate=Recommendations.List.Icon&populate=Recommendations.List.BgPhoto&populate=ContactsMap.WorkTime&populate=PopularCottages.projects.Photos&populate=PopularCottages.projects.Parameters&populate=PopularCottages.projects.Complectation`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchHeaderFooterData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/glavnaya?populate=Header.Socials.Photo&&populate=Header.PhoneNumber&populate=Header.CompanyLogo.Photo&populate=Footer.Socials.Photo&&populate=Footer.PhoneNumber&populate=Footer.CompanyLogo.Photo`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchAboutData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/o-kompanii?populate=Metadata&populate=About.Photo&populate=About.Information`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchReviewsData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/otzyvy?populate=Metadata&populate=spisok_otzyvovs.Photo`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchGuaranteeData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/garantiya?populate=Metadata&populate=Information&populate=Photo`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchVacancyData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/vakansii?populate=Metadata&populate=Vacancies`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchProjectsData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/proekty?populate=Metadata&populate=Icons.Photo&populate=ProjectsList.Photos&populate=ProjectsList.Metadata&populate=ProjectsList.Parameters&populate=ProjectsList.Complectation`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchContactData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/kontakty?populate=Metadata&populate=Information.Photo&populate=WorkingTime&populate=Employees.Photo&populate=Productions`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error(`Ошибка запроса`);
-  }
-};
-
-export const fetchServicesData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/uslugi?populate=Metadata&populate=Services.Photo`
-    );
+    const url = `${API_URL}${endpoint}${
+      populateParams ? `?populate=${populateParams}` : ""
+    }`;
+    const response = await axiosInstanse.get(url);
     if (response.status === 200) {
       return response.data.data.attributes;
     } else {
@@ -143,6 +16,45 @@ export const fetchServicesData = async () => {
     throw new Error("Ошибка запроса");
   }
 };
+
+export const fetchHomeData = () =>
+  fetchData(
+    "/api/glavnaya",
+    "About.Photo,About.Information,Greetings.Photo,Metadata,Mortgage.Photos,Recommendations.List.Icon,Recommendations.List.BgPhoto,ContactsMap.WorkTime,PopularCottages.projects.Photos,PopularCottages.projects.Parameters,PopularCottages.projects.Complectation"
+  );
+
+export const fetchHeaderFooterData = () =>
+  fetchData(
+    "/api/glavnaya",
+    "Header.Socials.Photo,Header.PhoneNumber,Header.CompanyLogo.Photo,Footer.Socials.Photo,Footer.PhoneNumber,Footer.CompanyLogo.Photo"
+  );
+
+export const fetchAboutData = () =>
+  fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");
+
+export const fetchReviewsData = () =>
+  fetchData("/api/otzyvy", "Metadata,spisok_otzyvovs.Photo");
+
+export const fetchGuaranteeData = () =>
+  fetchData("/api/garantiya", "Metadata,Information,Photo");
+
+export const fetchVacancyData = () =>
+  fetchData("/api/vakansii", "Metadata,Vacancies");
+
+export const fetchProjectsData = () =>
+  fetchData(
+    "/api/proekty",
+    "Metadata,Icons.Photo,ProjectsList.Photos,ProjectsList.Metadata,ProjectsList.Parameters,ProjectsList.Complectation"
+  );
+
+export const fetchContactData = () =>
+  fetchData(
+    "/api/kontakty",
+    "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions"
+  );
+
+export const fetchServicesData = () =>
+  fetchData("/api/uslugi", "Metadata,Services.Photo");
 
 export const fetchServicesDetailsData = async (servicesSlug: string) => {
   try {
@@ -160,37 +72,14 @@ export const fetchServicesDetailsData = async (servicesSlug: string) => {
   }
 };
 
-export const fetchPrivacyPolicyData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/politika-konfidenczialnosti?populate=Metadata`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
-  }
-};
+export const fetchPrivacyPolicyData = () =>
+  fetchData("/api/politika-konfidenczialnosti", "Metadata");
 
-export const fetchBuiltHousesData = async () => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/postroennye-doma?populate=Metadata&populate=BuiltHouses.Metadata&populate=BuiltHouses.Parameters&populate=BuiltHouses.BuildingTechnology&populate=BuiltHouses.Photos&populate=BuiltHouses.YouTube&populate=Icons`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
-  }
-};
+export const fetchBuiltHousesData = () =>
+  fetchData(
+    "/api/postroennye-doma",
+    "Metadata,BuiltHouses.Metadata,BuiltHouses.Parameters,BuiltHouses.BuildingTechnology,BuiltHouses.Photos,BuiltHouses.YouTube,Icons"
+  );
 
 export const fetchHousesDetailsData = async (houseSlug: string) => {
   try {
@@ -222,4 +111,16 @@ export const fetchProjectDetailData = async (projetsSlug: string) => {
     console.log(error);
     throw new Error("Ошибка запроса");
   }
+};
+
+export const fetchAllData = async () => {
+  const [mainData, aboutData, projectData, reviewsData, phoneData] =
+    await Promise.all([
+      fetchHomeData(),
+      fetchAboutData(),
+      fetchProjectsData(),
+      fetchReviewsData(),
+      fetchHeaderFooterData(),
+    ]);
+  return { mainData, aboutData, projectData, reviewsData, phoneData };
 };
