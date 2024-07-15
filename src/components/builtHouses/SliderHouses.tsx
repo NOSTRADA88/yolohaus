@@ -138,7 +138,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 key={index}
                 src={`${API_URL}${media.url}`}
                 alt={`${index}`}
-                className="absolute top-0 left-0 w-full h-full object-cover object-center cursor-pointer"
+                className="absolute top-0 left-0 w-full h-full object-center cursor-pointer"
                 style={{
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
@@ -162,7 +162,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={media.thumbnail}
                   alt={`Thumbnail for video ${index}`}
-                  className="w-full h-full object-cover transition duration-500"
+                  className="w-full h-full transition duration-500"
                 />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
                   <img src={Youtube} className="w-20" alt="youtube" />
@@ -273,7 +273,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={`${API_URL}${mediaItems[thumbnailIndex].url}`}
                   alt={`${thumbnailIndex}`}
-                  className="w-full h-full object-cover transition duration-500"
+                  className="w-full h-full transition duration-500"
                 />
               ) : (
                 <div className="relative w-full h-full">
@@ -282,7 +282,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                       (mediaItems[thumbnailIndex] as VideoMediaItem).thumbnail
                     }
                     alt={`thumbnail-${thumbnailIndex}`}
-                    className="w-full h-full object-cover transition duration-500"
+                    className="w-full h-full transition duration-500"
                     style={{ objectFit: "cover" }}
                   />
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
