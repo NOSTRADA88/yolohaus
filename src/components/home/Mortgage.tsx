@@ -26,7 +26,7 @@ const Mortgage = ({ title, description, photos }: MortgageProps) => {
       <div className="w-full bg-lightwhite mt-8 p-5">
         <div className="flex items-center max-md:flex-col">
           <div className=" max-md:w-full max-md:mb-5">
-            <p className="font-light text-xl font-museo leading-normal text-justify">
+            <p className="font-light text-lg font-museo leading-normal text-justify">
               {description}
             </p>
           </div>
