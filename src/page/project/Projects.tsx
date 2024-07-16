@@ -310,15 +310,15 @@ const Projects = () => {
                   <span>&#9660;</span>
                 ))}
             </p>
+            {sortBy && (
+              <FontAwesomeIcon
+                onClick={resetSort}
+                icon={faTimes}
+                size="2x"
+                className="font-museo text-sm cursor-pointer mt-1 text-maingray transition-all duration-300 hover:text-orange"
+              />
+            )}
           </div>
-          {sortBy && (
-            <FontAwesomeIcon
-              onClick={resetSort}
-              icon={faTimes}
-              size="2x"
-              className="font-museo text-sm cursor-pointer text-maingray transition-all duration-300 hover:text-orange"
-            />
-          )}
         </div>
 
         <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
