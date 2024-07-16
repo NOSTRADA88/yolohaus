@@ -230,14 +230,14 @@ const ProjectsDetail = ({
         <meta name="description" content={projectData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
+        <div className="flex justify-between max-xl:flex-col max-xl:gap-4">
+          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl  leading-10">
             {projectData.title}
           </h1>
-          <div className="flex items-center">
+          <div className="flex items-center max-[450px]:flex-wrap max-[450px]:justify-start">
             <Link
               to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
+              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
             >
               Главная /{" "}
             </Link>
@@ -262,7 +262,7 @@ const ProjectsDetail = ({
           </div>
         </div>
 
-        <div className="flex flex-col mt-20 max-md:mt-10">
+        <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
           {projectData.projects.length > 0 && (
             <>
               <div className="flex justify-between max-lg:flex-col">
