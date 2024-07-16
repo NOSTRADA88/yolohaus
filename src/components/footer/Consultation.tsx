@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ConsultationPhoto } from "../../assets";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
-import { API_URL } from "../../constants";
 import InputMask from "react-input-mask";
 import { Link, useLocation } from "react-router-dom";
 
@@ -11,22 +10,46 @@ type ConsultationProps = {
 };
 
 const Consultation = ({ slugPrivacy }: ConsultationProps) => {
-  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+  const [, setErrors] = useState<{ [key: string]: string[] }>({});
   const location = useLocation();
-  const { register, handleSubmit, reset, setValue } = useForm();
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors: formErrors },
+    setError,
+  } = useForm();
+  const { name, phone, message } = watch();
   const recordForm: SubmitHandler<FieldValues> = async (data) => {
+    if (!name || !phone || !message) {
+      if (!name)
+        setError("name", { type: "manual", message: "Введите ваше имя" });
+      if (!phone)
+        setError("phone", { type: "manual", message: "Введите ваш телефон" });
+      if (!message)
+        setError("message", {
+          type: "manual",
+          message: "Введите ваше сообщение",
+        });
+      return;
+    }
+
     try {
       const currentUrl = window.location.href;
       data.url = currentUrl;
-      if (data.text) {
-        data.text = `Запись на консультацию. Вид обращения: [${data.text}]`;
-      } else {
-        data.text = "Запись на консультацию";
-      }
-      const response = await axios.post(`${API_URL}/api/feedback/store`, data, {
+
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("phone", data.phone);
+      formData.append("message", data.message);
+      formData.append("url", data.url);
+
+      const response = await axios.post(`http://149.154.65.51/send`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -71,10 +94,12 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                     type="text"
                     className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray  bg-[#f9e0c3]"
                     placeholder="Ваше имя"
-                    {...register("author")}
+                    {...register("name")}
                   />
-                  {errors.author && (
-                    <div className="text-red-400">{errors.author[0]}</div>
+                  {formErrors.name && (
+                    <div className="text-red-600 font-museo text-xs font-light text-center">
+                      {formErrors.name?.message as string}
+                    </div>
                   )}
                 </div>
                 <div className="flex-grow ml-4">
@@ -84,8 +109,10 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                     placeholder="Телефон"
                     {...register("phone")}
                   />
-                  {errors.phone && (
-                    <div className="text-red-400">{errors.phone[0]}</div>
+                  {formErrors.phone && (
+                    <div className="text-red-600 font-museo text-xs font-light text-center">
+                      {formErrors.phone?.message as string}
+                    </div>
                   )}
                 </div>
               </div>
@@ -93,24 +120,29 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                 <textarea
                   className="w-full h-16 max-h-24 p-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
                   placeholder="Ваше сообщение"
-                  {...register("email")}
+                  {...register("message")}
                 />
-                {errors.email && (
-                  <div className="text-red-400">{errors.email[0]}</div>
+                {formErrors.message && (
+                  <div className="text-red-600 font-museo text-xs font-light text-center">
+                    {formErrors.message?.message as string}
+                  </div>
                 )}
               </div>
             </div>
-            <div className="flex gap-[3.5px] items-center mb-4">
+            <div className="flex gap-[3.5px] items-center mb-4 ">
               <div className="parallelogram h-10 border-l-[1px] border-white"></div>
-              <div className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-white hover:bg-orange hover:text-white transform parallelogram w-[140px] h-10 border-[1px] border-white">
+              <button
+                type="submit"
+                className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-white hover:bg-orange hover:text-white transform parallelogram w-[140px] h-10 border-[1px] border-white"
+              >
                 <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">
                   Отправить
                 </p>
-              </div>
+              </button>
+
               <div className="ml-4">
                 <p className="text-xs font-museo font-medium text-white">
                   Отправляя форму, я даю согласие на обработку
-                  <br />{" "}
                   <Link
                     className="underline cursor-pointer "
                     to={`/${slugPrivacy}`}

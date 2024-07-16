@@ -232,7 +232,7 @@ const BuiltHouses = () => {
               <div className="flex flex-col">
                 <div
                   className="houses-details bg-gray-100 ml-10 px-6 h-[180px] pt-[50px] max-[800px]:ml-4 max-[800px]:pt-12  max-md:pt-14 max-xl:h-[200px] 
-                max-sm:h-[180px]   max-[350px]:h-[200px]"
+                max-sm:h-[180px]   max-[480px]:h-[195px]  max-[350px]:h-[200px]"
                 >
                   <div className="text-orange transition-all duration-300 absolute right-5 top-5 max-[800px]:right-3">
                     <div className=" cursor-pointer arrow-container">
@@ -274,7 +274,7 @@ const BuiltHouses = () => {
                     </div>
                     <div className="flex gap-2 mt-2">
                       <img
-                        src={`${API_URL}${Location}`}
+                        src={`${API_URL}${houseData.Location}`}
                         alt="Construction Period"
                         className="w-4 h-4"
                       />

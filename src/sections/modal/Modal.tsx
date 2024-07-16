@@ -55,8 +55,6 @@ const Modal = ({ closeModal }: ModalProps) => {
         formData.append("files", file);
       });
 
-      console.log("FormData:", formData);
-
       const response = await axios.post(`http://149.154.65.51/send`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",

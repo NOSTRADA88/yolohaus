@@ -22,7 +22,7 @@ const MobileMenu = ({
 }: MobileMenuProps) => {
   return (
     <div
-      className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50  border-r-4 border-r-orange
+      className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50  border-r-4 border-r-orange overflow-y-auto pb-10
      transition-transform duration-300 ${
        isOpen ? "transform translate-x-0" : "transform -translate-x-full"
      }`}
@@ -37,7 +37,7 @@ const MobileMenu = ({
           className="text-maingray font-light"
         />
       </button>
-      <div className="flex justify-center items-center flex-col mt-5 gap-10">
+      <div className="flex justify-center items-center flex-col mt-5 gap-5">
         <a href="/">
           <img
             src={`${API_URL}${logoCompany}`}

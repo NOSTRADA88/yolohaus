@@ -100,7 +100,7 @@ const Guarantee = () => {
           </div>
         </div>
         <div className="flex justify-between items-center max-xl:mt-20 max-md:mt-10 ">
-          <div className="flex flex-col w-[60%] max-xl:w-full">
+          <div className="flex flex-col w-[60%] max-[1111px]:w-full">
             <div className=" bg-lightwhite p-5">
               <div className="flex items-center">
                 <p className="font-light text-xl font-museo leading-normal text-justify">
@@ -109,7 +109,10 @@ const Guarantee = () => {
               </div>
             </div>
             {guaranteeData.description.map((item, index) => (
-              <div key={index} className="mt-5 ml-4 w-[85%]">
+              <div
+                key={index}
+                className="mt-5 ml-4 w-[85%] max-[1111px]:w-full max-[1111px]:pr-8"
+              >
                 {item.children.map((child, childIndex) => (
                   <p
                     className="font-light text-sm font-museo leading-relaxed text-justify"
@@ -121,7 +124,7 @@ const Guarantee = () => {
               </div>
             ))}
           </div>
-          <div className="mt-6 max-xl:hidden">
+          <div className="mt-6  max-[1111px]:hidden">
             <img
               src={`${API_URL}${guaranteeData.photoGuarantee}`}
               alt="photoGuarantee"
@@ -137,7 +140,7 @@ const Guarantee = () => {
           </div>
         </div>
         {guaranteeData.descriptionTwo.map((item, index) => (
-          <div key={index} className="mt-5 ml-4 max-sm:w-[85%]">
+          <div key={index} className="mt-5 ml-4 w-full pr-8 ">
             {item.children.map((child, childIndex) => (
               <p
                 className="font-light text-sm font-museo leading-relaxed text-justify"
