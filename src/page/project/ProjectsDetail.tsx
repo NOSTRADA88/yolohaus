@@ -256,7 +256,7 @@ const ProjectsDetail = ({
                 {intermediateTitle} /{" "}
               </Link>
             )}
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
+            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs max-[450px]:ml-0">
               {projectData.title}
             </p>
           </div>
