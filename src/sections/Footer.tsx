@@ -3,10 +3,10 @@ import {
   fetchAboutData,
   fetchHeaderFooterData,
   fetchProjectsData,
-  fetchServicesData,
   fetchPrivacyPolicyData,
   fetchBuiltHousesData,
   fetchContactData,
+  fetchReviewsData,
 } from "../api";
 import { Consultation } from "../components/footer";
 import { API_URL } from "../constants";
@@ -49,17 +49,21 @@ const Footer = () => {
       const mainData = await fetchHeaderFooterData();
       const aboutData = await fetchAboutData();
       const projectsData = await fetchProjectsData();
-      const servicesData = await fetchServicesData();
+      const reviewsData = await fetchReviewsData();
       const privacyData = await fetchPrivacyPolicyData();
       const builtData = await fetchBuiltHousesData();
       const contactData = await fetchContactData();
 
       const updatedNavLinks = [
-        { href: "/", label: "Главная" },
         { href: `/${projectsData.slug}`, label: "Проекты и цены" },
-        { href: `/${aboutData.slug}`, label: "О компании" },
         { href: `/${builtData.slug}`, label: "Построенные дома" },
-        { href: `/${servicesData.slug}`, label: "Услуги" },
+        { href: `/${reviewsData.slug}`, label: "Отзывы" },
+        { href: "/", label: "Акции" },
+        { href: "/", label: "Ипотека" },
+        {
+          href: `/${aboutData.slug}`,
+          label: "О компании",
+        },
         { href: `/${contactData.slug}`, label: "Контакты" },
       ];
 
@@ -119,10 +123,6 @@ const Footer = () => {
     return formatPhoneNumber(phoneNumber);
   };
 
-  const filteredNavLinks = footerData.navLinks.filter(
-    (link) => link.label !== "Акции" && link.label !== "Ипотека"
-  );
-
   return (
     <div>
       <div className="bg-orange">
@@ -138,8 +138,8 @@ const Footer = () => {
                 className="w-52 cursor-pointer"
               />
             </a>
-            <ul className="flex gap-6 items-center justify-center h-20 max-xl:gap-2 max-xl:h-16 max-[790px]:hidden">
-              {filteredNavLinks.map((link, index) => (
+            <ul className="flex gap-4 items-center justify-center h-20  max-lg:gap-2  max-xl:h-16 max-[850px]:hidden">
+              {footerData.navLinks.map((link, index) => (
                 <React.Fragment key={index}>
                   <li className="relative">
                     <Link

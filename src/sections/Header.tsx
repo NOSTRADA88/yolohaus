@@ -75,22 +75,21 @@ const Header = () => {
       ]);
 
       const updatedNavLinks = [
-        { href: "/", label: "Главная" },
         { href: `/${projectsData.slug}`, label: "Проекты и цены" },
+        { href: `/${builtData.slug}`, label: "Построенные дома" },
+        { href: `/${reviewsData.slug}`, label: "Отзывы" },
+        { href: "/", label: "Акции" },
+        { href: "/", label: "Ипотека" },
         {
           href: `/${aboutData.slug}`,
           label: "О компании",
           submenu: [
             { href: "/", label: "Блог" },
+            { href: `/${servicesData.slug}`, label: "Услуги" },
             { href: `/${guaranteeData.slug}`, label: "Гарантия" },
             { href: `/${vacancyData.slug}`, label: "Вакансии" },
           ],
         },
-        { href: `/${builtData.slug}`, label: "Построенные дома" },
-        { href: `/${servicesData.slug}`, label: "Услуги" },
-        { href: "/", label: "Акции" },
-        { href: "/", label: "Ипотека" },
-        { href: `/${reviewsData.slug}`, label: "Отзывы" },
         { href: `/${contactData.slug}`, label: "Контакты" },
       ];
 

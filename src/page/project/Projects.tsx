@@ -165,6 +165,7 @@ const Projects = () => {
     setCurrentPage(1);
     applySorting(projectData.projects);
   }, [sortBy, sortDirection, projectData.projects]);
+
   const getMinPrice = (complectation: Complectation[]): number => {
     const prices = complectation.map((item) => {
       const basePrice = item.BasePrice
@@ -315,7 +316,7 @@ const Projects = () => {
                 onClick={resetSort}
                 icon={faTimes}
                 size="2x"
-                className="font-museo text-sm cursor-pointer mt-1 text-maingray transition-all duration-300 hover:text-orange"
+                className="font-museo text-sm cursor-pointer mt-[3px] text-maingray transition-all duration-300 hover:text-orange"
               />
             )}
           </div>
@@ -342,7 +343,7 @@ const Projects = () => {
                     <img
                       src={`${API_URL}${photo.attributes.formats.large.url}`}
                       alt={photo.attributes.name}
-                      className="object-cover w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
+                      className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
                     />
                   </LazyLoad>
                 ))}

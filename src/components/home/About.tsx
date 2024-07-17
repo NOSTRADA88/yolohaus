@@ -48,7 +48,7 @@ const About = ({ title, titleMini, description, photo, slug }: AboutProps) => {
             </div>
           ))}
           <div className=" bg-lightwhite mt-8 p-5">
-            <div className="flex justify-start items-center mt-2 gap-2 cursor-pointer arrow-container">
+            <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
               <Link
                 to={`/${slug}`}
                 className="text-orange uppercase text-sm font-medium tracking-wider"

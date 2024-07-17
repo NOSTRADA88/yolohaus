@@ -62,6 +62,7 @@ const Recommendation = ({
               backgroundImage: `url(${API_URL}${item.attributes.BgPhoto.data.attributes.url})`,
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
             }}
           >
             <div className="absolute inset-0 bg-white group-hover:bg-transparent transition-all duration-500"></div>

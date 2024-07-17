@@ -156,7 +156,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
                   Срок строительства
                 </p>
                 <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.Parameters.Days}
+                  {detail.attributes.Parameters.Days} дней
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />

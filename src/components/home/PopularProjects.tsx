@@ -143,7 +143,7 @@ const PopularProjects = ({
             <img
               src={`${API_URL}${project.attributes.Photos.data[0].attributes.formats.large.url}`}
               alt={project.attributes.Photos.data[0].attributes.name}
-              className="object-cover w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
+              className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
             />
             <div className="p-4">
               <h2 className="font-museo font-bold text-2xl text-maingray">

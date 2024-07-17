@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchBuiltHousesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeftLong,
-  faArrowRightLong,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import LazyLoad from "react-lazyload";
 
 interface PhotoAttributes {
   name: string;
@@ -63,110 +61,11 @@ const BuiltHouses = () => {
     ConstructionPeriod: "",
     slugBuilt: "",
   });
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const projectsPerPage = 6;
-  const totalPages = Math.ceil(houseData.houses.length / projectsPerPage);
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-
-  const currentProjects = houseData.houses.slice(
-    indexOfFirstProject,
-    indexOfLastProject
-  );
-
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  const renderPagination = () => {
-    if (totalPages <= 1) {
-      return null;
-    }
-
-    const pageNumbers = [];
-    const range = 2;
-
-    for (let i = 1; i <= totalPages; i++) {
-      if (
-        i === 1 ||
-        i === totalPages ||
-        (i >= currentPage - range && i <= currentPage + range)
-      ) {
-        pageNumbers.push(
-          <span
-            key={i}
-            className={`cursor-pointer font-museo text-sm text-maingray ${
-              currentPage === i
-                ? "bg-orange text-white px-2 py-1 font-bold"
-                : "hover:text-orange"
-            }`}
-            onClick={() => paginate(i)}
-          >
-            {i}
-          </span>
-        );
-      } else if (
-        i === currentPage - range - 1 ||
-        i === currentPage + range + 1
-      ) {
-        pageNumbers.push(<span key={i}>...</span>);
-      }
-    }
-
-    return (
-      <div className="flex justify-center items-center mt-20 gap-4">
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
-            currentPage === 1
-              ? "text-opacity-60 cursor-auto"
-              : "hover:text-orange"
-          }`}
-          onClick={
-            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
-          }
-        >
-          <FontAwesomeIcon icon={faArrowLeftLong} className="arrow-icon " />{" "}
-          предыдущая страница
-        </span>
-        <FontAwesomeIcon
-          icon={faArrowLeftLong}
-          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
-            currentPage === 1 ? "text-opacity-60 cursor-auto" : ""
-          }`}
-          onClick={
-            currentPage === 1 ? undefined : () => paginate(currentPage - 1)
-          }
-        />{" "}
-        {pageNumbers}
-        <FontAwesomeIcon
-          icon={faArrowRightLong}
-          className={`cursor-pointer font-museo text-sm font-light text-maingray arrow-icon hidden max-md:block ${
-            currentPage === totalPages ? "text-opacity-60 cursor-auto" : ""
-          }`}
-          onClick={
-            currentPage === totalPages
-              ? undefined
-              : () => paginate(currentPage + 1)
-          }
-        />{" "}
-        <span
-          className={`cursor-pointer font-museo text-sm font-light text-maingray max-md:hidden ${
-            currentPage === totalPages
-              ? "text-opacity-60 cursor-auto"
-              : "hover:text-orange"
-          }`}
-          onClick={
-            currentPage === totalPages
-              ? undefined
-              : () => paginate(currentPage + 1)
-          }
-        >
-          следующая страница{" "}
-          <FontAwesomeIcon icon={faArrowRightLong} className="arrow-icon" />
-        </span>
-      </div>
-    );
-  };
+  const [visibleHouses, setVisibleHouses] = useState<Houses[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEndOfList, setIsEndOfList] = useState(false);
+  const housesPerPage = 9;
 
   const fetchData = async () => {
     try {
@@ -182,6 +81,10 @@ const BuiltHouses = () => {
         ConstructionPeriod: builtData.Icons.data[2].attributes.url,
         slugBuilt: builtData.slug,
       });
+      setVisibleHouses(builtData.BuiltHouses.data.slice(0, housesPerPage));
+      if (builtData.BuiltHouses.data.length <= housesPerPage) {
+        setIsEndOfList(true);
+      }
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -190,6 +93,46 @@ const BuiltHouses = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const loadMoreHouses = useCallback(() => {
+    if (isEndOfList) return;
+
+    const nextPage = currentPage + 1;
+    const startIndex = (nextPage - 1) * housesPerPage;
+    const endIndex = startIndex + housesPerPage;
+    const newHouses = houseData.houses.slice(startIndex, endIndex);
+
+    if (newHouses.length > 0) {
+      setVisibleHouses((prevHouses) => [...prevHouses, ...newHouses]);
+      setCurrentPage(nextPage);
+      if (endIndex >= houseData.houses.length) {
+        setIsEndOfList(true);
+      }
+    } else {
+      setIsEndOfList(true);
+    }
+  }, [currentPage, houseData.houses, housesPerPage, isEndOfList]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 500 &&
+      !isLoading &&
+      !isEndOfList
+    ) {
+      setIsLoading(true);
+      setTimeout(() => {
+        loadMoreHouses();
+        setIsLoading(false);
+      }, 500);
+    }
+  }, [isLoading, isEndOfList, loadMoreHouses]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   return (
     <div>
       <Helmet>
@@ -216,18 +159,26 @@ const BuiltHouses = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
-          {currentProjects.map((house) => (
+          {visibleHouses.map((house) => (
             <Link
               to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
               key={house.id}
               className="flex flex-col mt-8 group cursor-pointer"
             >
               <div className="employee-photo-container">
-                <img
-                  src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
-                  alt={house.attributes.Photos.data[0].attributes.name}
-                  className="w-[280px] h-[207px] object-cover object-center max-md:w-[85%] max-sm:w-[90%] max-[400px]:w-[85%]"
-                />
+                <LazyLoad
+                  key={house.id}
+                  height={200}
+                  offset={300}
+                  once
+                  placeholder={<div className="w-full h-full bg-gray-300" />}
+                >
+                  <img
+                    src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
+                    alt={house.attributes.Photos.data[0].attributes.name}
+                    className="w-[280px] h-[207px] object-center max-md:w-[85%] max-sm:w-[90%] max-[400px]:w-[85%]"
+                  />
+                </LazyLoad>
               </div>
               <div className="flex flex-col">
                 <div
@@ -288,7 +239,11 @@ const BuiltHouses = () => {
             </Link>
           ))}
         </div>
-        {renderPagination()}
+        {isLoading && (
+          <div className="flex justify-center items-center mt-8 mb-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+          </div>
+        )}
       </div>
     </div>
   );

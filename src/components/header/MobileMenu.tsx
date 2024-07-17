@@ -45,7 +45,7 @@ const MobileMenu = ({
             className="w-52 cursor-pointer max-[440px]:w-44  "
           />
         </a>
-        <ul className="flex flex-col items-center justify-center h-full gap-4">
+        <ul className="flex flex-col items-center justify-center h-full gap-4 mt-8">
           {navLinks.map((link, index) => (
             <li key={index} className="w-[192px] ">
               <div className="relative parallelogram h-10 flex items-center justify-center bg-lightwhite before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:bg-lightwhite before:transform before:-skew-x-12">

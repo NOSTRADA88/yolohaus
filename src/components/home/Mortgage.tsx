@@ -31,13 +31,13 @@ const Mortgage = ({ title, description, photos }: MortgageProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-4 mt-8 max-md:grid-cols-2 max-md:mt-2">
+        <div className="grid grid-cols-8 gap-2 items-center max-lg:grid-cols-4 max-[550px]:grid-cols-2  mt-8 max-md:mt-2  ">
           {photos.map((photo) => (
-            <div key={photo.id} className="flex">
+            <div key={photo.id} className="flex justify-center ">
               <img
                 src={`${API_URL}${photo.attributes.url}`}
                 alt={photo.attributes.name}
-                className="w-full h-auto object-cover "
+                className="w-[300px] h-auto max-lg:w-[150px] "
               />
             </div>
           ))}
