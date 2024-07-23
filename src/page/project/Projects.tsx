@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
@@ -327,11 +327,10 @@ const Projects = () => {
             <Link
               to={`/${projectData.slugProjects}/${project.attributes.slug}`}
               key={project.id}
-              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[360px] max-xl:w-full  max-md:h-full
-              max-[350px]:w-[280px] max-[350px]:h-[380px]
-              transition-all duration-300 hover:shadow-2xl"
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[320px] 
+              max-xl:w-full max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
             >
-              <div className="relative max-w-full ">
+              <div className="relative max-w-full overflow-hidden">
                 {project.attributes.Photos.data.slice(0, 1).map((photo) => (
                   <LazyLoad
                     key={photo.id}
@@ -343,7 +342,7 @@ const Projects = () => {
                     <img
                       src={`${API_URL}${photo.attributes.formats.large.url}`}
                       alt={photo.attributes.name}
-                      className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center"
+                      className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                     />
                   </LazyLoad>
                 ))}
@@ -401,24 +400,10 @@ const Projects = () => {
                     </p>
                   </div>
                 </div>
-                <p className="font-museo mt-2 text-orange text-xl font-bold">
+                <p className="font-museo mt-6 text-orange text-xl font-bold">
                   Цена от{" "}
                   {formatPrice(getMinPrice(project.attributes.Complectation))} ₽
                 </p>
-              </div>
-              <div className="bg-lightwhite p-5 hover:bg-orange text-orange hover:text-white transition-all duration-300">
-                <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
-                  <Link
-                    to={`/${projectData.slugProjects}/${project.attributes.slug}`}
-                    className="uppercase text-sm font-medium tracking-wider"
-                  >
-                    Посмотреть проект
-                  </Link>
-                  <FontAwesomeIcon
-                    icon={faArrowRightLong}
-                    className="arrow-icon"
-                  />
-                </div>
               </div>
             </Link>
           ))}

@@ -3,8 +3,6 @@ import { fetchBuiltHousesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import LazyLoad from "react-lazyload";
 
 interface PhotoAttributes {
@@ -158,14 +156,15 @@ const BuiltHouses = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
+        <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {visibleHouses.map((house) => (
             <Link
               to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
               key={house.id}
-              className="flex flex-col mt-8 group cursor-pointer"
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[320px] 
+              max-xl:w-full max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
             >
-              <div className="employee-photo-container">
+              <div className="relative max-w-full overflow-hidden">
                 <LazyLoad
                   key={house.id}
                   height={200}
@@ -176,63 +175,46 @@ const BuiltHouses = () => {
                   <img
                     src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
                     alt={house.attributes.Photos.data[0].attributes.name}
-                    className="w-[280px] h-[207px] object-center max-md:w-[85%] max-sm:w-[90%] max-[400px]:w-[85%]"
+                    className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                   />
                 </LazyLoad>
               </div>
-              <div className="flex flex-col">
-                <div
-                  className="houses-details bg-gray-100 ml-10 px-6 h-[180px] pt-[50px] max-[800px]:ml-4 max-[800px]:pt-12  max-md:pt-14 max-xl:h-[200px] 
-                max-sm:h-[180px]   max-[480px]:h-[195px]  max-[350px]:h-[200px]"
-                >
-                  <div className="text-orange transition-all duration-300 absolute right-5 top-5 max-[800px]:right-3">
-                    <div className=" cursor-pointer arrow-container">
-                      <Link
-                        to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
-                      >
-                        <FontAwesomeIcon
-                          icon={faArrowRightLong}
-                          className="arrow-icon text-xl"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1  items-end ">
-                    <h3 className="font-museo font-bold text-base mb-4 mt-2 text-maingray  group-hover:text-orange cursor-pointer">
-                      {house.attributes.Title}
-                    </h3>
-                    <div className="flex gap-10">
-                      <div className="flex gap-2">
-                        <img
-                          src={`${API_URL}${houseData.HouseArea}`}
-                          alt="Construction Period"
-                          className="w-4 h-4"
-                        />
-                        <p className="font-museo font-light text-sm text-maingray">
-                          {house.attributes.Parameters.Area}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <img
-                          src={`${API_URL}${houseData.ConstructionPeriod}`}
-                          alt="Construction Period"
-                          className="w-4 h-4"
-                        />
-                        <p className="font-museo font-light text-sm text-maingray">
-                          {house.attributes.Parameters.Days} дней
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 mt-2">
+              <div className="p-4">
+                <h2 className="font-museo font-bold text-2xl text-maingray">
+                  {house.attributes.Title}
+                </h2>
+                <div className="flex gap-[9px] mt-4 flex-col">
+                  <div className="flex gap-10">
+                    <div className="flex gap-[4px]">
                       <img
-                        src={`${API_URL}${houseData.Location}`}
+                        src={`${API_URL}${houseData.HouseArea}`}
+                        alt="Width and Height"
+                        className="w-4 h-4"
+                      />
+                      <p className="font-museo font-light text-sm text-maingray">
+                        {house.attributes.Parameters.Area}
+                      </p>
+                    </div>
+                    <div className="flex gap-[4px]">
+                      <img
+                        src={`${API_URL}${houseData.ConstructionPeriod}`}
                         alt="Construction Period"
                         className="w-4 h-4"
                       />
                       <p className="font-museo font-light text-sm text-maingray">
-                        {house.attributes.Parameters.Location}
+                        {house.attributes.Parameters.Days} дней
                       </p>
                     </div>
+                  </div>
+                  <div className="flex gap-[4px] mt-2">
+                    <img
+                      src={`${API_URL}${houseData.Location}`}
+                      alt="Bedrooms"
+                      className="w-4 h-4"
+                    />
+                    <p className="font-museo font-light text-sm text-maingray mr-8">
+                      {house.attributes.Parameters.Location}
+                    </p>
                   </div>
                 </div>
               </div>
