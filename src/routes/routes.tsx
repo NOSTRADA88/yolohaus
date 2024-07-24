@@ -36,6 +36,7 @@ import { BuiltHouses } from "../page/built";
 
 import { ErrorPage } from "../page/error";
 import React from "react";
+import { Stocks } from "../page/stocks";
 
 const useRoutes = () => {
   const HouseDetail = React.lazy(() => import("../page/built/HouseDetail"));
@@ -236,6 +237,14 @@ const useRoutes = () => {
           element={
             <Layout>
               <ErrorPage />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path="/akchii"
+          element={
+            <Layout>
+              <Stocks />
             </Layout>
           }
         ></Route>
