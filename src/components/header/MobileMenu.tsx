@@ -30,6 +30,7 @@ const MobileMenu = ({
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-maingray text-2xl max-[440px]:right-1 max-[350px]:right-0 max-[440px]:text-base  max-[440px]:top-5"
+        aria-label="Close"
       >
         <FontAwesomeIcon
           icon={faTimes}

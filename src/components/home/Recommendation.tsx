@@ -97,7 +97,7 @@ const Recommendation = ({
             <div className="flex justify-center items-center ">
               <img
                 src={ReviewsIcon}
-                alt="Отзывы"
+                alt="Icon representing reviews"
                 className="w-full h-full object-contain max-xl:w-[100px] max-xl:h-[100px]  "
               />
             </div>

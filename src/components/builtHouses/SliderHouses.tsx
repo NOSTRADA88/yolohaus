@@ -175,6 +175,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
         <button
           onClick={handlePrevClick}
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
+          aria-label="Left"
         >
           <FontAwesomeIcon
             icon={faArrowLeftLong}
@@ -184,6 +185,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
         <button
           onClick={handleNextClick}
           className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
+          aria-label="Right"
         >
           <FontAwesomeIcon
             icon={faArrowRightLong}
