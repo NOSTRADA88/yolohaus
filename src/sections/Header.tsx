@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { Navbar } from "../components/header";
 import {
   fetchAboutData,
+  fetchBlogData,
   fetchBuiltHousesData,
   fetchContactData,
   fetchGuaranteeData,
@@ -64,6 +65,7 @@ const Header = () => {
         servicesData,
         builtData,
         stocksData,
+        blogData,
       ] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
@@ -75,6 +77,7 @@ const Header = () => {
         fetchServicesData(),
         fetchBuiltHousesData(),
         fetchStocksData(),
+        fetchBlogData(),
       ]);
 
       const updatedNavLinks = [
@@ -87,7 +90,7 @@ const Header = () => {
           href: `/${aboutData.slug}`,
           label: "О компании",
           submenu: [
-            { href: "/", label: "Блог" },
+            { href: `/${blogData.slug}`, label: "Блог" },
             { href: `/${servicesData.slug}`, label: "Услуги" },
             { href: `/${guaranteeData.slug}`, label: "Гарантия" },
             { href: `/${vacancyData.slug}`, label: "Вакансии" },

@@ -21,6 +21,7 @@ import {
 import { Suspense, useEffect, useState } from "react";
 import {
   fetchAboutData,
+  fetchBlogData,
   fetchBuiltHousesData,
   fetchContactData,
   fetchGuaranteeData,
@@ -38,44 +39,60 @@ import { BuiltHouses } from "../page/built";
 import { ErrorPage } from "../page/error";
 import React from "react";
 import { Stocks } from "../page/stocks";
+import { Blog } from "../page/blog";
 
 const useRoutes = () => {
   const HouseDetail = React.lazy(() => import("../page/built/HouseDetail"));
   const ProjectsDetail = React.lazy(
     () => import("../page/project/ProjectsDetail")
   );
-  const [slugAbout, setSlugAbout] = useState<string>("");
-  const [slugReviews, setSlugReviews] = useState<string>("");
-  const [slugGuarantee, setSlugGuarantee] = useState<string>("");
-  const [slugVacancy, setSlugVacancy] = useState<string>("");
-  const [slugProjects, setSlugProjects] = useState<string>("");
-  const [slugContact, setSlugContact] = useState<string>("");
-  const [slugServices, setSlugServices] = useState<string>("");
-  const [slugPrivacy, setSlugPrivacy] = useState<string>("");
-  const [slugBuilt, setSlugBuilt] = useState<string>("");
-  const [slugStocks, setSlugStocks] = useState<string>("");
+
+  const [slugs, setSlugs] = useState({
+    about: "",
+    reviews: "",
+    guarantee: "",
+    vacancy: "",
+    projects: "",
+    contact: "",
+    services: "",
+    privacy: "",
+    built: "",
+    stocks: "",
+    blog: "",
+  });
+
   const fetchData = async () => {
     try {
-      const aboutData = await fetchAboutData();
-      const reviewsData = await fetchReviewsData();
-      const guaranteeData = await fetchGuaranteeData();
-      const vacancyData = await fetchVacancyData();
-      const projectsData = await fetchProjectsData();
-      const contactData = await fetchContactData();
-      const servicesData = await fetchServicesData();
-      const privacyData = await fetchPrivacyPolicyData();
-      const builtData = await fetchBuiltHousesData();
-      const stocksData = await fetchStocksData();
-      setSlugAbout(aboutData.slug);
-      setSlugReviews(reviewsData.slug);
-      setSlugGuarantee(guaranteeData.slug);
-      setSlugVacancy(vacancyData.slug);
-      setSlugProjects(projectsData.slug);
-      setSlugContact(contactData.slug);
-      setSlugServices(servicesData.slug);
-      setSlugPrivacy(privacyData.slug);
-      setSlugBuilt(builtData.slug);
-      setSlugStocks(stocksData.slug);
+      const fetchFunctions = [
+        fetchAboutData,
+        fetchReviewsData,
+        fetchGuaranteeData,
+        fetchVacancyData,
+        fetchProjectsData,
+        fetchContactData,
+        fetchServicesData,
+        fetchPrivacyPolicyData,
+        fetchBuiltHousesData,
+        fetchStocksData,
+        fetchBlogData,
+      ];
+
+      const data = await Promise.all(fetchFunctions.map((func) => func()));
+      const newSlugs = {
+        about: data[0].slug,
+        reviews: data[1].slug,
+        guarantee: data[2].slug,
+        vacancy: data[3].slug,
+        projects: data[4].slug,
+        contact: data[5].slug,
+        services: data[6].slug,
+        privacy: data[7].slug,
+        built: data[8].slug,
+        stocks: data[9].slug,
+        blog: data[10].slug,
+      };
+
+      setSlugs(newSlugs);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -138,7 +155,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugAbout}`}
+          path={`/${slugs.about}`}
           element={
             <Layout>
               <AboutCompany />
@@ -146,7 +163,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugReviews}`}
+          path={`/${slugs.reviews}`}
           element={
             <Layout>
               <Reviews />
@@ -154,7 +171,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugGuarantee}`}
+          path={`/${slugs.guarantee}`}
           element={
             <Layout>
               <Guarantee />
@@ -162,7 +179,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugVacancy}`}
+          path={`/${slugs.vacancy}`}
           element={
             <Layout>
               <Vacancy />
@@ -170,7 +187,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugProjects}`}
+          path={`/${slugs.projects}`}
           element={
             <Layout>
               <Projects />
@@ -178,7 +195,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugProjects}/:slug`}
+          path={`/${slugs.projects}/:slug`}
           element={
             <Layout>
               <ProjectsDetailRoute />
@@ -187,7 +204,7 @@ const useRoutes = () => {
         />
 
         <Route
-          path={`/${slugContact}`}
+          path={`/${slugs.contact}`}
           element={
             <Layout>
               <Contact />
@@ -195,7 +212,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugServices}`}
+          path={`/${slugs.services}`}
           element={
             <Layout>
               <Services />
@@ -203,7 +220,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugServices}/:slug`}
+          path={`/${slugs.services}/:slug`}
           element={
             <Layout>
               <ServiceDetailRoute />
@@ -211,7 +228,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugPrivacy}`}
+          path={`/${slugs.privacy}`}
           element={
             <Layout>
               <PrivacyPolicy />
@@ -219,7 +236,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugBuilt}`}
+          path={`/${slugs.built}`}
           element={
             <Layout>
               <BuiltHouses />
@@ -227,7 +244,7 @@ const useRoutes = () => {
           }
         />
         <Route
-          path={`/${slugBuilt}/:slug`}
+          path={`/${slugs.built}/:slug`}
           element={
             <Layout>
               <HouseDetailRoute />
@@ -243,10 +260,18 @@ const useRoutes = () => {
           }
         ></Route>
         <Route
-          path={`/${slugStocks}`}
+          path={`/${slugs.stocks}`}
           element={
             <Layout>
               <Stocks />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path={`/${slugs.blog}`}
+          element={
+            <Layout>
+              <Blog />
             </Layout>
           }
         ></Route>

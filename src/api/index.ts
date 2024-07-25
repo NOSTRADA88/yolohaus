@@ -116,6 +116,9 @@ export const fetchProjectDetailData = async (projetsSlug: string) => {
 export const fetchStocksData = () =>
   fetchData("/api/akczii", "stock_list.Photo,Metadata");
 
+export const fetchBlogData = () =>
+  fetchData("/api/blog", "posts_list.Photo,Metadata");
+
 export const fetchAllData = async () => {
   const [mainData, aboutData, projectData, reviewsData, phoneData] =
     await Promise.all([
