@@ -71,7 +71,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
           {descriptionInfo.map((item, index) => (
             <div key={index}>
               {item.type === "paragraph" && (
-                <p className="font-museo text-maingray font-light text-sm max-sm:text-xs">
+                <p className="font-museo text-maingray font-light text-sm max-sm:text-xs text-justify">
                   {item.children.map((child, childIndex) => (
                     <span key={childIndex}>{child.text}</span>
                   ))}
@@ -93,36 +93,37 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
               )}
             </div>
           ))}
+
           <div className="relative">
-            <div
-              className=" mt-4 bg-cover bg-center p-28 max-sm:p-32"
-              style={{ backgroundImage: `url(${BgVacancy})` }}
-            >
-              <div className="absolute inset-0 bg-maingray bg-opacity-50 flex items-center justify-center">
-                <div className="flex flex-col justify-center items-center gap-5">
-                  <h2 className="text-white text-center text-base max-xl:px-10 max-sm:text-sm">
-                    Свяжитесь с нами по номеру{" "}
-                    <span className="underline cursor-pointer transition-all duration-300 text-lg hover:text-orange max-sm:text-base">
-                      {formatPhoneNumber(phone)}{" "}
-                    </span>
-                    , и специалисты «Yolo Haus» помогут вам выбрать дом вашей
-                    мечты. <br />
-                    Или оставьте заявку, и мы свяжемся с вами в кратчайшие
-                    сроки.
-                  </h2>
+            <img
+              src={BgVacancy}
+              alt="banner"
+              className="mt-4 h-52 object-cover  bg-cover bg-center max-[450px]:h-64"
+            />
+
+            <div className="absolute inset-0 bg-maingray bg-opacity-50 flex items-center justify-center ">
+              <div className="flex flex-col justify-center items-center gap-5">
+                <h2 className="text-white text-center text-base max-xl:px-10 max-sm:text-sm">
+                  Свяжитесь с нами по номеру{" "}
+                  <span className="underline cursor-pointer transition-all duration-300 text-lg hover:text-orange max-sm:text-base">
+                    {formatPhoneNumber(phone)}{" "}
+                  </span>
+                  , и специалисты «Yolo Haus» помогут вам выбрать дом вашей
+                  мечты. <br />
+                  Или оставьте заявку, и мы свяжемся с вами в кратчайшие сроки.
+                </h2>
+                <div
+                  className="flex gap-[3.5px] items-center mb-4"
+                  onClick={openModal}
+                >
+                  <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
                   <div
-                    className="flex gap-[3.5px] items-center mb-4"
-                    onClick={openModal}
-                  >
-                    <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
-                    <div
-                      className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange text-white 
+                    className="flex justify-center items-center transition-all duration-300 cursor-pointer bg-orange text-white 
               hover:text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange"
-                    >
-                      <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">
-                        Напишите нам
-                      </p>
-                    </div>
+                  >
+                    <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram ">
+                      Напишите нам
+                    </p>
                   </div>
                 </div>
               </div>

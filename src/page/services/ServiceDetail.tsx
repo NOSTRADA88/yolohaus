@@ -107,7 +107,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
           <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl leading-10">
             {serviceData.title}
           </h1>
-          <div className="flex items-center">
+          <div className="flex items-center max-[450px]:flex-wrap max-[450px]:justify-start">
             <Link
               to="/"
               className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
