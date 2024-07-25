@@ -9,6 +9,7 @@ import {
   fetchProjectsData,
   fetchReviewsData,
   fetchServicesData,
+  fetchStocksData,
   fetchVacancyData,
 } from "../api";
 import { API_URL } from "../constants";
@@ -62,6 +63,7 @@ const Header = () => {
         contactData,
         servicesData,
         builtData,
+        stocksData,
       ] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
@@ -72,13 +74,14 @@ const Header = () => {
         fetchContactData(),
         fetchServicesData(),
         fetchBuiltHousesData(),
+        fetchStocksData(),
       ]);
 
       const updatedNavLinks = [
         { href: `/${projectsData.slug}`, label: "Проекты и цены" },
         { href: `/${builtData.slug}`, label: "Построенные дома" },
         { href: `/${reviewsData.slug}`, label: "Отзывы" },
-        { href: "/", label: "Акции" },
+        { href: `/${stocksData.slug}`, label: "Акции" },
         { href: "/", label: "Ипотека" },
         {
           href: `/${aboutData.slug}`,

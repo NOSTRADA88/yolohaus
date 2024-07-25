@@ -7,6 +7,7 @@ import {
   fetchBuiltHousesData,
   fetchContactData,
   fetchReviewsData,
+  fetchStocksData,
 } from "../api";
 import { Consultation } from "../components/footer";
 import { API_URL } from "../constants";
@@ -55,6 +56,7 @@ const Footer = () => {
         privacyData,
         builtData,
         contactData,
+        stocksData,
       ] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
@@ -63,13 +65,14 @@ const Footer = () => {
         fetchPrivacyPolicyData(),
         fetchBuiltHousesData(),
         fetchContactData(),
+        fetchStocksData(),
       ]);
 
       const updatedNavLinks = [
         { href: `/${projectsData.slug}`, label: "Проекты и цены" },
         { href: `/${builtData.slug}`, label: "Построенные дома" },
         { href: `/${reviewsData.slug}`, label: "Отзывы" },
-        { href: "/", label: "Акции" },
+        { href: `/${stocksData.slug}`, label: "Акции" },
         { href: "/", label: "Ипотека" },
         {
           href: `/${aboutData.slug}`,

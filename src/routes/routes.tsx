@@ -28,6 +28,7 @@ import {
   fetchProjectsData,
   fetchReviewsData,
   fetchServicesData,
+  fetchStocksData,
   fetchVacancyData,
 } from "../api";
 import ScrollToTop from "../components/ScrollToTop";
@@ -52,7 +53,7 @@ const useRoutes = () => {
   const [slugServices, setSlugServices] = useState<string>("");
   const [slugPrivacy, setSlugPrivacy] = useState<string>("");
   const [slugBuilt, setSlugBuilt] = useState<string>("");
-
+  const [slugStocks, setSlugStocks] = useState<string>("");
   const fetchData = async () => {
     try {
       const aboutData = await fetchAboutData();
@@ -64,7 +65,7 @@ const useRoutes = () => {
       const servicesData = await fetchServicesData();
       const privacyData = await fetchPrivacyPolicyData();
       const builtData = await fetchBuiltHousesData();
-
+      const stocksData = await fetchStocksData();
       setSlugAbout(aboutData.slug);
       setSlugReviews(reviewsData.slug);
       setSlugGuarantee(guaranteeData.slug);
@@ -74,6 +75,7 @@ const useRoutes = () => {
       setSlugServices(servicesData.slug);
       setSlugPrivacy(privacyData.slug);
       setSlugBuilt(builtData.slug);
+      setSlugStocks(stocksData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -241,7 +243,7 @@ const useRoutes = () => {
           }
         ></Route>
         <Route
-          path="/akchii"
+          path={`/${slugStocks}`}
           element={
             <Layout>
               <Stocks />
