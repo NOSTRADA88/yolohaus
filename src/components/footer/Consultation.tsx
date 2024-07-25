@@ -85,7 +85,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
             домостроения
           </p>
           <form
-            className="w-[80%] max-[1111px]:w-full "
+            className="w-[80%] max-[1111px]:w-full"
             onSubmit={handleSubmit(recordForm)}
           >
             <div className="flex flex-col mt-10 mb-5">
@@ -130,7 +130,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                 )}
               </div>
             </div>
-            <div className="flex gap-[3.5px] items-center mb-4 ">
+            <div className="flex gap-[3.5px] items-center mb-4">
               <div className="parallelogram h-10 border-l-[1px] border-white"></div>
               <button
                 type="submit"
@@ -145,7 +145,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                 <p className="text-xs font-museo font-medium text-white">
                   Отправляя форму, я даю согласие на обработку
                   <Link
-                    className="underline cursor-pointer "
+                    className="underline cursor-pointer"
                     to={`/${slugPrivacy}`}
                   >
                     персональных данных
