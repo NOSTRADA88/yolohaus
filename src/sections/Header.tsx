@@ -177,7 +177,9 @@ const Header = () => {
             <img
               src={`${API_URL}${headerData.logoCompany}`}
               alt="logo"
-              className=" h-auto max-w-full object-contain w-52 cursor-pointer"
+              className="h-auto max-w-full object-contain cursor-pointer"
+              width="200"
+              height="100"
             />
           </a>
 
