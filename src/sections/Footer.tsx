@@ -13,6 +13,7 @@ import { API_URL } from "../constants";
 import React from "react";
 import { Modal } from "./modal";
 import { Link } from "react-router-dom";
+import LazyLoad from "react-lazyload";
 
 interface FooterData {
   logoCompany: string;
@@ -135,7 +136,9 @@ const Footer = () => {
   return (
     <div>
       <div className="bg-orange">
-        <Consultation slugPrivacy={footerData.slugPrivacy} />
+        <LazyLoad height={300} offset={100} once>
+          <Consultation slugPrivacy={footerData.slugPrivacy} />
+        </LazyLoad>
       </div>
       <div className="bg-maingray p-8">
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5">
