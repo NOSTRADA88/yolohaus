@@ -46,13 +46,23 @@ const Footer = () => {
 
   const fetchData = async () => {
     try {
-      const mainData = await fetchHeaderFooterData();
-      const aboutData = await fetchAboutData();
-      const projectsData = await fetchProjectsData();
-      const reviewsData = await fetchReviewsData();
-      const privacyData = await fetchPrivacyPolicyData();
-      const builtData = await fetchBuiltHousesData();
-      const contactData = await fetchContactData();
+      const [
+        mainData,
+        aboutData,
+        projectsData,
+        reviewsData,
+        privacyData,
+        builtData,
+        contactData,
+      ] = await Promise.all([
+        fetchHeaderFooterData(),
+        fetchAboutData(),
+        fetchProjectsData(),
+        fetchReviewsData(),
+        fetchPrivacyPolicyData(),
+        fetchBuiltHousesData(),
+        fetchContactData(),
+      ]);
 
       const updatedNavLinks = [
         { href: `/${projectsData.slug}`, label: "Проекты и цены" },
@@ -99,8 +109,7 @@ const Footer = () => {
     return (
       <a
         href={`tel:${phoneNumber}`}
-        className="text-white cursor-pointer transition-all duration-300 font-museo text-lg font-light
-       hover:text-orange flex items-center max-md:text-base"
+        className="text-white cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base"
       >
         {countryCode} ({areaCode})
         <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
@@ -128,17 +137,19 @@ const Footer = () => {
       <div className="bg-orange">
         <Consultation slugPrivacy={footerData.slugPrivacy} />
       </div>
-      <div className="bg-maingray p-8 ">
-        <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5 ">
+      <div className="bg-maingray p-8">
+        <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5">
           <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col max-xl:mb-2 max-xl:gap-2">
             <a href="/">
               <img
                 src={`${API_URL}${footerData.logoCompany}`}
                 alt="logo"
+                width="208"
+                height="80"
                 className="w-52 cursor-pointer"
               />
             </a>
-            <ul className="flex gap-4 items-center justify-center h-20  max-lg:gap-2  max-xl:h-16 max-[850px]:hidden">
+            <ul className="flex gap-4 items-center justify-center h-20 max-lg:gap-2 max-xl:h-16 max-[850px]:hidden">
               {footerData.navLinks.map((link, index) => (
                 <React.Fragment key={index}>
                   <li className="relative">
@@ -175,6 +186,8 @@ const Footer = () => {
                   <img
                     src={`${API_URL}${footerData.youtubeIcon}`}
                     alt="youtube"
+                    width="16"
+                    height="16"
                     className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
                   />
                 </a>
@@ -185,6 +198,8 @@ const Footer = () => {
                   <img
                     src={`${API_URL}${footerData.vkIcon}`}
                     alt="vk"
+                    width="16"
+                    height="16"
                     className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
                   />
                 </a>

@@ -4,6 +4,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import InputMask from "react-input-mask";
 import { Link, useLocation } from "react-router-dom";
+import LazyLoad from "react-lazyload";
 
 type ConsultationProps = {
   slugPrivacy: string;
@@ -47,7 +48,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
       formData.append("message", data.message);
       formData.append("url", data.url);
 
-      const response = await axios.post(`http://149.154.65.51/send`, formData, {
+      const response = await axios.post("http://149.154.65.51/send", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -92,7 +93,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                 <div className="flex-grow ">
                   <input
                     type="text"
-                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray  bg-[#f9e0c3]"
+                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
                     placeholder="Ваше имя"
                     {...register("name")}
                   />
@@ -105,7 +106,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                 <div className="flex-grow ml-4">
                   <InputMask
                     mask="+7 (999) 999-99-99"
-                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray  bg-[#f9e0c3]"
+                    className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
                     placeholder="Телефон"
                     {...register("phone")}
                   />
@@ -147,9 +148,8 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                     className="underline cursor-pointer "
                     to={`/${slugPrivacy}`}
                   >
-                    {" "}
-                    персональных данных{" "}
-                  </Link>{" "}
+                    персональных данных
+                  </Link>
                 </p>
               </div>
             </div>
@@ -157,11 +157,15 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
         </div>
 
         <div className="w-full">
-          <img
-            src={ConsultationPhoto}
-            alt="photoAbout"
-            className="w-full h-full"
-          />
+          <LazyLoad height={300} offset={100} once>
+            <img
+              src={ConsultationPhoto}
+              alt="photoAbout"
+              width="500"
+              height="300"
+              className="w-full h-auto"
+            />
+          </LazyLoad>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@
   src: url(../public/font/museo_sans_cyrl_300.woff) format("woff");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -12,6 +13,7 @@
   src: url(../public/font/museo_sans_cyrl_500.woff) format("woff");
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -20,6 +22,7 @@
   src: url(../public/font/museo_sans_cyrl_700.woff) format("woff");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @tailwind base;

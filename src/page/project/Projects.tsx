@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
+import { Sort } from "../../components/projects";
 
 interface PhotoFormats {
   url: string;
@@ -93,10 +92,13 @@ const Projects = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEndOfList, setIsEndOfList] = useState(false);
   const projectsPerPage = 9;
+
   const fetchData = async () => {
     try {
-      const projectsData = await fetchProjectsData();
-      const mainData = await fetchHomeData();
+      const [projectsData, mainData] = await Promise.all([
+        fetchProjectsData(),
+        fetchHomeData(),
+      ]);
       setProjectData({
         metaTitle: projectsData.Metadata.MetaTitle,
         metaDescription: projectsData.Metadata.MetaDescription,
@@ -110,12 +112,8 @@ const Projects = () => {
         Bedrooms: projectsData.Icons.data[3].attributes.url,
       });
       applySorting(projectsData.ProjectsList.data);
-
-      setVisibleProjects(
-        projectsData.ProjectsList.data.slice(0, projectsPerPage)
-      );
     } catch (error) {
-      console.error("Ошибка запроса:", error);
+      console.error("Fetch error:", error);
     }
   };
 
@@ -127,11 +125,11 @@ const Projects = () => {
     const nextPage = currentPage + 1;
     const sortedProjects = sortProjects(projectData.projects);
     const newProjects = sortedProjects.slice(0, nextPage * projectsPerPage);
-
     setVisibleProjects(newProjects);
     setCurrentPage(nextPage);
     setIsEndOfList(newProjects.length >= sortedProjects.length);
   };
+
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
@@ -146,41 +144,35 @@ const Projects = () => {
       }, 500);
     }
   };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isLoading, isEndOfList, projectData.projects, sortBy, sortDirection]);
-  useEffect(() => {
-    const sortedProjects = sortProjects(projectData.projects);
-    setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
-    setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
-  }, [sortBy, sortDirection, projectData.projects, currentPage]);
 
   const applySorting = (projectsToSort: Project[]) => {
     const sortedProjects = sortProjects(projectsToSort);
     setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
     setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
   };
+
   useEffect(() => {
     setCurrentPage(1);
     applySorting(projectData.projects);
   }, [sortBy, sortDirection, projectData.projects]);
 
+  const parsePrice = (price: string | null): number => {
+    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
+  };
+
   const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) => {
-      const basePrice = item.BasePrice
-        ? parseInt(item.BasePrice.replace(/\D/g, ""), 10)
-        : Infinity;
-      const standardPrice = item.StandartPrice
-        ? parseInt(item.StandartPrice.replace(/\D/g, ""), 10)
-        : Infinity;
-      const comfortPrice = item.ComfortPrice
-        ? parseInt(item.ComfortPrice.replace(/\D/g, ""), 10)
-        : Infinity;
-
-      return Math.min(basePrice, standardPrice, comfortPrice);
-    });
-
+    const prices = complectation.map((item) =>
+      Math.min(
+        parsePrice(item.BasePrice),
+        parsePrice(item.StandartPrice),
+        parsePrice(item.ComfortPrice)
+      )
+    );
     return Math.min(...prices);
   };
 
@@ -189,14 +181,11 @@ const Projects = () => {
     const popularSet = new Set(projectData.popular.map((p) => p.id));
 
     if (sortBy === "popularity") {
-      sortedProjects.sort((a, b) => {
-        const isAPopular = popularSet.has(a.id);
-        const isBPopular = popularSet.has(b.id);
-        return (
+      sortedProjects.sort(
+        (a, b) =>
           (sortDirection === "asc" ? 1 : -1) *
-          ((isBPopular ? 1 : 0) - (isAPopular ? 1 : 0))
-        );
-      });
+          ((popularSet.has(b.id) ? 1 : 0) - (popularSet.has(a.id) ? 1 : 0))
+      );
     } else if (sortBy === "area") {
       sortedProjects.sort(
         (a, b) =>
@@ -225,15 +214,12 @@ const Projects = () => {
     }
   };
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("ru-RU");
-  };
+  const formatPrice = (price: number) => price.toLocaleString("ru-RU");
 
   const resetSort = () => {
     setSortBy(null);
     setSortDirection("asc");
   };
-
   return (
     <div>
       <Helmet>
@@ -258,70 +244,12 @@ const Projects = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-4">
-          <h2 className="font-museo text-base text-maingray text-opacity-50">
-            Сортировать по:
-          </h2>
-          <div className="flex gap-8 max-sm:gap-4 max-sm:items-start">
-            <p
-              className={`font-museo text-sm cursor-pointer underline decoration-dashed transition-all duration-300 ${
-                sortBy === "popularity"
-                  ? "text-orange"
-                  : "text-maingray text-opacity-90"
-              }`}
-              onClick={() => toggleSortBy("popularity")}
-            >
-              Популярность{" "}
-              {sortBy === "popularity" &&
-                (sortDirection === "asc" ? (
-                  <span>&#9650;</span>
-                ) : (
-                  <span>&#9660;</span>
-                ))}
-            </p>
-            <p
-              className={`font-museo text-sm cursor-pointer underline decoration-dashed transition-all duration-300 ${
-                sortBy === "area"
-                  ? "text-orange"
-                  : "text-maingray text-opacity-90"
-              }`}
-              onClick={() => toggleSortBy("area")}
-            >
-              Площадь{" "}
-              {sortBy === "area" &&
-                (sortDirection === "asc" ? (
-                  <span>&#9650;</span>
-                ) : (
-                  <span>&#9660;</span>
-                ))}
-            </p>
-            <p
-              className={`font-museo text-sm cursor-pointer underline decoration-dashed transition-all duration-300 ${
-                sortBy === "price"
-                  ? "text-orange"
-                  : "text-maingray text-opacity-90"
-              }`}
-              onClick={() => toggleSortBy("price")}
-            >
-              Цена{" "}
-              {sortBy === "price" &&
-                (sortDirection === "asc" ? (
-                  <span>&#9650;</span>
-                ) : (
-                  <span>&#9660;</span>
-                ))}
-            </p>
-            {sortBy && (
-              <FontAwesomeIcon
-                onClick={resetSort}
-                icon={faTimes}
-                size="2x"
-                className="font-museo text-sm cursor-pointer mt-[3px] text-maingray transition-all duration-300 hover:text-orange"
-              />
-            )}
-          </div>
-        </div>
-
+        <Sort
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+          toggleSortBy={toggleSortBy}
+          resetSort={resetSort}
+        />
         <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {visibleProjects.map((project) => (
             <Link
