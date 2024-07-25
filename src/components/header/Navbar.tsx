@@ -1,5 +1,4 @@
-import { useState } from "react";
-import React from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -12,8 +11,20 @@ type NavbarProps = {
   }[];
 };
 
-const Navbar = ({ navLinks }: NavbarProps) => {
+const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
+  const [LazySubmenu, setLazySubmenu] =
+    useState<React.ComponentType<any> | null>(null);
+
+  useEffect(() => {
+    if (dropdownIndex !== null && navLinks[dropdownIndex].submenu) {
+      const loadSubmenu = async () => {
+        const SubmenuComponent = lazy(() => import("./Submenu"));
+        setLazySubmenu(() => SubmenuComponent);
+      };
+      loadSubmenu();
+    }
+  }, [dropdownIndex, navLinks]);
 
   return (
     <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2">
@@ -34,25 +45,10 @@ const Navbar = ({ navLinks }: NavbarProps) => {
                   <FontAwesomeIcon icon={faChevronDown} className="ml-1 " />
                 )}
               </Link>
-              {link.submenu && (
-                <ul
-                  className={`submenu absolute left-0 transition-all duration-300 bg-lightwhite  ${
-                    dropdownIndex === index ? "submenu-open" : "hidden"
-                  }`}
-                  style={{ width: "150%", marginLeft: "-25%" }}
-                >
-                  {link.submenu.map((sublink, subIndex) => (
-                    <li key={subIndex} className="whitespace-nowrap">
-                      <Link
-                        rel="noopener noreferrer"
-                        to={sublink.href}
-                        className="block px-4 py-1 text-center text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
-                      >
-                        {sublink.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+              {link.submenu && dropdownIndex === index && LazySubmenu && (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LazySubmenu submenu={link.submenu} />
+                </Suspense>
               )}
             </li>
             <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>

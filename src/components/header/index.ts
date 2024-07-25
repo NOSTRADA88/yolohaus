@@ -1,7 +1,5 @@
-import MobileMenu from "./MobileMenu"
-import Navbar from "./Navbar"
+import MobileMenu from "./MobileMenu";
+import Navbar from "./Navbar";
+import Submenu from "./Submenu";
 
-export {
-    Navbar, 
-    MobileMenu
-}
+export { Navbar, MobileMenu, Submenu };

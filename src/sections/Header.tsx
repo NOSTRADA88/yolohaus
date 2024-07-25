@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { MobileMenu, Navbar } from "../components/header";
+import { useCallback, useEffect, useState, lazy, Suspense } from "react";
+import { Navbar } from "../components/header";
 import {
   fetchAboutData,
   fetchBuiltHousesData,
@@ -156,12 +156,16 @@ const Header = () => {
     }
   }, [mobileMenuOpen]);
 
+  const LazyMobileMenu = lazy(() => import("../components/header/MobileMenu"));
   return (
     <div className="w-full max-w-[1111px] mx-auto">
       <div className="flex justify-between items-center mt-10 max-xl:flex-col">
         <div className="flex gap-4 items-center max-xl:mb-4 max-md:flex-col ">
           <div className="hidden max-[800px]:block absolute left-4 top-12 ">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu"
+            >
               <FontAwesomeIcon
                 icon={mobileMenuOpen ? faTimes : faBars}
                 size="2x"
@@ -226,12 +230,16 @@ const Header = () => {
       <div className="max-[800px]:hidden">
         <Navbar navLinks={headerData.navLinks} />
       </div>
-      <MobileMenu
-        isOpen={mobileMenuOpen}
-        logoCompany={headerData.logoCompany}
-        onClose={() => setMobileMenuOpen(false)}
-        navLinks={headerData.navLinks}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        {mobileMenuOpen && (
+          <LazyMobileMenu
+            isOpen={mobileMenuOpen}
+            logoCompany={headerData.logoCompany}
+            onClose={() => setMobileMenuOpen(false)}
+            navLinks={headerData.navLinks}
+          />
+        )}
+      </Suspense>
       <div
         className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${
           mobileMenuOpen

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { API_URL } from "../../constants";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
 
 type MobileMenuProps = {
   isOpen: boolean;
@@ -20,12 +21,19 @@ const MobileMenu = ({
   logoCompany,
   navLinks,
 }: MobileMenuProps) => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    if (!mountedRef.current) {
+      console.log("MobileMenu mounted");
+      mountedRef.current = true;
+    }
+  }, []);
   return (
     <div
-      className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50  border-r-4 border-r-orange overflow-y-auto pb-10
-     transition-transform duration-300 ${
-       isOpen ? "transform translate-x-0" : "transform -translate-x-full"
-     }`}
+      className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50 border-r-4 border-r-orange overflow-y-auto pb-10
+   transition-transform duration-300 ${
+     isOpen ? "transform translate-x-0" : "transform -translate-x-full"
+   }`}
     >
       <button
         onClick={onClose}
