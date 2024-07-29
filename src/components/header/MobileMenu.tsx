@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { API_URL } from "../../constants";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { Link } from "react-router-dom";
+import {memo} from "react";
 
 type MobileMenuProps = {
   isOpen: boolean;
@@ -14,12 +15,7 @@ type MobileMenuProps = {
   }[];
 };
 
-const MobileMenu = ({
-  isOpen,
-  onClose,
-  logoCompany,
-  navLinks,
-}: MobileMenuProps) => {
+const MobileMenu = memo(({ isOpen, onClose, logoCompany, navLinks}: MobileMenuProps) => {
   return (
     <div
       className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50 border-r-4 border-r-orange overflow-y-auto pb-10
@@ -80,6 +76,6 @@ const MobileMenu = ({
       </div>
     </div>
   );
-};
+});
 
 export default MobileMenu;

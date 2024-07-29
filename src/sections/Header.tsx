@@ -1,18 +1,6 @@
-import { useCallback, useEffect, useState, lazy, Suspense } from "react";
+import React, { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { Navbar } from "../components/header";
-import {
-  fetchAboutData,
-  fetchBlogData,
-  fetchBuiltHousesData,
-  fetchContactData,
-  fetchGuaranteeData,
-  fetchHeaderFooterData,
-  fetchProjectsData,
-  fetchReviewsData,
-  fetchServicesData,
-  fetchStocksData,
-  fetchVacancyData,
-} from "../api";
+import { fetchAboutData, fetchBlogData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchStocksData, fetchVacancyData } from "../api";
 import { API_URL } from "../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -37,7 +25,7 @@ interface HeaderData {
   }[];
 }
 
-const Header = () => {
+const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
     logoCompany: "",
     description: "",
@@ -150,9 +138,9 @@ const Header = () => {
     setIsModalOpen(false);
   }, []);
 
-  const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = ({ phoneNumber }) => {
+  const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = React.memo(({ phoneNumber }) => {
     return formatPhoneNumber(phoneNumber);
-  };
+  });
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -163,6 +151,7 @@ const Header = () => {
   }, [mobileMenuOpen]);
 
   const LazyMobileMenu = lazy(() => import("../components/header/MobileMenu"));
+
   return (
     <div className="w-full max-w-[1111px] mx-auto">
       <div className="flex justify-between items-center mt-10 max-xl:flex-col">
