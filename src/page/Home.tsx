@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import {lazy, Suspense, useEffect, useState} from "react";
 import { Helmet } from "react-helmet";
 import { fetchAllData } from "../api";
 import {
   About,
-  Contact,
   MainScreen,
   Mortgage,
   PopularProjects,
-  Recommendation,
 } from "../components/home";
+
+const Recommendation = lazy(() => import ("../components/home/Recommendation"));
+const Contact = lazy(() => import("../components/home/Contact"));
 
 type HomeData = {
   meta: { title: string; description: string };
@@ -150,8 +151,12 @@ const Home = () => {
       <Mortgage {...homeData.mortgage} />
       <About {...homeData.about} />
       <PopularProjects {...homeData.popularProjects} />
-      <Recommendation {...homeData.recommendations} />
-      <Contact {...homeData.contact} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Recommendation {...homeData.recommendations} />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Contact {...homeData.contact} />
+      </Suspense>
     </div>
   );
 };
