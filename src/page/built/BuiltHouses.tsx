@@ -156,12 +156,12 @@ const BuiltHouses = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
+        <div className="grid grid-cols-3 gap-10 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {visibleHouses.map((house) => (
             <Link
               to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
               key={house.id}
-              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[320px] 
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[340px] h-[365px] 
               max-xl:w-full max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
             >
               <div className="relative max-w-full overflow-hidden">
@@ -175,7 +175,8 @@ const BuiltHouses = () => {
                   <img
                     src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
                     alt={house.attributes.Photos.data[0].attributes.name}
-                    className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                    className="w-full h-[220px]   max-xl:w-full 
+                    max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                   />
                 </LazyLoad>
               </div>
@@ -212,7 +213,7 @@ const BuiltHouses = () => {
                       alt="Bedrooms"
                       className="w-4 h-4"
                     />
-                    <p className="font-museo font-light text-sm text-maingray mr-8">
+                    <p className="font-museo font-light text-sm text-maingray mr-2">
                       {house.attributes.Parameters.Location}
                     </p>
                   </div>

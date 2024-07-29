@@ -117,7 +117,23 @@ export const fetchStocksData = () =>
   fetchData("/api/akczii", "stock_list.Photo,Metadata");
 
 export const fetchBlogData = () =>
-  fetchData("/api/blog", "posts_list.Photo,Metadata");
+  fetchData("/api/blog", "posts_list.Media,Metadata");
+
+export const fetchBlogDetailData = async (blogSlug: string) => {
+  try {
+    const response = await axiosInstanse.get(
+      `${API_URL}/api/blog?populate[posts_list][filters][slug][$eq]=${blogSlug}&populate[Metadata]=*&populate[posts_list][populate][Metadata]=*&populate[posts_list][populate][Media]=*`
+    );
+    if (response.status === 200) {
+      return response.data.data.attributes.posts_list;
+    } else {
+      throw new Error("Данные не найдены");
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error("Ошибка запроса");
+  }
+};
 
 export const fetchAllData = async () => {
   const [mainData, aboutData, projectData, reviewsData, phoneData] =

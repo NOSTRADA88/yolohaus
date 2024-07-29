@@ -40,6 +40,7 @@ import { ErrorPage } from "../page/error";
 import React from "react";
 import { Stocks } from "../page/stocks";
 import { Blog } from "../page/blog";
+import BlogDetail from "../page/blog/BlogDetail";
 
 const useRoutes = () => {
   const HouseDetail = React.lazy(() => import("../page/built/HouseDetail"));
@@ -139,6 +140,17 @@ const useRoutes = () => {
           projectsSlug={projectsSlug}
           initialTechnology={isTechnology ? technologySlug : undefined}
         />
+      </Suspense>
+    );
+  };
+
+  const BlogDetailRoute = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const blogSlug = slug ?? "";
+
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <BlogDetail blogSlug={blogSlug} />
       </Suspense>
     );
   };
@@ -275,6 +287,14 @@ const useRoutes = () => {
             </Layout>
           }
         ></Route>
+        <Route
+          path={`/${slugs.blog}/:slug`}
+          element={
+            <Layout>
+              <BlogDetailRoute />
+            </Layout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
