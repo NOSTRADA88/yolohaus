@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState, lazy, Suspense } from "react";
-import { Navbar } from "../components/header";
-import { fetchAboutData, fetchBlogData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchStocksData, fetchVacancyData } from "../api";
-import { API_URL } from "../constants";
+import { Navbar } from "../../components/header";
+import { fetchAboutData, fetchBlogData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchStocksData, fetchVacancyData } from "../../api";
+import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Modal } from "./modal";
+import { Modal } from "../modal";
 
 interface PhoneNumberLinkProps {
   phoneNumber: string;
@@ -150,7 +150,7 @@ const Header: React.FC = () => {
     }
   }, [mobileMenuOpen]);
 
-  const LazyMobileMenu = lazy(() => import("../components/header/MobileMenu"));
+  const LazyMobileMenu = lazy(() => import("../../components/header/MobileMenu"));
 
   return (
     <div className="w-full max-w-[1111px] mx-auto">
@@ -168,7 +168,7 @@ const Header: React.FC = () => {
               />
             </button>
           </div>
-          <a href="/">
+          <a href="/public">
             <img
               src={`${API_URL}${headerData.logoCompany}`}
               alt="logo"

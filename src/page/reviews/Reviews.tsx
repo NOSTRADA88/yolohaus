@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData, fetchReviewsData } from "../api";
+import { fetchAboutData, fetchReviewsData } from "../../api";
 import { Helmet } from "react-helmet";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 
 interface PhotoAttributes {
@@ -123,4 +123,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export {Reviews};

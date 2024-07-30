@@ -1,21 +1,35 @@
-import AboutCompany from "./about/AboutCompany";
-import Contact from "./Contact";
-import Guarantee from "./about/Guarantee";
-import Home from "./Home";
-import PrivacyPolicy from "./PrivacyPolicy";
-import Reviews from "./Reviews";
-import ServiceDetail from "./services/ServiceDetail";
-import Services from "./services/Services";
-import Vacancy from "./about/Vacancy";
+import { AboutCompany } from "./about/AboutCompany";
+import { Guarantee } from "./about/Guarantee";
+import { Vacancy } from "./about/Vacancy";
+import { Blog } from "./blog/Blog";
+import { BuiltHouses } from "./built/BuiltHouses";
+import { HouseDetail } from "./built/HouseDetail";
+import { Contact } from "./contact/Contact";
+import { ErrorPage } from "./error/Error";
+import { Home } from "./home/Home";
+import { PrivacyPolicy } from "./privacy&policy/PrivacyPolicy";
+import {Projects} from "./project/Projects";
+import {ProjectsDetail} from "./project/ProjectsDetail";
+import { Reviews } from "./reviews/Reviews";
+import { ServiceDetail } from "./services/ServiceDetail";
+import { Services } from "./services/Services";
+import { Stocks } from "./stocks/Stocks";
 
 export {
-  Home,
   AboutCompany,
   Guarantee,
   Vacancy,
-  Reviews,
+  Blog,
+  BuiltHouses,
+  HouseDetail,
   Contact,
-  Services,
-  ServiceDetail,
+  ErrorPage,
+  Home,
   PrivacyPolicy,
+  Projects,
+  ProjectsDetail,
+  Reviews,
+  ServiceDetail,
+  Services,
+  Stocks
 };

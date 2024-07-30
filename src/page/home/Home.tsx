@@ -1,15 +1,15 @@
 import {lazy, Suspense, useEffect, useState} from "react";
 import { Helmet } from "react-helmet";
-import { fetchAllData } from "../api";
+import { fetchAllData } from "../../api";
 import {
   About,
   MainScreen,
   Mortgage,
   PopularProjects,
-} from "../components/home";
+} from "../../components/home";
 
-const Recommendation = lazy(() => import ("../components/home/Recommendation"));
-const Contact = lazy(() => import("../components/home/Contact"));
+const Recommendation = lazy(() => import ("../../components/home/Recommendation"));
+const Contact = lazy(() => import("../../components/home/Contact"));
 
 type HomeData = {
   meta: { title: string; description: string };
@@ -161,4 +161,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export {Home};

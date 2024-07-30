@@ -147,4 +147,4 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
   );
 };
 
-export default HouseDetail;
+export {HouseDetail} ;

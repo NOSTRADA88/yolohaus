@@ -8,11 +8,11 @@ import {
   fetchContactData,
   fetchReviewsData,
   fetchStocksData,
-} from "../api";
-import { Consultation } from "../components/footer";
-import { API_URL } from "../constants";
+} from "../../api";
+import { Consultation } from "../../components/footer";
+import { API_URL } from "../../constants";
 import React from "react";
-import { Modal } from "./modal";
+import { Modal } from "../modal";
 import { Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
 
@@ -146,7 +146,7 @@ const Footer = () => {
       <div className="bg-maingray p-8">
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5">
           <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col max-xl:mb-2 max-xl:gap-2">
-            <a href="/">
+            <a href="/public">
               <img
                 src={`${API_URL}${footerData.logoCompany}`}
                 alt="logo"

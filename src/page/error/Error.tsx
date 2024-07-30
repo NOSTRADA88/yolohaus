@@ -2,7 +2,7 @@ import { faHouseCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const Error = () => {
+const ErrorPage = () => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
       <div className="flex justify-between max-sm:flex-col max-sm:gap-4 ">
@@ -35,4 +35,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export {ErrorPage};

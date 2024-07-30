@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchContactData, fetchHeaderFooterData, fetchHomeData } from "../api";
+import { fetchContactData, fetchHeaderFooterData, fetchHomeData } from "../../api";
 import {
   ContactInfo,
   EmployeeCard,
   ProductionsList,
-} from "../components/contact";
+} from "../../components/contact";
 import { Link } from "react-router-dom";
 
 interface DescriptionItem {
@@ -155,4 +155,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export {Contact};

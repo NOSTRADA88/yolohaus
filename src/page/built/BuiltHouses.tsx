@@ -231,4 +231,4 @@ const BuiltHouses = () => {
   );
 };
 
-export default BuiltHouses;
+export {BuiltHouses};

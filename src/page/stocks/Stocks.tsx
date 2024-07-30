@@ -218,4 +218,4 @@ const Stocks = () => {
   );
 };
 
-export default Stocks;
+export {Stocks};

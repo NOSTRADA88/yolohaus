@@ -146,4 +146,4 @@ const AboutCompany = () => {
   );
 };
 
-export default AboutCompany;
+export {AboutCompany};

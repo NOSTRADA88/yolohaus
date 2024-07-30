@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPrivacyPolicyData } from "../api";
+import { fetchPrivacyPolicyData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
@@ -106,4 +106,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy;
+export {PrivacyPolicy};

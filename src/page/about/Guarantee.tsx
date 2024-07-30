@@ -156,4 +156,4 @@ const Guarantee = () => {
   );
 };
 
-export default Guarantee;
+export {Guarantee};

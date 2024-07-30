@@ -8,17 +8,25 @@ import {
 import Layout from "../layouts/layout";
 import {
   AboutCompany,
-  Contact,
   Guarantee,
+  Vacancy,
+  Blog,
+  BuiltHouses,
+  HouseDetail,
+  Contact,
+  ErrorPage,
   Home,
+  PrivacyPolicy,
+  Projects,
+  ProjectsDetail,
   Reviews,
   ServiceDetail,
   Services,
-  Vacancy,
-  PrivacyPolicy,
+  Stocks,
 } from "../page";
 
 import { Suspense, useEffect, useState } from "react";
+
 import {
   fetchAboutData,
   fetchBlogData,
@@ -32,20 +40,14 @@ import {
   fetchStocksData,
   fetchVacancyData,
 } from "../api";
-import ScrollToTop from "../components/ScrollToTop";
-import { Projects } from "../page/project";
-import { BuiltHouses } from "../page/built";
 
-import { ErrorPage } from "../page/error";
+import ScrollToTop from "../components/ScrollToTop";
 import React from "react";
-import { Stocks } from "../page/stocks";
-import { Blog } from "../page/blog";
 
 const useRoutes = () => {
-  const HouseDetail = React.lazy(() => import("../page/built/HouseDetail"));
-  const ProjectsDetail = React.lazy(
-    () => import("../page/project/ProjectsDetail")
-  );
+
+  const HouseDetail = React.lazy(() => import("../page/built/HouseDetail").then(module => ({default: module.HouseDetail})));
+  const ProjectsDetail = React.lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
 
   const [slugs, setSlugs] = useState({
     about: "",

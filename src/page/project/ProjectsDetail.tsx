@@ -293,4 +293,4 @@ const ProjectsDetail = ({
   );
 };
 
-export default ProjectsDetail;
+export {ProjectsDetail};
