@@ -6,7 +6,6 @@ type MainScreenProps = {
   isModalOpen: boolean;
   closeModal: () => void;
   openModal: () => void;
-  mainBanner: string;
   titlePart1: string;
   titlePart2: string;
 };

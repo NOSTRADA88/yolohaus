@@ -12,17 +12,16 @@ import {
   Vacancy,
   Blog,
   BuiltHouses,
-  HouseDetail,
   Contact,
   ErrorPage,
   Home,
   PrivacyPolicy,
   Projects,
-  ProjectsDetail,
   Reviews,
   ServiceDetail,
   Services,
   Stocks,
+  BlogDetail,
 } from "../page";
 
 import { Suspense, useEffect, useState } from "react";
@@ -45,9 +44,16 @@ import ScrollToTop from "../components/ScrollToTop";
 import React from "react";
 
 const useRoutes = () => {
-
-  const HouseDetail = React.lazy(() => import("../page/built/HouseDetail").then(module => ({default: module.HouseDetail})));
-  const ProjectsDetail = React.lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
+  const HouseDetail = React.lazy(() =>
+    import("../page/built/HouseDetail").then((module) => ({
+      default: module.HouseDetail,
+    }))
+  );
+  const ProjectsDetail = React.lazy(() =>
+    import("../page/project/ProjectsDetail").then((module) => ({
+      default: module.ProjectsDetail,
+    }))
+  );
 
   const [slugs, setSlugs] = useState({
     about: "",
@@ -144,6 +150,18 @@ const useRoutes = () => {
       </Suspense>
     );
   };
+
+  const BlogDetailRoute = () => {
+    const { slug } = useParams<{ slug: string }>();
+    const blogSlug = slug ?? "";
+
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <BlogDetail blogSlug={blogSlug} />
+      </Suspense>
+    );
+  };
+
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -274,6 +292,14 @@ const useRoutes = () => {
           element={
             <Layout>
               <Blog />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path={`/${slugs.blog}/:slug`}
+          element={
+            <Layout>
+              <BlogDetailRoute />
             </Layout>
           }
         ></Route>

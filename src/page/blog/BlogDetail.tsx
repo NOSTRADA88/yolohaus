@@ -165,4 +165,4 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
   );
 };
 
-export default BlogDetail;
+export { BlogDetail };

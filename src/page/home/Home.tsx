@@ -1,4 +1,4 @@
-import {lazy, Suspense, useEffect, useState} from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAllData } from "../../api";
 import {
@@ -8,13 +8,14 @@ import {
   PopularProjects,
 } from "../../components/home";
 
-const Recommendation = lazy(() => import ("../../components/home/Recommendation"));
+const Recommendation = lazy(
+  () => import("../../components/home/Recommendation")
+);
 const Contact = lazy(() => import("../../components/home/Contact"));
 
 type HomeData = {
   meta: { title: string; description: string };
   isModalOpen: boolean;
-  mainBanner: string;
   title: { part1: string; part2: string };
   mortgage: { title: string; description: string; photos: any[] };
   about: {
@@ -51,7 +52,6 @@ const Home = () => {
   const [homeData, setHomeData] = useState<HomeData>({
     meta: { title: "", description: "" },
     isModalOpen: false,
-    mainBanner: "",
     title: { part1: "", part2: "" },
     mortgage: { title: "", description: "", photos: [] },
     about: {
@@ -88,7 +88,6 @@ const Home = () => {
             description: mainData.Metadata.MetaDescription,
           },
           isModalOpen: false,
-          mainBanner: mainData.Greetings.Photo.data.attributes.url,
           title: {
             part1:
               splitIndex !== -1 ? title.substring(0, splitIndex + 15) : title,
@@ -144,7 +143,6 @@ const Home = () => {
         isModalOpen={homeData.isModalOpen}
         closeModal={toggleModal}
         openModal={toggleModal}
-        mainBanner={homeData.mainBanner}
         titlePart1={homeData.title.part1}
         titlePart2={homeData.title.part2}
       />
@@ -161,4 +159,4 @@ const Home = () => {
   );
 };
 
-export {Home};
+export { Home };
