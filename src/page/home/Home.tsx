@@ -17,7 +17,7 @@ type HomeData = {
   meta: { title: string; description: string };
   isModalOpen: boolean;
   title: { part1: string; part2: string };
-  mortgage: { title: string; description: string; photos: any[] };
+  mortgage: { title: string; description: string; photos: any[]; link: string };
   about: {
     title: string;
     titleMini: string;
@@ -53,7 +53,7 @@ const Home = () => {
     meta: { title: "", description: "" },
     isModalOpen: false,
     title: { part1: "", part2: "" },
-    mortgage: { title: "", description: "", photos: [] },
+    mortgage: { title: "", description: "", photos: [], link: "" },
     about: {
       title: "",
       titleMini: "",
@@ -77,8 +77,14 @@ const Home = () => {
   useEffect(() => {
     fetchAllData()
       .then((data) => {
-        const { mainData, aboutData, projectData, reviewsData, phoneData } =
-          data;
+        const {
+          mainData,
+          aboutData,
+          projectData,
+          reviewsData,
+          phoneData,
+          mortgageData,
+        } = data;
         const title = mainData.Greetings.Title;
         const splitIndex = title.indexOf("Дом вашей мечты");
 
@@ -97,6 +103,7 @@ const Home = () => {
             title: mainData.Mortgage.Title,
             description: mainData.Mortgage.Description,
             photos: mainData.Mortgage.Photos.data || [],
+            link: mortgageData.slug,
           },
           about: {
             title: mainData.About.Title,

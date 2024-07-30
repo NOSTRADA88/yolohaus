@@ -1,11 +1,24 @@
 import React, { useCallback, useEffect, useState, lazy, Suspense } from "react";
 import { Navbar } from "../../components/header";
-import { fetchAboutData, fetchBlogData, fetchBuiltHousesData, fetchContactData, fetchGuaranteeData, fetchHeaderFooterData, fetchProjectsData, fetchReviewsData, fetchServicesData, fetchStocksData, fetchVacancyData } from "../../api";
+import {
+  fetchAboutData,
+  fetchBlogData,
+  fetchBuiltHousesData,
+  fetchContactData,
+  fetchGuaranteeData,
+  fetchHeaderFooterData,
+  fetchMortgageData,
+  fetchProjectsData,
+  fetchReviewsData,
+  fetchServicesData,
+  fetchStocksData,
+  fetchVacancyData,
+} from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
-import {LogoMainBlack} from "../../assets";
+import { LogoMainBlack } from "../../assets";
 
 interface PhoneNumberLinkProps {
   phoneNumber: string;
@@ -55,6 +68,7 @@ const Header: React.FC = () => {
         builtData,
         stocksData,
         blogData,
+        mortgageData,
       ] = await Promise.all([
         fetchHeaderFooterData(),
         fetchAboutData(),
@@ -67,6 +81,7 @@ const Header: React.FC = () => {
         fetchBuiltHousesData(),
         fetchStocksData(),
         fetchBlogData(),
+        fetchMortgageData(),
       ]);
 
       const updatedNavLinks = [
@@ -74,7 +89,7 @@ const Header: React.FC = () => {
         { href: `/${builtData.slug}`, label: "Построенные дома" },
         { href: `/${reviewsData.slug}`, label: "Отзывы" },
         { href: `/${stocksData.slug}`, label: "Акции" },
-        { href: "/", label: "Ипотека" },
+        { href: `/${mortgageData.slug}`, label: "Ипотека" },
         {
           href: `/${aboutData.slug}`,
           label: "О компании",
@@ -139,9 +154,11 @@ const Header: React.FC = () => {
     setIsModalOpen(false);
   }, []);
 
-  const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = React.memo(({ phoneNumber }) => {
-    return formatPhoneNumber(phoneNumber);
-  });
+  const PhoneNumberLink: React.FC<PhoneNumberLinkProps> = React.memo(
+    ({ phoneNumber }) => {
+      return formatPhoneNumber(phoneNumber);
+    }
+  );
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -151,7 +168,9 @@ const Header: React.FC = () => {
     }
   }, [mobileMenuOpen]);
 
-  const LazyMobileMenu = lazy(() => import("../../components/header/MobileMenu"));
+  const LazyMobileMenu = lazy(
+    () => import("../../components/header/MobileMenu")
+  );
 
   return (
     <div className="w-full max-w-[1111px] mx-auto">

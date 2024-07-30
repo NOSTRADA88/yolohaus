@@ -119,6 +119,8 @@ export const fetchStocksData = () =>
 export const fetchBlogData = () =>
   fetchData("/api/blog", "posts_list.Media,Metadata");
 
+export const fetchMortgageData = () => fetchData("/api/ipoteka", "Metadata");
+
 export const fetchBlogDetailData = async (blogSlug: string) => {
   try {
     const response = await axiosInstanse.get(
@@ -136,13 +138,27 @@ export const fetchBlogDetailData = async (blogSlug: string) => {
 };
 
 export const fetchAllData = async () => {
-  const [mainData, aboutData, projectData, reviewsData, phoneData] =
-    await Promise.all([
-      fetchHomeData(),
-      fetchAboutData(),
-      fetchProjectsData(),
-      fetchReviewsData(),
-      fetchHeaderFooterData(),
-    ]);
-  return { mainData, aboutData, projectData, reviewsData, phoneData };
+  const [
+    mainData,
+    aboutData,
+    projectData,
+    reviewsData,
+    phoneData,
+    mortgageData,
+  ] = await Promise.all([
+    fetchHomeData(),
+    fetchAboutData(),
+    fetchProjectsData(),
+    fetchReviewsData(),
+    fetchHeaderFooterData(),
+    fetchMortgageData(),
+  ]);
+  return {
+    mainData,
+    aboutData,
+    projectData,
+    reviewsData,
+    phoneData,
+    mortgageData,
+  };
 };

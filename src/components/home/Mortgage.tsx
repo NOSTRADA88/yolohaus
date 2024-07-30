@@ -15,9 +15,10 @@ interface MortgageProps {
   title: string;
   description: string;
   photos: Photo[];
+  link: string;
 }
 
-const Mortgage = ({ title, description, photos }: MortgageProps) => {
+const Mortgage = ({ title, description, photos, link }: MortgageProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
@@ -44,7 +45,7 @@ const Mortgage = ({ title, description, photos }: MortgageProps) => {
         </div>
         <div className="flex justify-start items-center mt-8 gap-2 cursor-pointer arrow-container ">
           <Link
-            to="/"
+            to={link}
             className="text-orange uppercase text-sm font-medium tracking-wider"
           >
             Подробнее{" "}

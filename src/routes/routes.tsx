@@ -22,6 +22,7 @@ import {
   Services,
   Stocks,
   BlogDetail,
+  MortgageAbout,
 } from "../page";
 
 import { Suspense, useEffect, useState } from "react";
@@ -32,6 +33,7 @@ import {
   fetchBuiltHousesData,
   fetchContactData,
   fetchGuaranteeData,
+  fetchMortgageData,
   fetchPrivacyPolicyData,
   fetchProjectsData,
   fetchReviewsData,
@@ -67,6 +69,7 @@ const useRoutes = () => {
     built: "",
     stocks: "",
     blog: "",
+    mortgage: "",
   });
 
   const fetchData = async () => {
@@ -83,6 +86,7 @@ const useRoutes = () => {
         fetchBuiltHousesData,
         fetchStocksData,
         fetchBlogData,
+        fetchMortgageData,
       ];
 
       const data = await Promise.all(fetchFunctions.map((func) => func()));
@@ -98,6 +102,7 @@ const useRoutes = () => {
         built: data[8].slug,
         stocks: data[9].slug,
         blog: data[10].slug,
+        mortgage: data[11].slug,
       };
 
       setSlugs(newSlugs);
@@ -300,6 +305,14 @@ const useRoutes = () => {
           element={
             <Layout>
               <BlogDetailRoute />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path={`/${slugs.mortgage}`}
+          element={
+            <Layout>
+              <MortgageAbout />
             </Layout>
           }
         ></Route>
