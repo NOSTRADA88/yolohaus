@@ -148,6 +148,7 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
                     className="underline cursor-pointer"
                     to={`/${slugPrivacy}`}
                   >
+                    {" "}
                     персональных данных
                   </Link>
                 </p>
