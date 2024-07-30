@@ -157,15 +157,13 @@ const Consultation = ({ slugPrivacy }: ConsultationProps) => {
         </div>
 
         <div className="w-full">
-          <LazyLoad height={300} offset={100} once>
-            <img
-              src={ConsultationPhoto}
-              alt="photoAbout"
-              width="500"
-              height="300"
-              className="w-full h-auto"
-            />
-          </LazyLoad>
+          <img
+            src={ConsultationPhoto}
+            alt="photoAbout"
+            width="500"
+            height="300"
+            className="w-full h-auto"
+          />
         </div>
       </div>
     </div>

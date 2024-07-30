@@ -5,13 +5,14 @@ import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
+import {LogoMainBlack} from "../../assets";
 
 interface PhoneNumberLinkProps {
   phoneNumber: string;
 }
 
 interface HeaderData {
-  logoCompany: string;
+  // logoCompany: string;
   description: string;
   vkContent: string;
   youtubeContent: string;
@@ -27,7 +28,7 @@ interface HeaderData {
 
 const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
-    logoCompany: "",
+    // logoCompany: "",
     description: "",
     vkContent: "",
     youtubeContent: "",
@@ -88,7 +89,7 @@ const Header: React.FC = () => {
       ];
 
       setHeaderData({
-        logoCompany: headerFooterData.Header.CompanyLogo.data.attributes.url,
+        //logoCompany: headerFooterData.Header.CompanyLogo.data.attributes.url,
         description: headerFooterData.Header.Text,
         vkContent: headerFooterData.Header.Socials.data[0].attributes.URL,
         youtubeContent: headerFooterData.Header.Socials.data[1].attributes.URL,
@@ -168,9 +169,9 @@ const Header: React.FC = () => {
               />
             </button>
           </div>
-          <a href="/public">
+          <a href="/">
             <img
-              src={`${API_URL}${headerData.logoCompany}`}
+              src={LogoMainBlack}
               alt="logo"
               className="h-auto max-w-full object-contain cursor-pointer"
               width="200"
@@ -232,7 +233,7 @@ const Header: React.FC = () => {
         {mobileMenuOpen && (
           <LazyMobileMenu
             isOpen={mobileMenuOpen}
-            logoCompany={headerData.logoCompany}
+            logoCompany={LogoMainBlack}
             onClose={() => setMobileMenuOpen(false)}
             navLinks={headerData.navLinks}
           />
