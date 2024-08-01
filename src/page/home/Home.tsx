@@ -133,7 +133,6 @@ const Home = () => {
             urlAddressOffice: mainData.ContactsMap.YandexMapURL,
           },
         });
-        console.log(mainData.Mortgage.Photos.data);
       })
       .catch((error) => console.error("Ошибка запроса:", error));
   }, []);

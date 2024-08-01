@@ -69,7 +69,6 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
       const blogsDataResponse = await fetchBlogData();
       const aboutData = await fetchAboutData();
 
-      console.log(blogDetailsData);
       setBlogData({
         metaTitle: blogDetailsData.data[0].attributes.Metadata.MetaTitle,
         metaDescription:
