@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   PieChart,
   Pie,
@@ -117,9 +117,9 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
         Результаты расчета
       </h3>
       <div className="flex flex-col gap-4 justify-center">
-        <div className="flex">
-          <div className="p-4  border rounded-lg shadow-md mt-5 bg-white w-[60%]">
-            <div className="flex justify-between items-center mb-4  ">
+        <div className="flex max-[850px]:flex-col max-[850px]:items-center">
+          <div className="p-4  border rounded-lg shadow-md mt-5 bg-white w-[60%] mr-5 max-[850px]:w-full max-[850px]:mr-0">
+            <div className="flex justify-between items-center mb-4 max-[450px]:flex-col max-[450px]:items-start">
               <p className="text-maingray font-medium font-museо text-base">
                 Ежемесячный платеж
               </p>
@@ -127,7 +127,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                 {formatNumber(monthlyPayment)} ₽
               </p>
             </div>
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-4 max-[450px]:flex-col max-[450px]:items-start">
               <p className="text-maingray font-medium font-museо text-base">
                 Сумма долга
               </p>
@@ -135,7 +135,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                 {formatNumber(totalDebt)} ₽
               </p>
             </div>
-            <div className="flex justify-between items-center mb-4 ">
+            <div className="flex justify-between items-center mb-4 max-[450px]:flex-col max-[450px]:items-start ">
               <p className="text-maingray font-medium font-museо text-base">
                 Переплата
               </p>
@@ -143,7 +143,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                 {formatNumber(overpayment)} ₽
               </p>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center max-[450px]:flex-col max-[450px]:items-start">
               <p className="text-maingray font-medium font-museо text-base">
                 Окончание выплат
               </p>
@@ -152,11 +152,11 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
               </p>
             </div>
           </div>
-          <PieChart width={600} height={200}>
+          <PieChart width={475} height={200} className="max-sm:hidden block">
             <Pie
               data={pieData}
-              cx={310}
-              cy={100}
+              cx={220}
+              cy={110}
               labelLine={false}
               label={({ name, value }) => {
                 const total = pieData.reduce(
@@ -181,10 +181,14 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
           </PieChart>
         </div>
         <div className="w-full mt-8">
-          <h2 className="mb-4 text-maingray font-museо font-medium">
+          <h2 className="mb-4 text-maingray font-museо font-medium max-sm:hidden block">
             График погашения
           </h2>
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer
+            width="100%"
+            height={400}
+            className="max-sm:hidden block"
+          >
             <BarChart
               data={barData}
               margin={{
@@ -196,6 +200,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
+                className="max-md:hidden block"
                 dataKey="name"
                 tickFormatter={(tick, index) =>
                   tickFormatter(tick, index, barData, term, termType)
@@ -211,7 +216,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
           </ResponsiveContainer>
         </div>
       </div>
-      <div className="mt-8">
+      <div className="mt-8  max-sm:mt-0 ">
         <h2 className="mb-4 text-maingray font-museо font-medium">
           Таблица платежей
         </h2>
@@ -219,11 +224,20 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr className="text-maingray font-museо font-bold text-sm border">
-                <th className="px-4 py-2 border">№</th>
+                <th className="px-4 py-2 border max-sm:px-1">№</th>
                 <th className="px-4 py-2 border">Месяц</th>
-                <th className="px-4 py-2 border">Сумма платежа</th>
-                <th className="px-4 py-2 border">Платеж по основному долгу</th>
-                <th className="px-4 py-2 border">Платеж по процентам</th>
+                <th className="px-4 py-2 border max-sm:hidden ">
+                  Сумма платежа
+                </th>
+                <th className="px-4 py-2 border max-sm:hidden ">
+                  Платеж по основному долгу
+                </th>
+                <th className="px-4 py-2 border max-sm:hidden ">
+                  Платеж по процентам
+                </th>
+                <th className="px-4 py-2  max-sm:block hidden mt-[10px]">
+                  Платеж
+                </th>
                 <th className="px-4 py-2 border">Остаток долга</th>
               </tr>
             </thead>
@@ -233,18 +247,38 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                   key={index}
                   className="text-maingray font-museо text-sm font-light text-center  whitespace-nowrap"
                 >
-                  <td className="px-4 py-2  border">{index + 1}</td>
-                  <td className="px-4 py-2 border">{item.month}</td>
-                  <td className="px-4 py-2 border">{item.payment} ₽</td>
-                  <td className="px-4 py-2 border">{item.principal} ₽</td>
-                  <td className="px-4 py-2 border">{item.interest} ₽</td>
+                  <td className="px-4 py-2  border max-sm:px-1">{index + 1}</td>
+                  <td className="px-4 py-2 border  max-sm:whitespace-normal">
+                    {item.month}
+                  </td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.payment} ₽
+                  </td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.principal} ₽
+                  </td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.interest} ₽
+                  </td>
+                  <td className="px-4 py-2 border-b max-sm:block hidden">
+                    <p className="block">{item.payment} ₽</p>
+                    <p className="block">
+                      <span className="text-contact">Долг:</span>{" "}
+                      {item.principal} ₽
+                    </p>
+                    <p className="block">
+                      {" "}
+                      <span className="text-contact">Проценты:</span>{" "}
+                      {item.interest} ₽
+                    </p>
+                  </td>
                   <td className="px-4 py-2 border ">{item.remainingDebt} ₽</td>
                 </tr>
               ))}
               {!showAllRows && (
                 <>
                   <tr>
-                    <td colSpan={6} className="px-4 py-2 text-center">
+                    <td colSpan={6} className="px-4 py-2 text-center border-b ">
                       <button
                         onClick={handleShowAllRows}
                         className="text-orange underline ml-2"
@@ -261,11 +295,25 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                     key={index + 5}
                     className="text-maingray font-museо text-sm font-light text-center  whitespace-nowrap"
                   >
-                    <td className="px-4 py-2 border ">{index + 6}</td>
+                    <td className="px-4 py-2 border max-sm:px-1">
+                      {index + 6}
+                    </td>
                     <td className="px-4 py-2 border">{item.month}</td>
-                    <td className="px-4 py-2 border ">{item.payment} ₽</td>
-                    <td className="px-4 py-2 border ">{item.principal} ₽</td>
-                    <td className="px-4 py-2 border  ">{item.interest} ₽</td>
+                    <td className="px-4 py-2 border max-sm:hidden ">
+                      {item.payment} ₽
+                    </td>
+                    <td className="px-4 py-2 border max-sm:hidden ">
+                      {item.principal} ₽
+                    </td>
+                    <td className="px-4 py-2 border max-sm:hidden ">
+                      {item.interest} ₽
+                    </td>
+                    <td className="px-4 py-2 border-b max-sm:block hidden">
+                      {" "}
+                      <span className="block">{item.payment} ₽</span>
+                      <span className="block">Долг: {item.principal} ₽</span>
+                      <span className="block">Проценты: {item.interest} ₽</span>
+                    </td>
                     <td className="px-4 py-2 border ">
                       {item.remainingDebt} ₽
                     </td>
@@ -274,15 +322,27 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
               {tableData.slice(-5).map((item, index) => (
                 <tr
                   key={index}
-                  className="text-maingray font-museо text-sm font-light text-center  whitespace-nowrap"
+                  className="text-maingray font-museо text-sm font-light text-center  whitespace-nowrap max-sm:whitespace-normal"
                 >
-                  <td className="px-4 py-2 border ">
+                  <td className="px-4 py-2 border max-sm:px-1">
                     {tableData.length - 5 + index + 1}
                   </td>
                   <td className="px-4 py-2 border">{item.month}</td>
-                  <td className="px-4 py-2 border ">{item.payment} ₽</td>
-                  <td className="px-4 py-2 border ">{item.principal} ₽</td>
-                  <td className="px-4 py-2 border">{item.interest} ₽</td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.payment} ₽
+                  </td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.principal} ₽
+                  </td>
+                  <td className="px-4 py-2 border max-sm:hidden ">
+                    {item.interest} ₽
+                  </td>
+                  <td className="px-4 py-2 border-b  max-sm:block hidden">
+                    {" "}
+                    <span className="block">{item.payment} ₽</span>
+                    <span className="block">Долг: {item.principal} ₽</span>
+                    <span className="block">Проценты: {item.interest} ₽</span>
+                  </td>
                   <td className="px-4 py-2 border ">{item.remainingDebt} ₽</td>
                 </tr>
               ))}
@@ -293,10 +353,10 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                 <td className="px-4 py-2  border ">
                   {formatNumber(monthlyPayment * tableData.length)} ₽
                 </td>
-                <td className="px-4 py-2 border">
+                <td className="px-4 py-2 border max-sm:hidden ">
                   {formatNumber(totalDebt)} ₽
                 </td>
-                <td className="px-4 py-2  border">
+                <td className="px-4 py-2  border max-sm:hidden ">
                   {formatNumber(overpayment)} ₽
                 </td>
                 <td className="px-4 py-2  border "></td>

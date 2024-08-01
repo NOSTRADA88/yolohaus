@@ -169,6 +169,12 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
           />
         </div>
       </div>
+      <button
+        type="submit"
+        className="mt-4 w-full bg-orange text-white py-3 px-4 rounded-md shadow-sm text-sm font-medium"
+      >
+        Рассчитать платеж
+      </button>
     </form>
   );
 };

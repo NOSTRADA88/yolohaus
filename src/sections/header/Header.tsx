@@ -25,7 +25,6 @@ interface PhoneNumberLinkProps {
 }
 
 interface HeaderData {
-  // logoCompany: string;
   description: string;
   vkContent: string;
   youtubeContent: string;
@@ -41,7 +40,6 @@ interface HeaderData {
 
 const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
-    // logoCompany: "",
     description: "",
     vkContent: "",
     youtubeContent: "",

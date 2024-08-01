@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchMortgageData } from "../../api";
-import { MortgagePhoto } from "../../assets";
 import { API_URL } from "../../constants";
-import {
-  BankSelection,
-  CalculationResults,
-  MortgageForm,
-} from "../../components/mortgage";
-
+import { BankSelection, MortgageForm } from "../../components/mortgage";
+const CalculationResults = lazy(
+  () => import("../../components/mortgage/CalculationResults")
+);
 interface Child {
   text: string;
   type: string;
@@ -20,13 +17,31 @@ interface DescriptionItem {
   children: Child[];
 }
 
+interface Bank {
+  id: number;
+  attributes: {
+    Title: string;
+    URL: string;
+    Rate: string;
+    Photo: {
+      data: {
+        id: number;
+        attributes: {
+          url: string;
+        };
+      };
+    };
+  };
+}
+
 interface MortgageData {
   metaTitle: string;
   metaDescription: string;
   title: string;
-  titleMini: string;
-  description: DescriptionItem[];
-  photoMortgage: string;
+  TitleDescription: string;
+  Description: DescriptionItem[];
+  Photo: string;
+  banks_list: Bank[];
 }
 
 interface BankOptions {
@@ -34,9 +49,9 @@ interface BankOptions {
     name: string;
     rate: number;
     photo: string;
+    url: string;
   };
 }
-
 const formatNumber = (number: number) => {
   return new Intl.NumberFormat("ru-RU", {
     minimumFractionDigits: 2,
@@ -49,41 +64,62 @@ const MortgageAbout = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-
-    titleMini: "Ипотека от «YOLO HAUS» – ваш путь к загородной мечте",
-    description: [
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "Здесь вы найдете всю необходимую информацию для выбора оптимальной ипотеки, соответствующей вашим финансовым возможностям и жизненным планам.",
-            type: "text",
-          },
-        ],
-      },
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "Мы предлагаем широкий выбор ипотечных программ от ведущих банков страны, включая СберБанк, Альфа-Банк, РоссельхозБанк, Газпромбанк, Сургутнефтегаз и ДОМ.РФ. Наша цель - помочь вам сделать правильный выбор и предоставить все инструменты для комфортного оформления ипотеки.",
-            type: "text",
-          },
-        ],
-      },
-    ],
-    photoMortgage: "/images/mortgage_photo.jpg",
+    TitleDescription: "",
+    Description: [],
+    Photo: "",
+    banks_list: [],
   });
+
   const [bankOptions, setBankOptions] = useState<BankOptions>({
-    sber: { name: "СберБанк", rate: 15.9, photo: "" },
-    rosselhoz: { name: "РоссельхозБанк", rate: 7.15, photo: "" },
-    domrf: { name: "ДОМ.РФ", rate: 5.3, photo: "" },
-    alfa: { name: "Альфабанк", rate: 6, photo: "" },
-    gazprom: { name: "Газпромбанк", rate: 6.2, photo: "" },
-    pochta: { name: "Почта банк", rate: 8, photo: "" },
-    ros: { name: "Росбанк", rate: 12.2, photo: "" },
-    surgutneftegaz: { name: "Сургутнефтегаз", rate: 6.0, photo: "" },
+    sber: {
+      name: "СберБанк",
+      rate: 21,
+      photo: "",
+      url: "https://www.sberbank.ru/ru/person/credits/homenew",
+    },
+    rosselhoz: {
+      name: "РоссельхозБанк",
+      rate: 16.25,
+      photo: "",
+      url: "https://svoe-selo.ru/mortgage/programs/buy-build-house",
+    },
+    domrf: {
+      name: "ДОМ.РФ",
+      rate: 20.35,
+      photo: "",
+      url: "https://domrfbank.ru/mortgage/",
+    },
+    alfa: {
+      name: "Альфабанк",
+      rate: 20.1,
+      photo: "",
+      url: "https://alfabank.ru/get-money/mortgage/ipoteka-na-stroitelstvo-doma/?platformId=yandex_cpc_yxpript_yandex_ipoteka_core_search_brand_rf%257C52079437008_52079437008%257Ccid%257C111720329%257Cgid%257C5455465604%257Caid%257C16212703355%257Caud%257C0%257Cadp%257Cno%257Cpos%257Cpremium1%257Csrc%257Csearch_none%257Cdvc%257Cdesktop%257Creg2_%25D0%25A1%25D0%25B0%25D0%25BD%25D0%25BA%25D1%2582-%25D0%259F%25D0%25B5%25D1%2582%25D0%25B5%25D1%2580%25D0%25B1%25D1%2583%25D1%2580%25D0%25B3",
+    },
+    gazprom: {
+      name: "Газпромбанк",
+      rate: 22,
+      photo: "",
+      url: "https://www.gazprombank.ru/personal/take_credit/mortgage/7131239/",
+    },
+    pochta: {
+      name: "Почта банк",
+      rate: 20.9,
+      photo: "",
+      url: "https://www.pochtabank.ru/service/mortgage/ipoteka_na_stroitelstvo_doma",
+    },
+    ros: {
+      name: "Росбанк",
+      rate: 18.9,
+      photo: "",
+      url: "https://www.rosbank.ru/ipoteka/",
+    },
+    surgutneftegaz: {
+      name: "Сургутнефтегаз",
+      rate: 20,
+      photo: "",
+      url: "https://www.sngb.ru/products/mortgage/chastnyy-dom",
+    },
   });
-
   const [bank, setBank] = useState<string>("sber");
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
@@ -99,6 +135,7 @@ const MortgageAbout = () => {
     new Date().toISOString().split("T")[0]
   );
   const [showAllRows, setShowAllRows] = useState(false);
+  const [showResults, setShowResults] = useState<boolean>(false);
 
   const handleShowAllRows = () => {
     setShowAllRows(true);
@@ -125,29 +162,13 @@ const MortgageAbout = () => {
         metaTitle: mortgageDataResponse.Metadata.MetaTitle,
         metaDescription: mortgageDataResponse.Metadata.MetaDescription,
         title: mortgageDataResponse.Title,
-        titleMini: "Ипотека от «YOLO HAUS» – ваш путь к загородной мечте",
-        description: [
-          {
-            type: "paragraph",
-            children: [
-              {
-                text: "Здесь вы найдете всю необходимую информацию для выбора оптимальной ипотеки, соответствующей вашим финансовым возможностям и жизненным планам.",
-                type: "text",
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            children: [
-              {
-                text: "Мы предлагаем широкий выбор ипотечных программ от ведущих банков страны, включая СберБанк, Альфа-Банк, РоссельхозБанк, Газпромбанк, Сургутнефтегаз и ДОМ.РФ. Наша цель - помочь вам сделать правильный выбор и предоставить все инструменты для комфортного оформления ипотеки.",
-                type: "text",
-              },
-            ],
-          },
-        ],
-        photoMortgage: "/images/mortgage_photo.jpg",
+        TitleDescription: mortgageDataResponse.TitleDescription,
+        Description: mortgageDataResponse.Description,
+        Photo: mortgageDataResponse.Photo.data.attributes.url,
+        banks_list: mortgageDataResponse.banks_list,
       });
+      console.log(mortgageData.banks_list);
+
       setBankOptions(updatedBankOptions);
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -157,17 +178,6 @@ const MortgageAbout = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const bankRate = bankOptions[bank].rate;
-    setRate(bankRate);
-    setLoanAmount(projectCost - initialPayment);
-    calculateMortgage(bankRate);
-  }, [bank, projectCost, initialPayment, term, termType, startDate]);
-
-  useEffect(() => {
-    calculateMortgage(rate);
-  }, [rate]);
 
   const calculateMortgage = (currentRate: number) => {
     const monthlyRate = currentRate / 100 / 12;
@@ -194,13 +204,51 @@ const MortgageAbout = () => {
     setOverpayment(totalInterest);
     setEndDate(endDateCalc.toLocaleDateString());
   };
+  const handleInputChange =
+    (setter: (value: number) => void) => (value: number) => {
+      setter(value);
+      setShowResults(false);
+    };
+
+  const handleTermTypeChange = (value: string) => {
+    setTermType(value);
+    setShowResults(false);
+  };
+
+  const handleStartDateChange = (value: string) => {
+    setStartDate(value);
+    setShowResults(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    calculateMortgage(rate);
+    setShowResults(true);
+  };
+
+  const handleSelectBank = (selectedBank: string) => {
+    setBank(selectedBank);
+    setRate(bankOptions[selectedBank].rate);
+
+    setMonthlyPayment(0);
+    setTotalDebt(0);
+    setOverpayment(0);
+    setEndDate("");
+    setShowResults(false);
+    setShowAllRows(false);
+  };
+
+  useEffect(() => {
+    setLoanAmount(projectCost - initialPayment);
+    calculateMortgage(rate);
+  }, [bank, rate, projectCost, initialPayment, term, termType, startDate]);
 
   const pieData = [
     { name: "Основной долг", value: loanAmount },
     { name: "Проценты", value: overpayment },
   ];
 
-  const barData: any[] | undefined = [];
+  const barData: any[] = [];
   let remainingDebt = loanAmount;
 
   for (let i = 0; i < (termType === "years" ? term * 12 : term); i++) {
@@ -266,11 +314,11 @@ const MortgageAbout = () => {
             <div className=" bg-lightwhite p-5">
               <div className="flex items-center">
                 <p className="font-light text-xl font-museo leading-normal text-justify text-maingray">
-                  {mortgageData.titleMini}
+                  {mortgageData.TitleDescription}
                 </p>
               </div>
             </div>
-            {mortgageData.description.map((item, index) => (
+            {mortgageData.Description.map((item, index) => (
               <div
                 key={index}
                 className="mt-5 ml-4 w-[85%] max-[1111px]:w-full max-[1111px]:pr-8"
@@ -288,7 +336,7 @@ const MortgageAbout = () => {
           </div>
           <div className=" mt-[50px] max-[1111px]:hidden">
             <img
-              src={MortgagePhoto}
+              src={`${API_URL}${mortgageData.Photo}`}
               alt="MortgagePhoto"
               className="w-full h-[350px] object-cover object-center"
             />
@@ -299,11 +347,12 @@ const MortgageAbout = () => {
             <h2 className="text-2xl font-museо font-bold text-maingray mb-4">
               Ипотечный калькулятор
             </h2>
+
             <div className="flex flex-col lg:flex-row gap-4">
               <BankSelection
                 bankOptions={bankOptions}
                 selectedBank={bank}
-                onSelectBank={setBank}
+                onSelectBank={handleSelectBank}
               />
               <div className="w-full">
                 <MortgageForm
@@ -314,34 +363,33 @@ const MortgageAbout = () => {
                   term={term}
                   termType={termType}
                   startDate={startDate}
-                  onProjectCostChange={setProjectCost}
-                  onInitialPaymentChange={setInitialPayment}
-                  onRateChange={setRate}
-                  onTermChange={setTerm}
-                  onTermTypeChange={setTermType}
-                  onStartDateChange={setStartDate}
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    calculateMortgage(rate);
-                  }}
+                  onProjectCostChange={handleInputChange(setProjectCost)}
+                  onInitialPaymentChange={handleInputChange(setInitialPayment)}
+                  onRateChange={handleInputChange(setRate)}
+                  onTermChange={handleInputChange(setTerm)}
+                  onTermTypeChange={handleTermTypeChange}
+                  onStartDateChange={handleStartDateChange}
+                  onSubmit={handleSubmit}
                 />
-
-                {monthlyPayment > 0 &&
+                {showResults &&
+                  monthlyPayment > 0 &&
                   ((termType === "years" && term <= 30) ||
                     (termType === "months" && term <= 365)) && (
-                    <CalculationResults
-                      monthlyPayment={monthlyPayment}
-                      totalDebt={totalDebt}
-                      overpayment={overpayment}
-                      endDate={endDate}
-                      pieData={pieData}
-                      barData={barData}
-                      tableData={tableData}
-                      showAllRows={showAllRows}
-                      handleShowAllRows={handleShowAllRows}
-                      term={term}
-                      termType={termType}
-                    />
+                    <Suspense>
+                      <CalculationResults
+                        monthlyPayment={monthlyPayment}
+                        totalDebt={totalDebt}
+                        overpayment={overpayment}
+                        endDate={endDate}
+                        pieData={pieData}
+                        barData={barData}
+                        tableData={tableData}
+                        showAllRows={showAllRows}
+                        handleShowAllRows={handleShowAllRows}
+                        term={term}
+                        termType={termType}
+                      />
+                    </Suspense>
                   )}
               </div>
             </div>

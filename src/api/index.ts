@@ -119,7 +119,8 @@ export const fetchStocksData = () =>
 export const fetchBlogData = () =>
   fetchData("/api/blog", "posts_list.Media,Metadata");
 
-export const fetchMortgageData = () => fetchData("/api/ipoteka", "Metadata");
+export const fetchMortgageData = () =>
+  fetchData("/api/ipoteka", "Metadata,banks_list.Photo,Photo");
 
 export const fetchBlogDetailData = async (blogSlug: string) => {
   try {
