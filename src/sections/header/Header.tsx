@@ -248,7 +248,7 @@ const Header: React.FC = () => {
       <div className="max-[800px]:hidden">
         <Navbar navLinks={headerData.navLinks} />
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         {mobileMenuOpen && (
           <LazyMobileMenu
             isOpen={mobileMenuOpen}

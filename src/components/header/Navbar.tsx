@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
                 )}
               </Link>
               {link.submenu && dropdownIndex === index && LazySubmenu && (
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense>
                   <LazySubmenu submenu={link.submenu} />
                 </Suspense>
               )}

@@ -127,7 +127,7 @@ const useRoutes = () => {
     const houseSlug = slug ?? "";
 
     return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <HouseDetail houseSlug={houseSlug} />
       </Suspense>
     );
@@ -147,7 +147,7 @@ const useRoutes = () => {
     const projectsSlug = isTechnology ? baseProjectSlug : slug || "";
 
     return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <ProjectsDetail
           projectsSlug={projectsSlug}
           initialTechnology={isTechnology ? technologySlug : undefined}
@@ -161,7 +161,7 @@ const useRoutes = () => {
     const blogSlug = slug ?? "";
 
     return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <BlogDetail blogSlug={blogSlug} />
       </Suspense>
     );

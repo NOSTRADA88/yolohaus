@@ -157,10 +157,10 @@ const Home = () => {
       <Mortgage {...homeData.mortgage} />
       <About {...homeData.about} />
       <PopularProjects {...homeData.popularProjects} />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Recommendation {...homeData.recommendations} />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Contact {...homeData.contact} />
       </Suspense>
     </div>
