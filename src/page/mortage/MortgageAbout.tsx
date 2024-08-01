@@ -305,7 +305,7 @@ const MortgageAbout = () => {
                 selectedBank={bank}
                 onSelectBank={setBank}
               />
-              <div>
+              <div className="w-full">
                 <MortgageForm
                   projectCost={projectCost}
                   initialPayment={initialPayment}

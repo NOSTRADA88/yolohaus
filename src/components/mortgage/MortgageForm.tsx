@@ -36,14 +36,8 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
   const [termError, setTermError] = useState<string>("");
 
   const handleTermChange = (value: number) => {
-    if (termType === "years" && value > 50) {
-      setTermError("Срок ипотеки не может быть больше 30 лет");
-    } else if (termType === "months" && value > 600) {
-      setTermError("Срок ипотеки не может быть больше 365 месяцев");
-    } else {
-      setTermError("");
-      onTermChange(value);
-    }
+    setTermError("");
+    onTermChange(value);
   };
 
   return (
