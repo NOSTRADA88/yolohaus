@@ -6,5 +6,5 @@ import Youtube from "./pngwing.com.png";
 import BgMain from "./bgmain.webp";
 import LogoMainBlack from "./CompanyLogoBlack.svg"
 import LogoMainWhite from "./СompanyLogoWhite.svg"
-
-export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite };
+import MortgagePhoto from "./mortgage.webp"
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, MortgagePhoto};

@@ -115,11 +115,7 @@ const AboutCompany = () => {
             ))}
           </div>
           <div className="mt-[66px]  max-[1111px]:hidden">
-            <img
-              src={`${API_URL}${aboutData.photoAbout}`}
-              alt="photoAbout"
-              className=""
-            />
+            <img src={`${API_URL}${aboutData.photoAbout}`} alt="photoAbout" />
           </div>
         </div>
         <div className=" bg-lightwhite mt-8 p-5">
@@ -146,4 +142,4 @@ const AboutCompany = () => {
   );
 };
 
-export {AboutCompany};
+export { AboutCompany };
