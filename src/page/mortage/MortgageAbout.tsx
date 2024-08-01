@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { fetchHomeData, fetchMortgageData } from "../../api";
+import { fetchMortgageData } from "../../api";
 import { API_URL } from "../../constants";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
 const CalculationResults = lazy(
@@ -17,20 +17,22 @@ interface DescriptionItem {
   children: Child[];
 }
 
+interface Photo {
+  data: {
+    attributes: {
+      name: string;
+      url: string;
+    };
+  };
+}
+
 interface Bank {
   id: number;
   attributes: {
+    Photo: Photo;
+    Rate: string;
     Title: string;
     URL: string;
-    Rate: string;
-    Photo: {
-      data: {
-        id: number;
-        attributes: {
-          url: string;
-        };
-      };
-    };
   };
 }
 
@@ -38,20 +40,12 @@ interface MortgageData {
   metaTitle: string;
   metaDescription: string;
   title: string;
-  TitleDescription: string;
-  Description: DescriptionItem[];
-  Photo: string;
-  banks_list: Bank[];
+  titleDescription: string;
+  description: DescriptionItem[];
+  photoMortgage: string;
+  banks: Bank[];
 }
 
-interface BankOptions {
-  [key: string]: {
-    name: string;
-    rate: number;
-    photo: string;
-    url: string;
-  };
-}
 const formatNumber = (number: number) => {
   return new Intl.NumberFormat("ru-RU", {
     minimumFractionDigits: 2,
@@ -64,69 +58,19 @@ const MortgageAbout = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    TitleDescription: "",
-    Description: [],
-    Photo: "",
-    banks_list: [],
+    titleDescription: "",
+    description: [],
+    photoMortgage: "",
+    banks: [],
   });
 
-  const [bankOptions, setBankOptions] = useState<BankOptions>({
-    sber: {
-      name: "СберБанк",
-      rate: 21,
-      photo: "",
-      url: "https://www.sberbank.ru/ru/person/credits/homenew",
-    },
-    rosselhoz: {
-      name: "РоссельхозБанк",
-      rate: 16.25,
-      photo: "",
-      url: "https://svoe-selo.ru/mortgage/programs/buy-build-house",
-    },
-    domrf: {
-      name: "ДОМ.РФ",
-      rate: 20.35,
-      photo: "",
-      url: "https://domrfbank.ru/mortgage/",
-    },
-    alfa: {
-      name: "Альфабанк",
-      rate: 20.1,
-      photo: "",
-      url: "https://alfabank.ru/get-money/mortgage/ipoteka-na-stroitelstvo-doma/?platformId=yandex_cpc_yxpript_yandex_ipoteka_core_search_brand_rf%257C52079437008_52079437008%257Ccid%257C111720329%257Cgid%257C5455465604%257Caid%257C16212703355%257Caud%257C0%257Cadp%257Cno%257Cpos%257Cpremium1%257Csrc%257Csearch_none%257Cdvc%257Cdesktop%257Creg2_%25D0%25A1%25D0%25B0%25D0%25BD%25D0%25BA%25D1%2582-%25D0%259F%25D0%25B5%25D1%2582%25D0%25B5%25D1%2580%25D0%25B1%25D1%2583%25D1%2580%25D0%25B3",
-    },
-    gazprom: {
-      name: "Газпромбанк",
-      rate: 22,
-      photo: "",
-      url: "https://www.gazprombank.ru/personal/take_credit/mortgage/7131239/",
-    },
-    pochta: {
-      name: "Почта банк",
-      rate: 20.9,
-      photo: "",
-      url: "https://www.pochtabank.ru/service/mortgage/ipoteka_na_stroitelstvo_doma",
-    },
-    ros: {
-      name: "Росбанк",
-      rate: 18.9,
-      photo: "",
-      url: "https://www.rosbank.ru/ipoteka/",
-    },
-    surgutneftegaz: {
-      name: "Сургутнефтегаз",
-      rate: 20,
-      photo: "",
-      url: "https://www.sngb.ru/products/mortgage/chastnyy-dom",
-    },
-  });
-  const [bank, setBank] = useState<string>("sber");
+  const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
   const [loanAmount, setLoanAmount] = useState<number>(800000);
   const [term, setTerm] = useState<number>(30);
   const [termType, setTermType] = useState<string>("months");
-  const [rate, setRate] = useState<number>(bankOptions[bank].rate);
+  const [rate, setRate] = useState<number>(0);
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
   const [totalDebt, setTotalDebt] = useState<number>(0);
   const [overpayment, setOverpayment] = useState<number>(0);
@@ -144,32 +88,15 @@ const MortgageAbout = () => {
   const fetchData = async () => {
     try {
       const mortgageDataResponse = await fetchMortgageData();
-      const mainData = await fetchHomeData();
-      const photos = mainData.Mortgage.Photos.data || [];
-
-      const updatedBankOptions = { ...bankOptions };
-
-      photos.forEach((photo: { attributes: { name: string; url: any } }) => {
-        const bankKey = photo.attributes.name.split(".")[0].toLowerCase();
-        if (updatedBankOptions[bankKey]) {
-          updatedBankOptions[
-            bankKey
-          ].photo = `${API_URL}${photo.attributes.url}`;
-        }
-      });
-
       setMortgageData({
         metaTitle: mortgageDataResponse.Metadata.MetaTitle,
         metaDescription: mortgageDataResponse.Metadata.MetaDescription,
         title: mortgageDataResponse.Title,
-        TitleDescription: mortgageDataResponse.TitleDescription,
-        Description: mortgageDataResponse.Description,
-        Photo: mortgageDataResponse.Photo.data.attributes.url,
-        banks_list: mortgageDataResponse.banks_list,
+        titleDescription: mortgageDataResponse.TitleDescription,
+        description: mortgageDataResponse.Description,
+        photoMortgage: mortgageDataResponse.Photo.data.attributes.url,
+        banks: mortgageDataResponse.banks_list.data,
       });
-      console.log(mortgageData.banks_list);
-
-      setBankOptions(updatedBankOptions);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -226,16 +153,19 @@ const MortgageAbout = () => {
     setShowResults(true);
   };
 
-  const handleSelectBank = (selectedBank: string) => {
-    setBank(selectedBank);
-    setRate(bankOptions[selectedBank].rate);
-
-    setMonthlyPayment(0);
-    setTotalDebt(0);
-    setOverpayment(0);
-    setEndDate("");
-    setShowResults(false);
-    setShowAllRows(false);
+  const handleSelectBank = (bankId: number) => {
+    const selectedBank = mortgageData.banks.find((bank) => bank.id === bankId);
+    if (selectedBank) {
+      setBank(bankId);
+      setRate(parseFloat(selectedBank.attributes.Rate));
+      setLoanAmount(projectCost - initialPayment);
+      setMonthlyPayment(0);
+      setTotalDebt(0);
+      setOverpayment(0);
+      setEndDate("");
+      setShowResults(false);
+      setShowAllRows(false);
+    }
   };
 
   useEffect(() => {
@@ -314,11 +244,11 @@ const MortgageAbout = () => {
             <div className=" bg-lightwhite p-5">
               <div className="flex items-center">
                 <p className="font-light text-xl font-museo leading-normal text-justify text-maingray">
-                  {mortgageData.TitleDescription}
+                  {mortgageData.titleDescription}
                 </p>
               </div>
             </div>
-            {mortgageData.Description.map((item, index) => (
+            {mortgageData.description.map((item, index) => (
               <div
                 key={index}
                 className="mt-5 ml-4 w-[85%] max-[1111px]:w-full max-[1111px]:pr-8"
@@ -336,7 +266,7 @@ const MortgageAbout = () => {
           </div>
           <div className=" mt-[50px] max-[1111px]:hidden">
             <img
-              src={`${API_URL}${mortgageData.Photo}`}
+              src={`${API_URL}${mortgageData.photoMortgage}`}
               alt="MortgagePhoto"
               className="w-full h-[350px] object-cover object-center"
             />
@@ -347,13 +277,13 @@ const MortgageAbout = () => {
             <h2 className="text-2xl font-museо font-bold text-maingray mb-4">
               Ипотечный калькулятор
             </h2>
-
             <div className="flex flex-col lg:flex-row gap-4">
               <BankSelection
-                bankOptions={bankOptions}
+                banks={mortgageData.banks}
                 selectedBank={bank}
                 onSelectBank={handleSelectBank}
               />
+
               <div className="w-full">
                 <MortgageForm
                   projectCost={projectCost}

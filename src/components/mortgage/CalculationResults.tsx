@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   PieChart,
   Pie,
@@ -152,10 +152,10 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
               </p>
             </div>
           </div>
-          <PieChart width={475} height={200} className="max-sm:hidden block">
+          <PieChart width={550} height={200} className="max-sm:hidden block">
             <Pie
               data={pieData}
-              cx={220}
+              cx={280}
               cy={110}
               labelLine={false}
               label={({ name, value }) => {

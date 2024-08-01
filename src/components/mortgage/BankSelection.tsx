@@ -1,23 +1,34 @@
 import React from "react";
 import { LinkBank } from "../../assets";
+import { API_URL } from "../../constants";
 
-interface BankOptions {
-  [key: string]: {
-    name: string;
-    rate: number;
-    photo: string;
-    url: string;
+interface Photo {
+  data: {
+    attributes: {
+      name: string;
+      url: string;
+    };
+  };
+}
+
+interface Bank {
+  id: number;
+  attributes: {
+    Photo: Photo;
+    Rate: string;
+    Title: string;
+    URL: string;
   };
 }
 
 interface BankSelectionProps {
-  bankOptions: BankOptions;
-  selectedBank: string;
-  onSelectBank: (bank: string) => void;
+  banks: Bank[];
+  selectedBank: number;
+  onSelectBank: (bankId: number) => void;
 }
 
 const BankSelection: React.FC<BankSelectionProps> = ({
-  bankOptions,
+  banks,
   selectedBank,
   onSelectBank,
 }) => {
@@ -27,26 +38,28 @@ const BankSelection: React.FC<BankSelectionProps> = ({
         Выбор банка
       </h3>
       <ul>
-        {Object.entries(bankOptions).map(([key, value]) => (
-          <li key={key} className="mb-2 flex items-center">
+        {banks.map((bank) => (
+          <li key={bank.id} className="mb-2 flex items-center">
             <button
-              onClick={() => onSelectBank(key)}
+              onClick={() => onSelectBank(bank.id)}
               className={`block w-full bg-white text-left p-2 rounded-md font-museo text-base font-medium border ${
-                selectedBank === key
+                selectedBank === bank.id
                   ? "border-2 border-orange text-white"
                   : "border-contact"
               }`}
             >
-              <div className="flex gap-2 justify-center items-center ">
-                {value.photo && (
-                  <img
-                    src={value.photo}
-                    alt={value.name}
-                    className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
-                  />
-                )}
+              <div className="flex gap-2 justify-center items-center">
+                <img
+                  src={`${API_URL}${bank.attributes.Photo.data.attributes.url}`}
+                  alt={bank.attributes.Title}
+                  className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
+                />
 
-                <a href={value.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={bank.attributes.URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img
                     src={LinkBank}
                     alt="link"

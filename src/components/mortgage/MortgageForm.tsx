@@ -113,7 +113,7 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
             name="rate"
             value={rate}
             onChange={(e) => onRateChange(Number(e.target.value))}
-            className="mt-1 block w-full py-2 px-3 border  border-contact rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm"
+            className="mt-1 block w-full py-2 px-3 border border-contact rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm"
             required
           />
         </div>
