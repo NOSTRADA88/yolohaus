@@ -327,8 +327,8 @@ const MortgageAbout = () => {
                 />
 
                 {monthlyPayment > 0 &&
-                  ((termType === "years" && term <= 50) ||
-                    (termType === "months" && term <= 600)) && (
+                  ((termType === "years" && term <= 30) ||
+                    (termType === "months" && term <= 365)) && (
                     <CalculationResults
                       monthlyPayment={monthlyPayment}
                       totalDebt={totalDebt}

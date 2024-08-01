@@ -93,12 +93,6 @@ const tickFormatter = (
   ) {
     return index % 60 === 0 ? tick : "";
   }
-  if (
-    (termType === "years" && term >= 40) ||
-    (termType === "months" && term >= 480)
-  ) {
-    return index % 120 === 0 ? tick : "";
-  }
 
   const previousTick = index > 0 ? barData[index - 1].name : null;
   return previousTick !== tick ? tick : "";
