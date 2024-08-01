@@ -1,13 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { API_URL } from "../../constants";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { Link } from "react-router-dom";
 import {memo} from "react";
+import {LogoMainBlack} from "../../assets";
 
 type MobileMenuProps = {
   isOpen: boolean;
   onClose: () => void;
-  logoCompany: string;
   navLinks: {
     href: string;
     label: string;
@@ -15,7 +14,7 @@ type MobileMenuProps = {
   }[];
 };
 
-const MobileMenu = memo(({ isOpen, onClose, logoCompany, navLinks}: MobileMenuProps) => {
+const MobileMenu = memo(({ isOpen, onClose, navLinks}: MobileMenuProps) => {
   return (
     <div
       className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50 border-r-4 border-r-orange overflow-y-auto pb-10
@@ -37,7 +36,7 @@ const MobileMenu = memo(({ isOpen, onClose, logoCompany, navLinks}: MobileMenuPr
       <div className="flex justify-center items-center flex-col mt-5 gap-5">
         <a href="/">
           <img
-            src={`${API_URL}${logoCompany}`}
+            src={LogoMainBlack}
             alt="logo"
             className="w-52 cursor-pointer max-[440px]:w-44  "
           />

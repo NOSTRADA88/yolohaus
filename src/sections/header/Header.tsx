@@ -252,7 +252,6 @@ const Header: React.FC = () => {
         {mobileMenuOpen && (
           <LazyMobileMenu
             isOpen={mobileMenuOpen}
-            logoCompany={LogoMainBlack}
             onClose={() => setMobileMenuOpen(false)}
             navLinks={headerData.navLinks}
           />
