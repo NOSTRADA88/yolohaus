@@ -23,11 +23,61 @@ interface Media {
   }[];
 }
 
+interface CardDescriptionText {
+  type: "text";
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+}
+
+interface CardDescriptionListItem {
+  type: "list-item";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionList {
+  type: "list";
+  format: "unordered";
+  children: CardDescriptionListItem[];
+}
+
+interface CardDescriptionParagraph {
+  type: "paragraph";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionHeading {
+  type: "heading";
+  level: number;
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionQuote {
+  type: "quote";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionImage {
+  type: "image";
+  image: {
+    url: string;
+    alternativeText: string;
+  };
+}
+
+type CardDescription =
+  | CardDescriptionParagraph
+  | CardDescriptionList
+  | CardDescriptionHeading
+  | CardDescriptionQuote
+  | CardDescriptionImage;
+
 interface Post {
   id: number;
   attributes: {
     Title: string;
-    BlogText: { type: string; children: { text: string }[] }[];
+    BlogText: CardDescription[];
     slug: string;
     Media: Media;
   };
@@ -36,9 +86,9 @@ interface Post {
 interface BlogsData {
   metaTitle: string;
   metaDescription: string;
-  titleAbout: string;
-  slugAbout: string;
   title: string;
+  slugAbout: string;
+  titleAbout: string;
   posts_list: Post[];
   slugBlog: string;
 }
@@ -76,12 +126,30 @@ const Blog = () => {
     fetchData();
   }, []);
 
-  const truncateText = (text: string, limit: number) => {
+  const truncateText = (text: string | undefined, limit: number) => {
+    if (!text) return "";
     if (text.length <= limit) {
       return text;
     }
     return text.substring(0, limit) + "...";
   };
+
+  const getFirstTwoParagraphsText = (blogText: CardDescription[]) => {
+    const paragraphs = blogText
+      .filter(
+        (block): block is CardDescriptionParagraph => block.type === "paragraph"
+      )
+      .slice(0, 2);
+    const text = paragraphs
+      .map((paragraph) =>
+        paragraph.children
+          .map((child: CardDescriptionText) => truncateText(child.text, 300))
+          .join(" ")
+      )
+      .join(" ");
+    return text + (paragraphs.length > 1 ? "..." : "");
+  };
+
   return (
     <div>
       <Helmet>
@@ -103,9 +171,8 @@ const Blog = () => {
             </Link>
             <Link
               to={`/${blogData.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
             >
-              {" "}
               {blogData.titleAbout} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
@@ -121,7 +188,7 @@ const Blog = () => {
                 to={`/${blogData.slugBlog}/${post.attributes.slug}`}
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
               >
-                <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]  ">
+                <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
                   <LazyLoad offset={300} once>
                     <img
                       src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
@@ -130,33 +197,22 @@ const Blog = () => {
                     />
                   </LazyLoad>
                   <div className="absolute top-0 left-[-10px] bg-maingray text-xs px-3 py-2 opacity-80 parallelogram">
-                    <p className="ml-2 text-white noparallelogram text-base font-medium uppercase ">
+                    <p className="ml-2 text-white noparallelogram text-base font-medium uppercase">
                       yolo
                       <span className="text-orange">haus</span>
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col w-full justify-between p-4 mt-4  cursor-pointer group ">
+                <div className="flex flex-col w-full justify-between p-[10px] mt-4 cursor-pointer group">
                   <div>
                     <p className="text-maingray font-bold font-museo text-2xl max-sm:text-lg group-hover:text-orange">
                       {post.attributes.Title}
                     </p>
-                    <div className=" mt-5">
+                    <div className="mt-5">
                       <p className="text-base font-light font-museo text-maingray text-justify">
-                        {post.attributes.BlogText.map((block, index) => (
-                          <p
-                            key={index}
-                            className="mt-4 text-maingray font-museo text-md max-md:text-sm"
-                          >
-                            {block.children.map((child, childIndex) => (
-                              <span key={childIndex}>
-                                {truncateText(child.text, 400)}{" "}
-                              </span>
-                            ))}
-                          </p>
-                        ))}
+                        {getFirstTwoParagraphsText(post.attributes.BlogText)}
                       </p>
-                      <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container ">
+                      <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container">
                         <Link
                           to={`/${blogData.slugBlog}/${post.attributes.slug}`}
                           className="text-orange uppercase text-sm font-medium tracking-wider"
@@ -180,4 +236,4 @@ const Blog = () => {
   );
 };
 
-export {Blog};
+export { Blog };

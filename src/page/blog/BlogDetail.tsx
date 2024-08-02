@@ -28,11 +28,61 @@ interface Media {
   }[];
 }
 
+interface CardDescriptionText {
+  type: "text";
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+}
+
+interface CardDescriptionListItem {
+  type: "list-item";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionList {
+  type: "list";
+  format: "unordered";
+  children: CardDescriptionListItem[];
+}
+
+interface CardDescriptionParagraph {
+  type: "paragraph";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionHeading {
+  type: "heading";
+  level: number;
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionQuote {
+  type: "quote";
+  children: CardDescriptionText[];
+}
+
+interface CardDescriptionImage {
+  type: "image";
+  image: {
+    url: string;
+    alternativeText: string;
+  };
+}
+
+type CardDescription =
+  | CardDescriptionParagraph
+  | CardDescriptionList
+  | CardDescriptionHeading
+  | CardDescriptionQuote
+  | CardDescriptionImage;
+
 interface Post {
   id: number;
   attributes: {
     Title: string;
-    BlogText: { type: string; children: { text: string }[] }[];
+    BlogText: CardDescription[];
     slug: string;
     Media: Media;
   };
@@ -90,6 +140,121 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
     fetchData();
   }, [blogSlug]);
 
+  function convertDescriptionToElements(
+    description: CardDescription[]
+  ): React.ReactNode[] {
+    return description.map((desc, index) => {
+      if (desc.type === "paragraph") {
+        return (
+          <p
+            key={index}
+            className="font-museo text-md max-md:text-sm font-light text-justify mb-4"
+          >
+            {desc.children.map((child, childIndex) => (
+              <span
+                key={childIndex}
+                className={`${child.bold ? "font-bold" : ""} ${
+                  child.italic ? "italic" : ""
+                } ${child.underline ? "underline" : ""}`}
+              >
+                {child.text}
+              </span>
+            ))}
+          </p>
+        );
+      }
+
+      if (desc.type === "list") {
+        return (
+          <ul key={index} className="custom-list">
+            {desc.children.map((listItem, listIndex) => (
+              <li
+                key={listIndex}
+                className="font-museo text-md max-md:text-sm leading-relaxed font-light mb-2 text-maingray"
+              >
+                {listItem.children.map((item, itemIndex) => (
+                  <span
+                    key={itemIndex}
+                    className={`${item.bold ? "font-bold text-maingray" : ""} ${
+                      item.italic ? "italic text-maingray" : ""
+                    } ${item.underline ? "underline text-maingray" : ""}`}
+                  >
+                    {item.text}
+                  </span>
+                ))}
+              </li>
+            ))}
+          </ul>
+        );
+      }
+
+      if (desc.type === "heading") {
+        const headingLevels = [
+          "text-3xl",
+          "text-2xl",
+          "text-xl",
+          "text-lg",
+          "text-md",
+          "text-sm",
+        ];
+        const level = desc.level - 1;
+        return (
+          <h1
+            key={index}
+            className={`font-museo font-bold ${headingLevels[level]} mb-4 text-maingray`}
+          >
+            {desc.children.map((child, childIndex) => (
+              <span
+                key={childIndex}
+                className={`${child.bold ? "font-bold text-maingray" : ""} ${
+                  child.italic ? "italic text-maingray" : ""
+                } ${child.underline ? "underline text-maingray" : ""}`}
+              >
+                {child.text}
+              </span>
+            ))}
+          </h1>
+        );
+      }
+
+      if (desc.type === "quote") {
+        return (
+          <blockquote
+            key={index}
+            className="border-l-4 border-orange pl-4 ml-5 italic text-md max-md:text-sm mb-4 text-maingray"
+          >
+            {desc.children.map((child, childIndex) => (
+              <span
+                key={childIndex}
+                className={`${child.bold ? "font-bold text-maingray" : ""} ${
+                  child.italic ? "italic text-maingray" : ""
+                } ${child.underline ? "underline text-maingray" : ""}`}
+              >
+                {child.text}
+              </span>
+            ))}
+          </blockquote>
+        );
+      }
+
+      if (desc.type === "image") {
+        return (
+          <div key={index} className="flex items-start mb-4">
+            <LazyLoad offset={300} once>
+              <img
+                src={desc.image.url}
+                alt="BlogImage"
+                className="w-1/2 h-auto object-cover mr-4 "
+              />
+            </LazyLoad>
+          </div>
+        );
+      }
+
+      return null;
+    });
+  }
+
   return (
     <div>
       <Helmet>
@@ -111,16 +276,14 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
             </Link>
             <Link
               to={`/${blogData.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
             >
-              {" "}
               {blogData.titleAbout} /{" "}
             </Link>
             <Link
               to={`/${blogData.slug}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
             >
-              {" "}
               {blogData.titleBlog} /{" "}
             </Link>
             <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
@@ -135,27 +298,13 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
               <LazyLoad offset={300} once>
                 <img
                   src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
-                  alt="Stock"
-                  className="w-full h-[250px] object-cover object-center"
+                  alt="Blog"
+                  className="w-full h-[250px] object-cover object-center mb-4 "
                 />
               </LazyLoad>
-              <h2 className="text-maingray font-museo font-bold text-2xl max-md:text-xl">
-                {post.attributes.Title}
-              </h2>
-              {post.attributes.BlogText.map((block, index) => (
-                <p className="text-base font-light font-museo text-maingray text-justify">
-                  {post.attributes.BlogText.map((block, index) => (
-                    <p
-                      key={index}
-                      className="mt-4 text-maingray font-museo text-md max-md:text-sm"
-                    >
-                      {block.children.map((child, childIndex) => (
-                        <span key={childIndex}>{child.text}</span>
-                      ))}
-                    </p>
-                  ))}
-                </p>
-              ))}
+              <div className=" py-2">
+                {convertDescriptionToElements(post.attributes.BlogText)}
+              </div>
             </div>
           ))}
         </div>

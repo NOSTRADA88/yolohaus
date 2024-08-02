@@ -176,7 +176,7 @@ const Stocks = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col w-full justify-between p-4 mt-4">
+                <div className="flex flex-col w-full justify-between p-3 mt-4">
                   <div>
                     <p className="text-orange font-bold font-museo text-xl max-sm:text-lg">
                       {stock.attributes.LongTitle}
@@ -218,4 +218,4 @@ const Stocks = () => {
   );
 };
 
-export {Stocks};
+export { Stocks };

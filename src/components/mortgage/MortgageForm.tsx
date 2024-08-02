@@ -15,6 +15,8 @@ interface MortgageFormProps {
   onTermTypeChange: (value: string) => void;
   onStartDateChange: (value: string) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  termError: string;
+  rateError: string;
 }
 
 const MortgageForm: React.FC<MortgageFormProps> = ({
@@ -32,14 +34,9 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
   onTermTypeChange,
   onStartDateChange,
   onSubmit,
+  termError,
+  rateError,
 }) => {
-  const [termError, setTermError] = useState<string>("");
-
-  const handleTermChange = (value: number) => {
-    setTermError("");
-    onTermChange(value);
-  };
-
   return (
     <form className="mt-5" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -113,9 +110,14 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
             name="rate"
             value={rate}
             onChange={(e) => onRateChange(Number(e.target.value))}
-            className="mt-1 block w-full py-2 px-3 border border-contact rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm"
+            className={`mt-1 block w-full py-2 px-3 border ${
+              rateError ? "border-red-500" : "border-contact"
+            } rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm`}
             required
           />
+          {rateError && (
+            <p className="text-red-500 text-sm mt-1">{rateError}</p>
+          )}
         </div>
         <div>
           <label
@@ -131,7 +133,7 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
                 id="term"
                 name="term"
                 value={term}
-                onChange={(e) => handleTermChange(Number(e.target.value))}
+                onChange={(e) => onTermChange(Number(e.target.value))}
                 className={`mt-1 block w-full py-2 px-3 border ${
                   termError ? "border-red-500" : "border-contact"
                 } rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm`}
