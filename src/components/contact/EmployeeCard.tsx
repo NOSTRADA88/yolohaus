@@ -20,11 +20,12 @@ interface Employee {
     };
   };
 }
+
 interface EmployeeCardProps {
   employees: Employee[];
 }
 
-const EmployeeCard = ({ employees }: EmployeeCardProps) => {
+const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
   function formatPhoneNumber(number: string) {
     return number.replace(
       /(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/,

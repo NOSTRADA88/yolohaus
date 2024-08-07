@@ -14,7 +14,7 @@ interface ProductionsListProps {
   productions: Production[];
 }
 
-const ProductionsList = ({ productions }: ProductionsListProps) => {
+const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
   return (
     <div className="mt-12 grid grid-cols-2 gap-28  max-xl:gap-10  max-sm:grid-cols-1 max-sm:gap-3">
       {productions.map((item) => (

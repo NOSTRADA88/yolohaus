@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, lazy, Suspense } from "react";
+import React, { useCallback, useEffect, useState, lazy } from "react";
 import { Navbar } from "../../components/header";
 import {
   fetchAboutData,
@@ -134,9 +134,7 @@ const Header: React.FC = () => {
     return (
       <a
         href={`tel:${phoneNumber}`}
-        className="text-maingray cursor-pointer transition-all duration-300 font-museo
-       text-lg font-light hover:text-orange flex items-center max-md:text-base"
-      >
+        className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base">
         {countryCode} ({areaCode})
         <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
         {firstPart}-{secondPart}-{thirdPart}
@@ -246,7 +244,6 @@ const Header: React.FC = () => {
       <div className="max-[800px]:hidden">
         <Navbar navLinks={headerData.navLinks} />
       </div>
-      <Suspense>
         {mobileMenuOpen && (
           <LazyMobileMenu
             isOpen={mobileMenuOpen}
@@ -254,7 +251,6 @@ const Header: React.FC = () => {
             navLinks={headerData.navLinks}
           />
         )}
-      </Suspense>
       <div
         className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${
           mobileMenuOpen

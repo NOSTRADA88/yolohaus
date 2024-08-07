@@ -1,6 +1,6 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import InputMask from "react-input-mask";
 import axios from "axios";

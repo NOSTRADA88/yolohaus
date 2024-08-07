@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import {lazy, Suspense, useEffect, useState} from "react";
 import { Helmet } from "react-helmet";
 import { fetchAllData } from "../../api";
 import {
@@ -159,9 +159,7 @@ const Home = () => {
       <Suspense>
         <Recommendation {...homeData.recommendations} />
       </Suspense>
-      <Suspense>
-        <Contact {...homeData.contact} />
-      </Suspense>
+      <Contact {...homeData.contact} />
     </div>
   );
 };

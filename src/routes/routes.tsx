@@ -1,31 +1,8 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { lazy, Suspense, FC } from "react";
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Layout from "../layouts/layout";
-import {
-  AboutCompany,
-  Guarantee,
-  Vacancy,
-  Blog,
-  BuiltHouses,
-  Contact,
-  ErrorPage,
-  Home,
-  PrivacyPolicy,
-  Projects,
-  Reviews,
-  ServiceDetail,
-  Services,
-  Stocks,
-  BlogDetail,
-  MortgageAbout,
-} from "../page";
-
-import { Suspense, useEffect, useState } from "react";
+import ScrollToTop from "../components/ScrollToTop";
 
 import {
   fetchAboutData,
@@ -41,284 +18,141 @@ import {
   fetchStocksData,
   fetchVacancyData,
 } from "../api";
+import { Home, ErrorPage } from "../page";
 
-import ScrollToTop from "../components/ScrollToTop";
-import React from "react";
+const AboutCompany = lazy(() => import("../page/about/AboutCompany").then(module => ({default: module.AboutCompany})));
+const Reviews = lazy(() => import("../page/reviews/Reviews").then(module => ({default: module.Reviews})));
+const Guarantee = lazy(() => import("../page/about/Guarantee").then(module => ({default: module.Guarantee})));
+const Vacancy = lazy(() => import("../page/about/Vacancy").then(module => ({default: module.Vacancy})));
+const Projects = lazy(() => import("../page/project/Projects").then(module => ({default: module.Projects})));
+const Contact = lazy(() => import("../page/contact/Contact").then(module => ({default: module.Contact})));
+const Services = lazy(() => import("../page/services/Services").then(module => ({default: module.Services})));
+const PrivacyPolicy = lazy(() => import("../page/privacy&policy/PrivacyPolicy").then(module => ({default: module.PrivacyPolicy})));
+const BuiltHouses = lazy(() => import("../page/built/BuiltHouses").then(module => ({default: module.BuiltHouses})));
+const Stocks = lazy(() => import("../page/stocks/Stocks").then(module => ({default: module.Stocks})));
+const Blog = lazy(() => import("../page/blog/Blog").then(module => ({default: module.Blog})));
+const MortgageAbout = lazy(() => import("../page/mortage/MortgageAbout").then(module => ({default: module.MortgageAbout})));
+const ServiceDetail = lazy(() => import("../page/services/ServiceDetail").then(module => ({default: module.ServiceDetail})));
+const HouseDetail = lazy(() => import("../page/built/HouseDetail").then(module => ({default: module.HouseDetail})));
+const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
+const BlogDetail = lazy(() => import("../page/blog/BlogDetail").then(module => ({default: module.BlogDetail})));
 
-const useRoutes = () => {
-  const HouseDetail = React.lazy(() =>
-    import("../page/built/HouseDetail").then((module) => ({
-      default: module.HouseDetail,
-    }))
-  );
-  const ProjectsDetail = React.lazy(() =>
-    import("../page/project/ProjectsDetail").then((module) => ({
-      default: module.ProjectsDetail,
-    }))
-  );
+interface Slugs {
+  about: string;
+  reviews: string;
+  guarantee: string;
+  vacancy: string;
+  projects: string;
+  contact: string;
+  services: string;
+  privacy: string;
+  built: string;
+  stocks: string;
+  blog: string;
+  mortgage: string;
+}
 
-  const [slugs, setSlugs] = useState({
-    about: "",
-    reviews: "",
-    guarantee: "",
-    vacancy: "",
-    projects: "",
-    contact: "",
-    services: "",
-    privacy: "",
-    built: "",
-    stocks: "",
-    blog: "",
-    mortgage: "",
+const fetchSlugs = async (): Promise<Slugs> => {
+  const [
+    about, reviews, guarantee, vacancy, projects, contact, services,
+    privacy, built, stocks, blog, mortgage
+  ] = await Promise.all([
+    fetchAboutData(), fetchReviewsData(), fetchGuaranteeData(),
+    fetchVacancyData(), fetchProjectsData(), fetchContactData(),
+    fetchServicesData(), fetchPrivacyPolicyData(), fetchBuiltHousesData(),
+    fetchStocksData(), fetchBlogData(), fetchMortgageData()
+  ]);
+
+  return {
+    about: about.slug,
+    reviews: reviews.slug,
+    guarantee: guarantee.slug,
+    vacancy: vacancy.slug,
+    projects: projects.slug,
+    contact: contact.slug,
+    services: services.slug,
+    privacy: privacy.slug,
+    built: built.slug,
+    stocks: stocks.slug,
+    blog: blog.slug,
+    mortgage: mortgage.slug,
+  };
+};
+
+const useSlugs = (): UseQueryResult<Slugs, Error> => {
+  return useQuery<Slugs, Error>({
+    queryKey: ['slugs'],
+    queryFn: fetchSlugs
   });
+};
 
-  const fetchData = async () => {
-    try {
-      const fetchFunctions = [
-        fetchAboutData,
-        fetchReviewsData,
-        fetchGuaranteeData,
-        fetchVacancyData,
-        fetchProjectsData,
-        fetchContactData,
-        fetchServicesData,
-        fetchPrivacyPolicyData,
-        fetchBuiltHousesData,
-        fetchStocksData,
-        fetchBlogData,
-        fetchMortgageData,
-      ];
+const RoutesComponent: FC = () => {
+  const { data: slugs, isLoading, isError } = useSlugs();
 
-      const data = await Promise.all(fetchFunctions.map((func) => func()));
-      const newSlugs = {
-        about: data[0].slug,
-        reviews: data[1].slug,
-        guarantee: data[2].slug,
-        vacancy: data[3].slug,
-        projects: data[4].slug,
-        contact: data[5].slug,
-        services: data[6].slug,
-        privacy: data[7].slug,
-        built: data[8].slug,
-        stocks: data[9].slug,
-        blog: data[10].slug,
-        mortgage: data[11].slug,
-      };
-
-      setSlugs(newSlugs);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const ServiceDetailRoute = () => {
-    const { slug } = useParams<{ slug: string }>();
-    const servicesSlug = slug || "";
-
-    return <ServiceDetail servicesSlug={servicesSlug} />;
-  };
-
-  const HouseDetailRoute = () => {
-    const { slug } = useParams<{ slug: string }>();
-    const houseSlug = slug ?? "";
-
-    return (
-      <Suspense>
-        <HouseDetail houseSlug={houseSlug} />
-      </Suspense>
-    );
-  };
-
-  const ProjectsDetailRoute = () => {
-    const { slug } = useParams<{ slug: string }>();
-    const location = useLocation();
-
-    const urlParts = location.pathname.split("/").pop()?.split("-") || [];
-    const technologySlug = urlParts[urlParts.length - 1];
-    const baseProjectSlug = urlParts.slice(0, -1).join("-");
-
-    const isTechnology = ["sip", "karkas", "gazobeton"].includes(
-      technologySlug
-    );
-    const projectsSlug = isTechnology ? baseProjectSlug : slug || "";
-
-    return (
-      <Suspense>
-        <ProjectsDetail
-          projectsSlug={projectsSlug}
-          initialTechnology={isTechnology ? technologySlug : undefined}
-        />
-      </Suspense>
-    );
-  };
-
-  const BlogDetailRoute = () => {
-    const { slug } = useParams<{ slug: string }>();
-    const blogSlug = slug ?? "";
-
-    return (
-      <Suspense>
-        <BlogDetail blogSlug={blogSlug} />
-      </Suspense>
-    );
-  };
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !slugs) return <div>Error loading slugs</div>;
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.about}`}
-          element={
-            <Layout>
-              <AboutCompany />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.reviews}`}
-          element={
-            <Layout>
-              <Reviews />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.guarantee}`}
-          element={
-            <Layout>
-              <Guarantee />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.vacancy}`}
-          element={
-            <Layout>
-              <Vacancy />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.projects}`}
-          element={
-            <Layout>
-              <Projects />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.projects}/:slug`}
-          element={
-            <Layout>
-              <ProjectsDetailRoute />
-            </Layout>
-          }
-        />
+      <BrowserRouter>
+        <ScrollToTop />
+        {/*TODO*/}
+        {/*обернуть в Suspense каждый компонент страницы или всё целиком ?*/}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path={`/${slugs.about}`} element={<Layout><AboutCompany /></Layout>} />
+            <Route path={`/${slugs.reviews}`} element={<Layout><Reviews /></Layout>} />
+            <Route path={`/${slugs.guarantee}`} element={<Layout><Guarantee /></Layout>} />
+            <Route path={`/${slugs.vacancy}`} element={<Layout><Vacancy /></Layout>} />
+            <Route path={`/${slugs.projects}`} element={<Layout><Projects /></Layout>} />
+            <Route path={`/${slugs.projects}/:slug`} element={<Layout><ProjectsDetailRoute /></Layout>} />
+            <Route path={`/${slugs.contact}`} element={<Layout><Contact /></Layout>} />
+            <Route path={`/${slugs.services}`} element={<Layout><Services /></Layout>} />
+            <Route path={`/${slugs.services}/:slug`} element={<Layout><ServiceDetailRoute /></Layout>} />
+            <Route path={`/${slugs.privacy}`} element={<Layout><PrivacyPolicy /></Layout>} />
+            <Route path={`/${slugs.built}`} element={<Layout><BuiltHouses /></Layout>} />
+            <Route path={`/${slugs.built}/:slug`} element={<Layout><HouseDetailRoute /></Layout>} />
+            <Route path={`/${slugs.stocks}`} element={<Layout><Stocks /></Layout>} />
+            <Route path={`/${slugs.blog}`} element={<Layout><Blog /></Layout>} />
+            <Route path={`/${slugs.blog}/:slug`} element={<Layout><BlogDetailRoute /></Layout>} />
+            <Route path={`/${slugs.mortgage}`} element={<Layout><MortgageAbout /></Layout>} />
+            <Route path="/*" element={<Layout><ErrorPage /></Layout>} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+  );
+}
 
-        <Route
-          path={`/${slugs.contact}`}
-          element={
-            <Layout>
-              <Contact />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.services}`}
-          element={
-            <Layout>
-              <Services />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.services}/:slug`}
-          element={
-            <Layout>
-              <ServiceDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.privacy}`}
-          element={
-            <Layout>
-              <PrivacyPolicy />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.built}`}
-          element={
-            <Layout>
-              <BuiltHouses />
-            </Layout>
-          }
-        />
-        <Route
-          path={`/${slugs.built}/:slug`}
-          element={
-            <Layout>
-              <HouseDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path="/:random"
-          element={
-            <Layout>
-              <ErrorPage />
-            </Layout>
-          }
-        ></Route>
-        <Route
-          path={`/${slugs.stocks}`}
-          element={
-            <Layout>
-              <Stocks />
-            </Layout>
-          }
-        ></Route>
-        <Route
-          path={`/${slugs.blog}`}
-          element={
-            <Layout>
-              <Blog />
-            </Layout>
-          }
-        ></Route>
-        <Route
-          path={`/${slugs.blog}/:slug`}
-          element={
-            <Layout>
-              <BlogDetailRoute />
-            </Layout>
-          }
-        ></Route>
-        <Route
-          path={`/${slugs.mortgage}`}
-          element={
-            <Layout>
-              <MortgageAbout />
-            </Layout>
-          }
-        ></Route>
-      </Routes>
-    </BrowserRouter>
+const ServiceDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <ServiceDetail servicesSlug={slug ?? ''} />;
+};
+
+const HouseDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <HouseDetail houseSlug={slug ?? ''} />;
+};
+
+const ProjectsDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const urlParts = location.pathname.split("/").pop()?.split("-") || [];
+  const technologySlug = urlParts[urlParts.length - 1];
+  const baseProjectSlug = urlParts.slice(0, -1).join("-");
+  const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
+  const projectsSlug = isTechnology ? baseProjectSlug : slug ?? '';
+
+  return (
+      <ProjectsDetail
+          projectsSlug={projectsSlug}
+          initialTechnology={isTechnology ? technologySlug : undefined}
+      />
   );
 };
 
-export default useRoutes;
+const BlogDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <BlogDetail blogSlug={slug ?? ''} />;
+};
+
+export default RoutesComponent;

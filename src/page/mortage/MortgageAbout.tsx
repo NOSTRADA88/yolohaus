@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { fetchMortgageData } from "../../api";
@@ -376,21 +376,19 @@ const MortgageAbout = () => {
                   monthlyPayment > 0 &&
                   ((termType === "years" && term <= 30) ||
                     (termType === "months" && term <= 360)) && (
-                    <Suspense>
-                      <CalculationResults
-                        monthlyPayment={monthlyPayment}
-                        totalDebt={totalDebt}
-                        overpayment={overpayment}
-                        endDate={endDate}
-                        pieData={pieData}
-                        barData={barData}
-                        tableData={tableData}
-                        showAllRows={showAllRows}
-                        handleShowAllRows={handleShowAllRows}
-                        term={term}
-                        termType={termType}
-                      />
-                    </Suspense>
+                    <CalculationResults
+                      monthlyPayment={monthlyPayment}
+                      totalDebt={totalDebt}
+                      overpayment={overpayment}
+                      endDate={endDate}
+                      pieData={pieData}
+                      barData={barData}
+                      tableData={tableData}
+                      showAllRows={showAllRows}
+                      handleShowAllRows={handleShowAllRows}
+                      term={term}
+                      termType={termType}
+                    />
                   )}
               </div>
             </div>

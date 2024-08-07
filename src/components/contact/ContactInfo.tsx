@@ -24,15 +24,15 @@ interface ContactInfoProps {
 }
 
 const ContactInfo = ({
-  titleMini,
-  description,
-  address,
-  urlAddressOffice,
-  phone,
-  email,
-  photoContact,
-  weekdays,
-  weekends,
+  titleMini = "",
+  description = [],
+  address = "",
+  urlAddressOffice = "",
+  phone = "",
+  email = "",
+  photoContact = "",
+  weekdays = "",
+  weekends = "",
 }: ContactInfoProps) => {
   function formatPhoneNumber(number: string) {
     return number.replace(

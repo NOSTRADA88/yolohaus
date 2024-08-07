@@ -46,9 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
                 )}
               </Link>
               {link.submenu && dropdownIndex === index && LazySubmenu && (
-                <Suspense>
-                  <LazySubmenu submenu={link.submenu} />
-                </Suspense>
+                <LazySubmenu submenu={link.submenu} />
               )}
             </li>
             <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>
