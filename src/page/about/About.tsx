@@ -31,6 +31,7 @@ interface AboutData {
 }
 
 const About = () => {
+
   const [aboutData, setAboutData] = useState<AboutData>({
     metaTitle: "",
     metaDescription: "",

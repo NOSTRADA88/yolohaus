@@ -1,5 +1,6 @@
 
 import { Header, Footer } from "../sections";
+import {Suspense} from "react";
 
 const Layout = ({ children }) => {
     return (
@@ -7,7 +8,9 @@ const Layout = ({ children }) => {
             <section>
                 <Header />
             </section>
-            {children}
+                <Suspense fallback={<div>Loading...</div>}>
+                    {children}
+                </Suspense>
             <section>
                 <Footer />
             </section>

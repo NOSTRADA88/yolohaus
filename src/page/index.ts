@@ -1,5 +1,5 @@
 import { About } from "./about/About";
-import { Guarantee } from "./gurantee/Guarantee";
+import { Guarantee } from "./guarantee/Guarantee";
 import { Vacancy } from "./vacancy/Vacancy";
 import { Blog } from "./blog/Blog";
 import { BlogDetail } from "./blog/BlogDetail";

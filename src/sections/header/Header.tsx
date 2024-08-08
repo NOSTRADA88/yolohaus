@@ -1,24 +1,13 @@
-import React, { useCallback, useEffect, useState, lazy } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Navbar } from "../../components/header";
-import {
-  fetchAboutData,
-  fetchBlogData,
-  fetchBuiltHousesData,
-  fetchContactData,
-  fetchGuaranteeData,
-  fetchHeaderFooterData,
-  fetchMortgageData,
-  fetchProjectsData,
-  fetchReviewsData,
-  fetchServicesData,
-  fetchStocksData,
-  fetchVacancyData,
-} from "../../api";
+import { fetchHeaderFooterData } from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
 import { LogoMainBlack } from "../../assets";
+import { useQueryClient } from "@tanstack/react-query";
+import LazyMobileMenu  from "../../components/header/MobileMenu"
 
 interface PhoneNumberLinkProps {
   phoneNumber: string;
@@ -38,6 +27,21 @@ interface HeaderData {
   }[];
 }
 
+interface Slugs {
+  about: string;
+  reviews: string;
+  guarantee: string;
+  vacancy: string;
+  projects: string;
+  contact: string;
+  services: string;
+  privacy: string;
+  built: string;
+  stocks: string;
+  blog: string;
+  mortgage: string;
+}
+
 const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
     description: "",
@@ -49,72 +53,52 @@ const Header: React.FC = () => {
     navLinks: [],
   });
 
+  const slugs = useQueryClient().getQueryData<Slugs>(['slugs'])
+
+  const updatedNavLinks: HeaderData['navLinks'] = [
+    { href: `/${slugs?.projects ?? ''}`, label: "Проекты и цены" },
+    { href: `/${slugs?.built ?? ''}`, label: "Построенные дома" },
+    { href: `/${slugs?.reviews ?? ''}`, label: "Отзывы" },
+    { href: `/${slugs?.stocks ?? ''}`, label: "Акции" },
+    { href: `/${slugs?.mortgage ?? ''}`, label: "Ипотека" },
+    {
+      href: `/${slugs?.about ?? ''}`,
+      label: "О компании",
+      submenu: [
+        { href: `/${slugs?.blog ?? ''}`, label: "Блог" },
+        { href: `/${slugs?.services ?? ''}`, label: "Услуги" },
+        { href: `/${slugs?.guarantee ?? ''}`, label: "Гарантия" },
+        { href: `/${slugs?.vacancy ?? ''}`, label: "Вакансии" },
+      ],
+    },
+    { href: `/${slugs?.contact ?? ''}`, label: "Контакты" },
+  ];
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
       const [
-        headerFooterData,
-        aboutData,
-        reviewsData,
-        guaranteeData,
-        vacancyData,
-        projectsData,
-        contactData,
-        servicesData,
-        builtData,
-        stocksData,
-        blogData,
-        mortgageData,
+        headerFooterData
       ] = await Promise.all([
-        fetchHeaderFooterData(),
-        fetchAboutData(),
-        fetchReviewsData(),
-        fetchGuaranteeData(),
-        fetchVacancyData(),
-        fetchProjectsData(),
-        fetchContactData(),
-        fetchServicesData(),
-        fetchBuiltHousesData(),
-        fetchStocksData(),
-        fetchBlogData(),
-        fetchMortgageData(),
+        fetchHeaderFooterData()
       ]);
 
-      const updatedNavLinks = [
-        { href: `/${projectsData.slug}`, label: "Проекты и цены" },
-        { href: `/${builtData.slug}`, label: "Построенные дома" },
-        { href: `/${reviewsData.slug}`, label: "Отзывы" },
-        { href: `/${stocksData.slug}`, label: "Акции" },
-        { href: `/${mortgageData.slug}`, label: "Ипотека" },
-        {
-          href: `/${aboutData.slug}`,
-          label: "О компании",
-          submenu: [
-            { href: `/${blogData.slug}`, label: "Блог" },
-            { href: `/${servicesData.slug}`, label: "Услуги" },
-            { href: `/${guaranteeData.slug}`, label: "Гарантия" },
-            { href: `/${vacancyData.slug}`, label: "Вакансии" },
-          ],
-        },
-        { href: `/${contactData.slug}`, label: "Контакты" },
-      ];
-
       setHeaderData({
-        //logoCompany: headerFooterData.Header.CompanyLogo.data.attributes.url,
         description: headerFooterData.Header.Text,
         vkContent: headerFooterData.Header.Socials.data[0].attributes.URL,
         youtubeContent: headerFooterData.Header.Socials.data[1].attributes.URL,
         vkIcon:
-          headerFooterData.Header.Socials.data[0].attributes.Photo.data
+        headerFooterData.Header.Socials.data[0].attributes.Photo.data
             .attributes.url,
         youtubeIcon:
-          headerFooterData.Header.Socials.data[1].attributes.Photo.data
+        headerFooterData.Header.Socials.data[1].attributes.Photo.data
             .attributes.url,
         phoneNumber: headerFooterData.Header.PhoneNumber.PhoneNumber,
         navLinks: updatedNavLinks,
       });
+
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -163,10 +147,6 @@ const Header: React.FC = () => {
       document.body.style.overflow = "";
     }
   }, [mobileMenuOpen]);
-
-  const LazyMobileMenu = lazy(
-    () => import("../../components/header/MobileMenu")
-  );
 
   return (
     <div className="w-full max-w-[1111px] mx-auto">

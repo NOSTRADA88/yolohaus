@@ -1,19 +1,13 @@
-import { lazy, Suspense, FC } from "react";
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { lazy, FC } from "react";
 import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
-
-import {
-  fetchAboutCompanySlug, fetchBlogSlug, fetchBuiltHousesSlug, fetchContactsSlug, fetchGuaranteeSlug,
-  fetchMortgageeSlug, fetchPrivacyPolicySlug, fetchProjectsSlug, fetchReviewsSlug, fetchServicesSlug, fetchStocksSlug, fetchVacancySlug,
-} from "../api";
-
 import { Home, ErrorPage } from "../page";
+import {useSlugs} from "../hooks";
 
 const AboutCompany = lazy(() => import("../page/about/About").then(module => ({default: module.About})));
 const Reviews = lazy(() => import("../page/reviews/Reviews").then(module => ({default: module.Reviews})));
-const Guarantee = lazy(() => import("../page/gurantee/Guarantee").then(module => ({default: module.Guarantee})));
+const Guarantee = lazy(() => import("../page/guarantee/Guarantee").then(module => ({default: module.Guarantee})));
 const Vacancy = lazy(() => import("../page/vacancy/Vacancy").then(module => ({default: module.Vacancy})));
 const Projects = lazy(() => import("../page/project/Projects").then(module => ({default: module.Projects})));
 const Contact = lazy(() => import("../page/contact/Contact").then(module => ({default: module.Contact})));
@@ -27,52 +21,6 @@ const ServiceDetail = lazy(() => import("../page/services/ServiceDetail").then(m
 const HouseDetail = lazy(() => import("../page/built/HousesDetail").then(module => ({default: module.HousesDetail})));
 const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
 const BlogDetail = lazy(() => import("../page/blog/BlogDetail").then(module => ({default: module.BlogDetail})));
-
-interface Slugs {
-  about: string;
-  reviews: string;
-  guarantee: string;
-  vacancy: string;
-  projects: string;
-  contact: string;
-  services: string;
-  privacy: string;
-  built: string;
-  stocks: string;
-  blog: string;
-  mortgage: string;
-}
-
-const fetchSlugs = async (): Promise<Slugs> => {
-  const [about, reviews, guarantee, vacancy, projects, contact, services, privacy, built, stocks, blog, mortgage] =
-      await Promise.all([
-        fetchAboutCompanySlug(), fetchReviewsSlug(), fetchGuaranteeSlug(), fetchVacancySlug(), fetchProjectsSlug(),
-        fetchContactsSlug(), fetchServicesSlug(), fetchPrivacyPolicySlug(), fetchBuiltHousesSlug(), fetchStocksSlug(),
-        fetchBlogSlug(), fetchMortgageeSlug()
-      ]);
-
-  return {
-    about: about.slug,
-    reviews: reviews.slug,
-    guarantee: guarantee.slug,
-    vacancy: vacancy.slug,
-    projects: projects.slug,
-    contact: contact.slug,
-    services: services.slug,
-    privacy: privacy.slug,
-    built: built.slug,
-    stocks: stocks.slug,
-    blog: blog.slug,
-    mortgage: mortgage.slug,
-  };
-};
-
-const useSlugs = (): UseQueryResult<Slugs, Error> => {
-  return useQuery<Slugs, Error>({
-    queryKey: ['slugs'],
-    queryFn: fetchSlugs
-  });
-};
 
 const RoutesComponent: FC = () => {
   const { data: slugs } = useSlugs();
@@ -88,7 +36,6 @@ const RoutesComponent: FC = () => {
   return (
       <BrowserRouter>
         <ScrollToTop />
-        <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path={"/"} element={<Layout><Home /></Layout>} />
             <Route path={`/${slugs.about}`} element={<Layout><AboutCompany /></Layout>} />
@@ -103,15 +50,12 @@ const RoutesComponent: FC = () => {
             <Route path={`/${slugs.stocks}`} element={<Layout><Stocks /></Layout>} />
             <Route path={`/${slugs.blog}`} element={<Layout><Blog /></Layout>} />
             <Route path={`/${slugs.mortgage}`} element={<Layout><MortgageAbout /></Layout>} />
-
             <Route path={`/${slugs.blog}/:slug`} element={<Layout><BlogDetailRoute /></Layout>} />
             <Route path={`/${slugs.built}/:slug`} element={<Layout><HouseDetailRoute /></Layout>} />
             <Route path={`/${slugs.services}/:slug`} element={<Layout><ServiceDetailRoute /></Layout>} />
             <Route path={`/${slugs.projects}/:slug`} element={<Layout><ProjectsDetailRoute /></Layout>} />
-
             <Route path={"/*"} element={<Layout><ErrorPage /></Layout>} />
           </Routes>
-        </Suspense>
       </BrowserRouter>
   );
 }

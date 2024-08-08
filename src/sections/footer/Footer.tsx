@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
-import {
-  fetchAboutData,
-  fetchHeaderFooterData,
-  fetchProjectsData,
-  fetchPrivacyPolicyData,
-  fetchBuiltHousesData,
-  fetchContactData,
-  fetchReviewsData,
-  fetchStocksData,
-  fetchMortgageData,
-} from "../../api";
+import { fetchHeaderFooterData } from "../../api";
 import { LogoMainWhite } from "../../assets";
 import { Consultation } from "../../components/footer";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
+import {useQueryClient} from "@tanstack/react-query";
 
 interface NavLink {
   href: string;
@@ -33,6 +24,21 @@ interface FooterData {
   navLinks: NavLink[];
 }
 
+interface Slugs {
+  about: string;
+  reviews: string;
+  guarantee: string;
+  vacancy: string;
+  projects: string;
+  contact: string;
+  services: string;
+  privacy: string;
+  built: string;
+  stocks: string;
+  blog: string;
+  mortgage: string;
+}
+
 const Footer: React.FC = () => {
   const [footerData, setFooterData] = useState<FooterData>({
     description: "",
@@ -44,42 +50,29 @@ const Footer: React.FC = () => {
     slugPrivacy: "",
     navLinks: [],
   });
+
+  const slugs = useQueryClient().getQueryData<Slugs>(['slugs'])
+  console.log(slugs)
+  const updatedNavLinks: FooterData['navLinks'] = [
+    { href: `/${slugs?.projects ?? ''}`, label: "Проекты и цены" },
+    { href: `/${slugs?.built ?? ''}`, label: "Построенные дома" },
+    { href: `/${slugs?.reviews ?? ''}`, label: "Отзывы" },
+    { href: `/${slugs?.stocks ?? ''}`, label: "Акции" },
+    { href: `/${slugs?.mortgage ?? ''}`, label: "Ипотека" },
+    { href: `/${slugs?.about ?? ''}`, label: "О компании" },
+    { href: `/${slugs?.contact ?? ''}`, label: "Контакты" },
+  ];
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [
-          mainData,
-          aboutData,
-          projectsData,
-          reviewsData,
-          privacyData,
-          builtData,
-          contactData,
-          stocksData,
-          mortgageData,
+          mainData
         ] = await Promise.all([
-          fetchHeaderFooterData(),
-          fetchAboutData(),
-          fetchProjectsData(),
-          fetchReviewsData(),
-          fetchPrivacyPolicyData(),
-          fetchBuiltHousesData(),
-          fetchContactData(),
-          fetchStocksData(),
-          fetchMortgageData(),
+          fetchHeaderFooterData()
         ]);
-
-        const updatedNavLinks: NavLink[] = [
-          { href: `/${projectsData.slug}`, label: "Проекты и цены" },
-          { href: `/${builtData.slug}`, label: "Построенные дома" },
-          { href: `/${reviewsData.slug}`, label: "Отзывы" },
-          { href: `/${stocksData.slug}`, label: "Акции" },
-          { href: `/${mortgageData.slug}`, label: "Ипотека" },
-          { href: `/${aboutData.slug}`, label: "О компании" },
-          { href: `/${contactData.slug}`, label: "Контакты" },
-        ];
 
         setFooterData({
           description: mainData.Footer.Text,
@@ -88,7 +81,7 @@ const Footer: React.FC = () => {
           vkIcon: mainData.Footer.Socials.data[0].attributes.Photo.data.attributes.url,
           youtubeIcon: mainData.Footer.Socials.data[1].attributes.Photo.data.attributes.url,
           phoneNumber: mainData.Footer.PhoneNumber.PhoneNumber,
-          slugPrivacy: privacyData.slug,
+          slugPrivacy: slugs?.privacy ?? "",
           navLinks: updatedNavLinks,
         });
       } catch (error) {

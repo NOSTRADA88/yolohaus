@@ -82,7 +82,7 @@ export const fetchPrivacyPolicyData = () =>
 export const fetchBuiltHousesData = () =>
   fetchData(
     "/api/postroennye-doma",
-    "Metadata,Houses.Metadata,Houses.Parameters,Houses.BuildingTechnology,Houses.Photos,Houses.YouTube,Icons"
+    "Metadata,BuiltHouses.Metadata,BuiltHouses.Parameters,BuiltHouses.BuildingTechnology,BuiltHouses.Photos,BuiltHouses.YouTube,Icons"
   );
 
 export const fetchHousesDetailsData = async (houseSlug: string) => {
