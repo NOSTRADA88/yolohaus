@@ -1,10 +1,10 @@
-import { AboutCompany } from "./about/AboutCompany";
-import { Guarantee } from "./about/Guarantee";
-import { Vacancy } from "./about/Vacancy";
+import { About } from "./about/About";
+import { Guarantee } from "./gurantee/Guarantee";
+import { Vacancy } from "./vacancy/Vacancy";
 import { Blog } from "./blog/Blog";
 import { BlogDetail } from "./blog/BlogDetail";
-import { BuiltHouses } from "./built/BuiltHouses";
-import { HouseDetail } from "./built/HouseDetail";
+import { Houses } from "./built/Houses";
+import { HousesDetail } from "./built/HousesDetail";
 import { Contact } from "./contact/Contact";
 import { ErrorPage } from "./error/Error";
 import { Home } from "./home/Home";
@@ -18,13 +18,13 @@ import { Services } from "./services/Services";
 import { Stocks } from "./stocks/Stocks";
 
 export {
-  AboutCompany,
+  About,
   Guarantee,
   Vacancy,
   Blog,
   BlogDetail,
-  BuiltHouses,
-  HouseDetail,
+  Houses,
+  HousesDetail,
   Contact,
   ErrorPage,
   Home,

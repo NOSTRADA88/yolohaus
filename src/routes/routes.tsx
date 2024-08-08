@@ -11,20 +11,20 @@ import {
 
 import { Home, ErrorPage } from "../page";
 
-const AboutCompany = lazy(() => import("../page/about/AboutCompany").then(module => ({default: module.AboutCompany})));
+const AboutCompany = lazy(() => import("../page/about/About").then(module => ({default: module.About})));
 const Reviews = lazy(() => import("../page/reviews/Reviews").then(module => ({default: module.Reviews})));
-const Guarantee = lazy(() => import("../page/about/Guarantee").then(module => ({default: module.Guarantee})));
-const Vacancy = lazy(() => import("../page/about/Vacancy").then(module => ({default: module.Vacancy})));
+const Guarantee = lazy(() => import("../page/gurantee/Guarantee").then(module => ({default: module.Guarantee})));
+const Vacancy = lazy(() => import("../page/vacancy/Vacancy").then(module => ({default: module.Vacancy})));
 const Projects = lazy(() => import("../page/project/Projects").then(module => ({default: module.Projects})));
 const Contact = lazy(() => import("../page/contact/Contact").then(module => ({default: module.Contact})));
 const Services = lazy(() => import("../page/services/Services").then(module => ({default: module.Services})));
 const PrivacyPolicy = lazy(() => import("../page/privacy&policy/PrivacyPolicy").then(module => ({default: module.PrivacyPolicy})));
-const BuiltHouses = lazy(() => import("../page/built/BuiltHouses").then(module => ({default: module.BuiltHouses})));
+const BuiltHouses = lazy(() => import("../page/built/Houses").then(module => ({default: module.Houses})));
 const Stocks = lazy(() => import("../page/stocks/Stocks").then(module => ({default: module.Stocks})));
 const Blog = lazy(() => import("../page/blog/Blog").then(module => ({default: module.Blog})));
 const MortgageAbout = lazy(() => import("../page/mortgage/MortgageAbout").then(module => ({default: module.MortgageAbout})));
 const ServiceDetail = lazy(() => import("../page/services/ServiceDetail").then(module => ({default: module.ServiceDetail})));
-const HouseDetail = lazy(() => import("../page/built/HouseDetail").then(module => ({default: module.HouseDetail})));
+const HouseDetail = lazy(() => import("../page/built/HousesDetail").then(module => ({default: module.HousesDetail})));
 const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
 const BlogDetail = lazy(() => import("../page/blog/BlogDetail").then(module => ({default: module.BlogDetail})));
 

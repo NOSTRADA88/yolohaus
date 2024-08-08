@@ -73,7 +73,7 @@ interface HousesData {
   };
 }
 
-const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
+const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   const [houseData, setHouseData] = useState({
     metaTitle: "",
     metaDescription: "",
@@ -147,4 +147,4 @@ const HouseDetail = ({ houseSlug }: HouseDetailProps) => {
   );
 };
 
-export {HouseDetail} ;
+export {HousesDetail} ;

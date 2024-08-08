@@ -48,7 +48,7 @@ interface Houses {
   attributes: HousesAttributes;
 }
 
-const BuiltHouses = () => {
+const Houses = () => {
   const [houseData, setHouseData] = useState({
     metaTitle: "",
     metaDescription: "",
@@ -232,4 +232,4 @@ const BuiltHouses = () => {
   );
 };
 
-export {BuiltHouses};
+export {Houses};
