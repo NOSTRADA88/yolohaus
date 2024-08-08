@@ -1,16 +1,9 @@
 import {lazy, Suspense, useEffect, useState} from "react";
 import { Helmet } from "react-helmet";
 import { fetchAllData } from "../../api";
-import {
-  About,
-  MainScreen,
-  Mortgage,
-  PopularProjects,
-} from "../../components/home";
+import { About, MainScreen, Mortgage, PopularProjects } from "../../components/home";
 
-const Recommendation = lazy(
-  () => import("../../components/home/Recommendation")
-);
+const Recommendation = lazy(() => import("../../components/home/Recommendation"));
 const Contact = lazy(() => import("../../components/home/Contact"));
 
 type HomeData = {

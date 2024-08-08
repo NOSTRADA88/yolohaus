@@ -134,27 +134,80 @@ export const fetchBlogDetailData = async (blogSlug: string) => {
 };
 
 export const fetchAllData = async () => {
-  const [
-    mainData,
-    aboutData,
-    projectData,
-    reviewsData,
-    phoneData,
-    mortgageData,
-  ] = await Promise.all([
-    fetchHomeData(),
-    fetchAboutData(),
-    fetchProjectsData(),
-    fetchReviewsData(),
-    fetchHeaderFooterData(),
-    fetchMortgageData(),
+  const [ mainData, aboutData, projectData, reviewsData, phoneData, mortgageData ] = await Promise.all([
+    fetchHomeData(), fetchAboutData(), fetchProjectsData(), fetchReviewsData(), fetchHeaderFooterData(), fetchMortgageData()
   ]);
-  return {
-    mainData,
-    aboutData,
-    projectData,
-    reviewsData,
-    phoneData,
-    mortgageData,
-  };
+  return { mainData, aboutData, projectData, reviewsData, phoneData, mortgageData };
 };
+
+export const fetchStocksSlug = () =>
+  fetchData(
+      "/api/akczii",
+      ""
+  );
+
+export const fetchBlogSlug = () =>
+  fetchData(
+      "/api/blog",
+      ""
+  );
+
+export const fetchVacancySlug = () =>
+  fetchData(
+      "/api/vakansii",
+      ""
+  );
+
+export const fetchGuaranteeSlug = () =>
+  fetchData(
+      "/api/garantiya",
+      ""
+  );
+
+export const fetchMortgageeSlug = () =>
+  fetchData(
+      "/api/ipoteka",
+      ""
+  );
+
+export const fetchContactsSlug = () =>
+  fetchData(
+      "/api/kontakty",
+      ""
+  );
+
+export const fetchAboutCompanySlug = () =>
+  fetchData(
+      "/api/o-kompanii",
+      ""
+  );
+
+export const fetchReviewsSlug = () =>
+  fetchData(
+      "/api/otzyvy",
+      ""
+  );
+
+export const fetchPrivacyPolicySlug = () =>
+  fetchData(
+      "/api/politika-konfidenczialnosti",
+      ""
+  )
+
+export const fetchBuiltHousesSlug = () =>
+  fetchData(
+      "/api/postroennye-doma",
+      ""
+  );
+
+export const fetchProjectsSlug = () =>
+  fetchData(
+      "/api/proekty",
+      ""
+  );
+
+export const fetchServicesSlug = () =>
+  fetchData(
+      "/api/uslugi",
+      ""
+  );

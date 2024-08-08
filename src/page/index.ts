@@ -8,7 +8,7 @@ import { HouseDetail } from "./built/HouseDetail";
 import { Contact } from "./contact/Contact";
 import { ErrorPage } from "./error/Error";
 import { Home } from "./home/Home";
-import { MortgageAbout } from "./mortage/MortgageAbout";
+import { MortgageAbout } from "./mortgage/MortgageAbout";
 import { PrivacyPolicy } from "./privacy&policy/PrivacyPolicy";
 import { Projects } from "./project/Projects";
 import { ProjectsDetail } from "./project/ProjectsDetail";

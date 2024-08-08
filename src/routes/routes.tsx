@@ -5,19 +5,10 @@ import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 
 import {
-  fetchAboutData,
-  fetchBlogData, fetchBlogDetailData,
-  fetchBuiltHousesData,
-  fetchContactData,
-  fetchGuaranteeData, fetchHousesDetailsData,
-  fetchMortgageData,
-  fetchPrivacyPolicyData, fetchProjectDetailData,
-  fetchProjectsData,
-  fetchReviewsData,
-  fetchServicesData, fetchServicesDetailsData,
-  fetchStocksData,
-  fetchVacancyData,
+  fetchAboutCompanySlug, fetchBlogSlug, fetchBuiltHousesSlug, fetchContactsSlug, fetchGuaranteeSlug,
+  fetchMortgageeSlug, fetchPrivacyPolicySlug, fetchProjectsSlug, fetchReviewsSlug, fetchServicesSlug, fetchStocksSlug, fetchVacancySlug,
 } from "../api";
+
 import { Home, ErrorPage } from "../page";
 
 const AboutCompany = lazy(() => import("../page/about/AboutCompany").then(module => ({default: module.AboutCompany})));
@@ -31,7 +22,7 @@ const PrivacyPolicy = lazy(() => import("../page/privacy&policy/PrivacyPolicy").
 const BuiltHouses = lazy(() => import("../page/built/BuiltHouses").then(module => ({default: module.BuiltHouses})));
 const Stocks = lazy(() => import("../page/stocks/Stocks").then(module => ({default: module.Stocks})));
 const Blog = lazy(() => import("../page/blog/Blog").then(module => ({default: module.Blog})));
-const MortgageAbout = lazy(() => import("../page/mortage/MortgageAbout").then(module => ({default: module.MortgageAbout})));
+const MortgageAbout = lazy(() => import("../page/mortgage/MortgageAbout").then(module => ({default: module.MortgageAbout})));
 const ServiceDetail = lazy(() => import("../page/services/ServiceDetail").then(module => ({default: module.ServiceDetail})));
 const HouseDetail = lazy(() => import("../page/built/HouseDetail").then(module => ({default: module.HouseDetail})));
 const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail").then(module => ({default: module.ProjectsDetail})));
@@ -55,9 +46,9 @@ interface Slugs {
 const fetchSlugs = async (): Promise<Slugs> => {
   const [about, reviews, guarantee, vacancy, projects, contact, services, privacy, built, stocks, blog, mortgage] =
       await Promise.all([
-        fetchAboutData(), fetchReviewsData(), fetchGuaranteeData(), fetchVacancyData(), fetchProjectsData(),
-        fetchContactData(), fetchServicesData(), fetchPrivacyPolicyData(), fetchBuiltHousesData(), fetchStocksData(),
-        fetchBlogData(), fetchMortgageData()
+        fetchAboutCompanySlug(), fetchReviewsSlug(), fetchGuaranteeSlug(), fetchVacancySlug(), fetchProjectsSlug(),
+        fetchContactsSlug(), fetchServicesSlug(), fetchPrivacyPolicySlug(), fetchBuiltHousesSlug(), fetchStocksSlug(),
+        fetchBlogSlug(), fetchMortgageeSlug()
       ]);
 
   return {
@@ -88,9 +79,9 @@ const RoutesComponent: FC = () => {
 
   if (!slugs) {
     return (
-        <div>
-          Loading...
-        </div>
+      <div>
+        Loading...
+      </div>
     )
   }
 
@@ -105,17 +96,19 @@ const RoutesComponent: FC = () => {
             <Route path={`/${slugs.guarantee}`} element={<Layout><Guarantee /></Layout>} />
             <Route path={`/${slugs.vacancy}`} element={<Layout><Vacancy /></Layout>} />
             <Route path={`/${slugs.projects}`} element={<Layout><Projects /></Layout>} />
-            <Route path={`/${slugs.projects}/:slug`} element={<Layout><ProjectsDetailRoute /></Layout>} />
             <Route path={`/${slugs.contact}`} element={<Layout><Contact /></Layout>} />
             <Route path={`/${slugs.services}`} element={<Layout><Services /></Layout>} />
-            <Route path={`/${slugs.services}/:slug`} element={<Layout><ServiceDetailRoute /></Layout>} />
             <Route path={`/${slugs.privacy}`} element={<Layout><PrivacyPolicy /></Layout>} />
             <Route path={`/${slugs.built}`} element={<Layout><BuiltHouses /></Layout>} />
-            <Route path={`/${slugs.built}/:slug`} element={<Layout><HouseDetailRoute /></Layout>} />
             <Route path={`/${slugs.stocks}`} element={<Layout><Stocks /></Layout>} />
             <Route path={`/${slugs.blog}`} element={<Layout><Blog /></Layout>} />
-            <Route path={`/${slugs.blog}/:slug`} element={<Layout><BlogDetailRoute /></Layout>} />
             <Route path={`/${slugs.mortgage}`} element={<Layout><MortgageAbout /></Layout>} />
+
+            <Route path={`/${slugs.blog}/:slug`} element={<Layout><BlogDetailRoute /></Layout>} />
+            <Route path={`/${slugs.built}/:slug`} element={<Layout><HouseDetailRoute /></Layout>} />
+            <Route path={`/${slugs.services}/:slug`} element={<Layout><ServiceDetailRoute /></Layout>} />
+            <Route path={`/${slugs.projects}/:slug`} element={<Layout><ProjectsDetailRoute /></Layout>} />
+
             <Route path={"/*"} element={<Layout><ErrorPage /></Layout>} />
           </Routes>
         </Suspense>
@@ -125,24 +118,11 @@ const RoutesComponent: FC = () => {
 
 const ServiceDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-
-  const { data } = useQuery({
-    queryKey: ['serviceDetail', slug],
-    queryFn: () => fetchServicesDetailsData(slug ?? ""),
-    enabled: !!slug
-  });
-
   return <ServiceDetail servicesSlug={slug ?? ""} />;
 };
 
 const HouseDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data } = useQuery({
-    queryKey: ['houseDetail', slug],
-    queryFn: () => fetchHousesDetailsData(slug ?? ""),
-    enabled: !!slug
-  })
-
   return <HouseDetail houseSlug={slug ?? ""} />;
 };
 
@@ -154,26 +134,13 @@ const ProjectsDetailRoute = () => {
   const baseProjectSlug = urlParts.slice(0, -1).join("-");
   const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
   const projectsSlug = isTechnology ? baseProjectSlug : slug ?? '';
-
-  const { data } = useQuery({
-    queryKey: ['projectsDetail', projectsSlug],
-    queryFn: () => fetchProjectDetailData(projectsSlug),
-    enabled: !!projectsSlug
-  });
-
   return (
-      <ProjectsDetail projectsSlug={projectsSlug} initialTechnology={isTechnology ? technologySlug : undefined} />
+      <ProjectsDetail projectsSlug={projectsSlug} initialTechnology={isTechnology ? technologySlug : ""} />
   );
 };
 
 const BlogDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { data } = useQuery({
-    queryKey: ['blogDetail', slug],
-    queryFn: () => fetchBlogDetailData(slug ?? ""),
-    enabled: !!slug
-  });
-
   return <BlogDetail blogSlug={slug ?? ""}/>;
 };
 
