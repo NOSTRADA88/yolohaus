@@ -6,15 +6,15 @@ import ScrollToTop from "../components/ScrollToTop";
 
 import {
   fetchAboutData,
-  fetchBlogData,
+  fetchBlogData, fetchBlogDetailData,
   fetchBuiltHousesData,
   fetchContactData,
-  fetchGuaranteeData,
+  fetchGuaranteeData, fetchHousesDetailsData,
   fetchMortgageData,
-  fetchPrivacyPolicyData,
+  fetchPrivacyPolicyData, fetchProjectDetailData,
   fetchProjectsData,
   fetchReviewsData,
-  fetchServicesData,
+  fetchServicesData, fetchServicesDetailsData,
   fetchStocksData,
   fetchVacancyData,
 } from "../api";
@@ -53,15 +53,12 @@ interface Slugs {
 }
 
 const fetchSlugs = async (): Promise<Slugs> => {
-  const [
-    about, reviews, guarantee, vacancy, projects, contact, services,
-    privacy, built, stocks, blog, mortgage
-  ] = await Promise.all([
-    fetchAboutData(), fetchReviewsData(), fetchGuaranteeData(),
-    fetchVacancyData(), fetchProjectsData(), fetchContactData(),
-    fetchServicesData(), fetchPrivacyPolicyData(), fetchBuiltHousesData(),
-    fetchStocksData(), fetchBlogData(), fetchMortgageData()
-  ]);
+  const [about, reviews, guarantee, vacancy, projects, contact, services, privacy, built, stocks, blog, mortgage] =
+      await Promise.all([
+        fetchAboutData(), fetchReviewsData(), fetchGuaranteeData(), fetchVacancyData(), fetchProjectsData(),
+        fetchContactData(), fetchServicesData(), fetchPrivacyPolicyData(), fetchBuiltHousesData(), fetchStocksData(),
+        fetchBlogData(), fetchMortgageData()
+      ]);
 
   return {
     about: about.slug,
@@ -87,19 +84,22 @@ const useSlugs = (): UseQueryResult<Slugs, Error> => {
 };
 
 const RoutesComponent: FC = () => {
-  const { data: slugs, isLoading, isError } = useSlugs();
+  const { data: slugs } = useSlugs();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !slugs) return <div>Error loading slugs</div>;
+  if (!slugs) {
+    return (
+        <div>
+          Loading...
+        </div>
+    )
+  }
 
   return (
       <BrowserRouter>
         <ScrollToTop />
-        {/*TODO*/}
-        {/*обернуть в Suspense каждый компонент страницы или всё целиком ?*/}
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path={"/"} element={<Layout><Home /></Layout>} />
             <Route path={`/${slugs.about}`} element={<Layout><AboutCompany /></Layout>} />
             <Route path={`/${slugs.reviews}`} element={<Layout><Reviews /></Layout>} />
             <Route path={`/${slugs.guarantee}`} element={<Layout><Guarantee /></Layout>} />
@@ -116,7 +116,7 @@ const RoutesComponent: FC = () => {
             <Route path={`/${slugs.blog}`} element={<Layout><Blog /></Layout>} />
             <Route path={`/${slugs.blog}/:slug`} element={<Layout><BlogDetailRoute /></Layout>} />
             <Route path={`/${slugs.mortgage}`} element={<Layout><MortgageAbout /></Layout>} />
-            <Route path="/*" element={<Layout><ErrorPage /></Layout>} />
+            <Route path={"/*"} element={<Layout><ErrorPage /></Layout>} />
           </Routes>
         </Suspense>
       </BrowserRouter>
@@ -125,12 +125,25 @@ const RoutesComponent: FC = () => {
 
 const ServiceDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-  return <ServiceDetail servicesSlug={slug ?? ''} />;
+
+  const { data } = useQuery({
+    queryKey: ['serviceDetail', slug],
+    queryFn: () => fetchServicesDetailsData(slug ?? ""),
+    enabled: !!slug
+  });
+
+  return <ServiceDetail servicesSlug={slug ?? ""} />;
 };
 
 const HouseDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-  return <HouseDetail houseSlug={slug ?? ''} />;
+  const { data } = useQuery({
+    queryKey: ['houseDetail', slug],
+    queryFn: () => fetchHousesDetailsData(slug ?? ""),
+    enabled: !!slug
+  })
+
+  return <HouseDetail houseSlug={slug ?? ""} />;
 };
 
 const ProjectsDetailRoute = () => {
@@ -142,17 +155,27 @@ const ProjectsDetailRoute = () => {
   const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
   const projectsSlug = isTechnology ? baseProjectSlug : slug ?? '';
 
+  const { data } = useQuery({
+    queryKey: ['projectsDetail', projectsSlug],
+    queryFn: () => fetchProjectDetailData(projectsSlug),
+    enabled: !!projectsSlug
+  });
+
   return (
-      <ProjectsDetail
-          projectsSlug={projectsSlug}
-          initialTechnology={isTechnology ? technologySlug : undefined}
-      />
+      <ProjectsDetail projectsSlug={projectsSlug} initialTechnology={isTechnology ? technologySlug : undefined} />
   );
 };
 
 const BlogDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
-  return <BlogDetail blogSlug={slug ?? ''} />;
+  const { data } = useQuery({
+    queryKey: ['blogDetail', slug],
+    queryFn: () => fetchBlogDetailData(slug ?? ""),
+    enabled: !!slug
+  });
+
+  return <BlogDetail blogSlug={slug ?? ""}/>;
 };
+
 
 export default RoutesComponent;

@@ -1,20 +1,12 @@
 import { API_URL, axiosInstanse } from "../constants";
 
 const fetchData = async (endpoint: string, populateParams: string) => {
-  try {
-    const url = `${API_URL}${endpoint}${
-      populateParams ? `?populate=${populateParams}` : ""
-    }`;
-    const response = await axiosInstanse.get(url);
-    if (response.status === 200) {
-      return response.data.data.attributes;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
+  const url = `${API_URL}${endpoint}${populateParams ? `?populate=${populateParams}` : ""}`;
+  const response = await axiosInstanse.get(url);
+  if (response.status === 200) {
+    return response.data.data.attributes;
   }
+  throw new Error("no data")
 };
 
 export const fetchHomeData = () =>
@@ -30,16 +22,28 @@ export const fetchHeaderFooterData = () =>
   );
 
 export const fetchAboutData = () =>
-  fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");
+  fetchData(
+      "/api/o-kompanii",
+      "Metadata,About.Photo,About.Information"
+  );
 
 export const fetchReviewsData = () =>
-  fetchData("/api/otzyvy", "Metadata,spisok_otzyvovs.Photo");
+  fetchData(
+      "/api/otzyvy",
+      "Metadata,spisok_otzyvovs.Photo"
+  );
 
 export const fetchGuaranteeData = () =>
-  fetchData("/api/garantiya", "Metadata,Information,Photo");
+  fetchData(
+      "/api/garantiya",
+      "Metadata,Information,Photo"
+  );
 
 export const fetchVacancyData = () =>
-  fetchData("/api/vakansii", "Metadata,Vacancies");
+  fetchData(
+      "/api/vakansii",
+      "Metadata,Vacancies"
+  );
 
 export const fetchProjectsData = () =>
   fetchData(
@@ -54,26 +58,26 @@ export const fetchContactData = () =>
   );
 
 export const fetchServicesData = () =>
-  fetchData("/api/uslugi", "Metadata,Services.Photo");
+  fetchData(
+      "/api/uslugi",
+      "Metadata,Services.Photo"
+  );
 
 export const fetchServicesDetailsData = async (servicesSlug: string) => {
-  try {
     const response = await axiosInstanse.get(
       `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
     );
-    if (response.status === 200 && response.data.data) {
+    if (response.status === 200) {
       return response.data.data.attributes.Services;
-    } else {
-      throw new Error("Данные не найдены");
     }
-  } catch (error) {
-    console.error("Ошибка запроса:", error);
-    throw new Error("Ошибка запроса");
-  }
+    throw new Error("no service data")
 };
 
 export const fetchPrivacyPolicyData = () =>
-  fetchData("/api/politika-konfidenczialnosti", "Metadata");
+  fetchData(
+      "/api/politika-konfidenczialnosti",
+      "Metadata"
+  );
 
 export const fetchBuiltHousesData = () =>
   fetchData(
@@ -82,60 +86,51 @@ export const fetchBuiltHousesData = () =>
   );
 
 export const fetchHousesDetailsData = async (houseSlug: string) => {
-  try {
     const response = await axiosInstanse.get(
       `${API_URL}/api/postroennye-doma?populate[BuiltHouses][filters][slug][$eq]=${houseSlug}&populate[Metadata]=*&populate[BuiltHouses][populate][Parameters]=*&populate[BuiltHouses][populate][Metadata]=*&populate[BuiltHouses][populate][BuildingTechnology]=*&populate[BuiltHouses][populate][Photos]=*`
     );
     if (response.status === 200) {
       return response.data.data.attributes.BuiltHouses;
-    } else {
-      throw new Error("Данные не найдены");
     }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
-  }
+    throw new Error("no house data");
 };
 
-export const fetchProjectDetailData = async (projetsSlug: string) => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projetsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata,complectations.Equipment,DescriptionList&populate[ProjectsList][populate][Photos]=*`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes.ProjectsList;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
+export const fetchProjectDetailData = async (projectsSlug: string) => {
+  const response = await axiosInstanse.get(
+    `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projectsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata,complectations.Equipment,DescriptionList&populate[ProjectsList][populate][Photos]=*`
+  );
+  if (response.status === 200) {
+    return response.data.data.attributes.ProjectsList;
   }
+  throw new Error("no project data")
 };
 
 export const fetchStocksData = () =>
-  fetchData("/api/akczii", "stock_list.Photo,Metadata");
+  fetchData(
+      "/api/akczii",
+      "stock_list.Photo,Metadata"
+  );
 
 export const fetchBlogData = () =>
-  fetchData("/api/blog", "posts_list.Media,Metadata");
+  fetchData(
+      "/api/blog",
+      "posts_list.Media,Metadata"
+  );
 
 export const fetchMortgageData = () =>
-  fetchData("/api/ipoteka", "Metadata,banks_list.Photo,Photo");
+  fetchData(
+      "/api/ipoteka",
+      "Metadata,banks_list.Photo,Photo"
+  );
 
 export const fetchBlogDetailData = async (blogSlug: string) => {
-  try {
-    const response = await axiosInstanse.get(
-      `${API_URL}/api/blog?populate[posts_list][filters][slug][$eq]=${blogSlug}&populate[Metadata]=*&populate[posts_list][populate][Metadata]=*&populate[posts_list][populate][Media]=*`
-    );
-    if (response.status === 200) {
-      return response.data.data.attributes.posts_list;
-    } else {
-      throw new Error("Данные не найдены");
-    }
-  } catch (error) {
-    console.log(error);
-    throw new Error("Ошибка запроса");
+  const response = await axiosInstanse.get(
+    `${API_URL}/api/blog?populate[posts_list][filters][slug][$eq]=${blogSlug}&populate[Metadata]=*&populate[posts_list][populate][Metadata]=*&populate[posts_list][populate][Media]=*`
+  );
+  if (response.status === 200) {
+    return response.data.data.attributes.posts_list;
   }
+  throw new Error("no blog data")
 };
 
 export const fetchAllData = async () => {
