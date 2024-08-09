@@ -255,7 +255,7 @@ html::-webkit-scrollbar-track {
 
 
 .image-hover:hover {
-  filter: brightness(0) saturate(100%) invert(70%) sepia(92%) saturate(2953%) hue-rotate(344deg) brightness(99%) contrast(105%);
+  filter: brightness(0) saturate(80%) invert(50%) sepia(32%) saturate(200%) hue-rotate(344deg) brightness(99%) contrast(105%);
 }
 
 

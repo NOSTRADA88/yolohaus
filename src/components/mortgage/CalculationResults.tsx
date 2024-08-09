@@ -226,18 +226,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
               <tr className="text-maingray font-museо font-bold text-sm border">
                 <th className="px-4 py-2 border max-sm:px-1">№</th>
                 <th className="px-4 py-2 border">Месяц</th>
-                <th className="px-4 py-2 border max-sm:hidden ">
-                  Сумма платежа
-                </th>
-                <th className="px-4 py-2 border max-sm:hidden ">
-                  Платеж по основному долгу
-                </th>
-                <th className="px-4 py-2 border max-sm:hidden ">
-                  Платеж по процентам
-                </th>
-                <th className="px-4 py-2  max-sm:block hidden mt-[10px]">
-                  Платеж
-                </th>
+                <th className="px-4 py-2 border">Сумма платежа</th>
                 <th className="px-4 py-2 border">Остаток долга</th>
               </tr>
             </thead>
@@ -248,30 +237,8 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                   className="text-maingray font-museо text-sm font-light text-center  whitespace-nowrap"
                 >
                   <td className="px-4 py-2  border max-sm:px-1">{index + 1}</td>
-                  <td className="px-4 py-2 border  max-sm:whitespace-normal">
-                    {item.month}
-                  </td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.payment} ₽
-                  </td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.principal} ₽
-                  </td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.interest} ₽
-                  </td>
-                  <td className="px-4 py-2 border-b max-sm:block hidden">
-                    <p className="block">{item.payment} ₽</p>
-                    <p className="block">
-                      <span className="text-contact">Долг:</span>{" "}
-                      {item.principal} ₽
-                    </p>
-                    <p className="block">
-                      {" "}
-                      <span className="text-contact">Проценты:</span>{" "}
-                      {item.interest} ₽
-                    </p>
-                  </td>
+                  <td className="px-4 py-2 border  ">{item.month}</td>
+                  <td className="px-4 py-2 border ">{item.payment} ₽</td>
                   <td className="px-4 py-2 border ">{item.remainingDebt} ₽</td>
                 </tr>
               ))}
@@ -299,21 +266,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                       {index + 6}
                     </td>
                     <td className="px-4 py-2 border">{item.month}</td>
-                    <td className="px-4 py-2 border max-sm:hidden ">
-                      {item.payment} ₽
-                    </td>
-                    <td className="px-4 py-2 border max-sm:hidden ">
-                      {item.principal} ₽
-                    </td>
-                    <td className="px-4 py-2 border max-sm:hidden ">
-                      {item.interest} ₽
-                    </td>
-                    <td className="px-4 py-2 border-b max-sm:block hidden">
-                      {" "}
-                      <span className="block">{item.payment} ₽</span>
-                      <span className="block">Долг: {item.principal} ₽</span>
-                      <span className="block">Проценты: {item.interest} ₽</span>
-                    </td>
+                    <td className="px-4 py-2 border">{item.payment} ₽</td>
                     <td className="px-4 py-2 border ">
                       {item.remainingDebt} ₽
                     </td>
@@ -328,21 +281,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                     {tableData.length - 5 + index + 1}
                   </td>
                   <td className="px-4 py-2 border">{item.month}</td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.payment} ₽
-                  </td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.principal} ₽
-                  </td>
-                  <td className="px-4 py-2 border max-sm:hidden ">
-                    {item.interest} ₽
-                  </td>
-                  <td className="px-4 py-2 border-b  max-sm:block hidden">
-                    {" "}
-                    <span className="block">{item.payment} ₽</span>
-                    <span className="block">Долг: {item.principal} ₽</span>
-                    <span className="block">Проценты: {item.interest} ₽</span>
-                  </td>
+                  <td className="px-4 py-2 border">{item.payment} ₽</td>
                   <td className="px-4 py-2 border ">{item.remainingDebt} ₽</td>
                 </tr>
               ))}
@@ -353,13 +292,9 @@ const CalculationResults: React.FC<CalculationResultsProps> = ({
                 <td className="px-4 py-2  border ">
                   {formatNumber(monthlyPayment * tableData.length)} ₽
                 </td>
-                <td className="px-4 py-2 border max-sm:hidden ">
-                  {formatNumber(totalDebt)} ₽
-                </td>
-                <td className="px-4 py-2  border max-sm:hidden ">
+                <td className="px-4 py-2  border ">
                   {formatNumber(overpayment)} ₽
                 </td>
-                <td className="px-4 py-2  border "></td>
               </tr>
             </tbody>
           </table>

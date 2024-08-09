@@ -48,24 +48,27 @@ const BankSelection: React.FC<BankSelectionProps> = ({
                   : "border-contact"
               }`}
             >
-              <div className="flex gap-2 justify-center items-center">
-                <img
-                  src={`${API_URL}${bank.attributes.Photo.data.attributes.url}`}
-                  alt={bank.attributes.Title}
-                  className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
-                />
-
-                <a
-                  href={bank.attributes.URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <div className="flex justify-between items-center">
+                <div className="flex-1 flex justify-center">
                   <img
-                    src={LinkBank}
-                    alt="link"
-                    className="w-5 h-5 image-hover transition-opacity duration-300 max-[1050px]:w-4 max-lg:w-5"
+                    src={`${API_URL}${bank.attributes.Photo.data.attributes.url}`}
+                    alt={bank.attributes.Title}
+                    className="w-40 h-10 max-xl:w-32 max-[1050px]:w-30 max-lg:w-40"
                   />
-                </a>
+                </div>
+                <div className="flex justify-end ml-auto mr-2">
+                  <a
+                    href={bank.attributes.URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={LinkBank}
+                      alt="link"
+                      className="w-5 h-5  image-hover transition-opacity duration-300 max-[1050px]:w-4 max-lg:w-5"
+                    />
+                  </a>
+                </div>
               </div>
             </button>
           </li>
