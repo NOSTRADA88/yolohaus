@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { fetchServicesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
+import { useQuery } from "@tanstack/react-query";
 
 interface DescriptionText {
   type: string;
@@ -58,32 +58,35 @@ interface ServicesData {
 }
 
 const Services = () => {
-  const [servicesData, setServicesData] = useState<ServicesData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    services: [],
-    slugServices: "",
-  });
-
-  const fetchData = async () => {
-    try {
+  const {
+    data: servicesData,
+    isLoading,
+    error,
+  } = useQuery<ServicesData>({
+    queryKey: ["services"],
+    queryFn: async () => {
       const servicesDataResponse = await fetchServicesData();
-      setServicesData({
+      return {
         metaTitle: servicesDataResponse.Metadata.MetaTitle,
         metaDescription: servicesDataResponse.Metadata.MetaDescription,
         title: servicesDataResponse.Title,
         services: servicesDataResponse.Services.data,
         slugServices: servicesDataResponse.slug,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
+      };
+    },
+  });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
+
+  if (!servicesData) {
+    return null;
+  }
 
   return (
     <div>
@@ -112,7 +115,7 @@ const Services = () => {
           className="grid grid-cols-3 mt-10 gap-20 max-xl:gap-10 max-[950px]:grid-cols-2
                  max-[500px]:grid-cols-1"
         >
-          {servicesData.services.map((service) => (
+          {servicesData.services.map((service: Service) => (
             <Link
               to={`/${servicesData.slugServices}/${service.attributes.slug}`}
               key={service.id}
@@ -160,4 +163,4 @@ const Services = () => {
   );
 };
 
-export {Services};
+export { Services };

@@ -7,7 +7,8 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
 import { LogoMainBlack } from "../../assets";
 import { useQueryClient } from "@tanstack/react-query";
-import LazyMobileMenu  from "../../components/header/MobileMenu"
+import LazyMobileMenu from "../../components/header/MobileMenu";
+import { Link } from "react-router-dom";
 
 interface PhoneNumberLinkProps {
   phoneNumber: string;
@@ -53,25 +54,25 @@ const Header: React.FC = () => {
     navLinks: [],
   });
 
-  const slugs = useQueryClient().getQueryData<Slugs>(['slugs'])
+  const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
 
-  const updatedNavLinks: HeaderData['navLinks'] = [
-    { href: `/${slugs?.projects ?? ''}`, label: "Проекты и цены" },
-    { href: `/${slugs?.built ?? ''}`, label: "Построенные дома" },
-    { href: `/${slugs?.reviews ?? ''}`, label: "Отзывы" },
-    { href: `/${slugs?.stocks ?? ''}`, label: "Акции" },
-    { href: `/${slugs?.mortgage ?? ''}`, label: "Ипотека" },
+  const updatedNavLinks: HeaderData["navLinks"] = [
+    { href: `/${slugs?.projects ?? ""}`, label: "Проекты и цены" },
+    { href: `/${slugs?.built ?? ""}`, label: "Построенные дома" },
+    { href: `/${slugs?.reviews ?? ""}`, label: "Отзывы" },
+    { href: `/${slugs?.stocks ?? ""}`, label: "Акции" },
+    { href: `/${slugs?.mortgage ?? ""}`, label: "Ипотека" },
     {
-      href: `/${slugs?.about ?? ''}`,
+      href: `/${slugs?.about ?? ""}`,
       label: "О компании",
       submenu: [
-        { href: `/${slugs?.blog ?? ''}`, label: "Блог" },
-        { href: `/${slugs?.services ?? ''}`, label: "Услуги" },
-        { href: `/${slugs?.guarantee ?? ''}`, label: "Гарантия" },
-        { href: `/${slugs?.vacancy ?? ''}`, label: "Вакансии" },
+        { href: `/${slugs?.blog ?? ""}`, label: "Блог" },
+        { href: `/${slugs?.services ?? ""}`, label: "Услуги" },
+        { href: `/${slugs?.guarantee ?? ""}`, label: "Гарантия" },
+        { href: `/${slugs?.vacancy ?? ""}`, label: "Вакансии" },
       ],
     },
-    { href: `/${slugs?.contact ?? ''}`, label: "Контакты" },
+    { href: `/${slugs?.contact ?? ""}`, label: "Контакты" },
   ];
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,26 +80,21 @@ const Header: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const [
-        headerFooterData
-      ] = await Promise.all([
-        fetchHeaderFooterData()
-      ]);
+      const [headerFooterData] = await Promise.all([fetchHeaderFooterData()]);
 
       setHeaderData({
         description: headerFooterData.Header.Text,
         vkContent: headerFooterData.Header.Socials.data[0].attributes.URL,
         youtubeContent: headerFooterData.Header.Socials.data[1].attributes.URL,
         vkIcon:
-        headerFooterData.Header.Socials.data[0].attributes.Photo.data
+          headerFooterData.Header.Socials.data[0].attributes.Photo.data
             .attributes.url,
         youtubeIcon:
-        headerFooterData.Header.Socials.data[1].attributes.Photo.data
+          headerFooterData.Header.Socials.data[1].attributes.Photo.data
             .attributes.url,
         phoneNumber: headerFooterData.Header.PhoneNumber.PhoneNumber,
         navLinks: updatedNavLinks,
       });
-
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -118,7 +114,8 @@ const Header: React.FC = () => {
     return (
       <a
         href={`tel:${phoneNumber}`}
-        className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base">
+        className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base"
+      >
         {countryCode} ({areaCode})
         <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
         {firstPart}-{secondPart}-{thirdPart}
@@ -164,7 +161,7 @@ const Header: React.FC = () => {
               />
             </button>
           </div>
-          <a href="/">
+          <Link to="/">
             <img
               src={LogoMainBlack}
               alt="logo"
@@ -172,7 +169,7 @@ const Header: React.FC = () => {
               width="200"
               height="100"
             />
-          </a>
+          </Link>
 
           <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
             {headerData.description}
@@ -224,13 +221,13 @@ const Header: React.FC = () => {
       <div className="max-[800px]:hidden">
         <Navbar navLinks={headerData.navLinks} />
       </div>
-        {mobileMenuOpen && (
-          <LazyMobileMenu
-            isOpen={mobileMenuOpen}
-            onClose={() => setMobileMenuOpen(false)}
-            navLinks={headerData.navLinks}
-          />
-        )}
+      {mobileMenuOpen && (
+        <LazyMobileMenu
+          isOpen={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          navLinks={headerData.navLinks}
+        />
+      )}
       <div
         className={`fixed z-20 inset-0 bg-lightwhite bg-opacity-50 transition-opacity duration-300 ${
           mobileMenuOpen

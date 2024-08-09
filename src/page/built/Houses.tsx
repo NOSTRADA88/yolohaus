@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import { fetchBuiltHousesData } from "../../api";
+import { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
-import { API_URL } from "../../constants";
-import { Link } from "react-router-dom";
 import LazyLoad from "react-lazyload";
+import { Link } from "react-router-dom";
+import { fetchBuiltHousesData } from "../../api";
+import { API_URL } from "../../constants";
+import { useQuery } from "@tanstack/react-query";
 
 interface PhotoAttributes {
   name: string;
@@ -43,33 +44,26 @@ interface HousesAttributes {
   }[];
 }
 
-interface Houses {
+interface BuiltHouse {
   id: number;
   attributes: HousesAttributes;
 }
 
 const Houses = () => {
-  const [houseData, setHouseData] = useState({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    houses: [] as Houses[],
-    HouseArea: "",
-    Location: "",
-    ConstructionPeriod: "",
-    slugBuilt: "",
-  });
-  const [visibleHouses, setVisibleHouses] = useState<Houses[]>([]);
+  const [visibleHouses, setVisibleHouses] = useState<BuiltHouse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [isEndOfList, setIsEndOfList] = useState(false);
-  const housesPerPage = 9;
+  const housesPerPage = 3;
 
-  const fetchData = async () => {
-    try {
+  const {
+    data: houseData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["builtHouses"],
+    queryFn: async () => {
       const builtData = await fetchBuiltHousesData();
-
-      setHouseData({
+      return {
         metaTitle: builtData.Metadata.MetaTitle,
         metaDescription: builtData.Metadata.MetaDescription,
         title: builtData.title,
@@ -78,22 +72,12 @@ const Houses = () => {
         HouseArea: builtData.Icons.data[1].attributes.url,
         ConstructionPeriod: builtData.Icons.data[2].attributes.url,
         slugBuilt: builtData.slug,
-      });
-      setVisibleHouses(builtData.BuiltHouses.data.slice(0, housesPerPage));
-      if (builtData.BuiltHouses.data.length <= housesPerPage) {
-        setIsEndOfList(true);
-      }
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+      };
+    },
+  });
 
   const loadMoreHouses = useCallback(() => {
-    if (isEndOfList) return;
+    if (!houseData || isEndOfList) return;
 
     const nextPage = currentPage + 1;
     const startIndex = (nextPage - 1) * housesPerPage;
@@ -109,7 +93,7 @@ const Houses = () => {
     } else {
       setIsEndOfList(true);
     }
-  }, [currentPage, houseData.houses, housesPerPage, isEndOfList]);
+  }, [currentPage, houseData, housesPerPage, isEndOfList]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -118,34 +102,51 @@ const Houses = () => {
       !isLoading &&
       !isEndOfList
     ) {
-      setIsLoading(true);
-      setTimeout(() => {
-        loadMoreHouses();
-        setIsLoading(false);
-      }, 500);
+      loadMoreHouses();
     }
   }, [isLoading, isEndOfList, loadMoreHouses]);
+
+  useEffect(() => {
+    if (houseData) {
+      setVisibleHouses(houseData.houses.slice(0, housesPerPage));
+      if (houseData.houses.length <= housesPerPage) {
+        setIsEndOfList(true);
+      }
+    }
+  }, [houseData]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
+
+  if (!houseData) {
+    return null;
+  }
+
   return (
     <div>
       <Helmet>
         <title>{houseData.metaTitle}</title>
         <meta name="description" content={houseData.metaDescription} />
-      </Helmet>{" "}
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
+      </Helmet>
+      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
-          <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">
+          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
             {houseData.title}
           </h1>
           <div className="flex items-center">
             <Link
               to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
             >
               Главная /{" "}
             </Link>
@@ -156,13 +157,12 @@ const Houses = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-20  mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-sm:grid-cols-1">
+        <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-sm:grid-cols-1">
           {visibleHouses.map((house) => (
             <Link
               to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
               key={house.id}
-              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-full  h-[375px] 
-              max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-full h-[375px] max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
             >
               <div className="relative max-w-full overflow-hidden">
                 <LazyLoad
@@ -175,8 +175,7 @@ const Houses = () => {
                   <img
                     src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
                     alt={house.attributes.Photos.data[0].attributes.name}
-                    className="w-full h-[220px]  max-xl:w-full 
-                    max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                    className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                   />
                 </LazyLoad>
               </div>
@@ -232,4 +231,4 @@ const Houses = () => {
   );
 };
 
-export {Houses};
+export { Houses };

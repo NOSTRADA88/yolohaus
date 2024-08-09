@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
 import { API_URL } from "../../constants";
 import { Sort } from "../../components/projects";
+import { useQuery } from "@tanstack/react-query";
 
 interface PhotoFormats {
   url: string;
@@ -71,35 +72,27 @@ interface Complectation {
 }
 
 const Projects = () => {
-  const [projectData, setProjectData] = useState({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    slugProjects: "",
-    projects: [] as Project[],
-    popular: [] as Project[],
-    HouseArea: "",
-    WidthHeight: "",
-    ConstructionPeriod: "",
-    Bedrooms: "",
-  });
   const [sortBy, setSortBy] = useState<"popularity" | "area" | "price" | null>(
     null
   );
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [visibleProjects, setVisibleProjects] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [isEndOfList, setIsEndOfList] = useState(false);
   const projectsPerPage = 9;
 
-  const fetchData = async () => {
-    try {
+  const {
+    data: projectData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["projects"],
+    queryFn: async () => {
       const [projectsData, mainData] = await Promise.all([
         fetchProjectsData(),
         fetchHomeData(),
       ]);
-      setProjectData({
+      return {
         metaTitle: projectsData.Metadata.MetaTitle,
         metaDescription: projectsData.Metadata.MetaDescription,
         title: projectsData.Title,
@@ -110,75 +103,57 @@ const Projects = () => {
         ConstructionPeriod: projectsData.Icons.data[1].attributes.url,
         WidthHeight: projectsData.Icons.data[2].attributes.url,
         Bedrooms: projectsData.Icons.data[3].attributes.url,
-      });
-      applySorting(projectsData.ProjectsList.data);
-    } catch (error) {
-      console.error("Fetch error:", error);
-    }
-  };
+      };
+    },
+  });
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (projectData) {
+      const initialProjects = sortProjects(projectData.projects).slice(
+        0,
+        projectsPerPage
+      );
+      setVisibleProjects(initialProjects);
+      setIsEndOfList(initialProjects.length >= projectData.projects.length);
+    }
+  }, [projectData, sortBy, sortDirection]);
 
-  const loadMoreProjects = () => {
+  const loadMoreProjects = useCallback(() => {
+    if (!projectData) return;
+
     const nextPage = currentPage + 1;
     const sortedProjects = sortProjects(projectData.projects);
-    const newProjects = sortedProjects.slice(0, nextPage * projectsPerPage);
-    setVisibleProjects(newProjects);
-    setCurrentPage(nextPage);
-    setIsEndOfList(newProjects.length >= sortedProjects.length);
-  };
+    const newProjects = sortedProjects.slice(
+      currentPage * projectsPerPage,
+      nextPage * projectsPerPage
+    );
 
-  const handleScroll = () => {
+    setVisibleProjects((prevProjects) => [...prevProjects, ...newProjects]);
+    setCurrentPage(nextPage);
+    setIsEndOfList(newProjects.length < projectsPerPage);
+  }, [currentPage, projectData, sortBy, sortDirection]);
+
+  const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 500 &&
       !isLoading &&
       !isEndOfList
     ) {
-      setIsLoading(true);
-      setTimeout(() => {
-        loadMoreProjects();
-        setIsLoading(false);
-      }, 500);
+      loadMoreProjects();
     }
-  };
+  }, [isLoading, isEndOfList, loadMoreProjects]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading, isEndOfList, projectData.projects, sortBy, sortDirection]);
-
-  const applySorting = (projectsToSort: Project[]) => {
-    const sortedProjects = sortProjects(projectsToSort);
-    setVisibleProjects(sortedProjects.slice(0, currentPage * projectsPerPage));
-    setIsEndOfList(sortedProjects.length <= currentPage * projectsPerPage);
-  };
-
-  useEffect(() => {
-    setCurrentPage(1);
-    applySorting(projectData.projects);
-  }, [sortBy, sortDirection, projectData.projects]);
-
-  const parsePrice = (price: string | null): number => {
-    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
-  };
-
-  const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) =>
-      Math.min(
-        parsePrice(item.BasePrice),
-        parsePrice(item.StandartPrice),
-        parsePrice(item.ComfortPrice)
-      )
-    );
-    return Math.min(...prices);
-  };
+  }, [handleScroll]);
 
   const sortProjects = (projectsToSort: Project[]) => {
+    if (!projectData) return projectsToSort;
+
     let sortedProjects = [...projectsToSort];
-    const popularSet = new Set(projectData.popular.map((p) => p.id));
+    const popularSet = new Set(projectData.popular.map((p: Project) => p.id));
 
     if (sortBy === "popularity") {
       sortedProjects.sort(
@@ -205,12 +180,34 @@ const Projects = () => {
     return sortedProjects;
   };
 
+  const getMinPrice = (complectation: Complectation[]): number => {
+    const prices = complectation.map((item) =>
+      Math.min(
+        parsePrice(item.BasePrice),
+        parsePrice(item.StandartPrice),
+        parsePrice(item.ComfortPrice)
+      )
+    );
+    return Math.min(...prices);
+  };
+
+  const parsePrice = (price: string | null): number => {
+    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
+  };
+
   const toggleSortBy = (criteria: "popularity" | "area" | "price") => {
     if (sortBy === criteria) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortBy(criteria);
       setSortDirection("asc");
+    }
+    setCurrentPage(1);
+    if (projectData) {
+      const sortedProjects = sortProjects(projectData.projects);
+      const initialProjects = sortedProjects.slice(0, projectsPerPage);
+      setVisibleProjects(initialProjects);
+      setIsEndOfList(initialProjects.length >= sortedProjects.length);
     }
   };
 
@@ -219,22 +216,41 @@ const Projects = () => {
   const resetSort = () => {
     setSortBy(null);
     setSortDirection("asc");
+    setCurrentPage(1);
+    if (projectData) {
+      const initialProjects = projectData.projects.slice(0, projectsPerPage);
+      setVisibleProjects(initialProjects);
+      setIsEndOfList(initialProjects.length >= projectData.projects.length);
+    }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
+
+  if (!projectData) {
+    return null;
+  }
+
   return (
     <div>
       <Helmet>
         <title>{projectData.metaTitle}</title>
         <meta name="description" content={projectData.metaDescription} />
       </Helmet>
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
+      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
-          <h1 className="text-maingray font-museo font-bold text-3xl  max-md:text-2xl ">
+          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
             {projectData.title}
           </h1>
           <div className="flex items-center">
             <Link
               to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
+              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
             >
               Главная /{" "}
             </Link>
@@ -274,7 +290,9 @@ const Projects = () => {
                     />
                   </LazyLoad>
                 ))}
-                {projectData.popular.some((p) => p.id === project.id) && (
+                {projectData.popular.some(
+                  (p: Project) => p.id === project.id
+                ) && (
                   <span className="absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded-md">
                     Популярное
                   </span>
@@ -291,7 +309,6 @@ const Projects = () => {
                       alt="House Area"
                       className="w-4 h-4"
                     />
-
                     <p className="font-museo font-light text-sm text-maingray">
                       {project.attributes.Parameters.HouseArea}
                     </p>
@@ -346,4 +363,4 @@ const Projects = () => {
   );
 };
 
-export {Projects};
+export { Projects };
