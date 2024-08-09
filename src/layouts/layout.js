@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
             <section>
                 <Header />
             </section>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense>
                     {children}
                 </Suspense>
             <section>

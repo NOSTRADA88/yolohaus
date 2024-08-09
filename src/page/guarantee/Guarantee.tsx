@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchGuaranteeData } from "../../api";
-import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
+import { photoGuarantee } from "../../assets";
 
 interface Child {
   text: string;
@@ -24,7 +24,6 @@ interface GuaranteeData {
   description: DescriptionItem[];
   titleMiniTwo: string;
   descriptionTwo: DescriptionItem[];
-  photoGuarantee: string;
 }
 
 const Guarantee = () => {
@@ -38,7 +37,6 @@ const Guarantee = () => {
     description: [],
     titleMiniTwo: "",
     descriptionTwo: [],
-    photoGuarantee: "",
   });
 
   const fetchData = async () => {
@@ -56,7 +54,6 @@ const Guarantee = () => {
         description: guaranteeDataResponse.Information[0].Description,
         titleMiniTwo: guaranteeDataResponse.Information[1].Title,
         descriptionTwo: guaranteeDataResponse.Information[1].Description,
-        photoGuarantee: guaranteeDataResponse.Photo.data.attributes.url,
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -126,7 +123,7 @@ const Guarantee = () => {
           </div>
           <div className="mt-6  max-[1111px]:hidden">
             <img
-              src={`${API_URL}${guaranteeData.photoGuarantee}`}
+              src={photoGuarantee}
               alt="photoGuarantee"
               className="w-[540px]"
             />
@@ -156,4 +153,4 @@ const Guarantee = () => {
   );
 };
 
-export {Guarantee};
+export { Guarantee };

@@ -1,7 +1,7 @@
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
+import { photoAbout } from "../../assets";
 interface DescriptionItem {
   type: string;
   children: {
@@ -13,11 +13,10 @@ interface AboutProps {
   title: string;
   titleMini: string;
   description: DescriptionItem[];
-  photo: string;
   slug: string;
 }
 
-const About = ({ title, titleMini, description, photo, slug }: AboutProps) => {
+const About = ({ title, titleMini, description, slug }: AboutProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 ">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
@@ -63,7 +62,7 @@ const About = ({ title, titleMini, description, photo, slug }: AboutProps) => {
           </div>
         </div>
         <div className="mt-6 max-[1111px]:hidden">
-          <img src={`${API_URL}${photo}`} alt="photoAbout" className="" />
+          <img src={photoAbout} alt="photoAbout" className="" />
         </div>
       </div>
     </div>

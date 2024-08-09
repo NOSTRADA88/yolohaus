@@ -1,9 +1,16 @@
-import {lazy, Suspense, useEffect, useState} from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAllData } from "../../api";
-import { About, MainScreen, Mortgage, PopularProjects } from "../../components/home";
+import {
+  About,
+  MainScreen,
+  Mortgage,
+  PopularProjects,
+} from "../../components/home";
 
-const Recommendation = lazy(() => import("../../components/home/Recommendation"));
+const Recommendation = lazy(
+  () => import("../../components/home/Recommendation")
+);
 const Contact = lazy(() => import("../../components/home/Contact"));
 
 type HomeData = {
@@ -15,7 +22,6 @@ type HomeData = {
     title: string;
     titleMini: string;
     description: any[];
-    photo: string;
     slug: string;
   };
   popularProjects: {
@@ -51,7 +57,6 @@ const Home = () => {
       title: "",
       titleMini: "",
       description: [],
-      photo: "",
       slug: "",
     },
     popularProjects: {
@@ -102,7 +107,6 @@ const Home = () => {
             title: mainData.About.Title,
             titleMini: mainData.About.Information[0].Title,
             description: mainData.About.Information[0].Description,
-            photo: mainData.About.Photo.data.attributes.url,
             slug: aboutData.slug,
           },
           popularProjects: {

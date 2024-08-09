@@ -15,12 +15,11 @@ interface PhoneNumberLinkProps {
 }
 
 interface HeaderData {
-  description: string;
   vkContent: string;
   youtubeContent: string;
   vkIcon: string;
   youtubeIcon: string;
-  phoneNumber: string;
+  numberPhone: string;
   navLinks: {
     href: string;
     label: string;
@@ -45,12 +44,11 @@ interface Slugs {
 
 const Header: React.FC = () => {
   const [headerData, setHeaderData] = useState<HeaderData>({
-    description: "",
     vkContent: "",
     youtubeContent: "",
     vkIcon: "",
     youtubeIcon: "",
-    phoneNumber: "",
+    numberPhone: "",
     navLinks: [],
   });
 
@@ -81,18 +79,14 @@ const Header: React.FC = () => {
   const fetchData = async () => {
     try {
       const [headerFooterData] = await Promise.all([fetchHeaderFooterData()]);
-
       setHeaderData({
-        description: headerFooterData.Header.Text,
-        vkContent: headerFooterData.Header.Socials.data[0].attributes.URL,
-        youtubeContent: headerFooterData.Header.Socials.data[1].attributes.URL,
+        vkContent: headerFooterData.Socials.data[0].attributes.URL,
+        youtubeContent: headerFooterData.Socials.data[1].attributes.URL,
         vkIcon:
-          headerFooterData.Header.Socials.data[0].attributes.Photo.data
-            .attributes.url,
+          headerFooterData.Socials.data[0].attributes.Photo.data.attributes.url,
         youtubeIcon:
-          headerFooterData.Header.Socials.data[1].attributes.Photo.data
-            .attributes.url,
-        phoneNumber: headerFooterData.Header.PhoneNumber.PhoneNumber,
+          headerFooterData.Socials.data[1].attributes.Photo.data.attributes.url,
+        numberPhone: headerFooterData.Phone.Number,
         navLinks: updatedNavLinks,
       });
     } catch (error) {
@@ -172,7 +166,7 @@ const Header: React.FC = () => {
           </Link>
 
           <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
-            {headerData.description}
+            Проектирование и строительство домов
           </p>
         </div>
         <div className="flex gap-6 justify-center items-center max-md:flex-col max-md:gap-2">
@@ -203,7 +197,7 @@ const Header: React.FC = () => {
                 />
               </a>
             </div>
-            <PhoneNumberLink phoneNumber={headerData.phoneNumber} />
+            <PhoneNumberLink phoneNumber={headerData.numberPhone} />
           </div>
           <div
             className="flex gap-[3.5px] items-center mb-4"

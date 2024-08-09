@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
-import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
+import { photoAbout } from "../../assets";
 
 interface DescriptionItem {
   type: string;
@@ -27,11 +27,9 @@ interface AboutData {
   description: DescriptionItem[];
   titleMiniTwo: string;
   descriptionTwo: DescriptionItem[];
-  photoAbout: string;
 }
 
 const About = () => {
-
   const [aboutData, setAboutData] = useState<AboutData>({
     metaTitle: "",
     metaDescription: "",
@@ -40,7 +38,6 @@ const About = () => {
     description: [],
     titleMiniTwo: "",
     descriptionTwo: [],
-    photoAbout: "",
   });
   const fetchData = async () => {
     try {
@@ -54,7 +51,6 @@ const About = () => {
         description: aboutDataResponse.About.Information[0].Description,
         titleMiniTwo: aboutDataResponse.About.Information[1].Title,
         descriptionTwo: aboutDataResponse.About.Information[1].Description,
-        photoAbout: aboutDataResponse.About.Photo.data.attributes.url,
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -116,7 +112,7 @@ const About = () => {
             ))}
           </div>
           <div className="mt-[66px]  max-[1111px]:hidden">
-            <img src={`${API_URL}${aboutData.photoAbout}`} alt="photoAbout" />
+            <img src={photoAbout} alt="photoAbout" />
           </div>
         </div>
         <div className=" bg-lightwhite mt-8 p-5">

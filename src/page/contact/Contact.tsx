@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchContactData, fetchHeaderFooterData, fetchHomeData } from "../../api";
+import {
+  fetchContactData,
+  fetchHeaderFooterData,
+  fetchHomeData,
+} from "../../api";
 import {
   ContactInfo,
   EmployeeCard,
@@ -51,7 +55,6 @@ interface ContactData {
   title: string;
   titleMini: string;
   description: DescriptionItem[];
-  photoContact: string;
   email: string;
   phone: string;
   address: string;
@@ -69,7 +72,6 @@ const Contact = () => {
     title: "",
     titleMini: "",
     description: [],
-    photoContact: "",
     email: "",
     phone: "",
     address: "",
@@ -92,11 +94,8 @@ const Contact = () => {
         title: contactDataResponse.Title,
         titleMini: contactDataResponse.Information.Title,
         description: contactDataResponse.Information.Description,
-        photoContact:
-          contactDataResponse.Information.Photo.data.attributes.formats.large
-            .url,
         email: mainData.ContactsMap.Email,
-        phone: phoneData.Header.PhoneNumber.PhoneNumber,
+        phone: phoneData.Phone.PhoneNumber,
         address: mainData.ContactsMap.Address,
         urlAddressOffice: mainData.ContactsMap.YandexMapURL,
         weekdays: contactDataResponse.WorkingTime.Weekdays,
@@ -143,7 +142,6 @@ const Contact = () => {
           address={contactData.address}
           phone={contactData.phone}
           email={contactData.email}
-          photoContact={contactData.photoContact}
           weekdays={contactData.weekdays}
           weekends={contactData.weekends}
           urlAddressOffice={contactData.urlAddressOffice}
@@ -155,4 +153,4 @@ const Contact = () => {
   );
 };
 
-export {Contact};
+export { Contact };

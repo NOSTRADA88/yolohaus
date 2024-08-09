@@ -53,7 +53,7 @@ const Houses = () => {
   const [visibleHouses, setVisibleHouses] = useState<BuiltHouse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEndOfList, setIsEndOfList] = useState(false);
-  const housesPerPage = 3;
+  const housesPerPage = 9;
 
   const {
     data: houseData,
@@ -121,9 +121,12 @@ const Houses = () => {
   }, [handleScroll]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
   }
-
   if (error) {
     return <div>Error: {(error as Error).message}</div>;
   }

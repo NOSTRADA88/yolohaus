@@ -92,13 +92,14 @@ const Projects = () => {
         fetchProjectsData(),
         fetchHomeData(),
       ]);
+      console.log(mainData);
       return {
         metaTitle: projectsData.Metadata.MetaTitle,
         metaDescription: projectsData.Metadata.MetaDescription,
         title: projectsData.Title,
         slugProjects: projectsData.slug,
         projects: projectsData.ProjectsList.data,
-        popular: mainData.PopularCottages.projects.data,
+        popular: mainData.PopularCottages.Projects.data,
         HouseArea: projectsData.Icons.data[0].attributes.url,
         ConstructionPeriod: projectsData.Icons.data[1].attributes.url,
         WidthHeight: projectsData.Icons.data[2].attributes.url,
@@ -225,7 +226,11 @@ const Projects = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
   }
 
   if (error) {

@@ -2,8 +2,8 @@ import { lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { fetchMortgageData } from "../../api";
-import { API_URL } from "../../constants";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
+import { photoMortgage } from "../../assets";
 
 const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
@@ -44,7 +44,6 @@ interface MortgageData {
   title: string;
   titleDescription: string;
   description: DescriptionItem[];
-  photoMortgage: string;
   banks: Bank[];
 }
 
@@ -62,7 +61,6 @@ const MortgageAbout = () => {
     title: "",
     titleDescription: "",
     description: [],
-    photoMortgage: "",
     banks: [],
   });
 
@@ -98,7 +96,6 @@ const MortgageAbout = () => {
         title: mortgageDataResponse.Title,
         titleDescription: mortgageDataResponse.TitleDescription,
         description: mortgageDataResponse.Description,
-        photoMortgage: mortgageDataResponse.Photo.data.attributes.url,
         banks: mortgageDataResponse.banks_list.data,
       });
     } catch (error) {
@@ -319,9 +316,9 @@ const MortgageAbout = () => {
           </div>
           <div className=" mt-[50px] max-[1111px]:hidden">
             <img
-              src={`${API_URL}${mortgageData.photoMortgage}`}
+              src={photoMortgage}
               alt="MortgagePhoto"
-              className="w-full h-[350px] object-cover object-center"
+              className="w-full h-[320px] object-cover object-center"
             />
           </div>
         </div>

@@ -12,12 +12,11 @@ interface NavLink {
 }
 
 interface FooterData {
-  description: string;
   vkContent: string;
   youtubeContent: string;
   vkIcon: string;
   youtubeIcon: string;
-  phoneNumber: string;
+  numberPhone: string;
   slugPrivacy: string;
   navLinks: NavLink[];
 }
@@ -39,12 +38,11 @@ interface Slugs {
 
 const Footer: React.FC = () => {
   const [footerData, setFooterData] = useState<FooterData>({
-    description: "",
     vkContent: "",
     youtubeContent: "",
     vkIcon: "",
     youtubeIcon: "",
-    phoneNumber: "",
+    numberPhone: "",
     slugPrivacy: "",
     navLinks: [],
   });
@@ -66,19 +64,18 @@ const Footer: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [mainData] = await Promise.all([fetchHeaderFooterData()]);
+        const [headerFooterData] = await Promise.all([fetchHeaderFooterData()]);
 
         setFooterData({
-          description: mainData.Footer.Text,
-          vkContent: mainData.Footer.Socials.data[0].attributes.URL,
-          youtubeContent: mainData.Footer.Socials.data[1].attributes.URL,
+          vkContent: headerFooterData.Socials.data[0].attributes.URL,
+          youtubeContent: headerFooterData.Socials.data[1].attributes.URL,
           vkIcon:
-            mainData.Footer.Socials.data[0].attributes.Photo.data.attributes
+            headerFooterData.Socials.data[0].attributes.Photo.data.attributes
               .url,
           youtubeIcon:
-            mainData.Footer.Socials.data[1].attributes.Photo.data.attributes
+            headerFooterData.Socials.data[1].attributes.Photo.data.attributes
               .url,
-          phoneNumber: mainData.Footer.PhoneNumber.PhoneNumber,
+          numberPhone: headerFooterData.Phone.Number,
           slugPrivacy: slugs?.privacy ?? "",
           navLinks: updatedNavLinks,
         });
@@ -142,7 +139,7 @@ const Footer: React.FC = () => {
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
             <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">
-                {footerData.description}
+                © Компания Yolo Haus
               </p>
               <Link
                 to={`/${footerData.slugPrivacy}`}
@@ -178,7 +175,7 @@ const Footer: React.FC = () => {
                   />
                 </a>
               </div>
-              {formatPhoneNumber(footerData.phoneNumber)}
+              {formatPhoneNumber(footerData.numberPhone)}
               <div
                 className="flex gap-[3.5px] items-center"
                 onClick={() => setIsModalOpen(true)}
