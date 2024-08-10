@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchBlogData } from "../../api";
 import { Link } from "react-router-dom";
-import LazyLoad from "react-lazyload";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
@@ -189,13 +188,11 @@ const Blog = () => {
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
               >
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
-                  <LazyLoad offset={300} once>
-                    <img
-                      src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
-                      alt="Stock"
-                      className="w-full h-[250px] object-cover object-center"
-                    />
-                  </LazyLoad>
+                  <img
+                    src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
+                    alt="Stock"
+                    className="w-full h-[250px] object-cover object-center"
+                  />
                   <div className="absolute top-0 left-[-10px] bg-maingray text-xs px-3 py-2 opacity-80 parallelogram">
                     <p className="ml-2 text-white noparallelogram text-base font-medium uppercase">
                       yolo

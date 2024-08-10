@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Navbar } from "../../components/header";
+import {MobileMenu, Navbar} from "../../components/header";
 import { fetchHeaderFooterData } from "../../api";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -216,7 +216,7 @@ const Header: React.FC = () => {
         <Navbar navLinks={headerData.navLinks} />
       </div>
       {mobileMenuOpen && (
-        <LazyMobileMenu
+        <MobileMenu
           isOpen={mobileMenuOpen}
           onClose={() => setMobileMenuOpen(false)}
           navLinks={headerData.navLinks}

@@ -1,4 +1,4 @@
-import { lazy, FC } from "react";
+import { lazy } from "react";
 import {
   BrowserRouter,
   Route,
@@ -12,7 +12,7 @@ import { Home, ErrorPage } from "../page";
 import { useSlugs } from "../hooks";
 
 const AboutCompany = lazy(() =>
-  import("../page/about/About").then((module) => ({ default: module.About }))
+  import("../page/about/AboutCompany").then((module) => ({ default: module.AboutCompany }))
 );
 const Reviews = lazy(() =>
   import("../page/reviews/Reviews").then((module) => ({
@@ -84,7 +84,7 @@ const BlogDetail = lazy(() =>
   }))
 );
 
-const RoutesComponent: FC = () => {
+const RoutesComponent = () => {
   const { data: slugs } = useSlugs();
 
   if (!slugs) {

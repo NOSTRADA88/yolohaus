@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { Modal } from "../../sections/modal";
-import LazyLoad from "react-lazyload";
 
 interface StockItem {
   id: number;
@@ -162,13 +161,11 @@ const Stocks = () => {
               </div>
               <div className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col">
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[300px]">
-                  <LazyLoad offset={300} once>
-                    <img
-                      src={`${API_URL}${stock.attributes.Photo.data.attributes.formats.large.url}`}
-                      alt="Stock"
-                      className="w-full h-[300px] object-cover object-center"
-                    />
-                  </LazyLoad>
+                  <img
+                    src={`${API_URL}${stock.attributes.Photo.data.attributes.formats.large.url}`}
+                    alt="Stock"
+                    className="w-full h-[300px] object-cover object-center"
+                  />
                   <div className="absolute top-0 left-[-10px] bg-maingray text-xs px-3 py-2 opacity-80 parallelogram">
                     <p className="ml-2 text-white noparallelogram text-base font-medium uppercase ">
                       yolo

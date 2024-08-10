@@ -29,7 +29,7 @@ interface AboutData {
   descriptionTwo: DescriptionItem[];
 }
 
-const About = () => {
+const AboutCompany = () => {
   const [aboutData, setAboutData] = useState<AboutData>({
     metaTitle: "",
     metaDescription: "",
@@ -139,4 +139,4 @@ const About = () => {
   );
 };
 
-export { About };
+export { AboutCompany };

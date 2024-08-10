@@ -1,7 +1,7 @@
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { photoAbout } from "../../assets";
+import {photoAbout} from "../../assets";
 interface DescriptionItem {
   type: string;
   children: {

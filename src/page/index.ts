@@ -1,4 +1,4 @@
-import { About } from "./about/About";
+import { AboutCompany } from "./about/AboutCompany";
 import { Guarantee } from "./guarantee/Guarantee";
 import { Vacancy } from "./vacancy/Vacancy";
 import { Blog } from "./blog/Blog";
@@ -18,7 +18,7 @@ import { Services } from "./services/Services";
 import { Stocks } from "./stocks/Stocks";
 
 export {
-  About,
+  AboutCompany,
   Guarantee,
   Vacancy,
   Blog,

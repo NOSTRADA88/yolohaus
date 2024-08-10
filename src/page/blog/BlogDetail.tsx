@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { fetchAboutData, fetchBlogData, fetchBlogDetailData } from "../../api";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import LazyLoad from "react-lazyload";
 import { API_URL } from "../../constants";
 
 interface BlogDetailProps {
@@ -240,13 +239,11 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
       if (desc.type === "image") {
         return (
           <div key={index} className="flex items-start mb-4">
-            <LazyLoad offset={300} once>
-              <img
-                src={desc.image.url}
-                alt="BlogImage"
-                className="w-1/2 h-auto object-cover mr-4 "
-              />
-            </LazyLoad>
+            <img
+              src={desc.image.url}
+              alt="BlogImage"
+              className="w-1/2 h-auto object-cover mr-4 "
+            />
           </div>
         );
       }
@@ -291,17 +288,14 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
             </p>
           </div>
         </div>
-
         <div className="mt-10">
           {blogData.posts_list.map((post) => (
             <div key={post.id} className="mb-8">
-              <LazyLoad offset={300} once>
-                <img
-                  src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
-                  alt="Blog"
-                  className="w-full h-[250px] object-cover object-center mb-4 "
-                />
-              </LazyLoad>
+              <img
+                src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
+                alt="Blog"
+                className="w-full h-[250px] object-cover object-center mb-4 "
+              />
               <div className=" py-2">
                 {convertDescriptionToElements(post.attributes.BlogText)}
               </div>

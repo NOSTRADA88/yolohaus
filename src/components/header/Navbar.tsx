@@ -1,26 +1,27 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import SubmenuComponent from "./Submenu"
 
-type NavbarProps = {
-  navLinks: {
-    href: string;
-    label: string;
-    submenu?: { href: string; label: string }[];
-  }[];
-};
+interface NavLink {
+  href: string;
+  label: string;
+  submenu?: { href: string; label: string }[];
+}
+
+interface NavbarProps {
+  navLinks: NavLink[];
+}
 
 const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
-  const [LazySubmenu, setLazySubmenu] =
-    useState<React.ComponentType<any> | null>(null);
+  const [SubMenu, setSubMenu] = useState<React.ComponentType<any> | null>(null);
 
   useEffect(() => {
     if (dropdownIndex !== null && navLinks[dropdownIndex].submenu) {
-      const loadSubmenu = async () => {
-        const SubmenuComponent = lazy(() => import("./Submenu"));
-        setLazySubmenu(() => SubmenuComponent);
+      const loadSubmenu = () => {
+        setSubMenu(() => SubmenuComponent);
       };
       loadSubmenu();
     }
@@ -45,8 +46,8 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
                   <FontAwesomeIcon icon={faChevronDown} className="ml-1 " />
                 )}
               </Link>
-              {link.submenu && dropdownIndex === index && LazySubmenu && (
-                <LazySubmenu submenu={link.submenu} />
+              {link.submenu && dropdownIndex === index && SubMenu && (
+                <SubMenu submenu={link.submenu} />
               )}
             </li>
             <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>
