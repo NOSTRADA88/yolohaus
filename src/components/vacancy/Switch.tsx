@@ -1,9 +1,9 @@
 type TabType = "activeVacancies" | "brigade";
 
-type SwitchProps = {
+interface SwitchProps {
   activeTab: string;
   setActiveTab: (tab: TabType) => void;
-};
+}
 
 const Switch = ({ activeTab, setActiveTab }: SwitchProps) => {
   return (

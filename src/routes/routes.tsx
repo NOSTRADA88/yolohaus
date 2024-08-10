@@ -9,7 +9,7 @@ import {
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import { Home, ErrorPage } from "../page";
-import { useSlugs } from "../hooks";
+import { useSlugs } from "../hooks/useSlugs";
 
 const AboutCompany = lazy(() =>
   import("../page/about/AboutCompany").then((module) => ({ default: module.AboutCompany }))

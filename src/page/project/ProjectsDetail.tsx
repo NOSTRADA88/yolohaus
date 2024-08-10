@@ -41,14 +41,14 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Complectation: {
+    Kit: {
       id: number;
       Description: {
         type: string;
         children: { text: string; type: string }[];
       }[];
       BasePrice: string;
-      StandartPrice: string;
+      StandardPrice: string;
       ComfortPrice: string;
 
       Slug: {
@@ -280,10 +280,7 @@ const ProjectsDetail = ({
                 initialTechnology={initialTechnology}
               />
               <div className="mt-10">
-                <AboutHouses
-                  details={projectData.projects}
-                  slug={projectData.slugProjects}
-                />
+                <AboutHouses details={projectData.projects} slug={projectData.slugProjects} />
               </div>
             </>
           )}

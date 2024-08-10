@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { BgMain } from "../../assets";
 import { Modal } from "../../sections/modal";
 
-type MainScreenProps = {
+interface MainScreenProps {
   isModalOpen: boolean;
   closeModal: () => void;
   openModal: () => void;
   titlePart1: string;
   titlePart2: string;
-};
+}
 
 const MainScreen = ({
   isModalOpen,

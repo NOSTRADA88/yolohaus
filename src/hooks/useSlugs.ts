@@ -55,4 +55,4 @@ const useSlugs = (): UseQueryResult<Slugs, Error> => {
     });
 };
 
-export {useSlugs };
+export { useSlugs };

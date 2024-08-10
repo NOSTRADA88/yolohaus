@@ -37,14 +37,14 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Complectation: {
+    Kit: {
       id: number;
       Description: {
         type: string;
         children: { text: string; type: string }[];
       }[];
       BasePrice: string;
-      StandartPrice: string;
+      StandardPrice: string;
       ComfortPrice: string;
       Slug: {
         id: number;
@@ -72,10 +72,10 @@ interface DetailsData {
   };
 }
 
-type AboutHousesProps = {
+interface AboutHousesProps {
   details: DetailsData[];
   slug: string;
-};
+}
 
 const AboutHouses = ({ details, slug }: AboutHousesProps) => {
   return (

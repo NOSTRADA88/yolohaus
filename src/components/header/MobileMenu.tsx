@@ -4,15 +4,18 @@ import { Link } from "react-router-dom";
 import {memo} from "react";
 import {LogoMainBlack} from "../../assets";
 
-type MobileMenuProps = {
+
+interface NavLink {
+  href: string;
+  label: string;
+  submenu?: { href: string; label: string }[];
+}
+
+interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  navLinks: {
-    href: string;
-    label: string;
-    submenu?: { href: string; label: string }[];
-  }[];
-};
+  navLinks: NavLink[];
+}
 
 const MobileMenu = memo(({ isOpen, onClose, navLinks}: MobileMenuProps) => {
   return (

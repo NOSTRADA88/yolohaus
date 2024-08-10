@@ -7,9 +7,9 @@ import axios from "axios";
 import { fetchPrivacyPolicyData } from "../../api";
 import { Link } from "react-router-dom";
 
-type ModalProps = {
+interface ModalProps {
   closeModal: () => void;
-};
+}
 
 const Modal = ({ closeModal }: ModalProps) => {
   const [, setErrors] = useState<{ [key: string]: string[] }>({});

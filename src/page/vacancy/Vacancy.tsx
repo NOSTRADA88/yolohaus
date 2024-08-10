@@ -5,15 +5,15 @@ import { ActiveVacancies, Switch } from "../../components/vacancy";
 import { Link } from "react-router-dom";
 import { ContactBanner } from "../../sections/banner";
 
-type ListItem = {
+interface ListItem {
   type: string;
   children: {
     text: string;
     type: string;
   }[];
-};
+}
 
-type VacancyAttribute = {
+interface VacancyAttribute {
   Title: string;
   Responsibilities: {
     type: string;
@@ -30,13 +30,15 @@ type VacancyAttribute = {
     format: string;
     children: ListItem[];
   }[];
-};
+}
 
-type Vacancies = {
+interface Vacancies {
   id: number;
   attributes: VacancyAttribute;
-};
+}
+
 type TabType = "activeVacancies" | "brigade";
+
 const Vacancy = () => {
   const [data, setData] = useState({
     metaTitle: "",

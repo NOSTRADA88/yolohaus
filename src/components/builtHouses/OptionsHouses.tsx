@@ -30,14 +30,14 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Complectation: {
+    Kit: {
       id: number;
       Description: {
         type: string;
         children: { text: string; type: string }[];
       }[];
       BasePrice: string;
-      StandartPrice: string;
+      StandardPrice: string;
       ComfortPrice: string;
       Slug: {
         id: number;
@@ -65,15 +65,16 @@ interface DetailsData {
   };
 }
 
-interface Complectation {
+interface Kit {
   id: number;
   BasePrice: string;
-  StandartPrice: string;
+  StandardPrice: string;
   ComfortPrice: string;
 }
-type OptionsHousesProps = {
+
+interface OptionsHousesProps {
   details: DetailsData[];
-};
+}
 
 const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,11 +100,11 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
     return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
 
-  const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) =>
+  const getMinPrice = (kit: Kit[]): number => {
+    const prices = kit.map((item) =>
       Math.min(
         parsePrice(item.BasePrice),
-        parsePrice(item.StandartPrice),
+        parsePrice(item.StandardPrice),
         parsePrice(item.ComfortPrice)
       )
     );
@@ -286,10 +287,10 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
       <div className="flex items-center justify-between max-[400px]:flex-col  max-[400px]:items-start max-[400px]:mt-8 ">
         {details.map((detail) => (
           <div key={detail.id} className="">
-            {detail.attributes.Complectation && (
+            {detail.attributes.Kit && (
               <>
                 <p className="font-museo  text-orange text-xl font-bold">
-                  от {formatPrice(getMinPrice(detail.attributes.Complectation))}{" "}
+                  от {formatPrice(getMinPrice(detail.attributes.Kit))}{" "}
                   ₽
                 </p>
               </>

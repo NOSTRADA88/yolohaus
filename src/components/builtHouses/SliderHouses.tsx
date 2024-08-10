@@ -48,9 +48,9 @@ interface VideoMediaItem {
   embedHtml: string;
 }
 
-type SliderHousesProps = {
+interface SliderHousesProps {
   details: DetailsData[];
-};
+}
 
 const SliderHouses = ({ details }: SliderHousesProps) => {
   const mediaItems: MediaItem[] = details.flatMap((detail) => {

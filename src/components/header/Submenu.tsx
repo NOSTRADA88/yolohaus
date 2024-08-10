@@ -1,10 +1,12 @@
-// Submenu.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 
-type SubmenuProps = {
-  submenu: { href: string; label: string }[];
-};
+interface SubmenuProps {
+  submenu: {
+    href: string;
+    label: string;
+  }[];
+}
 
 const Submenu: React.FC<SubmenuProps> = ({ submenu }) => {
   return (

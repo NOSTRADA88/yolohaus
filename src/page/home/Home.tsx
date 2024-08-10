@@ -13,11 +13,22 @@ const Recommendation = lazy(
 );
 const Contact = lazy(() => import("../../components/home/Contact"));
 
-type HomeData = {
-  meta: { title: string; description: string };
+interface HomeData {
+  meta: {
+    title: string;
+    description: string
+  };
   isModalOpen: boolean;
-  title: { part1: string; part2: string };
-  mortgage: { title: string; description: string; photos: any[]; link: string };
+  title: {
+    part1: string;
+    part2: string
+  };
+  mortgage: {
+    title: string;
+    description: string;
+    photos: any[];
+    link: string
+  };
   about: {
     title: string;
     titleMini: string;
@@ -38,14 +49,13 @@ type HomeData = {
     recommendations: any[];
     slugReviews: string;
   };
-
   contact: {
     email: string;
     phone: string;
     address: string;
     urlAddressOffice: string;
   };
-};
+}
 
 const Home = () => {
   const [homeData, setHomeData] = useState<HomeData>({

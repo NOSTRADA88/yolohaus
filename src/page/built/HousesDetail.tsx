@@ -38,14 +38,14 @@ interface HousesData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Complectation: {
+    Kit: {
       id: number;
       Description: {
         type: string;
         children: { text: string; type: string }[];
       }[];
       BasePrice: string;
-      StandartPrice: string;
+      StandardPrice: string;
       ComfortPrice: string;
       Slug: {
         id: number;
