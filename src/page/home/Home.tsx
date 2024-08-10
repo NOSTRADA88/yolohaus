@@ -1,174 +1,215 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAllData } from "../../api";
 import {
   About,
   MainScreen,
   Mortgage,
   PopularProjects,
 } from "../../components/home";
+import {fetchHomePage} from "../../api/home";
+import {fetchData} from "../../api";
 
 const Recommendation = lazy(
   () => import("../../components/home/Recommendation")
 );
-const Contact = lazy(() => import("../../components/home/Contact"));
 
-interface HomeData {
+const Contact = lazy(
+    () => import("../../components/home/Contact")
+);
+
+interface WorkTime {
+  id: number;
+  weekdays: string;
+  weekends: string;
+}
+
+interface ContactsMap {
+  address: string;
+  email: string;
+  phone: string;
+  info: string;
+  workTime: WorkTime;
+  yandexMapURL: string;
+}
+
+interface MortgagePhoto {
+  id: number;
+  attributes: {
+    url: string;
+  };
+}
+
+interface DescriptionChild {
+  text: string;
+  type: string;
+}
+
+interface Description {
+  type: string;
+  children: DescriptionChild[];
+}
+
+interface Information {
+  id: number;
+  title: string;
+  description: Description[];
+}
+
+interface Project {
+  id: number;
+  attributes: {
+    title: string;
+    slug: string;
+    shortDescription: Description[];
+    description: Description[];
+  };
+}
+
+interface Recommendation {
+  id: number;
+  attributes: {
+    title: string;
+    description: Description[];
+  };
+}
+
+interface Home {
   meta: {
     title: string;
-    description: string
+    description: string;
   };
-  isModalOpen: boolean;
-  title: {
-    part1: string;
-    part2: string
+  greetings: {
+    rawOne: string;
+    rawTwo: string;
   };
   mortgage: {
     title: string;
     description: string;
-    photos: any[];
-    link: string
+    photos: MortgagePhoto[];
   };
   about: {
     title: string;
-    titleMini: string;
-    description: any[];
-    slug: string;
+    information: Information[];
   };
   popularProjects: {
     title: string;
-    projects: any[];
-    houseAreaIcon: string;
-    widthHeightIcon: string;
-    constructionPeriodIcon: string;
-    bedroomsIcon: string;
+    projects: Project[];
     slugProjects: string;
   };
   recommendations: {
     title: string;
-    recommendations: any[];
-    slugReviews: string;
+    recommendations: Recommendation[];
   };
-  contact: {
-    email: string;
-    phone: string;
-    address: string;
-    urlAddressOffice: string;
-  };
+  contactsMap: ContactsMap;
 }
 
 const Home = () => {
-  const [homeData, setHomeData] = useState<HomeData>({
-    meta: { title: "", description: "" },
-    isModalOpen: false,
-    title: { part1: "", part2: "" },
-    mortgage: { title: "", description: "", photos: [], link: "" },
-    about: {
-      title: "",
-      titleMini: "",
-      description: [],
-      slug: "",
-    },
-    popularProjects: {
-      title: "",
-      projects: [],
-      houseAreaIcon: "",
-      widthHeightIcon: "",
-      constructionPeriodIcon: "",
-      bedroomsIcon: "",
-      slugProjects: "",
-    },
-    recommendations: { title: "", recommendations: [], slugReviews: "" },
-    contact: { email: "", phone: "", address: "", urlAddressOffice: "" },
-  });
-
+  const [home, setHome] = useState<Home>();
   useEffect(() => {
-    fetchAllData()
-      .then((data) => {
-        const {
-          mainData,
-          aboutData,
-          projectData,
-          reviewsData,
-          phoneData,
-          mortgageData,
-        } = data;
-        const title = mainData.Greetings.Title;
-        const splitIndex = title.indexOf("Дом вашей мечты");
-
-        setHomeData({
-          meta: {
-            title: mainData.Metadata.MetaTitle,
-            description: mainData.Metadata.MetaDescription,
-          },
-          isModalOpen: false,
-          title: {
-            part1:
-              splitIndex !== -1 ? title.substring(0, splitIndex + 15) : title,
-            part2: splitIndex !== -1 ? title.substring(splitIndex + 15) : "",
-          },
-          mortgage: {
-            title: mainData.Mortgage.Title,
-            description: mainData.Mortgage.Description,
-            photos: mainData.Mortgage.Photos.data || [],
-            link: mortgageData.slug,
-          },
-          about: {
-            title: mainData.About.Title,
-            titleMini: mainData.About.Information[0].Title,
-            description: mainData.About.Information[0].Description,
-            slug: aboutData.slug,
-          },
-          popularProjects: {
-            title: mainData.PopularCottages.Title,
-            projects: mainData.PopularCottages.projects.data,
-            houseAreaIcon: projectData.Icons.data[0].attributes.url,
-            widthHeightIcon: projectData.Icons.data[2].attributes.url,
-            constructionPeriodIcon: projectData.Icons.data[1].attributes.url,
-            bedroomsIcon: projectData.Icons.data[3].attributes.url,
-            slugProjects: projectData.slug,
-          },
-          recommendations: {
-            title: mainData.Recommendations.Title,
-            recommendations: mainData.Recommendations.List.data,
-            slugReviews: reviewsData.slug,
-          },
-          contact: {
-            email: mainData.ContactsMap.Email,
-            phone: phoneData.Header.PhoneNumber.PhoneNumber,
-            address: mainData.ContactsMap.Address,
-            urlAddressOffice: mainData.ContactsMap.YandexMapURL,
-          },
-        });
-      })
-      .catch((error) => console.error("Ошибка запроса:", error));
+      const fetchHome = async () => {
+        try {
+          const home = await fetchHomePage();
+          setHome({
+            meta: {
+              title: home.Metadata.MetaTitle,
+              description: home.Metadata.MetaDescription,
+            },
+            greetings: {
+              rawOne: home.Greetings.RawOne,
+              rawTwo: home.Greetings.RawTwo,
+            },
+            mortgage: {
+              title: home.Mortgage.Title,
+              description: home.Mortgage.Description,
+              photos: home.Mortgage.Photos.data.map((photo: any) => ({
+                id: photo.id,
+                attributes: {
+                  url: photo.attributes.url,
+                },
+              })),
+            },
+            about: {
+              title: home.About.Title,
+              information: home.About.Information.map((info: any) => ({
+                id: info.id,
+                title: info.Title,
+                description: info.Description.map((des: any) => ({
+                  type: des.type,
+                  children: des.children,
+                })),
+              })),
+            },
+            popularProjects: {
+              title: home.PopularCottages.Title,
+              projects: home.PopularCottages.Projects.data.map((project: any) => ({
+                id: project.id,
+                attributes: {
+                  title: project.attributes.Title,
+                  slug: project.attributes.slug,
+                  shortDescription: project.attributes.ShortDescription,
+                  description: project.attributes.Description,
+                },
+              })),
+              slugProjects: home.PopularCottages.slugProjects,
+            },
+            recommendations: {
+              title: home.Recommendations.Title,
+              recommendations: home.Recommendations.List.data.map((recommendation: any) => ({
+                id: recommendation.id,
+                attributes: {
+                  title: recommendation.attributes.Title,
+                  description: recommendation.attributes.Description,
+                },
+              })),
+            },
+            contactsMap: {
+              address: home.ContactsMap.Address,
+              email: home.ContactsMap.Email,
+              info: home.ContactsMap.Info,
+              phone: home.ContactsMap.PhoneNumber,
+              workTime: {
+                id: home.ContactsMap.WorkTime.id,
+                weekdays: home.ContactsMap.WorkTime.Weekdays,
+                weekends: home.ContactsMap.WorkTime.Weekends,
+              },
+              yandexMapURL: home.ContactsMap.YandexMapURL,
+            }
+          });
+        } catch (e) {
+          console.error(e)
+        }
+      };
+      fetchHome()
   }, []);
-
-  const toggleModal = () =>
-    setHomeData((prev) => ({ ...prev, isModalOpen: !prev.isModalOpen }));
-
+  console.log(home)
   return (
-    <div>
-      <Helmet>
-        <title>{homeData.meta.title}</title>
-        <meta name="description" content={homeData.meta.description} />
-      </Helmet>
-      <MainScreen
-        isModalOpen={homeData.isModalOpen}
-        closeModal={toggleModal}
-        openModal={toggleModal}
-        titlePart1={homeData.title.part1}
-        titlePart2={homeData.title.part2}
-      />
-      <Mortgage {...homeData.mortgage} />
-      <About {...homeData.about} />
-      <PopularProjects {...homeData.popularProjects} />
-      <Suspense>
-        <Recommendation {...homeData.recommendations} />
-      </Suspense>
-      <Contact {...homeData.contact} />
-    </div>
-  );
+      <div>Page</div>
+  )
+  // const toggleModal = () =>
+  //   setHomeData((prev) => ({ ...prev, isModalOpen: !prev.isModalOpen }));
+
+  // return (
+  //   <div>
+  //     <Helmet>
+  //       <title>{}</title>
+  //       <meta name="description" content={homeData.meta.description} />
+  //     </Helmet>
+  //     <MainScreen
+  //       isModalOpen={homeData.isModalOpen}
+  //       closeModal={toggleModal}
+  //       openModal={toggleModal}
+  //       titlePart1={homeData.title.part1}
+  //       titlePart2={homeData.title.part2}
+  //     />
+  //     <Mortgage {...homeData.mortgage} />
+  //     <About {...homeData.about} />
+  //     <PopularProjects {...homeData.popularProjects} />
+  //     <Suspense>
+  //       <Recommendation {...homeData.recommendations} />
+  //     </Suspense>
+  //     <Contact {...homeData.contact} />
+  //   </div>
+  // );
 };
 
 export { Home };

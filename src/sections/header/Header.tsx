@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useState} from "react";
 import { MobileMenu, Navbar } from "../../components/header";
 import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
@@ -7,6 +7,7 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import {addPreloadLink} from "../../components/preload/preload";
 
 interface Slugs {
   about: string;
@@ -91,6 +92,11 @@ const Header: React.FC = () => {
           },
           phoneNumber: fetchHeader.Phone.Number
         });
+
+        if (fetchHeader.HeaderPhoto?.data?.attributes?.url) {
+          addPreloadLink(API_URL, fetchHeader.HeaderPhoto.data.attributes.url);
+        }
+
       } catch (error) {
         console.error(error);
       }
@@ -149,7 +155,7 @@ const Header: React.FC = () => {
               </button>
             </div>
             <Link to="/">
-              <img src={`${API_URL}${header?.headerPhoto.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100"/>
+              <img src={`${API_URL}${header?.headerPhoto.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100" fetchPriority={"high"}/>
             </Link>
             <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
               {header?.headerInfo}
@@ -160,7 +166,7 @@ const Header: React.FC = () => {
               <div className="flex items-center">
                 {header?.socials?.map((social) => (
                     <a key={social.id} href={social.attributes.URL} target="_blank" rel="noreferrer" className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange">
-                      <img src={`${API_URL}${social.attributes.Photo.data.attributes.url}`} alt={social.attributes.Title} className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5" />
+                      <img src={`${API_URL}${social.attributes.Photo.data.attributes.url}`} alt={social.attributes.Title} className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5"/>
                     </a>
                 ))}
               </div>
