@@ -8,8 +8,19 @@ import { Modal } from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
-interface PhoneNumberLinkProps {
-  phoneNumber: string | undefined;
+interface Slugs {
+  about: string;
+  reviews: string;
+  guarantee: string;
+  vacancy: string;
+  projects: string;
+  contact: string;
+  services: string;
+  privacy: string;
+  built: string;
+  stocks: string;
+  blog: string;
+  mortgage: string;
 }
 
 interface Social {
@@ -37,19 +48,8 @@ interface Header {
   phoneNumber: string;
 }
 
-interface Slugs {
-  about: string;
-  reviews: string;
-  guarantee: string;
-  vacancy: string;
-  projects: string;
-  contact: string;
-  services: string;
-  privacy: string;
-  built: string;
-  stocks: string;
-  blog: string;
-  mortgage: string;
+interface PhoneNumberLinkProps {
+  phoneNumber: string | undefined;
 }
 
 const Header: React.FC = () => {
@@ -109,10 +109,7 @@ const Header: React.FC = () => {
     const thirdPart = phoneNumber.slice(10, 12);
 
     return (
-        <a
-            href={`tel:${phoneNumber}`}
-            className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base"
-        >
+        <a href={`tel:${phoneNumber}`} className="text-maingray cursor-pointer transition-all duration-300 font-museo text-lg font-light hover:text-orange flex items-center max-md:text-base">
           {countryCode} ({areaCode})
           <span className="block border-l-[1px] mx-2 border-orange transform rotate-[20deg] h-[17.5px] text-white"></span>
           {firstPart}-{secondPart}-{thirdPart}

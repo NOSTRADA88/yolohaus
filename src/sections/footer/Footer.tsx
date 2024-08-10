@@ -1,25 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchHeaderFooterData } from "../../api/footer&header";
-import { LogoMainWhite } from "../../assets";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
-
-interface NavLink {
-  href: string;
-  label: string;
-}
-
-interface FooterData {
-  vkContent: string;
-  youtubeContent: string;
-  vkIcon: string;
-  youtubeIcon: string;
-  numberPhone: string;
-  slugPrivacy: string;
-  navLinks: NavLink[];
-}
 
 interface Slugs {
   about: string;
@@ -36,20 +20,34 @@ interface Slugs {
   mortgage: string;
 }
 
+interface Social {
+  id: number;
+  attributes: {
+    URL: string;
+    Title: string;
+    Photo: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      };
+    };
+  };
+}
+
+interface Footer {
+  footerInfo: string;
+  socials: Social[];
+  footerPhoto: {
+    name: string;
+    url: string;
+  };
+  phoneNumber: string;
+}
+
 const Footer: React.FC = () => {
-  const [footerData, setFooterData] = useState<FooterData>({
-    vkContent: "",
-    youtubeContent: "",
-    vkIcon: "",
-    youtubeIcon: "",
-    numberPhone: "",
-    slugPrivacy: "",
-    navLinks: [],
-  });
-
   const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
-
-  const updatedNavLinks: FooterData["navLinks"] = [
+  const navLinks= [
     { href: `/${slugs?.projects ?? ""}`, label: "Проекты и цены" },
     { href: `/${slugs?.built ?? ""}`, label: "Построенные дома" },
     { href: `/${slugs?.reviews ?? ""}`, label: "Отзывы" },
@@ -58,36 +56,36 @@ const Footer: React.FC = () => {
     { href: `/${slugs?.about ?? ""}`, label: "О компании" },
     { href: `/${slugs?.contact ?? ""}`, label: "Контакты" },
   ];
-
+  const [footer, setFooter] = useState<Footer>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchHeader = async () => {
       try {
-        const [headerFooterData] = await Promise.all([fetchHeaderFooterData()]);
-
-        setFooterData({
-          vkContent: headerFooterData.Socials.data[0].attributes.URL,
-          youtubeContent: headerFooterData.Socials.data[1].attributes.URL,
-          vkIcon:
-            headerFooterData.Socials.data[0].attributes.Photo.data.attributes
-              .url,
-          youtubeIcon:
-            headerFooterData.Socials.data[1].attributes.Photo.data.attributes
-              .url,
-          numberPhone: headerFooterData.Phone.Number,
-          slugPrivacy: slugs?.privacy ?? "",
-          navLinks: updatedNavLinks,
+        const fetchHeader = await fetchHeaderFooterData();
+        setFooter({
+          footerInfo: fetchHeader.HeaderInfo,
+          socials: fetchHeader.Socials.data.map((social: any) => ({
+            id: social.id,
+            attributes: social.attributes
+          })),
+          footerPhoto: {
+            name: fetchHeader.FooterPhoto.data.attributes.name,
+            url: fetchHeader.FooterPhoto.data.attributes.url,
+          },
+          phoneNumber: fetchHeader.Phone.Number
         });
       } catch (error) {
-        console.error("Ошибка запроса:", error);
+        console.error(error);
       }
     };
+    fetchHeader();
+  }, []);;
 
-    fetchData();
-  }, []);
-
-  const formatPhoneNumber = (phoneNumber: string) => {
+  const formatPhoneNumber = (phoneNumber: string | undefined) => {
+    if (!phoneNumber) {
+      return null
+    }
     const countryCode = "+7";
     const areaCode = phoneNumber.slice(2, 5);
     const firstPart = phoneNumber.slice(5, 8);
@@ -112,22 +110,13 @@ const Footer: React.FC = () => {
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5">
           <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col max-xl:mb-2 max-xl:gap-2">
             <a href="/">
-              <img
-                src={LogoMainWhite}
-                alt="logo"
-                width="208"
-                height="80"
-                className="h-auto max-w-full object-contain w-52 cursor-pointer"
-              />
+              <img src={`${API_URL}${footer?.footerPhoto.url}`} alt="logo" width="208" height="80" className="h-auto max-w-full object-contain w-52 cursor-pointer" />
             </a>
             <ul className="flex gap-4 items-center justify-center h-20 max-lg:gap-2 max-xl:h-16 max-[850px]:hidden">
-              {footerData.navLinks.map((link, index) => (
+              {navLinks.map((link, index) => (
                 <React.Fragment key={index}>
                   <li className="relative">
-                    <Link
-                      to={link.href}
-                      className="text-white hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
-                    >
+                    <Link to={link.href} className="text-white hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider">
                       {link.label}
                     </Link>
                   </li>
@@ -139,43 +128,21 @@ const Footer: React.FC = () => {
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
             <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">
-                © Компания Yolo Haus
+                {footer?.footerInfo}
               </p>
-              <Link
-                to={`/${footerData.slugPrivacy}`}
-                className="font-museo text-xs font-light text-white hover:text-orange"
-              >
+              <Link to={`/${slugs?.privacy}`} className="font-museo text-xs font-light text-white hover:text-orange">
                 Политика конфиденциальности
               </Link>
             </div>
             <div className="flex items-center gap-10 max-[1050px]:flex-col max-[1050px]:gap-5">
               <div className="flex">
-                <a
-                  href={footerData.youtubeContent}
-                  className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-lightgray rounded-full transition-all duration-300 hover:bg-orange"
-                >
-                  <img
-                    src={`${API_URL}${footerData.youtubeIcon}`}
-                    alt="youtube"
-                    width="16"
-                    height="16"
-                    className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
-                  />
-                </a>
-                <a
-                  href={footerData.vkContent}
-                  className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-lightgray rounded-full transition-all duration-300 hover:bg-orange"
-                >
-                  <img
-                    src={`${API_URL}${footerData.vkIcon}`}
-                    alt="vk"
-                    width="16"
-                    height="16"
-                    className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
-                  />
-                </a>
+                {footer?.socials?.map((social) => (
+                    <a key={social.id} href={social.attributes.URL} target="_blank" rel="noreferrer" className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-lightgray rounded-full transition-all duration-300 hover:bg-orange">
+                      <img src={`${API_URL}${social.attributes.Photo.data.attributes.url}`} alt={social.attributes.Title} className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5" />
+                    </a>
+                ))}
               </div>
-              {formatPhoneNumber(footerData.numberPhone)}
+              {formatPhoneNumber(footer?.phoneNumber)}
               <div
                 className="flex gap-[3.5px] items-center"
                 onClick={() => setIsModalOpen(true)}
