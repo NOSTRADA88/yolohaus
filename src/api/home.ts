@@ -1,4 +1,4 @@
-import {fetchData} from "./index";
+import { fetchData } from "./index";
 
 
 export const fetchMainPage = () =>
