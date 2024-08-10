@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import {
-  fetchContactData,
-  fetchHeaderFooterData,
-  fetchHomeData,
-} from "../../api";
+import { fetchContactData, fetchHomeData } from "../../api";
 import {
   ContactInfo,
   EmployeeCard,
   ProductionsList,
 } from "../../components/contact";
 import { Link } from "react-router-dom";
+import {fetchHeaderFooterData} from "../../api/footer&header";
 
 interface DescriptionItem {
   type: string;

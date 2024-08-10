@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {MobileMenu, Navbar} from "../../components/header";
-import { fetchHeaderFooterData } from "../../api";
+import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BgVacancy } from "../../assets";
-import { fetchHeaderFooterData } from "../../api";
+import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
 

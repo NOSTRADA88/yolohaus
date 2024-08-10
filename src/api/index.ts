@@ -1,6 +1,7 @@
 import { API_URL, axiosInstanse } from "../constants";
+import {fetchHeaderFooterData} from "./footer&header";
 
-const fetchData = async (endpoint: string, populateParams: string) => {
+export const fetchData = async (endpoint: string, populateParams: string) => {
   const url = `${API_URL}${endpoint}${
     populateParams ? `?populate=${populateParams}` : ""
   }`;
@@ -16,9 +17,6 @@ export const fetchHomeData = () =>
     "/api/glavnaya",
     "About.Photo,About.Information,Greetings.Photo,Metadata,Mortgage.Photos,Recommendations.List.Icon,Recommendations.List.BgPhoto,ContactsMap.WorkTime,PopularCottages.Projects.Photos,PopularCottages.projects.Parameters,PopularCottages.projects.Complectation"
   );
-
-export const fetchHeaderFooterData = () =>
-  fetchData("/api/informacziya", "Phone,Socials.Photo");
 
 export const fetchAboutData = () =>
   fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");

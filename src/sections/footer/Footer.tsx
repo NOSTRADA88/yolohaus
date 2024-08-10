@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchHeaderFooterData } from "../../api";
+import { fetchHeaderFooterData } from "../../api/footer&header";
 import { LogoMainWhite } from "../../assets";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
