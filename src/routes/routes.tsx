@@ -1,11 +1,5 @@
 import { lazy } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import { Home, ErrorPage } from "../page";
@@ -14,6 +8,7 @@ import { useSlugs } from "../hooks/useSlugs";
 const AboutCompany = lazy(() =>
   import("../page/about/AboutCompany").then((module) => ({ default: module.AboutCompany }))
 );
+
 const Reviews = lazy(() =>
   import("../page/reviews/Reviews").then((module) => ({
     default: module.Reviews,
@@ -105,7 +100,7 @@ const RoutesComponent = () => {
           path={"/"}
           element={
             <Layout>
-              <Home />
+              <Home slugs={slugs}/>
             </Layout>
           }
         />

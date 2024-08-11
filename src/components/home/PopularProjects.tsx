@@ -3,105 +3,65 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-interface PhotoFormats {
-  ext: string;
-  url: string;
+interface Slugs {
+  about: string;
+  reviews: string;
+  guarantee: string;
+  vacancy: string;
+  projects: string;
+  contact: string;
+  services: string;
+  privacy: string;
+  built: string;
+  stocks: string;
+  blog: string;
+  mortgage: string;
 }
 
-interface PhotoAttributes {
-  name: string;
-  alternativeText: string | null;
-  caption: string | null;
-  width: number;
-  height: number;
-  formats: {
-    large: PhotoFormats;
-    small: PhotoFormats;
-  };
+interface Kit {
+  basePrice: string;
+  standardPrice: string;
+  comfortPrice: string;
 }
 
 interface Photo {
-  id: number;
-  attributes: PhotoAttributes;
-}
-
-interface ProjectAttributes {
-  Title: string;
-  isRecommended: boolean;
-  slug: string;
-  Photos: {
-    data: Photo[];
-  };
-  Parameters: {
-    id: number;
-    HouseArea: string;
-    BuiltUpArea: string;
-    Floors: number;
-    KitchenLivingRoomArea: string;
-    Bedrooms: number;
-    Toilets: number;
-    TerraceAndPorchArea: string;
-    Width: string;
-    Height: string;
-    ConstructionPeriod: string;
-  };
-  Complectation: {
-    id: number;
-    Description: {
-      type: string;
-      children: {
-        text: string;
-        type: string;
-      }[];
-    }[];
-    BasePrice: string;
-    StandartPrice: string;
-    ComfortPrice: string;
-  }[];
+  url: string;
+  name: string;
+  width: string;
+  height: string;
 }
 
 interface Project {
-  id: number;
-  attributes: ProjectAttributes;
-}
-
-interface Complectation {
-  id: number;
-  BasePrice: string;
-  StandartPrice: string;
-  ComfortPrice: string;
+  title: string;
+  slug: string;
+  kits: Kit[];
+  parameters: {
+    houseArea: string;
+    builtUpArea: string;
+    width: string;
+    height: string;
+    constructionPeriod: string;
+    bedrooms: string;
+  }
+  photo: Photo;
 }
 
 interface PopularProjectsProps {
-  title: string;
-  projects: Project[];
-  houseAreaIcon: string;
-  widthHeightIcon: string;
-  constructionPeriodIcon: string;
-  bedroomsIcon: string;
-  slugProjects: string;
+  title?: string;
+  projects?: Project[];
+  icons?: Photo[];
+  slugs: Slugs;
 }
 
-const PopularProjects = ({
-  title,
-  projects,
-  houseAreaIcon,
-  widthHeightIcon,
-  constructionPeriodIcon,
-  bedroomsIcon,
-  slugProjects,
-}: PopularProjectsProps) => {
+const PopularProjects = ({title, projects, icons, slugs}: PopularProjectsProps) => {
+
   const parsePrice = (price: string | null): number => {
     return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
 
-  const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) =>
-      Math.min(
-        parsePrice(item.BasePrice),
-        parsePrice(item.StandartPrice),
-        parsePrice(item.ComfortPrice)
-      )
+  const getMinPrice = (kits: Kit[]): number => {
+    const prices = kits.map(kit =>
+        Math.min(parsePrice(kit.basePrice), parsePrice(kit.standardPrice), parsePrice(kit.comfortPrice))
     );
     return Math.min(...prices);
   };
@@ -118,85 +78,64 @@ const PopularProjects = ({
         </h1>
         <div className=" bg-lightwhite p-5 max-md:w-full">
           <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
-            <Link
-              to={`/${slugProjects}`}
-              className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"
-            >
+            <Link to={`/`} className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs">
               Все проекты{" "}
             </Link>
-            <FontAwesomeIcon
-              icon={faArrowRightLong}
-              className="text-orange arrow-icon"
-            />
+            <FontAwesomeIcon icon={faArrowRightLong} className="text-orange arrow-icon" />
           </div>
         </div>
       </div>
       <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
-        {projects.slice(0, 6).map((project) => (
-          <Link
-            to={`/${slugProjects}/${project.attributes.slug}`}
-            key={project.id}
+        {projects?.slice(0, 6).map((project, index) => (
+          <Link to={`/${slugs.projects}${project.slug}`} key={index}
             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px]  h-[320px] max-xl:w-full  max-md:h-full
-            max-[350px]:w-[280px] 
+            max-[350px]:w-[280px]
             transition-all duration-300 hover:shadow-2xl group"
           >
             <div className="relative max-w-full overflow-hidden">
-              <img
-                src={`${API_URL}${project.attributes.Photos.data[0].attributes.formats.large.url}`}
-                alt={project.attributes.Photos.data[0].attributes.name}
-                className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
-              />
+              <img src={`${API_URL}${project.photo.url}`} alt={project.photo.name} className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"/>
             </div>
             <div className="p-4">
               <h2 className="font-museo font-bold text-2xl text-maingray">
-                {project.attributes.Title}
+                {project.title}
               </h2>
               <div className="flex gap-[9px] mt-4">
                 <div className="flex gap-[4px]">
-                  <img
-                    src={`${API_URL}${houseAreaIcon}`}
-                    alt="House Area"
-                    className="w-4 h-4"
-                  />
+                  {icons && (
+                      <img src={`${API_URL}${icons[0].url}`} alt={icons[0].name} className="w-4 h-4" width={icons[0].width} height={icons[0].height}/>
+                  )}
                   <p className="font-museo font-light text-sm text-maingray">
-                    {project.attributes.Parameters.HouseArea}
+                    {project.parameters.houseArea}
                   </p>
                 </div>
                 <div className="flex gap-[4px]">
-                  <img
-                    src={`${API_URL}${widthHeightIcon}`}
-                    alt="Width and Height"
-                    className="w-4 h-4"
-                  />
+                  {icons && (
+                      <img src={`${API_URL}${icons[1].url}`} alt={icons[1].name} className="w-4 h-4" width={icons[0].width} height={icons[0].height}/>
+                  )}
                   <p className="font-museo font-light text-sm text-maingray">
-                    {project.attributes.Parameters.Width} x{" "}
-                    {project.attributes.Parameters.Height}
+                    {project.parameters.width} x{" "}
+                    {project.parameters.height}
                   </p>
                 </div>
                 <div className="flex gap-[4px]">
-                  <img
-                    src={`${API_URL}${constructionPeriodIcon}`}
-                    alt="Construction Period"
-                    className="w-4 h-4"
-                  />
+                  {icons && (
+                      <img src={`${API_URL}${icons[2].url}`} alt={icons[2].name} className="w-4 h-4" width={icons[2].width} height={icons[2].height}/>
+                  )}
                   <p className="font-museo font-light text-sm text-maingray">
-                    {project.attributes.Parameters.ConstructionPeriod} дней
+                    {project.parameters.constructionPeriod} дней
                   </p>
                 </div>
                 <div className="flex gap-[4px]">
-                  <img
-                    src={`${API_URL}${bedroomsIcon}`}
-                    alt="Bedrooms"
-                    className="w-4 h-4"
-                  />
+                  {icons && (
+                      <img src={`${API_URL}${icons[3].url}`} alt={icons[3].name} className="w-4 h-4" width={icons[3].width} height={icons[3].height}/>
+                  )}
                   <p className="font-museo font-light text-sm text-maingray">
-                    {project.attributes.Parameters.Bedrooms}
+                    {project.parameters.bedrooms}
                   </p>
                 </div>
               </div>
               <p className="font-museo mt-6 text-orange text-xl font-bold">
-                Цена от{" "}
-                {formatPrice(getMinPrice(project.attributes.Complectation))} ₽
+                Цена от{" "} {formatPrice(getMinPrice(project.kits))} ₽
               </p>
             </div>
           </Link>

@@ -4,49 +4,9 @@ import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
+import { FooterHeader, Slugs } from "../../interfaces";
 
-interface Slugs {
-  about: string;
-  reviews: string;
-  guarantee: string;
-  vacancy: string;
-  projects: string;
-  contact: string;
-  services: string;
-  privacy: string;
-  built: string;
-  stocks: string;
-  blog: string;
-  mortgage: string;
-}
-
-interface Social {
-  id: number;
-  attributes: {
-    URL: string;
-    Title: string;
-    Photo: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-  };
-}
-
-interface Footer {
-  footerInfo: string;
-  socials: Social[];
-  footerPhoto: {
-    name: string;
-    url: string;
-  };
-  phoneNumber: string;
-}
-
-const Footer: React.FC = () => {
-  const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
+const Footer = () => {const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
   const navLinks= [
     { href: `/${slugs?.projects ?? ""}`, label: "Проекты и цены" },
     { href: `/${slugs?.built ?? ""}`, label: "Построенные дома" },
@@ -56,7 +16,7 @@ const Footer: React.FC = () => {
     { href: `/${slugs?.about ?? ""}`, label: "О компании" },
     { href: `/${slugs?.contact ?? ""}`, label: "Контакты" },
   ];
-  const [footer, setFooter] = useState<Footer>();
+  const [footer, setFooter] = useState<FooterHeader>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -64,14 +24,16 @@ const Footer: React.FC = () => {
       try {
         const fetchHeader = await fetchHeaderFooterData();
         setFooter({
-          footerInfo: fetchHeader.HeaderInfo,
+          info: fetchHeader.HeaderInfo,
           socials: fetchHeader.Socials.data.map((social: any) => ({
             id: social.id,
             attributes: social.attributes
           })),
-          footerPhoto: {
+          photo: {
             name: fetchHeader.FooterPhoto.data.attributes.name,
             url: fetchHeader.FooterPhoto.data.attributes.url,
+            width: fetchHeader.FooterPhoto.data.attributes.width,
+            height: fetchHeader.FooterPhoto.data.attributes.height
           },
           phoneNumber: fetchHeader.Phone.Number
         });
@@ -110,7 +72,7 @@ const Footer: React.FC = () => {
         <div className="w-full max-w-[1111px] mx-auto max-[1111px]:px-12 max-md:px-5">
           <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col max-xl:mb-2 max-xl:gap-2">
             <a href="/">
-              <img src={`${API_URL}${footer?.footerPhoto.url}`} alt="logo" width="208" height="80" className="h-auto max-w-full object-contain w-52 cursor-pointer" />
+              <img src={`${API_URL}${footer?.photo.url}`} alt="logo" width={footer?.photo.width} height={footer?.photo.height} className="h-auto max-w-full object-contain w-52 cursor-pointer" />
             </a>
             <ul className="flex gap-4 items-center justify-center h-20 max-lg:gap-2 max-xl:h-16 max-[850px]:hidden">
               {navLinks.map((link, index) => (
@@ -128,7 +90,7 @@ const Footer: React.FC = () => {
           <div className="flex gap-6 items-center justify-between max-[1050px]:flex-col">
             <div className="flex gap-20 max-xl:flex-col max-xl:gap-2 max-[1050px]:flex-row max-md:flex-col max-[1050px]:text-center">
               <p className="font-museo text-xs font-light text-white">
-                {footer?.footerInfo}
+                {footer?.info}
               </p>
               <Link to={`/${slugs?.privacy}`} className="font-museo text-xs font-light text-white hover:text-orange">
                 Политика конфиденциальности

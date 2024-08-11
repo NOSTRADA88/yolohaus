@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { MobileMenu, Navbar } from "../../components/header";
 import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
@@ -7,58 +7,15 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import {addPreloadLink} from "../../components/preload/preload";
-
-interface Slugs {
-  about: string;
-  reviews: string;
-  guarantee: string;
-  vacancy: string;
-  projects: string;
-  contact: string;
-  services: string;
-  privacy: string;
-  built: string;
-  stocks: string;
-  blog: string;
-  mortgage: string;
-}
-
-interface Social {
-  id: number;
-  attributes: {
-    URL: string;
-    Title: string;
-    Photo: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-  };
-}
-
-interface Header {
-  headerInfo: string;
-  socials: Social[];
-  headerPhoto: {
-    name: string;
-    url: string;
-  };
-  phoneNumber: string;
-}
+import {FooterHeader, Slugs} from "../../interfaces";
 
 interface PhoneNumberLinkProps {
   phoneNumber: string | undefined;
 }
 
-const Header: React.FC = () => {
+const Header = () => {
+  const [header, setHeader] = useState<FooterHeader>();
   const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
-  const [header, setHeader] = useState<Header>();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navLinks = [
     { href: `/${slugs?.projects ?? ""}`, label: "Проекты и цены" },
     { href: `/${slugs?.built ?? ""}`, label: "Построенные дома" },
@@ -76,27 +33,26 @@ const Header: React.FC = () => {
     { href: `/${slugs?.contact ?? ""}`, label: "Контакты" },
   ];
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     const fetchHeader = async () => {
       try {
         const fetchHeader = await fetchHeaderFooterData();
         setHeader({
-          headerInfo: fetchHeader.HeaderInfo,
+          info: fetchHeader.HeaderInfo,
           socials: fetchHeader.Socials.data.map((social: any) => ({
             id: social.id,
             attributes: social.attributes
           })),
-          headerPhoto: {
+          photo: {
             name: fetchHeader.HeaderPhoto.data.attributes.name,
             url: fetchHeader.HeaderPhoto.data.attributes.url,
+            width: fetchHeader.HeaderPhoto.data.attributes.width,
+            height: fetchHeader.HeaderPhoto.data.attributes.height
           },
           phoneNumber: fetchHeader.Phone.Number
         });
-
-        if (fetchHeader.HeaderPhoto?.data?.attributes?.url) {
-          addPreloadLink(API_URL, fetchHeader.HeaderPhoto.data.attributes.url);
-        }
-
       } catch (error) {
         console.error(error);
       }
@@ -155,10 +111,10 @@ const Header: React.FC = () => {
               </button>
             </div>
             <Link to="/">
-              <img src={`${API_URL}${header?.headerPhoto.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100" fetchPriority={"high"}/>
+              <img src={`${API_URL}${header?.photo.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100" fetchPriority={"high"} loading="eager"/>
             </Link>
             <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
-              {header?.headerInfo}
+              {header?.info}
             </p>
           </div>
           <div className="flex gap-6 justify-center items-center max-md:flex-col max-md:gap-2">

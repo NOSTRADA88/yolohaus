@@ -1,5 +1,4 @@
 import { API_URL, axiosInstanse } from "../constants";
-import {fetchHeaderFooterData} from "./footer&header";
 
 export const fetchData = async (endpoint: string, populateParams: string) => {
   const url = `${API_URL}${endpoint}${
@@ -101,32 +100,6 @@ export const fetchBlogDetailData = async (blogSlug: string) => {
     return response.data.data.attributes.posts_list;
   }
   throw new Error("no blog data");
-};
-
-export const fetchAllData = async () => {
-  const [
-    mainData,
-    aboutData,
-    projectData,
-    reviewsData,
-    phoneData,
-    mortgageData,
-  ] = await Promise.all([
-    fetchHomeData(),
-    fetchAboutData(),
-    fetchProjectsData(),
-    fetchReviewsData(),
-    fetchHeaderFooterData(),
-    fetchMortgageData(),
-  ]);
-  return {
-    mainData,
-    aboutData,
-    projectData,
-    reviewsData,
-    phoneData,
-    mortgageData,
-  };
 };
 
 export const fetchStocksSlug = () => fetchData("/api/akczii", "");
