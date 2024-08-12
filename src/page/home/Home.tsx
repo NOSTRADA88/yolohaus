@@ -121,7 +121,7 @@ const Home = ({slugs}: HomeProps) => {
         <About {...home?.about} slugs={slugs}/>
         <PopularProjects {...home?.popularProjects} slugs={slugs} />
         <Recommendation {...home?.recommendations} slugs={slugs}/>
-        <Contact {...home?.contactsMap} />
+        <Contact isModalOpen={isModalOpen} closeModal={toggleModal} openModal={toggleModal} {...home?.contactsMap} />
       </div>
   );
 };

@@ -1,8 +1,9 @@
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
 import { Yolo } from "../../assets";
-import { ContactsMap } from "../../interfaces";
+import {ContactProps, ContactsMap} from "../../interfaces";
+import {Modal} from "../../sections/modal";
 
-const Contact = ({ address, email, phone, info, workTime, yandexMapURL }: ContactsMap) => {
+const Contact = ({isModalOpen, closeModal, openModal, address, email, phone, info, workTime, yandexMapURL }: ContactProps) => {
   function formatPhoneNumber(number: string | undefined) {
     if (!number) {
       return null
@@ -57,7 +58,7 @@ const Contact = ({ address, email, phone, info, workTime, yandexMapURL }: Contac
               </a>
             </h1>{" "}
           </div>
-          <div className="flex gap-[3.5px] items-center mt-2 max-sm:justify-center">
+          <div className="flex gap-[3.5px] items-center mt-2 max-sm:justify-center" onClick={openModal}>
             <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
             <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange text-maingray transform parallelogram w-[172px] h-10 border-[1px] border-orange">
               <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram hover:text-white">
@@ -65,6 +66,7 @@ const Contact = ({ address, email, phone, info, workTime, yandexMapURL }: Contac
               </p>
             </div>
           </div>
+          {isModalOpen && <Modal closeModal={closeModal} />}
         </div>
         <div className="">
           <Map className={"w-full h-[390px]"} defaultState={{ center: [60.051894, 30.313452], zoom: 15 }} >

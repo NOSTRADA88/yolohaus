@@ -27,6 +27,18 @@ export interface ContactsMap {
     yandexMapURL?: string;
 }
 
+export interface ContactProps {
+    isModalOpen: boolean;
+    closeModal: () => void;
+    openModal: () => void;
+    address?: string;
+    email?: string;
+    phone?: string;
+    info?: string;
+    workTime?: WorkTime;
+    yandexMapURL?: string;
+}
+
 interface DescriptionChild {
     text: string;
     type: string;
