@@ -1,23 +1,14 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { About, MainScreen, Mortgage, PopularProjects } from "../../components/home";
-import {fetchHomePage} from "../../api/home";
-import {HomeData, HomeProps} from "../../interfaces";
-
-const Recommendation = lazy(
-  () => import("../../components/home/Recommendation")
-);
-
-const Contact = lazy(
-    () => import("../../components/home/Contact")
-);
+import {About, MainScreen, Mortgage, PopularProjects, Recommendation, Contact} from "../../components/home";
+import { fetchHomePage } from "../../api/home";
+import { HomeData, HomeProps } from "../../interfaces";
 
 const Home = ({slugs}: HomeProps) => {
   const [home, setHome] = useState<HomeData>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => { setIsModalOpen((prev) => !prev)};
   useEffect(() => {
-    // можно разбить на запросы для каждого компонента, Promise.All, интерфейсы для данных имеются, сделать маленькие запросы к конкретным ресурсам
     const fetchHome = async () => {
       try {
         const home = await fetchHomePage();
@@ -118,8 +109,6 @@ const Home = ({slugs}: HomeProps) => {
     };
     fetchHome()
   }, []);
-
-  console.log(home)
 
   return (
       <div>

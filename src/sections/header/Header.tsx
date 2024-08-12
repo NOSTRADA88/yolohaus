@@ -111,7 +111,7 @@ const Header = () => {
               </button>
             </div>
             <Link to="/">
-              <img src={`${API_URL}${header?.photo.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100" fetchPriority={"high"} loading="eager"/>
+              <img src={`${API_URL}${header?.photo.url}`} alt="header logo" className="h-auto max-w-full object-contain cursor-pointer" width="200" height="100"/>
             </Link>
             <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
               {header?.info}

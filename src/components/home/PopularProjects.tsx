@@ -2,56 +2,7 @@ import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
-interface Slugs {
-  about: string;
-  reviews: string;
-  guarantee: string;
-  vacancy: string;
-  projects: string;
-  contact: string;
-  services: string;
-  privacy: string;
-  built: string;
-  stocks: string;
-  blog: string;
-  mortgage: string;
-}
-
-interface Kit {
-  basePrice: string;
-  standardPrice: string;
-  comfortPrice: string;
-}
-
-interface Photo {
-  url: string;
-  name: string;
-  width: string;
-  height: string;
-}
-
-interface Project {
-  title: string;
-  slug: string;
-  kits: Kit[];
-  parameters: {
-    houseArea: string;
-    builtUpArea: string;
-    width: string;
-    height: string;
-    constructionPeriod: string;
-    bedrooms: string;
-  }
-  photo: Photo;
-}
-
-interface PopularProjectsProps {
-  title?: string;
-  projects?: Project[];
-  icons?: Photo[];
-  slugs: Slugs;
-}
+import {PopularProjectsProps, Kit} from "../../interfaces";
 
 const PopularProjects = ({title, projects, icons, slugs}: PopularProjectsProps) => {
 
@@ -87,7 +38,7 @@ const PopularProjects = ({title, projects, icons, slugs}: PopularProjectsProps) 
       </div>
       <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
         {projects?.slice(0, 6).map((project, index) => (
-          <Link to={`/${slugs.projects}${project.slug}`} key={index}
+          <Link to={`/${slugs.projects}/${project.slug}`} key={index}
             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px]  h-[320px] max-xl:w-full  max-md:h-full
             max-[350px]:w-[280px]
             transition-all duration-300 hover:shadow-2xl group"

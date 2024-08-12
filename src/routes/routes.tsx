@@ -80,7 +80,8 @@ const BlogDetail = lazy(() =>
 );
 
 const RoutesComponent = () => {
-  const { data: slugs } = useSlugs();
+  const { data: slugs, isLoading, error } = useSlugs();
+  console.log(error)
 
   if (!slugs) {
     return (

@@ -42,7 +42,7 @@ export interface Information {
     description: Description[];
 }
 
-interface Kit {
+export interface Kit {
     basePrice: string;
     standardPrice: string;
     comfortPrice: string;
@@ -158,4 +158,11 @@ export interface FooterHeader {
     socials: Social[];
     photo: Photo;
     phoneNumber: string;
+}
+
+export interface PopularProjectsProps {
+    title?: string;
+    projects?: Project[];
+    icons?: Photo[];
+    slugs: Slugs;
 }

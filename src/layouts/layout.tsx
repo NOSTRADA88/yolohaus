@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, {lazy, ReactNode} from "react";
 import { Consultation } from "../components/footer";
 import { Header, Footer } from "../sections";
 import { Suspense } from "react";
@@ -17,8 +17,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {children}
             </Suspense>
             <section>
-                <Consultation />
-                <Footer />
+                <Suspense>
+                    <Consultation />
+                    <Footer />
+                </Suspense>
             </section>
         </div>
     );

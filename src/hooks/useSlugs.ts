@@ -6,23 +6,8 @@ import {
     fetchReviewsSlug, fetchServicesSlug, fetchStocksSlug,
     fetchVacancySlug
 } from "../api";
-
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
-
-interface Slugs {
-    about: string;
-    reviews: string;
-    guarantee: string;
-    vacancy: string;
-    projects: string;
-    contact: string;
-    services: string;
-    privacy: string;
-    built: string;
-    stocks: string;
-    blog: string;
-    mortgage: string;
-}
+import {Slugs} from "../interfaces";
 
 const fetchSlugs = async (): Promise<Slugs> => {
     const [about, reviews, guarantee, vacancy, projects, contact, services, privacy, built, stocks, blog, mortgage] =

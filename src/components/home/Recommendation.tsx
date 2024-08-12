@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { RecommendationProps } from "../../interfaces";
 
 const Recommendation = ({ title, recommendations, slugs }: RecommendationProps) => {
-  console.log(recommendations)
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl max-md:leading-normal max-sm:pr-10">
