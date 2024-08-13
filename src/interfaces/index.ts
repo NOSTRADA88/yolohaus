@@ -454,3 +454,24 @@ export interface PrivacyPolicyData {
   title: string;
   description: Description[];
 }
+
+// Reviews Page
+interface ReviewAttributes {
+  Title: string;
+  URL: string;
+  Photo: Photo;
+}
+
+interface Review {
+  id: number;
+  attributes: ReviewAttributes;
+}
+
+export interface ReviewsData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleAbout: string;
+  slugAbout: string;
+  reviews: Review[];
+}

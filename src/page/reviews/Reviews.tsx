@@ -3,39 +3,7 @@ import { fetchAboutData, fetchReviewsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface PhotoAttributes {
-  url: string;
-}
-
-interface PhotoData {
-  id: number;
-  attributes: PhotoAttributes;
-}
-
-interface Photo {
-  data: PhotoData;
-}
-
-interface ReviewAttributes {
-  Title: string;
-  URL: string;
-  Photo: Photo;
-}
-
-interface Review {
-  id: number;
-  attributes: ReviewAttributes;
-}
-
-interface ReviewsData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleAbout: string;
-  slugAbout: string;
-  reviews: Review[];
-}
+import { ReviewsData } from "../../interfaces";
 
 const Reviews = () => {
   const [reviewsData, setReviewsData] = useState<ReviewsData>({
@@ -87,7 +55,7 @@ const Reviews = () => {
             >
               <div className="flex justify-center items-center w-full h-full p-10 bg-lightwhite hover:bg-orange cursor-pointer">
                 <img
-                  src={`${API_URL}${review.attributes.Photo.data.attributes.url}`}
+                  src={`${API_URL}${review.attributes.Photo.url}`}
                   alt={review.attributes.Title}
                 />
               </div>
