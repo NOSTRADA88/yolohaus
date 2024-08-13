@@ -15,7 +15,7 @@ const Sort = ({
   resetSort,
 }: SortProps) => {
   return (
-    <div className="flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-4">
+    <div className="flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-4 mt-5">
       <h2 className="font-museo text-base text-maingray text-opacity-50">
         Сортировать по:
       </h2>

@@ -17,7 +17,6 @@ const ErrorPage = () => {
             Главная /{" "}
           </Link>
           <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-            {" "}
             404
           </p>
         </div>
@@ -35,4 +34,4 @@ const ErrorPage = () => {
   );
 };
 
-export {ErrorPage};
+export { ErrorPage };

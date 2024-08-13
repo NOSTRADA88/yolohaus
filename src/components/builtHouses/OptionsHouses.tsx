@@ -30,7 +30,7 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Kit: {
+    Complectation: {
       id: number;
       Description: {
         type: string;
@@ -65,7 +65,7 @@ interface DetailsData {
   };
 }
 
-interface Kit {
+interface Complectation {
   id: number;
   BasePrice: string;
   StandardPrice: string;
@@ -100,7 +100,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
     return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
 
-  const getMinPrice = (kit: Kit[]): number => {
+  const getMinPrice = (kit: Complectation[]): number => {
     const prices = kit.map((item) =>
       Math.min(
         parsePrice(item.BasePrice),
@@ -287,10 +287,10 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
       <div className="flex items-center justify-between max-[400px]:flex-col  max-[400px]:items-start max-[400px]:mt-8 ">
         {details.map((detail) => (
           <div key={detail.id} className="">
-            {detail.attributes.Kit && (
+            {detail.attributes.Complectation && (
               <>
                 <p className="font-museo  text-orange text-xl font-bold">
-                  от {formatPrice(getMinPrice(detail.attributes.Kit))}{" "}
+                  от {formatPrice(getMinPrice(detail.attributes.Complectation))}{" "}
                   ₽
                 </p>
               </>

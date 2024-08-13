@@ -1,9 +1,9 @@
 import { lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import { fetchMortgageData } from "../../api";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
@@ -269,26 +269,8 @@ const MortgageAbout = () => {
         <title>{mortgageData.metaTitle}</title>
         <meta name="description" content={mortgageData.metaDescription} />
       </Helmet>
-
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {mortgageData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              Главная /{" "}
-            </Link>
-
-            <p className="ml-1 font-museо font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {mortgageData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs finalTitle={mortgageData.title} />
         <div className="flex justify-between items-center max-xl:mt-20 max-md:mt-10">
           <div className="flex flex-col w-[60%] max-[1111px]:w-full">
             <div className=" bg-lightwhite p-5">

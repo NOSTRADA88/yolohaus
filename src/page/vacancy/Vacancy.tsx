@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchVacancyData } from "../../api";
 import { ActiveVacancies, Switch } from "../../components/vacancy";
-import { Link } from "react-router-dom";
 import { ContactBanner } from "../../sections/banner";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface ListItem {
   type: string;
@@ -73,6 +73,8 @@ const Vacancy = () => {
     fetchData();
   }, []);
 
+  const breadcrumbItems = [{ title: data.titleAbout, slug: data.slugAbout }];
+
   return (
     <div>
       <Helmet>
@@ -81,30 +83,7 @@ const Vacancy = () => {
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {data.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${data.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              {" "}
-              {data.titleAbout} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {data.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={data.title} />
         <Switch activeTab={activeTab} setActiveTab={setActiveTab} />
         {activeTab === "activeVacancies" && (
           <ActiveVacancies vacancies={data.vacancies} />
@@ -115,4 +94,4 @@ const Vacancy = () => {
   );
 };
 
-export {Vacancy};
+export { Vacancy };

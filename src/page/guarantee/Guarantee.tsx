@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchGuaranteeData } from "../../api";
-import { Link } from "react-router-dom";
 import { photoGuarantee } from "../../assets";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface Child {
   text: string;
@@ -64,38 +64,18 @@ const Guarantee = () => {
     fetchData();
   }, []);
 
+  const breadcrumbItems = [
+    { title: guaranteeData.titleAbout, slug: guaranteeData.slugAbout },
+  ];
+
   return (
     <div>
       <Helmet>
         <title>{guaranteeData.metaTitle}</title>
         <meta name="description" content={guaranteeData.metaDescription} />
       </Helmet>
-
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl ">
-            {guaranteeData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${guaranteeData.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              {" "}
-              {guaranteeData.titleAbout} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {guaranteeData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={guaranteeData.title} />
         <div className="flex justify-between items-center max-xl:mt-20 max-md:mt-10 ">
           <div className="flex flex-col w-[60%] max-[1111px]:w-full">
             <div className=" bg-lightwhite p-5">

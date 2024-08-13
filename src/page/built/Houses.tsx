@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { fetchBuiltHousesData } from "../../api";
 import { API_URL } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface PhotoAttributes {
   name: string;
@@ -142,24 +143,7 @@ const Houses = () => {
         <meta name="description" content={houseData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4 mb-10 max-sm:mb-5">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {houseData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {houseData.title}
-            </p>
-          </div>
-        </div>
-
+        <Breadcrumbs finalTitle={houseData.title} />
         <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-sm:grid-cols-1">
           {visibleHouses.map((house) => (
             <Link

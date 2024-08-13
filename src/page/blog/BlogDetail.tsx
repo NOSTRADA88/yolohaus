@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchAboutData, fetchBlogData, fetchBlogDetailData } from "../../api";
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface BlogDetailProps {
   blogSlug: string;
@@ -252,6 +252,10 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
     });
   }
 
+  const breadcrumbItems = [
+    { title: blogData.titleAbout, slug: blogData.slugAbout },
+    { title: blogData.titleBlog, slug: blogData.slug },
+  ];
   return (
     <div>
       <Helmet>
@@ -260,34 +264,7 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-[1100px]:flex-col max-[1100px]:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {blogData.title}
-          </h1>
-          <div className="flex items-center max-[450px]:flex-wrap max-[450px]:justify-start">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${blogData.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              {blogData.titleAbout} /{" "}
-            </Link>
-            <Link
-              to={`/${blogData.slug}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              {blogData.titleBlog} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {blogData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
           {blogData.posts_list.map((post) => (
             <div key={post.id} className="mb-8">

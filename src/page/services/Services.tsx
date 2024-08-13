@@ -1,10 +1,11 @@
-import { fetchServicesData } from "../../api";
+import { fetchAboutData, fetchServicesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface DescriptionText {
   type: string;
@@ -55,6 +56,8 @@ interface ServicesData {
   title: string;
   services: Service[];
   slugServices: string;
+  titleAbout: string;
+  slugAbout: string;
 }
 
 const Services = () => {
@@ -66,12 +69,16 @@ const Services = () => {
     queryKey: ["services"],
     queryFn: async () => {
       const servicesDataResponse = await fetchServicesData();
+      const aboutData = await fetchAboutData();
+
       return {
         metaTitle: servicesDataResponse.Metadata.MetaTitle,
         metaDescription: servicesDataResponse.Metadata.MetaDescription,
         title: servicesDataResponse.Title,
         services: servicesDataResponse.Services.data,
         slugServices: servicesDataResponse.slug,
+        titleAbout: aboutData.Title,
+        slugAbout: aboutData.slug,
       };
     },
   });
@@ -87,6 +94,9 @@ const Services = () => {
   if (!servicesData) {
     return null;
   }
+  const breadcrumbItems = [
+    { title: servicesData.titleAbout, slug: servicesData.slugAbout },
+  ];
 
   return (
     <div>
@@ -95,22 +105,7 @@ const Services = () => {
         <meta name="description" content={servicesData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {servicesData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {servicesData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={servicesData.title} />
         <div
           className="grid grid-cols-3 mt-10 gap-20 max-xl:gap-10 max-[950px]:grid-cols-2
                  max-[500px]:grid-cols-1"

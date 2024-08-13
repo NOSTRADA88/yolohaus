@@ -6,8 +6,8 @@ import {
   EmployeeCard,
   ProductionsList,
 } from "../../components/contact";
-import { Link } from "react-router-dom";
-import {fetchHeaderFooterData} from "../../api/footer&header";
+import { fetchHeaderFooterData } from "../../api/footer&header";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface DescriptionItem {
   type: string;
@@ -116,23 +116,7 @@ const Contact = () => {
         <meta name="description" content={contactData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4 ">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {contactData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {contactData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs finalTitle={contactData.title} />
         <ContactInfo
           titleMini={contactData.titleMini}
           description={contactData.description}

@@ -3,6 +3,7 @@ import { fetchAboutData, fetchReviewsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface PhotoAttributes {
   url: string;
@@ -75,32 +76,8 @@ const Reviews = () => {
         <title>{reviewsData.metaTitle}</title>
         <meta name="description" content={reviewsData.metaDescription} />
       </Helmet>
-
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {reviewsData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${reviewsData.slugAbout}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              {" "}
-              {reviewsData.titleAbout} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {" "}
-              {reviewsData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs finalTitle={reviewsData.title} />
         <div className="grid grid-cols-3 mt-10 gap-10 max-lg:grid-cols-1 max-lg:gap-8">
           {reviewsData.reviews.map((review) => (
             <a
@@ -123,4 +100,4 @@ const Reviews = () => {
   );
 };
 
-export {Reviews};
+export { Reviews };

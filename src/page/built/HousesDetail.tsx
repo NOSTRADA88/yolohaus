@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { fetchBuiltHousesData, fetchHousesDetailsData } from "../../api";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+
 import {
   AboutHouses,
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface HouseDetailProps {
   houseSlug: string;
@@ -38,7 +39,7 @@ interface HousesData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Kit: {
+    Complectation: {
       id: number;
       Description: {
         type: string;
@@ -105,6 +106,11 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const breadcrumbItems = [
+    { title: houseData.titleBuilt, slug: houseData.slugBuilt },
+  ];
+
   return (
     <div>
       <Helmet>
@@ -112,29 +118,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
         <meta name="description" content={houseData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {houseData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${houseData.slugBuilt}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              {" "}
-              {houseData.titleBuilt} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {houseData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={houseData.title} />
         <div className="flex flex-col mt-20 max-md:mt-10">
           <div className="flex justify-between max-lg:flex-col">
             <SliderHouses details={houseData.houses} />
@@ -147,4 +131,4 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   );
 };
 
-export {HousesDetail} ;
+export { HousesDetail };

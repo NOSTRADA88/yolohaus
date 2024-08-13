@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchStocksData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
-import { Link } from "react-router-dom";
 import { Modal } from "../../sections/modal";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface StockItem {
   id: number;
@@ -132,22 +132,8 @@ const Stocks = () => {
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
-            {stocksData.title}
-          </h1>
-          <div className="flex items-center">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {stocksData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs finalTitle={stocksData.title} />
+
         <div className="mt-10">
           {visibleStocks.map((stock) => (
             <div key={stock.id} className="mb-8">

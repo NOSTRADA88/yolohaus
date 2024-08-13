@@ -5,9 +5,10 @@ import {
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface ProjectsDetailProps {
   projectsSlug: string;
@@ -41,7 +42,7 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Kit: {
+    Complectation: {
       id: number;
       Description: {
         type: string;
@@ -216,6 +217,17 @@ const ProjectsDetail = ({
     fetchDataAndSetTitle();
   }, [projectsSlug, initialTechnology, location.pathname]);
 
+  const breadcrumbItems = [
+    { title: projectData.titleProjects, slug: projectData.slugProjects },
+  ];
+
+  if (initialTechnology) {
+    breadcrumbItems.push({
+      title: intermediateTitle,
+      slug: `${projectData.slugProjects}/${projectsSlug}`,
+    });
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -230,38 +242,7 @@ const ProjectsDetail = ({
         <meta name="description" content={projectData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-xl:flex-col max-xl:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl  leading-10">
-            {projectData.title}
-          </h1>
-          <div className="flex items-center max-[450px]:flex-wrap max-[450px]:justify-start">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${projectData.slugProjects}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              {" "}
-              {projectData.titleProjects} /{" "}
-            </Link>
-            {initialTechnology && (
-              <Link
-                to={`/${projectData.slugProjects}/${projectsSlug}`}
-                className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-              >
-                {intermediateTitle} /{" "}
-              </Link>
-            )}
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs max-[450px]:ml-0">
-              {projectData.title}
-            </p>
-          </div>
-        </div>
-
+        <Breadcrumbs items={breadcrumbItems} finalTitle={projectData.title} />
         <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
           {projectData.projects.length > 0 && (
             <>
@@ -280,7 +261,10 @@ const ProjectsDetail = ({
                 initialTechnology={initialTechnology}
               />
               <div className="mt-10">
-                <AboutHouses details={projectData.projects} slug={projectData.slugProjects} />
+                <AboutHouses
+                  details={projectData.projects}
+                  slug={projectData.slugProjects}
+                />
               </div>
             </>
           )}
@@ -290,4 +274,4 @@ const ProjectsDetail = ({
   );
 };
 
-export {ProjectsDetail};
+export { ProjectsDetail };

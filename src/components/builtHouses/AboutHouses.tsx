@@ -37,7 +37,7 @@ interface DetailsData {
       Height: string;
       ConstructionPeriod: string;
     };
-    Kit: {
+    Complectation: {
       id: number;
       Description: {
         type: string;

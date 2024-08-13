@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchServicesData, fetchServicesDetailsData } from "../../api";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import { ContactBanner } from "../../sections/banner";
 import { API_URL } from "../../constants";
+import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface CardDescriptionText {
   type: "text";
@@ -96,6 +96,10 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
     fetchData();
   }, []);
 
+  const breadcrumbItems = [
+    { title: serviceData.titleServices, slug: serviceData.slugServices },
+  ];
+
   return (
     <div>
       <Helmet>
@@ -103,29 +107,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
         <meta name="description" content={serviceData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <div className="flex justify-between max-sm:flex-col max-sm:gap-4">
-          <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl leading-10">
-            {serviceData.title}
-          </h1>
-          <div className="flex items-center max-[450px]:flex-wrap max-[450px]:justify-start">
-            <Link
-              to="/"
-              className="font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
-            >
-              Главная /{" "}
-            </Link>
-            <Link
-              to={`/${serviceData.slugServices}`}
-              className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300 "
-            >
-              {" "}
-              {serviceData.titleServices} /{" "}
-            </Link>
-            <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
-              {serviceData.title}
-            </p>
-          </div>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} finalTitle={serviceData.title} />
         <ContactBanner descriptionInfo={serviceData.descriptionInfo} />
         <div className="mt-20">
           <h2 className="font-museo font-bold text-2xl max-md:text-xl ">
@@ -179,4 +161,4 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   );
 };
 
-export {ServiceDetail};
+export { ServiceDetail };
