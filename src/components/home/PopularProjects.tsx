@@ -1,33 +1,14 @@
-import { API_URL } from "../../constants";
+import { API_URL, formatPrice, getMinPrice } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { PopularProjectsProps, Kit } from "../../interfaces";
+import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
 const PopularProjects = ({
   title,
   popularProject,
   icons,
 }: PopularProjectsProps) => {
-  const parsePrice = (price: string | null): number => {
-    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
-  };
-
-  const getMinPrice = (kits: Kit[]): number => {
-    const prices = kits.map((kit) =>
-      Math.min(
-        parsePrice(kit.basePrice),
-        parsePrice(kit.standardPrice),
-        parsePrice(kit.comfortPrice)
-      )
-    );
-    return Math.min(...prices);
-  };
-
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("ru-RU");
-  };
-
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16">
       <div className="flex justify-between items-center max-md:flex-col max-md:items-start max-md:gap-6">

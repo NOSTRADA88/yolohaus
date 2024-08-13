@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FooterHeader } from "../../interfaces";
 import { navLinks } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
+import { LogoMainBlack } from "../../assets";
 
 const Header = () => {
   const [header, setHeader] = useState<FooterHeader>();
@@ -19,20 +20,16 @@ const Header = () => {
     const fetchHeader = async () => {
       try {
         const fetchHeader = await fetchHeaderFooterData();
-        console.log(fetchHeader);
         setHeader({
           info: fetchHeader.HeaderInfo,
-          socials: fetchHeader.Socials.data.map((social: any) => ({
-            id: social.id,
-            attributes: social.attributes,
-          })),
-          photo: {
-            name: fetchHeader.HeaderPhoto.data.attributes.name,
-            url: fetchHeader.HeaderPhoto.data.attributes.url,
-            width: fetchHeader.HeaderPhoto.data.attributes.width,
-            height: fetchHeader.HeaderPhoto.data.attributes.height,
-          },
           phoneNumber: fetchHeader.Phone.Number,
+          socials: fetchHeader.Socials.data.map((social: any) => ({
+            url: social.attributes.URL,
+            photo: {
+              name: social.attributes.Photo.data.attributes.name,
+              url: social.attributes.Photo.data.attributes.url,
+            },
+          })),
         });
       } catch (error) {
         console.error(error);
@@ -75,11 +72,9 @@ const Header = () => {
           </div>
           <Link to="/">
             <img
-              src={`${API_URL}${header?.photo.url}`}
+              src={LogoMainBlack}
               alt="header logo"
               className="h-auto max-w-full object-contain cursor-pointer w-52"
-              width={header?.photo.width}
-              height={header?.photo.height}
             />
           </Link>
           <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
@@ -89,23 +84,26 @@ const Header = () => {
         <div className="flex gap-6 justify-center items-center max-md:flex-col max-md:gap-2">
           <div className="flex gap-6 items-center mb-4  max-md:gap-2">
             <div className="flex items-center">
-              {header?.socials?.map((social) => (
+              {header?.socials?.map((social, index) => (
                 <a
-                  key={social.id}
-                  href={social.attributes.URL}
+                  key={index}
+                  href={social.url}
                   target="_blank"
                   rel="noreferrer"
                   className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-gray-200 rounded-full transition-all duration-300 hover:bg-orange"
                 >
                   <img
-                    src={`${API_URL}${social.attributes.Photo.data.attributes.url}`}
-                    alt={social.attributes.Title}
+                    src={`${API_URL}${social.photo.url}`}
+                    alt={social.photo.name}
                     className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5"
                   />
                 </a>
               ))}
             </div>
-            <FormatPhoneNumber phoneNumber={header?.phoneNumber} />
+            <FormatPhoneNumber
+              phoneNumber={header?.phoneNumber}
+              color="maingray"
+            />
           </div>
           <div
             className="flex gap-[3.5px] items-center mb-4"

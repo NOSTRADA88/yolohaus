@@ -4,23 +4,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-
-interface Child {
-  text: string;
-  bold?: boolean;
-}
-
-interface Paragraph {
-  type: string;
-  children: Child[];
-}
-
-interface PrivacyPolicyData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  description: Paragraph[];
-}
+import { PrivacyPolicyData } from "../../interfaces";
 
 const PrivacyPolicy = () => {
   const [privacyPolicyData, setPrivacyPolicyData] = useState<PrivacyPolicyData>(

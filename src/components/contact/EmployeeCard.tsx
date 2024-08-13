@@ -1,29 +1,7 @@
 import { API_URL, formatPhoneNumber } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
-interface Employee {
-  id: number;
-  attributes: {
-    FullName: string;
-    Specialisation: string;
-    email: string;
-    PhoneNumber: string;
-    Photo: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          url: string;
-        };
-      };
-    };
-  };
-}
-
-interface EmployeeCardProps {
-  employees: Employee[];
-}
+import { EmployeeCardProps } from "../../interfaces";
 
 const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
   return (
@@ -34,10 +12,10 @@ const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
       <div className="grid grid-cols-3 gap-10 max-xl:grid-cols-2 max-sm:grid-cols-1">
         {employees.map((employee) => (
           <div key={employee.id} className="flex flex-col mt-8">
-            {employee.attributes.Photo.data && (
+            {employee.attributes.Photo && (
               <div className="employee-photo-container">
                 <img
-                  src={`${API_URL}${employee.attributes.Photo.data.attributes.url}`}
+                  src={`${API_URL}${employee.attributes.Photo.url}`}
                   alt={`${employee.attributes.FullName}`}
                   className="w-[280px] h-[280px] object-cover object-center max-[800px]:w-[250px] max-[800px]:h-[250px]"
                 />

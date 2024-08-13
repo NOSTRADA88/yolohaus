@@ -1,57 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
-import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { fetchBuiltHousesData } from "../../api";
 import { API_URL, slug } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface PhotoAttributes {
-  name: string;
-  url: string;
-}
-
-interface Photo {
-  id: number;
-  attributes: PhotoAttributes;
-}
-
-interface HousesAttributes {
-  Title: string;
-  isRecommended: boolean;
-  slug: string;
-  Photos: {
-    data: Photo[];
-  };
-  Parameters: {
-    id: number;
-    Area: string;
-    Location: string;
-    Days: number;
-  };
-  Complectation: {
-    id: number;
-    Description: {
-      type: string;
-      children: {
-        text: string;
-        type: string;
-      }[];
-    }[];
-    BasePrice: string;
-    StandartPrice: string;
-    ComfortPrice: string;
-  }[];
-}
-
-interface BuiltHouse {
-  id: number;
-  attributes: HousesAttributes;
-}
+import { HousesData } from "../../interfaces";
 
 const Houses = () => {
-  const [visibleHouses, setVisibleHouses] = useState<BuiltHouse[]>([]);
+  const [visibleHouses, setVisibleHouses] = useState<HousesData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEndOfList, setIsEndOfList] = useState(false);
   const housesPerPage = 9;
@@ -158,11 +115,11 @@ const Houses = () => {
                   once
                   placeholder={<div className="w-full h-full bg-gray-300" />}
                 > */}
-                  <img
-                    src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
-                    alt={house.attributes.Photos.data[0].attributes.name}
-                    className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
-                  />
+                <img
+                  src={`${API_URL}${house.attributes.Photos.data[0].url}`}
+                  alt={house.attributes.Photos.data[0].name}
+                  className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                />
                 {/* </LazyLoad> */}
               </div>
               <div className="p-4">

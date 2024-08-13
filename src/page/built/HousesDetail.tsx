@@ -9,71 +9,7 @@ import {
 } from "../../components/builtHouses";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-
-interface HouseDetailProps {
-  houseSlug: string;
-}
-interface HousesData {
-  id: number;
-  attributes: {
-    YouTube: string;
-    slug: string;
-    Title: string;
-    Description: { type: string; children: { text: string; type: string }[] }[];
-    ShortDescription: {
-      type: string;
-      children: { text: string; type: string }[];
-    }[];
-    Parameters: {
-      id: number;
-      Area: string;
-      Location: string;
-      Days: number;
-      HouseArea: string;
-      BuiltUpArea: string;
-      Floors: number;
-      KitchenLivingRoomArea: string;
-      Bedrooms: number;
-      Toilets: number;
-      TerraceAndPorchArea: string;
-      Width: string;
-      Height: string;
-      ConstructionPeriod: string;
-    };
-    Complectation: {
-      id: number;
-      Description: {
-        type: string;
-        children: { text: string; type: string }[];
-      }[];
-      BasePrice: string;
-      StandardPrice: string;
-      ComfortPrice: string;
-      Slug: {
-        id: number;
-        BuildingTechnology: string;
-      };
-      Metadata: {
-        id: number;
-        MetaTitle: string;
-        MetaDescription: string;
-      };
-    }[];
-    BuildingTechnology: {
-      id: number;
-      BuildingTechnology: string;
-    };
-    Photos: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          url: string;
-        };
-      }[];
-    };
-  };
-}
+import { HouseDetailProps, HousesData } from "../../interfaces";
 
 const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   const [houseData, setHouseData] = useState({
@@ -92,7 +28,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
       setHouseData({
         metaTitle: houseDetailsData.data[0].attributes.Metadata.MetaTitle,
         metaDescription:
-        houseDetailsData.data[0].attributes.Metadata.MetaDescription,
+          houseDetailsData.data[0].attributes.Metadata.MetaDescription,
         title: houseDetailsData.data[0].attributes.Title,
         houses: houseDetailsData.data,
         titleBuilt: builtData.title,

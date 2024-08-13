@@ -10,107 +10,11 @@ import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-
-interface ProjectsDetailProps {
-  projectsSlug: string;
-  initialTechnology?: string;
-}
-
-interface DetailsData {
-  id: number;
-  attributes: {
-    YouTube: string;
-    slug: string;
-    Title: string;
-    Description: { type: string; children: { text: string; type: string }[] }[];
-    ShortDescription: {
-      type: string;
-      children: { text: string; type: string }[];
-    }[];
-    Parameters: {
-      id: number;
-      Area: string;
-      Location: string;
-      Days: number;
-      HouseArea: string;
-      BuiltUpArea: string;
-      Floors: number;
-      KitchenLivingRoomArea: string;
-      Bedrooms: number;
-      Toilets: number;
-      TerraceAndPorchArea: string;
-      Width: string;
-      Height: string;
-      ConstructionPeriod: string;
-    };
-    Complectation: {
-      id: number;
-      Description: {
-        type: string;
-        children: { text: string; type: string }[];
-      }[];
-      BasePrice: string;
-      StandardPrice: string;
-      ComfortPrice: string;
-
-      Slug: {
-        id: number;
-        BuildingTechnology: string;
-      };
-      Metadata: {
-        id: number;
-        MetaTitle: string;
-        MetaDescription: string;
-      };
-    }[];
-    BuildingTechnology: {
-      id: number;
-      BuildingTechnology: string;
-    };
-    Photos: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          url: string;
-        };
-      }[];
-    };
-  };
-}
-
-interface Equipment {
-  id: number;
-  Type: string;
-  Description: { type: string; children: { text: string }[] }[];
-}
-
-interface Complectation {
-  id: number;
-  attributes: {
-    NameForStrapi: string;
-    Equipment: Equipment[];
-  };
-}
-
-interface Project {
-  id: number;
-  BasePrice?: string;
-  StandartPrice?: string;
-  ComfortPrice?: string;
-  Metadata: {
-    id: number;
-    MetaTitle: string;
-    MetaDescription: string;
-  };
-  Slug: {
-    id: number;
-    BuildingTechnology: string;
-  };
-  complectations: {
-    data: Complectation[];
-  };
-}
+import {
+  Complectation,
+  HousesData,
+  ProjectsDetailProps,
+} from "../../interfaces";
 
 const ProjectsDetail = ({
   projectsSlug,
@@ -121,8 +25,8 @@ const ProjectsDetail = ({
     metaDescription: "",
     title: "",
     titleProjects: "",
-    projects: [] as DetailsData[],
-    complectations: [] as Project[],
+    projects: [] as HousesData[],
+    complectations: [] as Complectation[],
   });
   const [loading, setLoading] = useState(true);
   const location = useLocation();

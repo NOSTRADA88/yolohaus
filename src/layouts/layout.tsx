@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { Consultation } from "../components/footer";
 import { Header, Footer } from "../sections";
 import { Suspense } from "react";
+import { ScrollUp } from "../sections/scroll";
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Header />
       </section>
       <Suspense>{children}</Suspense>
+      <ScrollUp />
       <section>
         <Suspense>
           <Consultation />

@@ -6,90 +6,12 @@ import { API_URL, slug } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface ImageFormat {
-  url: string;
-}
-
-interface Media {
-  data: {
-    id: number;
-    attributes: {
-      formats: {
-        large: ImageFormat;
-      };
-      url: string;
-    };
-  }[];
-}
-
-interface CardDescriptionText {
-  type: "text";
-  text: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-}
-
-interface CardDescriptionListItem {
-  type: "list-item";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionList {
-  type: "list";
-  format: "unordered";
-  children: CardDescriptionListItem[];
-}
-
-interface CardDescriptionParagraph {
-  type: "paragraph";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionHeading {
-  type: "heading";
-  level: number;
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionQuote {
-  type: "quote";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionImage {
-  type: "image";
-  image: {
-    url: string;
-    alternativeText: string;
-  };
-}
-
-type CardDescription =
-  | CardDescriptionParagraph
-  | CardDescriptionList
-  | CardDescriptionHeading
-  | CardDescriptionQuote
-  | CardDescriptionImage;
-
-interface Post {
-  id: number;
-  attributes: {
-    Title: string;
-    BlogText: CardDescription[];
-    slug: string;
-    Media: Media;
-  };
-}
-
-interface BlogsData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleAbout: string;
-  posts_list: Post[];
-}
+import {
+  BlogsData,
+  CardDescription,
+  CardDescriptionParagraph,
+  CardDescriptionText,
+} from "../../interfaces";
 
 const Blog = () => {
   const [blogData, setBlogData] = useState<BlogsData>({
@@ -104,12 +26,22 @@ const Blog = () => {
     try {
       const blogsDataResponse = await fetchBlogData();
       const aboutData = await fetchAboutData();
+
+      console.log(blogsDataResponse);
       setBlogData({
         metaTitle: blogsDataResponse.Metadata.MetaTitle,
         metaDescription: blogsDataResponse.Metadata.MetaDescription,
         title: blogsDataResponse.Title,
         titleAbout: aboutData.Title,
-        posts_list: blogsDataResponse.posts_list.data,
+        posts_list: blogsDataResponse.posts_list.data.map((post: any) => ({
+          Title: post.attributes.Title,
+          BlogText: post.attributes.BlogText,
+          slug: post.attributes.slug,
+          Media: post.attributes.Media.data.map((photo: any) => ({
+            name: photo.attributes.name,
+            url: photo.attributes.url,
+          })),
+        })),
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -119,6 +51,8 @@ const Blog = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  console.log(blogData);
 
   const truncateText = (text: string | undefined, limit: number) => {
     if (!text) return "";
@@ -156,14 +90,14 @@ const Blog = () => {
         <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
           {blogData.posts_list.map((post) => (
-            <div key={post.id} className="mb-8">
+            <div className="mb-8">
               <Link
-                to={`${slug.blog}/${post.attributes.slug}`}
+                to={`${slug.blog}/${post.slug}`}
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
               >
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
                   <img
-                    src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
+                    src={`${API_URL}${post.Media[0].url}`}
                     alt="Stock"
                     className="w-full h-[250px] object-cover object-center"
                   />
@@ -177,15 +111,15 @@ const Blog = () => {
                 <div className="flex flex-col w-full justify-between p-[10px] mt-4 cursor-pointer group">
                   <div>
                     <p className="text-maingray font-bold font-museo text-2xl max-sm:text-lg group-hover:text-orange">
-                      {post.attributes.Title}
+                      {post.Title}
                     </p>
                     <div className="mt-5">
                       <p className="text-base font-light font-museo text-maingray text-justify">
-                        {getFirstTwoParagraphsText(post.attributes.BlogText)}
+                        {getFirstTwoParagraphsText(post.BlogText)}
                       </p>
                       <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container">
                         <Link
-                          to={`/${slug.blog}/${post.attributes.slug}`}
+                          to={`/${slug.blog}/${post.slug}`}
                           className="text-orange uppercase text-sm font-medium tracking-wider"
                         >
                           Подробнее{" "}

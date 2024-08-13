@@ -1,34 +1,19 @@
-interface WorkTime {
-  weekdays: string;
-  weekends: string;
-}
+// Description
 
-export interface ContactsMap {
-  address?: string;
-  email?: string;
-  phone?: string;
-  info?: string;
-  yandexMapURL?: string;
-}
-
-export interface ContactProps {
-  isModalOpen: boolean;
-  closeModal: () => void;
-  openModal: () => void;
-  address?: string;
-  email?: string;
-  phone?: string;
-  info?: string;
-  workTime?: WorkTime;
-  yandexMapURL?: string;
-}
-
-interface DescriptionChild {
+interface Child {
   text: string;
   type: string;
 }
 
-interface Description {
+export interface DescriptionChild {
+  children: Child[];
+  bold?: boolean;
+  text: string;
+  type: string;
+}
+
+export interface Description {
+  id: number;
   type: string;
   children: DescriptionChild[];
 }
@@ -38,10 +23,29 @@ export interface Information {
   description: Description[];
 }
 
-export interface Kit {
-  basePrice: string;
-  standardPrice: string;
-  comfortPrice: string;
+// Photo & Video
+export interface YouTubeData {
+  url: string;
+  title: string;
+  thumbnail: string;
+  mime: string;
+  rawData: {
+    html: string;
+  };
+}
+
+export type MediaItem = PhotoMediaItem | VideoMediaItem;
+
+export interface PhotoMediaItem {
+  type: "photo";
+  url: string;
+}
+
+export interface VideoMediaItem {
+  type: "video";
+  url: string;
+  thumbnail: string;
+  embedHtml: string;
 }
 
 export interface Photo {
@@ -51,10 +55,44 @@ export interface Photo {
   height: string;
 }
 
+// Home Page
+
+export interface HomeProps {
+  mortgage: string;
+  about: string;
+  reviews: string;
+  projects: string;
+}
+
+export interface MainScreenProps {
+  isModalOpen: boolean;
+  closeModal: () => void;
+  openModal: () => void;
+  rawOne?: string;
+  rawTwo?: string;
+}
+
+export interface MortgageMainProps {
+  title?: string;
+  description?: string;
+  photos?: Photo[];
+}
+
+export interface AboutProps {
+  title?: string;
+  information?: Information[];
+}
+
+export interface PopularProjectsProps {
+  title?: string;
+  popularProject?: Project[];
+  icons?: Photo[];
+}
+
 export interface Project {
   title: string;
   slug: string;
-  kits: Kit[];
+  kits: Complectation[];
   parameters: {
     houseArea: string;
     builtUpArea: string;
@@ -71,6 +109,31 @@ export interface OurRecommendation {
   description: Description[];
   icon: Photo;
   bgPhoto: Photo;
+}
+
+export interface RecommendationProps {
+  title?: string;
+  recommendations?: OurRecommendation[];
+}
+
+export interface ContactProps {
+  isModalOpen: boolean;
+  closeModal: () => void;
+  openModal: () => void;
+  address?: string;
+  email?: string;
+  phone?: string;
+  info?: string;
+  yandexMapURL?: string;
+}
+
+export interface ContactsMap {
+  name?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
+  info?: string;
+  yandexMapURL?: string;
 }
 
 export interface HomeData {
@@ -103,66 +166,291 @@ export interface HomeData {
   contactsMap: ContactsMap;
 }
 
-export interface MortgageMainProps {
-  title?: string;
-  description?: string;
-  photos?: Photo[];
-}
-
-export interface RecommendationProps {
-  title?: string;
-  recommendations?: OurRecommendation[];
-}
-
-export interface MainScreenProps {
-  isModalOpen: boolean;
-  closeModal: () => void;
-  openModal: () => void;
-  rawOne?: string;
-  rawTwo?: string;
-}
-
-export interface AboutProps {
-  title?: string;
-  information?: Information[];
-}
-
-export interface HomeProps {
-  mortgage: string;
-  about: string;
-  reviews: string;
-  projects: string;
-}
+// Footer and Header
 
 interface Social {
-  id: number;
-  attributes: {
-    URL: string;
-    Title: string;
-    Photo: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      };
-    };
-  };
+  url: string;
+  photo: Photo;
 }
 
 export interface FooterHeader {
   info: string;
   socials: Social[];
-  photo: Photo;
   phoneNumber: string;
 }
 
-export interface PopularProjectsProps {
-  title?: string;
-  popularProject?: Project[];
-  icons?: Photo[];
-}
-
+// Phone Number
 
 export interface formatPhoneNumberProps {
   phoneNumber: string | undefined;
+  color: string;
+}
+
+// About & Guarantee  Page
+
+export interface AboutPagesData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleAbout?: string;
+  titleMini: string;
+  description: Description[];
+  titleMiniTwo: string;
+  descriptionTwo: Description[];
+}
+
+// Blog Page
+
+export interface CardDescriptionText {
+  type: "text";
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+}
+
+export interface CardDescriptionListItem {
+  type: "list-item";
+  children: CardDescriptionText[];
+}
+
+export interface CardDescriptionList {
+  type: "list";
+  format: "unordered";
+  children: CardDescriptionListItem[];
+}
+
+export interface CardDescriptionParagraph {
+  type: "paragraph";
+  children: CardDescriptionText[];
+}
+
+export interface CardDescriptionHeading {
+  type: "heading";
+  level: number;
+  children: CardDescriptionText[];
+}
+
+export interface CardDescriptionQuote {
+  type: "quote";
+  children: CardDescriptionText[];
+}
+
+export interface CardDescriptionImage {
+  type: "image";
+  image: {
+    url: string;
+    alternativeText: string;
+  };
+}
+
+export type CardDescription =
+  | CardDescriptionParagraph
+  | CardDescriptionList
+  | CardDescriptionHeading
+  | CardDescriptionQuote
+  | CardDescriptionImage;
+
+export interface Post {
+  Title: string;
+  BlogText: CardDescription[];
+  slug: string;
+  Media: Photo[];
+}
+
+export interface BlogsData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleBlog?: string;
+  titleAbout: string;
+  posts_list: Post[];
+}
+
+export interface BlogDetailProps {
+  blogSlug: string;
+}
+
+// Built Houses & Projects Page
+
+export interface Technology {
+  id: number;
+  attributes: {
+    NameForStrapi: string;
+    Equipment: Description[];
+  };
+}
+
+export interface Complectation {
+  id: number;
+  Description: Description[];
+  BasePrice: string;
+  StandardPrice: string;
+  ComfortPrice: string;
+  Slug: {
+    id: number;
+    BuildingTechnology: string;
+  };
+  Metadata: {
+    id: number;
+    MetaTitle: string;
+    MetaDescription: string;
+  };
+  complectations: {
+    data: Technology[];
+  };
+}
+
+export interface HousesAttributes {
+  Title: string;
+  YouTube: string;
+  isRecommended: boolean;
+  slug: string;
+  Description: Description[];
+  ShortDescription: Description[];
+  Parameters: {
+    id: number;
+    Area: string;
+    Location: string;
+    Days: number;
+    HouseArea: string;
+    BuiltUpArea: string;
+    Floors: number;
+    KitchenLivingRoomArea: string;
+    Bedrooms: number;
+    Toilets: number;
+    TerraceAndPorchArea: string;
+    Width: string;
+    Height: string;
+    ConstructionPeriod: string;
+  };
+  Complectation: Complectation[];
+  BuildingTechnology: {
+    id: number;
+    BuildingTechnology: string;
+  };
+  Photos: {
+    data: Photo[];
+  };
+}
+
+export interface HousesData {
+  id: number;
+  attributes: HousesAttributes;
+}
+export interface HouseDetailProps {
+  houseSlug: string;
+}
+
+export interface ProjectsDetailProps {
+  projectsSlug: string;
+  initialTechnology?: string;
+}
+
+export interface SliderHousesProps {
+  details: HousesData[];
+}
+
+export interface OptionsHousesProps {
+  details: HousesData[];
+}
+
+export interface TechnologyProps {
+  complectations: Complectation[];
+  currentProjectSlug: string;
+  slugProjects: string;
+  updateTitle: (technology: string) => void;
+  initialTechnology?: string;
+}
+
+export interface AboutHousesProps {
+  details: HousesData[];
+}
+
+// Contact page
+
+export interface Employee {
+  id: number;
+  attributes: {
+    FullName: string;
+    Specialisation: string;
+    email: string;
+    PhoneNumber: string;
+    Photo: Photo;
+  };
+}
+
+interface Production {
+  id: number;
+  attributes: ContactsMap;
+}
+
+export interface ContactData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleMini: string;
+  description: Description[];
+  email: string;
+  phone: string;
+  address: string;
+  urlAddressOffice: string;
+  weekdays: string;
+  weekends: string;
+  productions: Production[];
+  employees: Employee[];
+}
+
+export interface ContactInfoProps {
+  titleMini: string;
+  description: Description[];
+  address: string;
+  urlAddressOffice: string;
+  phone: string;
+  email: string;
+  weekdays: string;
+  weekends: string;
+}
+
+export interface ProductionsListProps {
+  productions: Production[];
+}
+
+export interface EmployeeCardProps {
+  employees: Employee[];
+}
+
+// Mortfage page
+export interface Bank {
+  id: number;
+  attributes: {
+    Photo: Photo;
+    Rate: string;
+    Title: string;
+    URL: string;
+  };
+}
+
+export interface MortgageData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  titleDescription: string;
+  description: Description[];
+  banks: Bank[];
+}
+
+export interface BankSelectionProps {
+  banks: Bank[];
+  selectedBank: number;
+  onSelectBank: (bankId: number) => void;
+}
+
+// Privacy & Policy page
+
+export interface PrivacyPolicyData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  description: Description[];
 }

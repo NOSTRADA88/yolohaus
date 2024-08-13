@@ -6,6 +6,7 @@ import { Modal } from "../modal";
 import { FooterHeader } from "../../interfaces";
 import { navLinks, slug } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
+import { LogoMainWhite } from "../../assets";
 
 const Footer = () => {
   const [footer, setFooter] = useState<FooterHeader>();
@@ -17,17 +18,13 @@ const Footer = () => {
         const fetchHeader = await fetchHeaderFooterData();
         setFooter({
           info: fetchHeader.HeaderInfo,
-          socials: fetchHeader.Socials.data.map((social: any) => ({
-            id: social.id,
-            attributes: social.attributes,
-          })),
-          photo: {
-            name: fetchHeader.FooterPhoto.data.attributes.name,
-            url: fetchHeader.FooterPhoto.data.attributes.url,
-            width: fetchHeader.FooterPhoto.data.attributes.width,
-            height: fetchHeader.FooterPhoto.data.attributes.height,
-          },
           phoneNumber: fetchHeader.Phone.Number,
+          socials: fetchHeader.Socials.data.map((social: any) => ({
+            url: social.attributes.URL,
+            photo: {
+              name: social.attributes.Photo.data.attributes.name,
+              url: social.attributes.Photo.data.attributes.url
+            }})),
         });
       } catch (error) {
         console.error(error);
@@ -43,10 +40,8 @@ const Footer = () => {
           <div className="flex gap-4 items-center mb-10 justify-between max-xl:flex-col max-xl:mb-2 max-xl:gap-2">
             <a href="/">
               <img
-                src={`${API_URL}${footer?.photo.url}`}
+                src={LogoMainWhite}
                 alt="logo"
-                width={footer?.photo.width}
-                height={footer?.photo.height}
                 className="h-auto max-w-full object-contain w-52 cursor-pointer"
               />
             </a>
@@ -80,23 +75,26 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-10 max-[1050px]:flex-col max-[1050px]:gap-5">
               <div className="flex">
-                {footer?.socials?.map((social) => (
+                {footer?.socials?.map((social, index) => (
                   <a
-                    key={social.id}
-                    href={social.attributes.URL}
+                    key={index}
+                    href={social.url}
                     target="_blank"
                     rel="noreferrer"
                     className="relative inline-block w-7 h-7 align-middle mx-1.5 bg-lightgray rounded-full transition-all duration-300 hover:bg-orange"
                   >
                     <img
-                      src={`${API_URL}${social.attributes.Photo.data.attributes.url}`}
-                      alt={social.attributes.Title}
+                      src={`${API_URL}${social.photo.url}`}
+                      alt={social.photo.name}
                       className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
                     />
                   </a>
                 ))}
               </div>
-              <FormatPhoneNumber phoneNumber={footer?.phoneNumber} />
+              <FormatPhoneNumber
+                phoneNumber={footer?.phoneNumber}
+                color="white"
+              />
               <div
                 className="flex gap-[3.5px] items-center"
                 onClick={() => setIsModalOpen(true)}

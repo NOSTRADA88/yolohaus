@@ -2,26 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { photoContact } from "../../assets";
 import { formatPhoneNumber } from "../../constants";
-
-interface DescriptionItem {
-  type: string;
-  children: {
-    children: any;
-    text: string;
-    type: string;
-  }[];
-}
-
-interface ContactInfoProps {
-  titleMini: string;
-  description: DescriptionItem[];
-  address: string;
-  urlAddressOffice: string;
-  phone: string;
-  email: string;
-  weekdays: string;
-  weekends: string;
-}
+import { ContactInfoProps } from "../../interfaces";
 
 const ContactInfo = ({
   titleMini = "",

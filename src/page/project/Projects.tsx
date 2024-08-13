@@ -3,81 +3,18 @@ import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
-import { API_URL, slug } from "../../constants";
+import { API_URL, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface PhotoFormats {
-  url: string;
-  name: string;
-}
-
-interface PhotoAttributes {
-  name: string;
-  formats: {
-    large: PhotoFormats;
-  };
-}
-
-interface Photo {
-  id: number;
-  attributes: PhotoAttributes;
-}
-
-interface ProjectAttributes {
-  Title: string;
-  isRecommended: boolean;
-  slug: string;
-  Photos: {
-    data: Photo[];
-  };
-  Parameters: {
-    id: number;
-    HouseArea: string;
-    BuiltUpArea: string;
-    Floors: number;
-    KitchenLivingRoomArea: string;
-    Bedrooms: number;
-    Toilets: number;
-    TerraceAndPorchArea: string;
-    Width: string;
-    Height: string;
-    ConstructionPeriod: string;
-  };
-  Complectation: {
-    id: number;
-    Description: {
-      type: string;
-      children: {
-        text: string;
-        type: string;
-      }[];
-    }[];
-    BasePrice: string;
-    StandartPrice: string;
-    ComfortPrice: string;
-  }[];
-}
-
-interface Project {
-  id: number;
-  attributes: ProjectAttributes;
-}
-
-interface Complectation {
-  id: number;
-  BasePrice: string;
-  StandartPrice: string;
-  ComfortPrice: string;
-}
+import { HousesData } from "../../interfaces";
 
 const Projects = () => {
   const [sortBy, setSortBy] = useState<"popularity" | "area" | "price" | null>(
     null
   );
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [visibleProjects, setVisibleProjects] = useState<Project[]>([]);
+  const [visibleProjects, setVisibleProjects] = useState<HousesData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEndOfList, setIsEndOfList] = useState(false);
   const projectsPerPage = 9;
@@ -149,11 +86,13 @@ const Projects = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const sortProjects = (projectsToSort: Project[]) => {
+  const sortProjects = (projectsToSort: HousesData[]) => {
     if (!projectData) return projectsToSort;
 
     let sortedProjects = [...projectsToSort];
-    const popularSet = new Set(projectData.popular.map((p: Project) => p.id));
+    const popularSet = new Set(
+      projectData.popular.map((p: HousesData) => p.id)
+    );
 
     if (sortBy === "popularity") {
       sortedProjects.sort(
@@ -178,21 +117,6 @@ const Projects = () => {
     }
 
     return sortedProjects;
-  };
-
-  const getMinPrice = (complectation: Complectation[]): number => {
-    const prices = complectation.map((item) =>
-      Math.min(
-        parsePrice(item.BasePrice),
-        parsePrice(item.StandartPrice),
-        parsePrice(item.ComfortPrice)
-      )
-    );
-    return Math.min(...prices);
-  };
-
-  const parsePrice = (price: string | null): number => {
-    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
   };
 
   const toggleSortBy = (criteria: "popularity" | "area" | "price") => {
@@ -265,21 +189,20 @@ const Projects = () => {
               <div className="relative max-w-full overflow-hidden">
                 {project.attributes.Photos.data.slice(0, 1).map((photo) => (
                   <LazyLoad
-                    key={photo.id}
                     height={200}
                     offset={300}
                     once
                     placeholder={<div className="w-full h-full bg-gray-300" />}
                   >
                     <img
-                      src={`${API_URL}${photo.attributes.formats.large.url}`}
-                      alt={photo.attributes.name}
+                      src={`${API_URL}${photo.url}`}
+                      alt={photo.name}
                       className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                     />
                   </LazyLoad>
                 ))}
                 {projectData.popular.some(
-                  (p: Project) => p.id === project.id
+                  (p: HousesData) => p.id === project.id
                 ) && (
                   <span className="absolute top-2 left-2 bg-orange text-white text-xs px-2 py-1 rounded-md">
                     Популярное

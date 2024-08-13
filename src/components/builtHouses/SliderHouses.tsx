@@ -6,58 +6,20 @@ import {
   faArrowRightLong,
 } from "@fortawesome/free-solid-svg-icons";
 import { Youtube } from "../../assets";
-
-interface PhotoData {
-  id: number;
-  attributes: {
-    url: string;
-  };
-}
-
-interface YouTubeData {
-  url: string;
-  title: string;
-  thumbnail: string;
-  mime: string;
-  rawData: {
-    html: string;
-  };
-}
-
-interface DetailsData {
-  id: number;
-  attributes: {
-    Photos: {
-      data: PhotoData[];
-    };
-    YouTube?: string;
-  };
-}
-
-type MediaItem = PhotoMediaItem | VideoMediaItem;
-
-interface PhotoMediaItem {
-  type: "photo";
-  url: string;
-}
-
-interface VideoMediaItem {
-  type: "video";
-  url: string;
-  thumbnail: string;
-  embedHtml: string;
-}
-
-interface SliderHousesProps {
-  details: DetailsData[];
-}
+import {
+  MediaItem,
+  PhotoMediaItem,
+  SliderHousesProps,
+  VideoMediaItem,
+  YouTubeData,
+} from "../../interfaces";
 
 const SliderHouses = ({ details }: SliderHousesProps) => {
   const mediaItems: MediaItem[] = details.flatMap((detail) => {
     const photos: PhotoMediaItem[] = detail.attributes.Photos.data.map(
       (photo) => ({
         type: "photo",
-        url: photo.attributes.url,
+        url: photo.url,
       })
     );
 

@@ -2,79 +2,8 @@ import { useCallback, useState } from "react";
 import { Modal } from "../../sections/modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
-
-interface DetailsData {
-  id: number;
-  attributes: {
-    YouTube: string | null;
-    slug: string;
-    Title: string;
-    Description: { type: string; children: { text: string; type: string }[] }[];
-    ShortDescription: {
-      type: string;
-      children: { text: string; type: string }[];
-    }[];
-    Parameters: {
-      id: number;
-      Area: string;
-      Location: string;
-      Days: number;
-      HouseArea: string;
-      BuiltUpArea: string;
-      Floors: number;
-      KitchenLivingRoomArea: string;
-      Bedrooms: number;
-      Toilets: number;
-      TerraceAndPorchArea: string;
-      Width: string;
-      Height: string;
-      ConstructionPeriod: string;
-    };
-    Complectation: {
-      id: number;
-      Description: {
-        type: string;
-        children: { text: string; type: string }[];
-      }[];
-      BasePrice: string;
-      StandardPrice: string;
-      ComfortPrice: string;
-      Slug: {
-        id: number;
-        BuildingTechnology: string;
-      };
-      Metadata: {
-        id: number;
-        MetaTitle: string;
-        MetaDescription: string;
-      };
-    }[];
-    BuildingTechnology: {
-      id: number;
-      BuildingTechnology: string;
-    };
-    Photos: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          url: string;
-        };
-      }[];
-    };
-  };
-}
-
-interface Complectation {
-  id: number;
-  BasePrice: string;
-  StandardPrice: string;
-  ComfortPrice: string;
-}
-
-interface OptionsHousesProps {
-  details: DetailsData[];
-}
+import { OptionsHousesProps } from "../../interfaces";
+import { formatPrice, getMinPrice } from "../../constants";
 
 const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -95,25 +24,6 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
-
-  const parsePrice = (price: string | null): number => {
-    return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
-  };
-
-  const getMinPrice = (kit: Complectation[]): number => {
-    const prices = kit.map((item) =>
-      Math.min(
-        parsePrice(item.BasePrice),
-        parsePrice(item.StandardPrice),
-        parsePrice(item.ComfortPrice)
-      )
-    );
-    return Math.min(...prices);
-  };
-
-  const formatPrice = (price: number) => {
-    return price.toLocaleString("ru-RU");
-  };
 
   return (
     <div className="w-full">

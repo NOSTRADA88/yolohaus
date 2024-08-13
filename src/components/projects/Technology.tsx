@@ -1,51 +1,11 @@
 import React, { useState } from "react";
 import SwitchTechnology from "./SwitchTechnology";
+import { Description, TechnologyProps } from "../../interfaces";
 
 interface Equipment {
   id: number;
   Type: string;
   Description: { type: string; children: { text: string }[] }[];
-}
-
-interface Complectation {
-  id: number;
-  attributes: {
-    NameForStrapi: string;
-    Equipment: Equipment[];
-  };
-}
-
-interface Project {
-  id: number;
-  BasePrice?: string;
-  StandartPrice?: string;
-  ComfortPrice?: string;
-
-  Slug: {
-    id: number;
-    BuildingTechnology: string;
-  };
-  complectations: {
-    data: Complectation[];
-  };
-}
-
-interface DescriptionChild {
-  text: string;
-  bold?: boolean;
-}
-
-interface Description {
-  type: string;
-  children: DescriptionChild[];
-}
-
-interface TechnologyProps {
-  complectations: Project[];
-  currentProjectSlug: string;
-  slugProjects: string;
-  updateTitle: (technology: string) => void;
-  initialTechnology?: string;
 }
 
 const Technology: React.FC<TechnologyProps> = ({
@@ -124,14 +84,14 @@ const Technology: React.FC<TechnologyProps> = ({
               );
 
               const basePrice = project.BasePrice || "—";
-              const standardPrice = project.StandartPrice || "—";
+              const standardPrice = project.StandardPrice || "—";
               const comfortPrice = project.ComfortPrice || "—";
 
               const allEquipmentTypes = Array.from(
                 new Set(
                   projectComplectations.flatMap((complectation) =>
                     complectation.attributes.Equipment.map(
-                      (equipment) => equipment.Type
+                      (equipment) => equipment.type
                     )
                   )
                 )
@@ -181,7 +141,7 @@ const Technology: React.FC<TechnologyProps> = ({
 
                         const equipment = complectation
                           ? complectation.attributes.Equipment.find(
-                              (equipment) => equipment.Type === type
+                              (equipment) => equipment.type === type
                             )
                           : null;
 
@@ -190,15 +150,14 @@ const Technology: React.FC<TechnologyProps> = ({
                             className="text-left p-5 align-top font-museo text-sm text-maingray font-light max-md:p-3"
                             key={category}
                           >
-                            {equipment ? (
-                              convertDescriptionToElements(
-                                equipment.Description
+                            {/* {equipment ? (
+                              convertDescriptionToElements(equipment.children)
                               )
                             ) : (
                               <p className="text-center p-5 align-top font-museo text-sm text-maingray font-light">
                                 —
                               </p>
-                            )}
+                            )} */}
                           </td>
                         );
                       })}

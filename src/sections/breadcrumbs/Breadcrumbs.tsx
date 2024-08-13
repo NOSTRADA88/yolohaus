@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface BreadcrumbItem {
-  title: string;
+  title?: string;
   slug?: string;
 }
 

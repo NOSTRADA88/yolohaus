@@ -3,34 +3,10 @@ import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
 import { photoAbout } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface DescriptionItem {
-  type: string;
-  children: { text: string; type: string }[];
-}
-
-interface Child {
-  text: string;
-  type: string;
-}
-
-interface DescriptionItem {
-  type: string;
-  children: Child[];
-}
-
-interface AboutData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleMini: string;
-  description: DescriptionItem[];
-  titleMiniTwo: string;
-  descriptionTwo: DescriptionItem[];
-}
+import { AboutPagesData } from "../../interfaces";
 
 const AboutCompany = () => {
-  const [aboutData, setAboutData] = useState<AboutData>({
+  const [aboutData, setAboutData] = useState<AboutPagesData>({
     metaTitle: "",
     metaDescription: "",
     title: "",

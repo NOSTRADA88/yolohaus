@@ -3,98 +3,7 @@ import { fetchAboutData, fetchBlogData, fetchBlogDetailData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface BlogDetailProps {
-  blogSlug: string;
-}
-
-interface ImageFormat {
-  url: string;
-}
-
-interface Media {
-  data: {
-    id: number;
-    attributes: {
-      formats: {
-        large: ImageFormat;
-        small: ImageFormat;
-        medium: ImageFormat;
-        thumbnail: ImageFormat;
-      };
-      url: string;
-    };
-  }[];
-}
-
-interface CardDescriptionText {
-  type: "text";
-  text: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-}
-
-interface CardDescriptionListItem {
-  type: "list-item";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionList {
-  type: "list";
-  format: "unordered";
-  children: CardDescriptionListItem[];
-}
-
-interface CardDescriptionParagraph {
-  type: "paragraph";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionHeading {
-  type: "heading";
-  level: number;
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionQuote {
-  type: "quote";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionImage {
-  type: "image";
-  image: {
-    url: string;
-    alternativeText: string;
-  };
-}
-
-type CardDescription =
-  | CardDescriptionParagraph
-  | CardDescriptionList
-  | CardDescriptionHeading
-  | CardDescriptionQuote
-  | CardDescriptionImage;
-
-interface Post {
-  id: number;
-  attributes: {
-    Title: string;
-    BlogText: CardDescription[];
-    slug: string;
-    Media: Media;
-  };
-}
-
-interface BlogsData {
-  metaTitle: string;
-  metaDescription: string;
-  titleBlog: string;
-  titleAbout: string;
-  title: string;
-  posts_list: Post[];
-}
+import { BlogDetailProps, BlogsData, CardDescription } from "../../interfaces";
 
 const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
   const [blogData, setBlogData] = useState<BlogsData>({
@@ -117,7 +26,15 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
         metaDescription:
           blogDetailsData.data[0].attributes.Metadata.MetaDescription,
         title: blogDetailsData.data[0].attributes.Title,
-        posts_list: blogDetailsData.data,
+        posts_list: blogsDataResponse.posts_list.data.map((post: any) => ({
+          Title: post.attributes.Title,
+          BlogText: post.attributes.BlogText,
+          slug: post.attributes.slug,
+          Media: post.attributes.Media.data.map((photo: any) => ({
+            name: photo.attributes.name,
+            url: photo.attributes.url,
+          })),
+        })),
         titleBlog: blogsDataResponse.Title,
         titleAbout: aboutData.Title,
       });
@@ -258,14 +175,14 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
         <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
           {blogData.posts_list.map((post) => (
-            <div key={post.id} className="mb-8">
+            <div className="mb-8">
               <img
-                src={`${API_URL}${post.attributes.Media.data[0].attributes.formats.large.url}`}
+                src={`${API_URL}${post.Media[0].url}`}
                 alt="Blog"
                 className="w-full h-[250px] object-cover object-center mb-4 "
               />
               <div className=" py-2">
-                {convertDescriptionToElements(post.attributes.BlogText)}
+                {convertDescriptionToElements(post.BlogText)}
               </div>
             </div>
           ))}

@@ -8,59 +8,7 @@ import {
 } from "../../components/contact";
 import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-interface DescriptionItem {
-  type: string;
-  children: {
-    children: any;
-    text: string;
-    type: string;
-  }[];
-}
-
-interface Production {
-  id: number;
-  attributes: {
-    Name: string;
-    Address: string;
-    YandexMapURL: string;
-  };
-}
-
-interface Employee {
-  id: number;
-  attributes: {
-    FullName: string;
-    Specialisation: string;
-    email: string;
-    PhoneNumber: string;
-    Photo: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          url: string;
-        };
-      };
-    };
-  };
-}
-
-interface ContactData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleMini: string;
-  description: DescriptionItem[];
-  email: string;
-  phone: string;
-  address: string;
-  urlAddressOffice: string;
-  weekdays: string;
-  weekends: string;
-  productions: Production[];
-  employees: Employee[];
-}
+import { ContactData } from "../../interfaces";
 
 const Contact = () => {
   const [contactData, setContactData] = useState<ContactData>({

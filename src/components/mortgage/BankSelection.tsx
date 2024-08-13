@@ -1,31 +1,7 @@
 import React from "react";
 import { LinkBank } from "../../assets";
 import { API_URL } from "../../constants";
-
-interface Photo {
-  data: {
-    attributes: {
-      name: string;
-      url: string;
-    };
-  };
-}
-
-interface Bank {
-  id: number;
-  attributes: {
-    Photo: Photo;
-    Rate: string;
-    Title: string;
-    URL: string;
-  };
-}
-
-interface BankSelectionProps {
-  banks: Bank[];
-  selectedBank: number;
-  onSelectBank: (bankId: number) => void;
-}
+import { BankSelectionProps } from "../../interfaces";
 
 const BankSelection: React.FC<BankSelectionProps> = ({
   banks,
@@ -51,7 +27,7 @@ const BankSelection: React.FC<BankSelectionProps> = ({
               <div className="flex justify-between items-center">
                 <div className="flex-1 flex justify-center">
                   <img
-                    src={`${API_URL}${bank.attributes.Photo.data.attributes.url}`}
+                    src={`${API_URL}${bank.attributes.Photo.url}`}
                     alt={bank.attributes.Title}
                     className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
                   />

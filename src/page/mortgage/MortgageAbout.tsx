@@ -4,48 +4,11 @@ import { fetchMortgageData } from "../../api";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { MortgageData } from "../../interfaces";
 
 const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
 );
-
-interface Child {
-  text: string;
-  type: string;
-}
-
-interface DescriptionItem {
-  type: string;
-  children: Child[];
-}
-
-interface Photo {
-  data: {
-    attributes: {
-      name: string;
-      url: string;
-    };
-  };
-}
-
-interface Bank {
-  id: number;
-  attributes: {
-    Photo: Photo;
-    Rate: string;
-    Title: string;
-    URL: string;
-  };
-}
-
-interface MortgageData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleDescription: string;
-  description: DescriptionItem[];
-  banks: Bank[];
-}
 
 const formatNumber = (number: number) => {
   return new Intl.NumberFormat("ru-RU", {

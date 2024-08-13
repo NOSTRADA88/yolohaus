@@ -4,30 +4,10 @@ import { fetchAboutData, fetchGuaranteeData } from "../../api";
 import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-
-interface Child {
-  text: string;
-  type: string;
-}
-
-interface DescriptionItem {
-  type: string;
-  children: Child[];
-}
-
-interface GuaranteeData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleAbout: string;
-  titleMini: string;
-  description: DescriptionItem[];
-  titleMiniTwo: string;
-  descriptionTwo: DescriptionItem[];
-}
+import { AboutPagesData } from "../../interfaces";
 
 const Guarantee = () => {
-  const [guaranteeData, setGuaranteeData] = useState<GuaranteeData>({
+  const [guaranteeData, setGuaranteeData] = useState<AboutPagesData>({
     metaTitle: "",
     metaDescription: "",
     title: "",
