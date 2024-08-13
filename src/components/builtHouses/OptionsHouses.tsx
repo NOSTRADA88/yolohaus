@@ -165,11 +165,11 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
           )}
           {detail.attributes.Parameters.Location && (
             <>
-              <div className="flex justify-between items-center py-3">
+              <div className="flex justify-between items-center py-3 ">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Расположение
                 </p>
-                <p className="font-museo font-light text-base text-maingray  w-1/2 text-end">
+                <p className="font-museo font-light text-base text-maingray  w-[60%] text-end max-sm:w-1/2">
                   {detail.attributes.Parameters.Location}
                 </p>
               </div>

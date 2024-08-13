@@ -81,7 +81,6 @@ const Vacancy = () => {
         <title>{data.metaTitle}</title>
         <meta name="description" content={data.metaDescription} />
       </Helmet>
-
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={data.title} />
         <Switch activeTab={activeTab} setActiveTab={setActiveTab} />
