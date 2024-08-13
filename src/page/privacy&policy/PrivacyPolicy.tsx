@@ -3,6 +3,7 @@ import { fetchPrivacyPolicyData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { slug } from "../../constants";
 
 interface Child {
   text: string;
@@ -53,7 +54,7 @@ const PrivacyPolicy = () => {
     const parts = text.split(/(YoloHaus)/);
     return parts.map((part, index) =>
       part === "YoloHaus" ? (
-        <Link key={index} to="/" className="text-orange underline">
+        <Link key={index} to={slug.main} className="text-orange underline">
           {part}
         </Link>
       ) : (

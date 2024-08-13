@@ -254,4 +254,4 @@ const Modal = ({ closeModal }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default React.memo(Modal);

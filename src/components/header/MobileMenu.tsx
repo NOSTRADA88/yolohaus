@@ -1,23 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { Link } from "react-router-dom";
-import {memo} from "react";
-import {LogoMainBlack} from "../../assets";
-
-
-interface NavLink {
-  href: string;
-  label: string;
-  submenu?: { href: string; label: string }[];
-}
+import { memo } from "react";
+import { LogoMainBlack } from "../../assets";
+import { navLinks } from "../../constants";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  navLinks: NavLink[];
 }
 
-const MobileMenu = memo(({ isOpen, onClose, navLinks}: MobileMenuProps) => {
+const MobileMenu = memo(({ isOpen, onClose }: MobileMenuProps) => {
   return (
     <div
       className={`fixed top-0 left-0 w-[70%] h-full bg-white z-50 border-r-4 border-r-orange overflow-y-auto pb-10

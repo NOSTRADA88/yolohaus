@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchAboutData, fetchBlogData, fetchBlogDetailData } from "../../api";
 import { Helmet } from "react-helmet";
-import { API_URL } from "../../constants";
+import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface BlogDetailProps {
@@ -90,13 +90,10 @@ interface Post {
 interface BlogsData {
   metaTitle: string;
   metaDescription: string;
-  slug: string;
   titleBlog: string;
   titleAbout: string;
-  slugAbout: string;
   title: string;
   posts_list: Post[];
-  slugBlog: string;
 }
 
 const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
@@ -104,12 +101,9 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    slug: "",
     titleBlog: "",
-    slugAbout: "",
     titleAbout: "",
     posts_list: [],
-    slugBlog: "",
   });
 
   const fetchData = async () => {
@@ -123,11 +117,8 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
         metaDescription:
           blogDetailsData.data[0].attributes.Metadata.MetaDescription,
         title: blogDetailsData.data[0].attributes.Title,
-        slugBlog: blogDetailsData.data[0].attributes.slug,
         posts_list: blogDetailsData.data,
-        slug: blogsDataResponse.slug,
         titleBlog: blogsDataResponse.Title,
-        slugAbout: aboutData.slug,
         titleAbout: aboutData.Title,
       });
     } catch (error) {
@@ -253,8 +244,8 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
   }
 
   const breadcrumbItems = [
-    { title: blogData.titleAbout, slug: blogData.slugAbout },
-    { title: blogData.titleBlog, slug: blogData.slug },
+    { title: blogData.titleAbout, slug: slug.about },
+    { title: blogData.titleBlog, slug: slug.blog },
   ];
   return (
     <div>

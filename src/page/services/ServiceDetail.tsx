@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchServicesData, fetchServicesDetailsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { ContactBanner } from "../../sections/banner";
-import { API_URL } from "../../constants";
+import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface CardDescriptionText {
@@ -55,7 +55,6 @@ interface ServiceState {
   titleMini: string;
   descriptionInfo: CardDescription[];
   titleServices: string;
-  slugServices: string;
   services: ServiceData[];
 }
 
@@ -67,7 +66,6 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
     titleMini: "",
     descriptionInfo: [],
     titleServices: "",
-    slugServices: "",
     services: [],
   });
 
@@ -85,7 +83,6 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
         services: detailsData.data[0].attributes.Card,
         titleMini: detailsData.data[0].attributes.Header,
         titleServices: servicesData.Title,
-        slugServices: servicesData.slug,
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -97,7 +94,7 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   }, []);
 
   const breadcrumbItems = [
-    { title: serviceData.titleServices, slug: serviceData.slugServices },
+    { title: serviceData.titleServices, slug: slug.services },
   ];
 
   return (

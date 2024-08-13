@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { fetchAboutData, fetchReviewsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
-import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 
 interface PhotoAttributes {

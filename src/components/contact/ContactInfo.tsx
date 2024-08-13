@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { photoContact } from "../../assets";
+import { formatPhoneNumber } from "../../constants";
 
 interface DescriptionItem {
   type: string;
@@ -32,13 +33,6 @@ const ContactInfo = ({
   weekdays = "",
   weekends = "",
 }: ContactInfoProps) => {
-  function formatPhoneNumber(number: string) {
-    return number.replace(
-      /(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/,
-      "$1 ($2) $3-$4-$5"
-    );
-  }
-
   return (
     <div className="flex mt-10 flex-col">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl">
@@ -125,7 +119,6 @@ const ContactInfo = ({
               className="font-museo font-light text-sm leading-5 tracking-wider text-maingray hover:text-orange cursor-pointer 
             transition-all duration-300 "
             >
-              {" "}
               {formatPhoneNumber(phone)}
             </a>
           </h1>

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { fetchBuiltHousesData } from "../../api";
-import { API_URL } from "../../constants";
+import { API_URL, slug } from "../../constants";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 
@@ -72,7 +72,6 @@ const Houses = () => {
         Location: builtData.Icons.data[0].attributes.url,
         HouseArea: builtData.Icons.data[1].attributes.url,
         ConstructionPeriod: builtData.Icons.data[2].attributes.url,
-        slugBuilt: builtData.slug,
       };
     },
   });
@@ -147,24 +146,24 @@ const Houses = () => {
         <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-sm:grid-cols-1">
           {visibleHouses.map((house) => (
             <Link
-              to={`/${houseData.slugBuilt}/${house.attributes.slug}`}
+              to={`${slug.built}/${house.attributes.slug}`}
               key={house.id}
               className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-full h-[375px] max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
             >
               <div className="relative max-w-full overflow-hidden">
-                <LazyLoad
+                {/* <LazyLoad
                   key={house.id}
                   height={200}
                   offset={300}
                   once
                   placeholder={<div className="w-full h-full bg-gray-300" />}
-                >
+                > */}
                   <img
                     src={`${API_URL}${house.attributes.Photos.data[0].attributes.url}`}
                     alt={house.attributes.Photos.data[0].attributes.name}
                     className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                   />
-                </LazyLoad>
+                {/* </LazyLoad> */}
               </div>
               <div className="p-4">
                 <h2 className="font-museo font-bold text-2xl text-maingray">

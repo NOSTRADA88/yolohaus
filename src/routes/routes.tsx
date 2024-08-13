@@ -1,12 +1,20 @@
 import { lazy } from "react";
-import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import { Home, ErrorPage } from "../page";
-import { useSlugs } from "../hooks/useSlugs";
+import { slug } from "../constants";
 
 const AboutCompany = lazy(() =>
-  import("../page/about/AboutCompany").then((module) => ({ default: module.AboutCompany }))
+  import("../page/about/AboutCompany").then((module) => ({
+    default: module.AboutCompany,
+  }))
 );
 
 const Reviews = lazy(() =>
@@ -80,33 +88,30 @@ const BlogDetail = lazy(() =>
 );
 
 const RoutesComponent = () => {
-  const { data: slugs, isLoading, error } = useSlugs();
-  console.log(error)
-
-  if (!slugs) {
-    return (
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
-        <div className="flex justify-center items-center mt-8 mb-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
-        </div>
-      </div>
-    );
-  }
+  // if (!slugs) {
+  //   return (
+  //     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
+  //       <div className="flex justify-center items-center mt-8 mb-8">
+  //         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route
-          path={"/"}
+          path={slug.main}
           element={
             <Layout>
-              <Home slugs={slugs}/>
+              <Home />
             </Layout>
           }
         />
         <Route
-          path={`/${slugs.about}`}
+          path={slug.about}
           element={
             <Layout>
               <AboutCompany />
@@ -114,7 +119,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.reviews}`}
+          path={slug.reviews}
           element={
             <Layout>
               <Reviews />
@@ -122,7 +127,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.guarantee}`}
+          path={slug.guarantee}
           element={
             <Layout>
               <Guarantee />
@@ -130,7 +135,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.vacancy}`}
+          path={slug.vacancies}
           element={
             <Layout>
               <Vacancy />
@@ -138,7 +143,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.projects}`}
+          path={slug.projects}
           element={
             <Layout>
               <Projects />
@@ -146,7 +151,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.contact}`}
+          path={slug.contact}
           element={
             <Layout>
               <Contact />
@@ -154,7 +159,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.services}`}
+          path={slug.services}
           element={
             <Layout>
               <Services />
@@ -162,7 +167,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.privacy}`}
+          path={slug.privacy}
           element={
             <Layout>
               <PrivacyPolicy />
@@ -170,7 +175,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.built}`}
+          path={slug.built}
           element={
             <Layout>
               <BuiltHouses />
@@ -178,7 +183,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.stocks}`}
+          path={slug.stocks}
           element={
             <Layout>
               <Stocks />
@@ -186,7 +191,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.blog}`}
+          path={slug.blog}
           element={
             <Layout>
               <Blog />
@@ -194,7 +199,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.mortgage}`}
+          path={slug.mortgage}
           element={
             <Layout>
               <MortgageAbout />
@@ -202,7 +207,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.blog}/:slug`}
+          path={`${slug.blog}/:slug`}
           element={
             <Layout>
               <BlogDetailRoute />
@@ -210,7 +215,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.built}/:slug`}
+          path={`${slug.built}/:slug`}
           element={
             <Layout>
               <HouseDetailRoute />
@@ -218,7 +223,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.services}/:slug`}
+          path={`${slug.services}/:slug`}
           element={
             <Layout>
               <ServiceDetailRoute />
@@ -226,7 +231,7 @@ const RoutesComponent = () => {
           }
         />
         <Route
-          path={`/${slugs.projects}/:slug`}
+          path={`${slug.projects}/:slug`}
           element={
             <Layout>
               <ProjectsDetailRoute />

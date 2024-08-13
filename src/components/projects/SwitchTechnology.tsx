@@ -51,7 +51,7 @@ const SwitchTechnology = ({
     technologySlugs.forEach((slug) => {
       newSlug = newSlug.replace(new RegExp(`-${slug}$`), "");
     });
-    return `/${slugProjects}/${newSlug}-${technologySlug}`;
+    return `${slugProjects}/${newSlug}-${technologySlug}`;
   };
 
   const getCurrentTechnology = () => {

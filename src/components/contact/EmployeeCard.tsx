@@ -1,4 +1,4 @@
-import { API_URL } from "../../constants";
+import { API_URL, formatPhoneNumber } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,13 +26,6 @@ interface EmployeeCardProps {
 }
 
 const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
-  function formatPhoneNumber(number: string) {
-    return number.replace(
-      /(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/,
-      "$1 ($2) $3-$4-$5"
-    );
-  }
-
   return (
     <div className="mt-20">
       <h2 className="font-museo font-bold text-2xl mb-4 max-md:text-xl">

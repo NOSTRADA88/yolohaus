@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { slug } from "../../constants";
 
 interface ProjectsDetailProps {
   projectsSlug: string;
@@ -119,7 +120,6 @@ const ProjectsDetail = ({
     metaTitle: "",
     metaDescription: "",
     title: "",
-    slugProjects: "",
     titleProjects: "",
     projects: [] as DetailsData[],
     complectations: [] as Project[],
@@ -142,7 +142,6 @@ const ProjectsDetail = ({
           projects: projectDetailData.data,
           complectations: projectDetailData.data[0].attributes.Complectation,
           titleProjects: projectsData.Title,
-          slugProjects: projectsData.slug,
         };
 
         setProjectData(newProjectData);
@@ -218,13 +217,13 @@ const ProjectsDetail = ({
   }, [projectsSlug, initialTechnology, location.pathname]);
 
   const breadcrumbItems = [
-    { title: projectData.titleProjects, slug: projectData.slugProjects },
+    { title: projectData.titleProjects, slug: slug.projects },
   ];
 
   if (initialTechnology) {
     breadcrumbItems.push({
       title: intermediateTitle,
-      slug: `${projectData.slugProjects}/${projectsSlug}`,
+      slug: `${slug.projects}/${projectsSlug}`,
     });
   }
 
@@ -257,14 +256,11 @@ const ProjectsDetail = ({
                 updateTitle={(technology) => updateTitle(technology)}
                 complectations={projectData.complectations}
                 currentProjectSlug={projectsSlug}
-                slugProjects={projectData.slugProjects}
+                slugProjects={slug.projects}
                 initialTechnology={initialTechnology}
               />
               <div className="mt-10">
-                <AboutHouses
-                  details={projectData.projects}
-                  slug={projectData.slugProjects}
-                />
+                <AboutHouses details={projectData.projects} />
               </div>
             </>
           )}

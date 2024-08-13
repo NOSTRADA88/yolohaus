@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchBlogData } from "../../api";
 import { Link } from "react-router-dom";
-import { API_URL } from "../../constants";
+import { API_URL, slug } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
@@ -87,10 +87,8 @@ interface BlogsData {
   metaTitle: string;
   metaDescription: string;
   title: string;
-  slugAbout: string;
   titleAbout: string;
   posts_list: Post[];
-  slugBlog: string;
 }
 
 const Blog = () => {
@@ -98,10 +96,8 @@ const Blog = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    slugAbout: "",
     titleAbout: "",
     posts_list: [],
-    slugBlog: "",
   });
 
   const fetchData = async () => {
@@ -112,10 +108,8 @@ const Blog = () => {
         metaTitle: blogsDataResponse.Metadata.MetaTitle,
         metaDescription: blogsDataResponse.Metadata.MetaDescription,
         title: blogsDataResponse.Title,
-        slugAbout: aboutData.slug,
         titleAbout: aboutData.Title,
         posts_list: blogsDataResponse.posts_list.data,
-        slugBlog: blogsDataResponse.slug,
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);
@@ -131,7 +125,7 @@ const Blog = () => {
     if (text.length <= limit) {
       return text;
     }
-    return text.substring(0, limit) + "...";
+    return text.substring(0, limit);
   };
 
   const getFirstTwoParagraphsText = (blogText: CardDescription[]) => {
@@ -150,9 +144,7 @@ const Blog = () => {
     return text + (paragraphs.length > 1 ? "..." : "");
   };
 
-  const breadcrumbItems = [
-    { title: blogData.titleAbout, slug: blogData.slugAbout },
-  ];
+  const breadcrumbItems = [{ title: blogData.titleAbout, slug: slug.about }];
 
   return (
     <div>
@@ -166,7 +158,7 @@ const Blog = () => {
           {blogData.posts_list.map((post) => (
             <div key={post.id} className="mb-8">
               <Link
-                to={`/${blogData.slugBlog}/${post.attributes.slug}`}
+                to={`${slug.blog}/${post.attributes.slug}`}
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
               >
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
@@ -193,7 +185,7 @@ const Blog = () => {
                       </p>
                       <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container">
                         <Link
-                          to={`/${blogData.slugBlog}/${post.attributes.slug}`}
+                          to={`/${slug.blog}/${post.attributes.slug}`}
                           className="text-orange uppercase text-sm font-medium tracking-wider"
                         >
                           Подробнее{" "}

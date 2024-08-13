@@ -16,3 +16,49 @@ export const setAuthorizationHeader = () => {
 };
 
 setAuthorizationHeader();
+
+export const slug = {
+  main: "/",
+  about: "/about",
+  projects: "/projects",
+  guarantee: "/guarantee",
+  reviews: "/reviews",
+  contact: "/contact",
+  vacancies: "/vacancies",
+  services: "/services",
+  privacy: "/privacy-policy",
+  built: "/built",
+  stocks: "/stocks",
+  blog: "/blog",
+  mortgage: "/mortgage",
+  error: "/*",
+};
+
+export const navLinks = [
+  { href: slug.projects, label: "Проекты и цены" },
+  { href: slug.built, label: "Построенные дома" },
+  { href: slug.reviews, label: "Отзывы" },
+  { href: slug.stocks, label: "Акции" },
+  { href: slug.mortgage, label: "Ипотека" },
+  {
+    href: slug.about,
+    label: "О компании",
+    submenu: [
+      { href: slug.blog, label: "Блог" },
+      { href: slug.services, label: "Услуги" },
+      { href: slug.guarantee, label: "Гарантия" },
+      { href: slug.vacancies, label: "Вакансии" },
+    ],
+  },
+  { href: slug.contact, label: "Контакты" },
+];
+
+export function formatPhoneNumber(number: string | undefined) {
+  if (!number) {
+    return null;
+  }
+  return number.replace(
+    /(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/,
+    "$1 ($2) $3-$4-$5"
+  );
+}

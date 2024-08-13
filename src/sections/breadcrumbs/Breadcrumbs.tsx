@@ -28,7 +28,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
           <React.Fragment key={index}>
             {item.slug ? (
               <Link
-                to={`/${item.slug}`}
+                to={item.slug}
                 className="ml-1 font-museo font-light text-sm text-orange max-md:text-xs hover:text-lightgray transition-all duration-300"
               >
                 {item.title} /{" "}
@@ -48,4 +48,4 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
   );
 };
 
-export default Breadcrumbs;
+export default React.memo(Breadcrumbs);

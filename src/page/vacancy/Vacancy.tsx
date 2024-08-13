@@ -4,6 +4,7 @@ import { fetchAboutData, fetchVacancyData } from "../../api";
 import { ActiveVacancies, Switch } from "../../components/vacancy";
 import { ContactBanner } from "../../sections/banner";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { slug } from "../../constants";
 
 interface ListItem {
   type: string;
@@ -45,7 +46,6 @@ const Vacancy = () => {
     metaDescription: "",
     title: "",
     titleAbout: "",
-    slugAbout: "",
     vacancies: [] as Vacancies[],
   });
 
@@ -61,7 +61,6 @@ const Vacancy = () => {
         metaDescription: vacancyData.Metadata.MetaDescription,
         title: vacancyData.Title,
         titleAbout: aboutData.Title,
-        slugAbout: aboutData.slug,
         vacancies: vacancyData.Vacancies.data,
       });
     } catch (error) {
@@ -73,7 +72,7 @@ const Vacancy = () => {
     fetchData();
   }, []);
 
-  const breadcrumbItems = [{ title: data.titleAbout, slug: data.slugAbout }];
+  const breadcrumbItems = [{ title: data.titleAbout, slug: slug.about }];
 
   return (
     <div>

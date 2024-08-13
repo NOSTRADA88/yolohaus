@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { fetchAboutData, fetchGuaranteeData } from "../../api";
 import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { slug } from "../../constants";
 
 interface Child {
   text: string;
@@ -19,7 +20,6 @@ interface GuaranteeData {
   metaDescription: string;
   title: string;
   titleAbout: string;
-  slugAbout: string;
   titleMini: string;
   description: DescriptionItem[];
   titleMiniTwo: string;
@@ -32,7 +32,6 @@ const Guarantee = () => {
     metaDescription: "",
     title: "",
     titleAbout: "",
-    slugAbout: "",
     titleMini: "",
     description: [],
     titleMiniTwo: "",
@@ -49,7 +48,6 @@ const Guarantee = () => {
         metaDescription: guaranteeDataResponse.Metadata.MetaDescription,
         title: guaranteeDataResponse.Title,
         titleAbout: aboutDataResponse.Title,
-        slugAbout: aboutDataResponse.slug,
         titleMini: guaranteeDataResponse.Information[0].Title,
         description: guaranteeDataResponse.Information[0].Description,
         titleMiniTwo: guaranteeDataResponse.Information[1].Title,
@@ -65,7 +63,7 @@ const Guarantee = () => {
   }, []);
 
   const breadcrumbItems = [
-    { title: guaranteeData.titleAbout, slug: guaranteeData.slugAbout },
+    { title: guaranteeData.titleAbout, slug: slug.guarantee },
   ];
 
   return (

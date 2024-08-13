@@ -1,7 +1,7 @@
 import { fetchAboutData, fetchServicesData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { API_URL } from "../../constants";
+import { API_URL, slug } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
@@ -55,9 +55,7 @@ interface ServicesData {
   metaDescription: string;
   title: string;
   services: Service[];
-  slugServices: string;
   titleAbout: string;
-  slugAbout: string;
 }
 
 const Services = () => {
@@ -76,9 +74,7 @@ const Services = () => {
         metaDescription: servicesDataResponse.Metadata.MetaDescription,
         title: servicesDataResponse.Title,
         services: servicesDataResponse.Services.data,
-        slugServices: servicesDataResponse.slug,
         titleAbout: aboutData.Title,
-        slugAbout: aboutData.slug,
       };
     },
   });
@@ -95,7 +91,7 @@ const Services = () => {
     return null;
   }
   const breadcrumbItems = [
-    { title: servicesData.titleAbout, slug: servicesData.slugAbout },
+    { title: servicesData.titleAbout, slug: slug.about },
   ];
 
   return (
@@ -112,7 +108,7 @@ const Services = () => {
         >
           {servicesData.services.map((service: Service) => (
             <Link
-              to={`/${servicesData.slugServices}/${service.attributes.slug}`}
+              to={`${slug.services}/${service.attributes.slug}`}
               key={service.id}
             >
               <div className="relative group">
@@ -138,7 +134,7 @@ const Services = () => {
                 >
                   <div className="flex justify-between items-center w-full">
                     <Link
-                      to={`/${servicesData.slugServices}/${service.attributes.slug}`}
+                      to={`${slug.services}/${service.attributes.slug}`}
                       className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium"
                     >
                       {service.attributes.Title}

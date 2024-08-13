@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BgVacancy } from "../../assets";
 import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
+import { formatPhoneNumber } from "../../constants";
 
 interface CardDescriptionText {
   type: "text";
@@ -16,7 +17,7 @@ interface CardDescriptionListItem {
 
 interface CardDescriptionList {
   type: "list";
-  format: "unordered"; // or "ordered" if applicable
+  format: "unordered";
   children: CardDescriptionListItem[];
 }
 
@@ -30,23 +31,18 @@ type CardDescription = CardDescriptionParagraph | CardDescriptionList;
 interface ContactBannerProps {
   descriptionInfo?: CardDescription[];
 }
-const formatPhoneNumber = (number: string) => {
-  return number.replace(
-    /(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/,
-    "$1 ($2) $3-$4-$5"
-  );
-};
+
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
   const [phone, setPhone] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
 
-  const isVacansiiPage = location.pathname.includes("vakansii");
+  const isVacansiiPage = location.pathname.includes("vacancies");
 
   const fetchData = async () => {
     try {
       const phoneData = await fetchHeaderFooterData();
-      setPhone(phoneData.Header.PhoneNumber.PhoneNumber);
+      setPhone(phoneData.Phone.Number);
     } catch (error) {
       console.error("Ошибка запроса:", error);
     }
@@ -104,9 +100,9 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
             <div className="absolute inset-0 bg-maingray bg-opacity-50 flex items-center justify-center ">
               <div className="flex flex-col justify-center items-center gap-5">
                 <h2 className="text-white text-center text-base max-xl:px-10 max-sm:text-sm">
-                  Свяжитесь с нами по номеру{" "}
+                  Свяжитесь с нами по номеру
                   <span className="underline cursor-pointer transition-all duration-300 text-lg hover:text-orange max-sm:text-base">
-                    {formatPhoneNumber(phone)}{" "}
+                    {formatPhoneNumber(phone)}
                   </span>
                   , и специалисты «Yolo Haus» помогут вам выбрать дом вашей
                   мечты. <br />
@@ -200,4 +196,4 @@ const RenderVacansiiMessage = ({
   }
 };
 
-export default ContactBanner;
+export default React.memo(ContactBanner);

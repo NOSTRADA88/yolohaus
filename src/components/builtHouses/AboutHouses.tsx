@@ -1,6 +1,7 @@
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { slug } from "../../constants";
 
 interface DescriptionChild {
   text?: string;
@@ -74,10 +75,9 @@ interface DetailsData {
 
 interface AboutHousesProps {
   details: DetailsData[];
-  slug: string;
 }
 
-const AboutHouses = ({ details, slug }: AboutHousesProps) => {
+const AboutHouses = ({ details }: AboutHousesProps) => {
   return (
     <div id="more">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
@@ -107,7 +107,7 @@ const AboutHouses = ({ details, slug }: AboutHousesProps) => {
             className="text-orange arrow-icon"
           />
           <Link
-            to={`/${slug}`}
+            to={`${slug.projects}`}
             className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"
           >
             Назад к проектам

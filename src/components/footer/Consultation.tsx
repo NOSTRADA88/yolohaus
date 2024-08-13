@@ -4,13 +4,9 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import InputMask from "react-input-mask";
 import { Link, useLocation } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { slug } from "../../constants";
 
-interface Slugs {
-  privacy: string;
-}
 const Consultation = () => {
-  const slugs = useQueryClient().getQueryData<Slugs>(["slugs"]);
   const [, setErrors] = useState<{ [key: string]: string[] }>({});
   const location = useLocation();
   const {
@@ -147,7 +143,7 @@ const Consultation = () => {
                     Отправляя форму, я даю согласие на обработку
                     <Link
                       className="underline cursor-pointer"
-                      to={`/${slugs?.privacy ?? ""}`}
+                      to={slug.privacy}
                     >
                       {" "}
                       персональных данных

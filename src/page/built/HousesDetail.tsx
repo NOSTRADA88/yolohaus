@@ -8,6 +8,7 @@ import {
   SliderHouses,
 } from "../../components/builtHouses";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { slug } from "../../constants";
 
 interface HouseDetailProps {
   houseSlug: string;
@@ -79,7 +80,6 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    slugBuilt: "",
     titleBuilt: "",
     houses: [] as HousesData[],
   });
@@ -92,10 +92,9 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
       setHouseData({
         metaTitle: houseDetailsData.data[0].attributes.Metadata.MetaTitle,
         metaDescription:
-          houseDetailsData.data[0].attributes.Metadata.MetaDescription,
+        houseDetailsData.data[0].attributes.Metadata.MetaDescription,
         title: houseDetailsData.data[0].attributes.Title,
         houses: houseDetailsData.data,
-        slugBuilt: builtData.slug,
         titleBuilt: builtData.title,
       });
     } catch (error) {
@@ -107,9 +106,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
     fetchData();
   }, []);
 
-  const breadcrumbItems = [
-    { title: houseData.titleBuilt, slug: houseData.slugBuilt },
-  ];
+  const breadcrumbItems = [{ title: houseData.titleBuilt, slug: slug.built }];
 
   return (
     <div>
@@ -124,7 +121,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
             <SliderHouses details={houseData.houses} />
             <OptionsHouses details={houseData.houses} />
           </div>
-          <AboutHouses details={houseData.houses} slug={houseData.slugBuilt} />
+          <AboutHouses details={houseData.houses} />
         </div>
       </div>
     </div>
