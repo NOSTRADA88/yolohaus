@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchServicesData, fetchServicesDetailsData } from "../../api";
 import { Helmet } from "react-helmet";
 import { ContactBanner } from "../../sections/banner";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import {fetchServicesDetailsPage, fetchServicesPage} from "../../api/services";
 
 interface CardDescriptionText {
   type: "text";
@@ -71,8 +71,8 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
 
   const fetchData = async () => {
     try {
-      const detailsData = await fetchServicesDetailsData(servicesSlug);
-      const servicesData = await fetchServicesData();
+      const detailsData = await fetchServicesDetailsPage(servicesSlug);
+      const servicesData = await fetchServicesPage();
 
       setServiceData({
         metaTitle: detailsData.data[0].attributes.Metadata.MetaTitle,

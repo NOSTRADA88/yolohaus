@@ -27,21 +27,15 @@ export const fetchProjectsData = () =>
     "Metadata,Icons.Photo,ProjectsList.Photos,ProjectsList.Metadata,ProjectsList.Parameters,ProjectsList.Complectation"
   );
 
+
+
 export const fetchContactData = () =>
   fetchData(
     "/api/kontakty",
     "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions"
   );
 
-export const fetchServicesDetailsData = async (servicesSlug: string) => {
-  const response = await axiosInstanse.get(
-    `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
-  );
-  if (response.status === 200) {
-    return response.data.data.attributes.Services;
-  }
-  throw new Error("no service data");
-};
+
 
 export const fetchPrivacyPolicyPage = () =>
   fetchData("/api/politika-konfidenczialnosti", "Metadata");

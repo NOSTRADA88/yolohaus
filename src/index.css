@@ -1,7 +1,7 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museosanscyrl-300.woff2) format("woff2");
+  src: url(../public/font/museo_sans_cyrl_300.woff) format("woff");
   font-weight: 300;
   font-style: normal;
 }
@@ -9,7 +9,7 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museosanscyrl-500.woff2) format("woff2");
+  src: url(../public/font/museo_sans_cyrl_500.woff) format("woff");
   font-weight: 500;
   font-style: normal;
 }
@@ -17,7 +17,7 @@
 @font-face {
   font-display: swap;
   font-family: "MuseoSansCyrl";
-  src: url(../public/font/museosanscyrl-700.woff2) format("woff2");
+  src: url(../public/font/museo_sans_cyrl_700.woff) format("woff");
   font-weight: 700;
   font-style: normal;
 }

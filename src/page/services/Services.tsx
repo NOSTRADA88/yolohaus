@@ -1,4 +1,4 @@
-import { fetchAboutData, fetchServicesData } from "../../api";
+import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import {fetchServicesPage} from "../../api/services";
 
 interface DescriptionText {
   type: string;
@@ -66,7 +67,7 @@ const Services = () => {
   } = useQuery<ServicesData>({
     queryKey: ["services"],
     queryFn: async () => {
-      const servicesDataResponse = await fetchServicesData();
+      const servicesDataResponse = await fetchServicesPage();
       const aboutData = await fetchAboutData();
 
       return {
