@@ -4,33 +4,7 @@ import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
 import { formatPhoneNumber } from "../../constants";
-
-interface CardDescriptionText {
-  type: "text";
-  text: string;
-}
-
-interface CardDescriptionListItem {
-  type: "list-item";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionList {
-  type: "list";
-  format: "unordered";
-  children: CardDescriptionListItem[];
-}
-
-interface CardDescriptionParagraph {
-  type: "paragraph";
-  children: CardDescriptionText[];
-}
-
-type CardDescription = CardDescriptionParagraph | CardDescriptionList;
-
-interface ContactBannerProps {
-  descriptionInfo?: CardDescription[];
-}
+import { ContactBannerProps } from "../../interfaces";
 
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
   const [phone, setPhone] = useState<string>("");

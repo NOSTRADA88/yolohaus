@@ -12,9 +12,8 @@ const Stocks = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    stock_list: [] as StockItem[],
+    stocks: [] as StockItem[],
   });
-  const [visibleStocks, setVisibleStocks] = useState<StockItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isEndOfList, setIsEndOfList] = useState(false);
@@ -24,12 +23,11 @@ const Stocks = () => {
     const fetchData = async () => {
       try {
         const response = await fetchStocksPage();
-        console.log(response);
         setStocksData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          stock_list: response.stock_list.data.map((stock: any) => ({
+          stocks: response.stock_list.data.map((stock: any) => ({
             promotionTime: stock.attributes.PromotionTime,
             shortTitle: stock.attributes.ShortTitle,
             longTitle: stock.attributes.LongTitle,
@@ -46,10 +44,6 @@ const Stocks = () => {
             },
           })),
         });
-        setVisibleStocks(response.stock_list.data.slice(0, stocksPerPage));
-        if (response.stock_list.data.length <= stocksPerPage) {
-          setIsEndOfList(true);
-        }
       } catch (error) {
         console.error("Ошибка запроса:", error);
       }
@@ -57,25 +51,15 @@ const Stocks = () => {
     fetchData();
   }, []);
 
-  console.log(stocksData);
   const loadMoreStocks = useCallback(() => {
     if (isEndOfList) return;
 
     const nextPage = currentPage + 1;
-    const startIndex = (nextPage - 1) * stocksPerPage;
-    const endIndex = startIndex + stocksPerPage;
-    const newStocks = stocksData.stock_list.slice(startIndex, endIndex);
-
-    if (newStocks.length > 0) {
-      setVisibleStocks((prevStocks) => [...prevStocks, ...newStocks]);
-      setCurrentPage(nextPage);
-      if (endIndex >= stocksData.stock_list.length) {
-        setIsEndOfList(true);
-      }
-    } else {
+    setCurrentPage(nextPage);
+    if (nextPage * stocksPerPage >= stocksData.stocks.length) {
       setIsEndOfList(true);
     }
-  }, [currentPage, stocksData.stock_list, stocksPerPage, isEndOfList]);
+  }, [currentPage, stocksData.stocks.length, stocksPerPage, isEndOfList]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -104,6 +88,8 @@ const Stocks = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const visibleStocks = stocksData.stocks.slice(0, currentPage * stocksPerPage);
 
   return (
     <div>

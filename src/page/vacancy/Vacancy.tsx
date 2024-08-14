@@ -5,38 +5,7 @@ import { ContactBanner } from "../../sections/banner";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import { fetchVacancyPage } from "../../api/vacancy";
-
-interface ListItem {
-  type: string;
-  children: {
-    text: string;
-    type: string;
-  }[];
-}
-
-interface VacancyAttribute {
-  Title: string;
-  Responsibilities: {
-    type: string;
-    format: string;
-    children: ListItem[];
-  }[];
-  WorkingConditions: {
-    type: string;
-    format: string;
-    children: ListItem[];
-  }[];
-  Requirements: {
-    type: string;
-    format: string;
-    children: ListItem[];
-  }[];
-}
-
-interface Vacancies {
-  id: number;
-  attributes: VacancyAttribute;
-}
+import { Vacancies } from "../../interfaces";
 
 type TabType = "activeVacancies" | "brigade";
 
@@ -58,7 +27,13 @@ const Vacancy = () => {
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          vacancies: response.Vacancies.data,
+          vacancies: response.Vacancies.data.map((vacancy: any) => ({
+            id: vacancy.id,
+            title: vacancy.attributes.Title,
+            responsibilities: vacancy.attributes.Responsibilities,
+            workingConditions: vacancy.attributes.WorkingConditions,
+            requirements: vacancy.attributes.Requirements,
+          })),
         });
       } catch (error) {
         console.error("Ошибка запроса:", error);

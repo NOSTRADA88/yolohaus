@@ -377,7 +377,7 @@ export interface Employee {
   };
 }
 
-interface Production {
+export interface Production {
   id: number;
   attributes: ContactsMap;
 }
@@ -482,5 +482,36 @@ export interface StocksData {
   metaTitle: string;
   metaDescription: string;
   title: string;
-  stock_list: StockItem[];
+  stocks: StockItem[];
+}
+// Contact Banner
+
+export interface ContactBannerProps {
+  descriptionInfo?: CardDescription[];
+}
+
+//Breadcrumbs
+
+interface BreadcrumbItem {
+  title?: string;
+  slug?: string;
+}
+
+export interface BreadcrumbsProps {
+  items?: BreadcrumbItem[];
+  finalTitle: string;
+}
+
+//Vacancy Page
+
+export interface Vacancies {
+  id: number;
+  title: string;
+  responsibilities: CardDescriptionList[];
+  workingConditions: CardDescriptionList[];
+  requirements: CardDescriptionList[];
+}
+
+export interface ActiveVacanciesProps {
+  vacancies: Vacancies[];
 }

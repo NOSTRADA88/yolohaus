@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchPrivacyPolicyPage } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-import { PrivacyPolicyData } from "../../interfaces";
+import { Description, PrivacyPolicyData } from "../../interfaces";
+import { fetchPrivacyPolicyPage } from "../../api/privacy&policy";
 
 const PrivacyPolicy = () => {
   const [privacyPolicyData, setPrivacyPolicyData] = useState<PrivacyPolicyData>(
@@ -12,25 +12,30 @@ const PrivacyPolicy = () => {
       metaTitle: "",
       metaDescription: "",
       title: "",
-      description: [],
+      description: [] as Description[],
     }
   );
 
   useEffect(() => {
-      const fetchPrivacyPolicy = async () => {
-          try {
-              const privacyData = await fetchPrivacyPolicyPage();
-              setPrivacyPolicyData({
-                  metaTitle: privacyData.Metadata.MetaTitle,
-                  metaDescription: privacyData.Metadata.MetaDescription,
-                  title: privacyData.Title,
-                  description: privacyData.Description,
-              });
-          } catch (error) {
-              console.error("Ошибка запроса:", error);
-          }
-      };
-      fetchPrivacyPolicy();
+    const fetchPrivacyPolicy = async () => {
+      try {
+        const privacyData = await fetchPrivacyPolicyPage();
+        setPrivacyPolicyData({
+          metaTitle: privacyData.Metadata.MetaTitle,
+          metaDescription: privacyData.Metadata.MetaDescription,
+          title: privacyData.Title,
+          description: privacyData.Description.map((desc: any) => ({
+            children: desc.children.map((child: any) => ({
+              text: child.text,
+              type: child.type,
+            })),
+          })),
+        });
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
+    fetchPrivacyPolicy();
   }, []);
 
   const renderTextWithHighlights = (text: string) => {

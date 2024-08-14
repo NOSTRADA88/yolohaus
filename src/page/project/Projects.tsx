@@ -2,12 +2,13 @@ import { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
-import { fetchHomeData, fetchProjectsData } from "../../api";
+import { fetchProjectsData } from "../../api";
 import { API_URL, formatPrice, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { HousesData } from "../../interfaces";
+import { fetchHomePage } from "../../api/home";
 
 const Projects = () => {
   const [sortBy, setSortBy] = useState<"popularity" | "area" | "price" | null>(
@@ -28,7 +29,7 @@ const Projects = () => {
     queryFn: async () => {
       const [projectsData, mainData] = await Promise.all([
         fetchProjectsData(),
-        fetchHomeData(),
+        fetchHomePage(),
       ]);
       return {
         metaTitle: projectsData.Metadata.MetaTitle,

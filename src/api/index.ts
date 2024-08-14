@@ -1,7 +1,7 @@
 import { API_URL, axiosInstanse } from "../constants";
 
 export const fetchData = async (endpoint: string, populateParams: string) => {
-  console.log("endpoint: ", endpoint)
+  console.log("endpoint: ", endpoint);
   const url = `${API_URL}${endpoint}${
     populateParams ? `?populate=${populateParams}` : ""
   }`;
@@ -12,31 +12,11 @@ export const fetchData = async (endpoint: string, populateParams: string) => {
   throw new Error("no data");
 };
 
-export const fetchHomeData = () =>
-  fetchData(
-    "/api/glavnaya",
-    "About.Photo,About.Information,Greetings.Photo,Metadata,Mortgage.Photos,Recommendations.List.Icon,Recommendations.List.BgPhoto,ContactsMap.WorkTime,PopularCottages.Projects.Photos,PopularCottages.projects.Parameters,PopularCottages.projects.Complectation"
-  );
-
-
 export const fetchProjectsData = () =>
   fetchData(
     "/api/proekty",
     "Metadata,Icons.Photo,ProjectsList.Photos,ProjectsList.Metadata,ProjectsList.Parameters,ProjectsList.Complectation"
   );
-
-
-
-export const fetchContactData = () =>
-  fetchData(
-    "/api/kontakty",
-    "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions"
-  );
-
-
-
-export const fetchPrivacyPolicyPage = () =>
-  fetchData("/api/politika-konfidenczialnosti", "Metadata");
 
 export const fetchBuiltHousesData = () =>
   fetchData(

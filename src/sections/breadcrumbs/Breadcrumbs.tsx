@@ -1,15 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-interface BreadcrumbItem {
-  title?: string;
-  slug?: string;
-}
-
-interface BreadcrumbsProps {
-  items?: BreadcrumbItem[];
-  finalTitle: string;
-}
+import { BreadcrumbsProps } from "../../interfaces";
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
   return (

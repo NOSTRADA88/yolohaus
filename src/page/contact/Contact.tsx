@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchContactData, fetchHomeData } from "../../api";
 import {
   ContactInfo,
   EmployeeCard,
@@ -8,7 +7,14 @@ import {
 } from "../../components/contact";
 import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { ContactData } from "../../interfaces";
+import {
+  ContactData,
+  Description,
+  Employee,
+  Production,
+} from "../../interfaces";
+import { fetchContactData } from "../../api/contact";
+import { fetchHomePage } from "../../api/home";
 
 const Contact = () => {
   const [contactData, setContactData] = useState<ContactData>({
@@ -16,21 +22,22 @@ const Contact = () => {
     metaDescription: "",
     title: "",
     titleMini: "",
-    description: [],
+    description: [] as Description[],
     email: "",
     phone: "",
     address: "",
     urlAddressOffice: "",
     weekdays: "",
     weekends: "",
-    productions: [],
-    employees: [],
+    productions: [] as Production[],
+    employees: [] as Employee[],
   });
 
   const fetchData = async () => {
     try {
       const contactDataResponse = await fetchContactData();
-      const mainData = await fetchHomeData();
+      console.log(contactDataResponse);
+      const mainData = await fetchHomePage();
       const phoneData = await fetchHeaderFooterData();
 
       setContactData({
@@ -52,7 +59,7 @@ const Contact = () => {
       console.error("Ошибка запроса:", error);
     }
   };
-
+  console.log(contactData);
   useEffect(() => {
     fetchData();
   }, []);
