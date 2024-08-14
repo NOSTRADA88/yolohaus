@@ -1,5 +1,4 @@
-import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Link } from "react-router-dom";
 import { slug } from "../../constants";
 import { AboutHousesProps, DescriptionChild } from "../../interfaces";
@@ -29,10 +28,7 @@ const AboutHouses = ({ details }: AboutHousesProps) => {
       })}
       <div className=" bg-lightwhite p-5 w-60 max-md:w-full mt-10">
         <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
-          <FontAwesomeIcon
-            icon={faArrowLeftLong}
-            className="text-orange arrow-icon"
-          />
+          <p className="text-orange  rotate-180"> ➜ </p>
           <Link
             to={`${slug.projects}`}
             className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"

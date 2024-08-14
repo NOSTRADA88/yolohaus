@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-
 interface SortProps {
   sortBy: "popularity" | "area" | "price" | null;
   sortDirection: "asc" | "desc";
@@ -65,12 +62,12 @@ const Sort = ({
             ))}
         </p>
         {sortBy && (
-          <FontAwesomeIcon
+          <p
+            className="font-museo text-base  font-bold cursor-pointer text-maingray transition-all duration-300 hover:text-orange"
             onClick={resetSort}
-            icon={faTimes}
-            size="2x"
-            className="font-museo text-sm cursor-pointer mt-[3px] text-maingray transition-all duration-300 hover:text-orange"
-          />
+          >
+            &times;
+          </p>
         )}
       </div>
     </div>

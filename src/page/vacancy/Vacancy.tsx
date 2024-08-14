@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData } from "../../api";
 import { ActiveVacancies, Switch } from "../../components/vacancy";
 import { ContactBanner } from "../../sections/banner";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-import {fetchVacancyPage} from "../../api/vacancy";
+import { fetchVacancyPage } from "../../api/vacancy";
 
 interface ListItem {
   type: string;
@@ -46,7 +45,6 @@ const Vacancy = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    titleAbout: "",
     vacancies: [] as Vacancies[],
   });
 
@@ -56,13 +54,10 @@ const Vacancy = () => {
     const fetchData = async () => {
       try {
         const response = await fetchVacancyPage();
-        const aboutData = await fetchAboutData();
-
         setData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          titleAbout: aboutData.Title,
           vacancies: response.Vacancies.data,
         });
       } catch (error) {
@@ -72,7 +67,7 @@ const Vacancy = () => {
     fetchData();
   }, []);
 
-  const breadcrumbItems = [{ title: data.titleAbout, slug: slug.about }];
+  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
   return (
     <div>

@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { photoContact } from "../../assets";
 import { formatPhoneNumber } from "../../constants";
 import { ContactInfoProps } from "../../interfaces";
@@ -84,10 +82,7 @@ const ContactInfo = ({
             >
               Посмотреть на карте{" "}
             </a>
-            <FontAwesomeIcon
-              icon={faArrowRightLong}
-              className="text-orange arrow-icon"
-            />
+            <p className="text-orange arrow-icon"> ➜ </p>
           </div>
         </div>
         <div>

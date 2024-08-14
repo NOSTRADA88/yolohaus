@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
 import { Modal } from "../../sections/modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { OptionsHousesProps } from "../../interfaces";
 import { formatPrice, getMinPrice } from "../../constants";
 
@@ -242,10 +240,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
                 >
                   Подробнее
                 </a>
-                <FontAwesomeIcon
-                  icon={faArrowRightLong}
-                  className="text-orange arrow-icon"
-                />
+                <p className="text-orange arrow-icon"> ➜ </p>
               </div>
             </div>
           </>

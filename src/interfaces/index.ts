@@ -34,12 +34,7 @@ export interface YouTubeData {
   };
 }
 
-export type MediaItem = PhotoMediaItem | VideoMediaItem;
-
-export interface PhotoMediaItem {
-  type: "photo";
-  url: string;
-}
+export type MediaItem = Photo | VideoMediaItem;
 
 export interface VideoMediaItem {
   type: "video";
@@ -49,10 +44,11 @@ export interface VideoMediaItem {
 }
 
 export interface Photo {
+  type: "photo";
   url: string;
   name: string;
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
 }
 
 // Home Page
@@ -179,6 +175,11 @@ export interface FooterHeader {
   phoneNumber: string;
 }
 
+export interface HeaderProps {
+  header?: FooterHeader;
+  footer?: FooterHeader;
+}
+
 // Phone Number
 
 export interface formatPhoneNumberProps {
@@ -216,10 +217,9 @@ export interface CardDescriptionListItem {
 
 export interface CardDescriptionList {
   type: "list";
-  format: "unordered";
+  format: "unordered" | "ordered";
   children: CardDescriptionListItem[];
 }
-
 export interface CardDescriptionParagraph {
   type: "paragraph";
   children: CardDescriptionText[];
@@ -249,9 +249,11 @@ export type CardDescription =
   | CardDescriptionImage;
 
 export interface Post {
+  metaTile: string;
+  metaDescription: string;
+  slug?: string;
   title: string;
   text: CardDescription[];
-  slug: string;
   photo: Photo[];
 }
 
@@ -260,7 +262,6 @@ export interface BlogsData {
   metaDescription: string;
   title: string;
   titleBlog?: string;
-  titleAbout: string;
   posts: Post[];
 }
 

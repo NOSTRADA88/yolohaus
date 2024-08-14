@@ -1,6 +1,4 @@
 import { API_URL, formatPhoneNumber } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { EmployeeCardProps } from "../../interfaces";
 
 const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
@@ -39,24 +37,14 @@ const EmployeeCard = ({ employees = [] }: EmployeeCardProps) => {
                     className=" font-museo font-light text-sm leading-5 text-maingray 
                         hover:text-orange cursor-pointer transition-all duration-300"
                   >
-                    <span className="mr-2">
-                      <FontAwesomeIcon
-                        icon={faPhone}
-                        className="text-orange arrow-icon"
-                      />
-                    </span>
+                    <span className="mr-2 text-orange"> ☎ </span>
                     {formatPhoneNumber(employee.attributes.PhoneNumber)}
                   </p>
                   <p
                     className=" font-museo font-light text-sm leading-5 text-maingray
                          hover:text-orange cursor-pointer transition-all duration-300"
                   >
-                    <span className="mr-2">
-                      <FontAwesomeIcon
-                        icon={faEnvelope}
-                        className="text-orange arrow-icon"
-                      />
-                    </span>
+                    <span className="mr-2 text-orange">✉︎</span>
                     {employee.attributes.email}
                   </p>
                 </div>

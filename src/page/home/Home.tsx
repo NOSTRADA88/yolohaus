@@ -63,9 +63,9 @@ const Home = () => {
                 title: project.attributes.Title,
                 slug: project.attributes.slug,
                 kits: project.attributes.Complectation.map((kit: any) => ({
-                  basePrice: kit.BasePrice,
-                  standardPrice: kit.StandartPrice,
-                  comfortPrice: kit.ComfortPrice,
+                  BasePrice: kit.BasePrice,
+                  StandardPrice: kit.StandartPrice,
+                  ComfortPrice: kit.ComfortPrice,
                 })),
                 parameters: {
                   houseArea: project.attributes.Parameters.HouseArea,

@@ -1,8 +1,6 @@
-import React, { useState, useEffect, lazy } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import SubmenuComponent from "./Submenu"
+import SubmenuComponent from "./Submenu";
 
 interface NavLink {
   href: string;
@@ -39,12 +37,10 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
             >
               <Link
                 to={link.href}
-                className="text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
+                className="text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider flex items-center justify-center"
               >
                 {link.label}
-                {link.submenu && (
-                  <FontAwesomeIcon icon={faChevronDown} className="ml-1 " />
-                )}
+                {link.submenu && <span className="ml-1 mb-1 font-bold">⌵</span>}
               </Link>
               {link.submenu && dropdownIndex === index && SubMenu && (
                 <SubMenu submenu={link.submenu} />

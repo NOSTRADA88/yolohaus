@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { fetchHomeData, fetchProjectsData } from "../../api";
-import { API_URL, getMinPrice, slug } from "../../constants";
+import { API_URL, formatPrice, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
@@ -134,8 +134,6 @@ const Projects = () => {
       setIsEndOfList(initialProjects.length >= sortedProjects.length);
     }
   };
-
-  const formatPrice = (price: number) => price.toLocaleString("ru-RU");
 
   const resetSort = () => {
     setSortBy(null);

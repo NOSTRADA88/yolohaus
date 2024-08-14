@@ -1,5 +1,3 @@
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProductionsListProps } from "../../interfaces";
 
 const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
@@ -13,6 +11,16 @@ const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
           <span className="font-museo font-meduim w-full text-xs leading-4 tracking-wider uppercase text-contact mb-2">
             адрес
           </span>
+          <h1>
+            <a
+              rel="noopener noreferrer"
+              href={`${item.attributes.yandexMapURL}`}
+              target="_blank"
+              className="font-museo font-light text-sm leading-5 text-maingray mb-3 hover:text-orange cursor-pointer transition-all duration-300"
+            >
+              {item.attributes.address}
+            </a>
+          </h1>
           <a
             rel="noopener noreferrer"
             href={`${item.attributes.yandexMapURL}`}
@@ -30,10 +38,7 @@ const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
             >
               Посмотреть на карте{" "}
             </a>
-            <FontAwesomeIcon
-              icon={faArrowRightLong}
-              className="text-orange arrow-icon"
-            />
+            <p className="text-orange arrow-icon"> ➜ </p>
           </div>
         </div>
       ))}

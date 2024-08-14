@@ -23,6 +23,7 @@
     "react-hook-form": "^7.52.1",
     "react-input-mask": "^2.0.4",
     "react-lazyload": "^3.2.1",
+    "react-number-format": "^5.4.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",

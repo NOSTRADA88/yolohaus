@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { photoAbout } from "../../assets";
 import { AboutProps } from "../../interfaces";
@@ -13,6 +11,14 @@ const About = ({ title, information }: AboutProps) => {
       </h1>
       <div className="flex justify-between items-center">
         <div className="flex flex-col w-[60%] max-[1111px]:w-full">
+          <div className=" bg-lightwhite p-5 mt-12">
+            <div className="flex items-center">
+              <p className="font-light text-xl font-museo leading-normal text-justify">
+                «YOLO HAUS» – строительная компания, которая создает комфортную
+                загородную жизнь.
+              </p>
+            </div>
+          </div>
           {information?.map((info, index) => (
             <div
               key={index}
@@ -32,7 +38,7 @@ const About = ({ title, information }: AboutProps) => {
               ))}
             </div>
           ))}
-          <div className=" bg-lightwhite mt-8 p-5">
+          <div className=" bg-lightwhite mt-6 p-5">
             <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
               <Link
                 to={slug.about}
@@ -40,15 +46,12 @@ const About = ({ title, information }: AboutProps) => {
               >
                 УЗНАТЬ БОЛЬШЕ{" "}
               </Link>
-              <FontAwesomeIcon
-                icon={faArrowRightLong}
-                className="text-orange arrow-icon"
-              />
+              <p className="text-orange arrow-icon"> ➜ </p>
             </div>
           </div>
         </div>
-        <div className="mt-6 max-[1111px]:hidden">
-          <img src={photoAbout} alt="photoAbout" className="" />
+        <div className="mt-12 max-[1111px]:hidden">
+          <img src={photoAbout} alt="photoAbout" className="h-[350px]" />
         </div>
       </div>
     </div>

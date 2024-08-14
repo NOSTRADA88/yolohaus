@@ -1,11 +1,9 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import InputMask from "react-input-mask";
+import { PatternFormat } from "react-number-format";
 import axios from "axios";
-import { fetchPrivacyPolicyPage } from "../../api";
 import { Link } from "react-router-dom";
+import { slug } from "../../constants";
 
 interface ModalProps {
   closeModal: () => void;
@@ -14,7 +12,6 @@ interface ModalProps {
 const Modal = ({ closeModal }: ModalProps) => {
   const [, setErrors] = useState<{ [key: string]: string[] }>({});
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [slugPrivacy, setSlugPrivacy] = useState<string>("");
 
   const {
     register,
@@ -104,19 +101,6 @@ const Modal = ({ closeModal }: ModalProps) => {
     };
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const privacyData = await fetchPrivacyPolicyPage();
-      setSlugPrivacy(privacyData.slug);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[30%] max-md:w-full max-2xl:w-[50%] max-xl:w-[70%] bg-white p-10 max-xl:mx-16 max-md:mx-12 max-sm:mx-4 relative">
@@ -124,10 +108,7 @@ const Modal = ({ closeModal }: ModalProps) => {
           className="absolute top-2 right-2 text-black text-2xl font-montserrat cursor-pointer"
           onClick={closeModal}
         >
-          <FontAwesomeIcon
-            icon={faTimes}
-            className="text-maingray font-light"
-          />
+          <p className="text-maingray font-bold  text-[35px]">⨯ </p>
         </button>
         <div className="flex flex-col items-center">
           <h1 className="font-museo text-[24px] font-bold text-maingray ">
@@ -147,11 +128,16 @@ const Modal = ({ closeModal }: ModalProps) => {
                     {formErrors.name?.message as string}
                   </div>
                 )}
-                <InputMask
-                  mask="+7 (999) 999-99-99"
+
+                <PatternFormat
+                  format="+7 (###) ###-##-##"
+                  allowEmptyFormatting
+                  mask="_"
                   className="w-full h-10 pl-2 font-museo text-xs font-light text-center text-maingray border-[1px] border-orange"
                   placeholder="Телефон"
-                  {...register("phone", { required: "Введите ваш телефон" })}
+                  onValueChange={(values) => {
+                    setValue("phone", values.value);
+                  }}
                 />
                 {formErrors.phone && (
                   <div className="text-red-400 font-museo text-xs font-light text-center">
@@ -206,10 +192,7 @@ const Modal = ({ closeModal }: ModalProps) => {
                           onClick={() => handleRemoveFile(index)}
                           className="ml-2 text-red-500"
                         >
-                          <FontAwesomeIcon
-                            icon={faTimes}
-                            className="text-red-500 font-light text-base"
-                          />
+                          <p className="text-red-500 font-light text-lg">⨯ </p>
                         </button>
                       </div>
                     ))}
@@ -241,7 +224,7 @@ const Modal = ({ closeModal }: ModalProps) => {
               <br />{" "}
               <Link
                 className="underline cursor-pointer "
-                to={`/${slugPrivacy}`}
+                to={`${slug.privacy}`}
               >
                 {" "}
                 персональных данных{" "}

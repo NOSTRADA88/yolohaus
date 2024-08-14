@@ -69,7 +69,7 @@ export const getMinPrice = (kits: Complectation[]): number => {
     Math.min(
       parsePrice(kit.BasePrice),
       parsePrice(kit.StandardPrice),
-      parsePrice(kit.StandardPrice)
+      parsePrice(kit.ComfortPrice)
     )
   );
   return Math.min(...prices);

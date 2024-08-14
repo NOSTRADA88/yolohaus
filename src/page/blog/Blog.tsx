@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData } from "../../api";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import {
   BlogsData,
@@ -12,14 +9,13 @@ import {
   CardDescriptionParagraph,
   CardDescriptionText,
 } from "../../interfaces";
-import {fetchBlogPage} from "../../api/blog";
+import { fetchBlogPage } from "../../api/blog";
 
 const Blog = () => {
   const [blogData, setBlogData] = useState<BlogsData>({
     metaTitle: "",
     metaDescription: "",
     title: "",
-    titleAbout: "",
     posts: [],
   });
 
@@ -27,14 +23,12 @@ const Blog = () => {
     const fetchBlog = async () => {
       try {
         const response = await fetchBlogPage();
-        // убрать либо использовать useQuery для этого фетча
-        const aboutData = await fetchAboutData();
+
         setBlogData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
           // Делать дорогостоящий запрос для тайтла ?? нужно переделать
-          titleAbout: aboutData.Title,
           posts: response.posts_list.data.map((post: any) => ({
             title: post.attributes.Title,
             text: post.attributes.BlogText,
@@ -49,10 +43,8 @@ const Blog = () => {
         console.error("Ошибка запроса:", error);
       }
     };
-    fetchBlog()
+    fetchBlog();
   }, []);
-
-  console.log(blogData);
 
   const truncateText = (text: string | undefined, limit: number) => {
     if (!text) return "";
@@ -78,7 +70,7 @@ const Blog = () => {
     return text + (paragraphs.length > 1 ? "..." : "");
   };
 
-  const breadcrumbItems = [{ title: blogData.titleAbout, slug: slug.about }];
+  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
   return (
     <div>
@@ -124,10 +116,7 @@ const Blog = () => {
                         >
                           Подробнее{" "}
                         </Link>
-                        <FontAwesomeIcon
-                          icon={faArrowRightLong}
-                          className="text-orange arrow-icon"
-                        />
+                        <p className="text-orange arrow-icon"> ➜ </p>
                       </div>
                     </div>
                   </div>

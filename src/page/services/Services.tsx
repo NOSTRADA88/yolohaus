@@ -1,12 +1,9 @@
-import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {fetchServicesPage} from "../../api/services";
+import { fetchServicesPage } from "../../api/services";
 
 interface DescriptionText {
   type: string;
@@ -56,7 +53,6 @@ interface ServicesData {
   metaDescription: string;
   title: string;
   services: Service[];
-  titleAbout: string;
 }
 
 const Services = () => {
@@ -68,14 +64,11 @@ const Services = () => {
     queryKey: ["services"],
     queryFn: async () => {
       const servicesDataResponse = await fetchServicesPage();
-      const aboutData = await fetchAboutData();
-
       return {
         metaTitle: servicesDataResponse.Metadata.MetaTitle,
         metaDescription: servicesDataResponse.Metadata.MetaDescription,
         title: servicesDataResponse.Title,
         services: servicesDataResponse.Services.data,
-        titleAbout: aboutData.Title,
       };
     },
   });
@@ -91,9 +84,7 @@ const Services = () => {
   if (!servicesData) {
     return null;
   }
-  const breadcrumbItems = [
-    { title: servicesData.titleAbout, slug: slug.about },
-  ];
+  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
   return (
     <div>
@@ -140,10 +131,7 @@ const Services = () => {
                     >
                       {service.attributes.Title}
                     </Link>
-                    <FontAwesomeIcon
-                      icon={faArrowRightLong}
-                      className="text-orange arrow-icon"
-                    />
+                    <p className="text-orange arrow-icon"> ➜ </p>
                   </div>
                 </div>
               </div>

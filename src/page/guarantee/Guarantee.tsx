@@ -5,7 +5,7 @@ import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import { AboutPagesData } from "../../interfaces";
-import {fetchGuaranteePage} from "../../api/guarantee";
+import { fetchGuaranteePage } from "../../api/guarantee";
 
 const Guarantee = () => {
   const [guaranteeData, setGuaranteeData] = useState<AboutPagesData>({
@@ -23,13 +23,10 @@ const Guarantee = () => {
     const fetchData = async () => {
       try {
         const response = await fetchGuaranteePage();
-        const aboutDataResponse = await fetchAboutData();
-
         setGuaranteeData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          titleAbout: aboutDataResponse.Title,
           titleMini: response.Information[0].Title,
           description: response.Information[0].Description,
           titleMiniTwo: response.Information[1].Title,
@@ -42,9 +39,7 @@ const Guarantee = () => {
     fetchData();
   }, []);
 
-  const breadcrumbItems = [
-    { title: guaranteeData.titleAbout, slug: slug.guarantee },
-  ];
+  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
   return (
     <div>

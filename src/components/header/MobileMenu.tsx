@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { Link } from "react-router-dom";
 import { memo } from "react";
 import { LogoMainBlack } from "../../assets";
@@ -23,11 +21,7 @@ const MobileMenu = memo(({ isOpen, onClose }: MobileMenuProps) => {
         className="absolute top-4 right-4 text-maingray text-2xl max-[440px]:right-1 max-[350px]:right-0 max-[440px]:text-base  max-[440px]:top-5"
         aria-label="Close"
       >
-        <FontAwesomeIcon
-          icon={faTimes}
-          size="2x"
-          className="text-maingray font-light"
-        />
+        <p className="text-maingray font-bold  text-[35px]">⨯ </p>
       </button>
       <div className="flex justify-center items-center flex-col mt-5 gap-5">
         <a href="/">

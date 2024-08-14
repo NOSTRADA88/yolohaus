@@ -1,5 +1,3 @@
-import { faArrowUpLong } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
 const ScrollUp = () => {
@@ -33,7 +31,7 @@ const ScrollUp = () => {
             className="transition-all duration-300 p-1 bg-orange rounded-full hover:bg-orange-dark"
           >
             <div className="rounded-full bg-orange w-10 h-10 flex items-center justify-center border-white border-2">
-              <FontAwesomeIcon icon={faArrowUpLong} className="text-white" />
+              <p className="text-white arrow-icon "> ⭡ </p>
             </div>
           </button>
         </div>

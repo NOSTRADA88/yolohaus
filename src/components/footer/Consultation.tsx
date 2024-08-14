@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ConsultationPhoto } from "../../assets";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
-import InputMask from "react-input-mask";
+import { PatternFormat } from "react-number-format";
 import { Link, useLocation } from "react-router-dom";
 import { slug } from "../../constants";
 
@@ -101,11 +101,15 @@ const Consultation = () => {
                     )}
                   </div>
                   <div className="flex-grow ml-4">
-                    <InputMask
-                      mask="+7 (999) 999-99-99"
+                    <PatternFormat
+                      format="+7 (###) ###-##-##"
+                      allowEmptyFormatting
+                      mask="_"
                       className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
                       placeholder="Телефон"
-                      {...register("phone")}
+                      onValueChange={(values) => {
+                        setValue("phone", values.value);
+                      }}
                     />
                     {formErrors.phone && (
                       <div className="text-red-600 font-museo text-xs font-light text-center">

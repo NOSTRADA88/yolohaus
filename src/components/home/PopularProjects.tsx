@@ -1,6 +1,4 @@
 import { API_URL, formatPrice, getMinPrice } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
@@ -23,10 +21,7 @@ const PopularProjects = ({
             >
               Все проекты{" "}
             </Link>
-            <FontAwesomeIcon
-              icon={faArrowRightLong}
-              className="text-orange arrow-icon"
-            />
+            <p className="text-orange arrow-icon"> ➜ </p>
           </div>
         </div>
       </div>

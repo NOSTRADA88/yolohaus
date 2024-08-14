@@ -1,42 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../../components/header";
-import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "../modal";
 import { Link } from "react-router-dom";
-import { FooterHeader } from "../../interfaces";
+import { HeaderProps } from "../../interfaces";
 import { navLinks } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
 import { LogoMainBlack } from "../../assets";
 
-const Header = () => {
-  const [header, setHeader] = useState<FooterHeader>();
-
+const Header = ({ header }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  useEffect(() => {
-    const fetchHeader = async () => {
-      try {
-        const fetchHeader = await fetchHeaderFooterData();
-        setHeader({
-          info: fetchHeader.HeaderInfo,
-          phoneNumber: fetchHeader.Phone.Number,
-          socials: fetchHeader.Socials.data.map((social: any) => ({
-            url: social.attributes.URL,
-            photo: {
-              name: social.attributes.Photo.data.attributes.name,
-              url: social.attributes.Photo.data.attributes.url,
-            },
-          })),
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchHeader();
-  }, []);
 
   const openModal = useCallback(() => {
     setIsModalOpen(true);
@@ -63,11 +37,7 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Menu"
             >
-              <FontAwesomeIcon
-                icon={mobileMenuOpen ? faTimes : faBars}
-                size="2x"
-                className="text-maingray font-light"
-              />
+              <p className="text-maingray font-bold text-3xl"> ☰ </p>
             </button>
           </div>
           <Link to="/">

@@ -1,38 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchHeaderFooterData } from "../../api/footer&header";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
-import { FooterHeader } from "../../interfaces";
 import { navLinks, slug } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
 import { LogoMainWhite } from "../../assets";
+import { HeaderProps } from "../../interfaces";
 
-const Footer = () => {
-  const [footer, setFooter] = useState<FooterHeader>();
+const Footer = ({ footer }: HeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchHeader = async () => {
-      try {
-        const fetchHeader = await fetchHeaderFooterData();
-        setFooter({
-          info: fetchHeader.HeaderInfo,
-          phoneNumber: fetchHeader.Phone.Number,
-          socials: fetchHeader.Socials.data.map((social: any) => ({
-            url: social.attributes.URL,
-            photo: {
-              name: social.attributes.Photo.data.attributes.name,
-              url: social.attributes.Photo.data.attributes.url
-            }})),
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchHeader();
-  }, []);
-
   return (
     <div>
       <div className="bg-maingray p-8">

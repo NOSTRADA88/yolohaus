@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { MortgageMainProps } from "../../interfaces";
@@ -39,10 +37,7 @@ const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
           >
             Подробнее{" "}
           </Link>
-          <FontAwesomeIcon
-            icon={faArrowRightLong}
-            className="text-orange arrow-icon"
-          />
+          <p className="text-orange arrow-icon"> ➜ </p>
         </div>
       </div>
     </div>

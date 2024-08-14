@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeftLong,
-  faArrowRightLong,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { Youtube } from "../../assets";
 import {
   MediaItem,
-  PhotoMediaItem,
+  Photo,
   SliderHousesProps,
   VideoMediaItem,
   YouTubeData,
@@ -16,12 +12,13 @@ import {
 
 const SliderHouses = ({ details }: SliderHousesProps) => {
   const mediaItems: MediaItem[] = details.flatMap((detail) => {
-    const photos: PhotoMediaItem[] = detail.attributes.Photos.data.map(
-      (photo) => ({
-        type: "photo",
-        url: photo.url,
-      })
-    );
+    const photos: Photo[] = detail.attributes.Photos.data.map((photo) => ({
+      type: "photo",
+      url: photo.url,
+      name: photo.name,
+      width: photo.width,
+      height: photo.height,
+    }));
 
     const youTubeData: YouTubeData | null = detail.attributes.YouTube
       ? JSON.parse(detail.attributes.YouTube)
@@ -139,20 +136,14 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
           aria-label="Left"
         >
-          <FontAwesomeIcon
-            icon={faArrowLeftLong}
-            className="text-orange arrow-icon"
-          />
+          <p className="text-orange arrow-icon rotate-180"> ➜ </p>
         </button>
         <button
           onClick={handleNextClick}
           className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
           aria-label="Right"
         >
-          <FontAwesomeIcon
-            icon={faArrowRightLong}
-            className="text-orange arrow-icon"
-          />
+          <p className="text-orange arrow-icon"> ➜ </p>
         </button>
         <div className="flex justify-center absolute bottom-4 left-0 right-0">
           {mediaItems.map((_, index) => (
@@ -184,19 +175,13 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
             onClick={handlePrevClick}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
           >
-            <FontAwesomeIcon
-              icon={faArrowLeftLong}
-              className="text-orange arrow-icon"
-            />
+            <p className="text-orange arrow-icon rotate-180"> ➜ </p>
           </button>
           <button
             onClick={handleNextClick}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#F8F8F8] bg-opacity-80 p-2 hover:bg-opacity-100 transition-all duration-300"
           >
-            <FontAwesomeIcon
-              icon={faArrowRightLong}
-              className="text-orange arrow-icon"
-            />
+            <p className="text-orange arrow-icon"> ➜ </p>
           </button>
           {mediaItems[activeMediaIndex].type === "photo" ? (
             <img
