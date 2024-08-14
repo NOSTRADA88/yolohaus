@@ -3,41 +3,8 @@ import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Modal } from "../../sections/modal";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {fetchStocksPage} from "../../api/stocks";
-
-interface StockItem {
-  id: number;
-  attributes: {
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-    PromotionTime: string;
-    ShortTitle: string;
-    LongTitle: string;
-    Price: string;
-    Description: { type: string; children: { text: string; type: string }[] }[];
-    Photo: {
-      data: {
-        id: number;
-        attributes: {
-          name: string;
-          formats: {
-            large: {
-              url: string;
-            };
-          };
-        };
-      };
-    };
-  };
-}
-
-interface StocksData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  stock_list: { data: StockItem[] };
-}
+import { fetchStocksPage } from "../../api/stocks";
+import { StockItem, StocksData } from "../../interfaces";
 
 const Stocks = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,7 +12,7 @@ const Stocks = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    stock_list: { data: [] },
+    stock_list: [] as StockItem[],
   });
   const [visibleStocks, setVisibleStocks] = useState<StockItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,15 +24,29 @@ const Stocks = () => {
     const fetchData = async () => {
       try {
         const response = await fetchStocksPage();
+        console.log(response);
         setStocksData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          stock_list: response.stock_list,
+          stock_list: response.stock_list.data.map((stock: any) => ({
+            promotionTime: stock.attributes.PromotionTime,
+            shortTitle: stock.attributes.ShortTitle,
+            longTitle: stock.attributes.LongTitle,
+            price: stock.attributes.Price,
+            description: stock.attributes.Description.map((desc: any) => ({
+              children: desc.children.map((child: any) => ({
+                text: child.text,
+                type: child.type,
+              })),
+            })),
+            photo: {
+              name: stock.attributes.Photo.data.attributes.name,
+              url: stock.attributes.Photo.data.attributes.url,
+            },
+          })),
         });
-        setVisibleStocks(
-            response.stock_list.data.slice(0, stocksPerPage)
-        );
+        setVisibleStocks(response.stock_list.data.slice(0, stocksPerPage));
         if (response.stock_list.data.length <= stocksPerPage) {
           setIsEndOfList(true);
         }
@@ -76,24 +57,25 @@ const Stocks = () => {
     fetchData();
   }, []);
 
+  console.log(stocksData);
   const loadMoreStocks = useCallback(() => {
     if (isEndOfList) return;
 
     const nextPage = currentPage + 1;
     const startIndex = (nextPage - 1) * stocksPerPage;
     const endIndex = startIndex + stocksPerPage;
-    const newStocks = stocksData.stock_list.data.slice(startIndex, endIndex);
+    const newStocks = stocksData.stock_list.slice(startIndex, endIndex);
 
     if (newStocks.length > 0) {
       setVisibleStocks((prevStocks) => [...prevStocks, ...newStocks]);
       setCurrentPage(nextPage);
-      if (endIndex >= stocksData.stock_list.data.length) {
+      if (endIndex >= stocksData.stock_list.length) {
         setIsEndOfList(true);
       }
     } else {
       setIsEndOfList(true);
     }
-  }, [currentPage, stocksData.stock_list.data, stocksPerPage, isEndOfList]);
+  }, [currentPage, stocksData.stock_list, stocksPerPage, isEndOfList]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -135,19 +117,19 @@ const Stocks = () => {
 
         <div className="mt-10">
           {visibleStocks.map((stock) => (
-            <div key={stock.id} className="mb-8">
+            <div className="mb-8">
               <div className="flex justify-between bg-lightwhite p-5 mt-16 max-sm:flex-col max-sm:mt-10">
                 <h2 className="text-xl font-medium font-museo text-maingray ">
-                  {stock.attributes.ShortTitle}
+                  {stock.shortTitle}
                 </h2>
                 <p className="text-orange font-medium font-museo text-sm ">
-                  {stock.attributes.PromotionTime}
+                  {stock.promotionTime}
                 </p>
               </div>
               <div className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col">
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[300px]">
                   <img
-                    src={`${API_URL}${stock.attributes.Photo.data.attributes.formats.large.url}`}
+                    src={`${API_URL}${stock.photo.url}`}
                     alt="Stock"
                     className="w-full h-[300px] object-cover object-center"
                   />
@@ -161,11 +143,11 @@ const Stocks = () => {
                 <div className="flex flex-col w-full justify-between p-3 mt-4">
                   <div>
                     <p className="text-orange font-bold font-museo text-xl max-sm:text-lg">
-                      {stock.attributes.LongTitle}
+                      {stock.longTitle}
                     </p>
                     <div className="bg-lightwhite p-5 mt-5">
                       <p className="text-base font-light font-museo text-maingray text-justify">
-                        {stock.attributes.Description.map((desc, index) => (
+                        {stock.description.map((desc, index) => (
                           <span key={index}>{desc.children[0].text}</span>
                         ))}
                       </p>
@@ -179,7 +161,7 @@ const Stocks = () => {
                         onClick={openModal}
                       >
                         <p className="text-xs font-museo font-medium uppercase tracking-wider noparallelogram">
-                          {stock.attributes.Price}
+                          {stock.price}
                         </p>
                       </div>
                     </div>

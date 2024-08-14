@@ -470,12 +470,12 @@ export interface ReviewsData {
 // Stocks Page
 
 export interface StockItem {
-  PromotionTime: string;
-  ShortTitle: string;
-  LongTitle: string;
-  Price: string;
-  Description: Description[];
-  Photo: Photo;
+  promotionTime: string;
+  shortTitle: string;
+  longTitle: string;
+  price: string;
+  description: Description[];
+  photo: Photo;
 }
 
 export interface StocksData {
