@@ -105,7 +105,6 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
     fetchData();
   }, [blogSlug]);
 
-  console.log(postData);
   function convertDescriptionToElements(
     description: CardDescription[]
   ): React.ReactNode[] {

@@ -3,14 +3,14 @@ import { formatPhoneNumber } from "../../constants";
 import { ContactInfoProps } from "../../interfaces";
 
 const ContactInfo = ({
-  titleMini = "",
-  description = [],
-  address = "",
-  urlAddressOffice = "",
-  phone = "",
-  email = "",
-  weekdays = "",
-  weekends = "",
+  titleMini,
+  description,
+  address,
+  urlAddressOffice,
+  phone,
+  email,
+  weekdays,
+  weekends,
 }: ContactInfoProps) => {
   return (
     <div className="flex mt-10 flex-col">

@@ -367,22 +367,14 @@ export interface AboutHousesProps {
 // Contact page
 
 export interface Employee {
-  id: number;
-  attributes: {
-    FullName: string;
-    Specialisation: string;
-    email: string;
-    PhoneNumber: string;
-    Photo: Photo;
-  };
+  fullName: string;
+  specialisation: string;
+  email: string;
+  phoneNumber: string;
+  photo: Photo;
 }
 
-export interface Production {
-  id: number;
-  attributes: ContactsMap;
-}
-
-export interface ContactData {
+export interface ContactPage {
   metaTitle: string;
   metaDescription: string;
   title: string;
@@ -394,7 +386,7 @@ export interface ContactData {
   urlAddressOffice: string;
   weekdays: string;
   weekends: string;
-  productions: Production[];
+  productions: ContactsMap[];
   employees: Employee[];
 }
 
@@ -410,7 +402,7 @@ export interface ContactInfoProps {
 }
 
 export interface ProductionsListProps {
-  productions: Production[];
+  productions: ContactsMap[];
 }
 
 export interface EmployeeCardProps {

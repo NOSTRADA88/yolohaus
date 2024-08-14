@@ -36,18 +36,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }, []);
 
   return (
+      // TODO почистить suspense
     <div>
-      <section>
-        <Header header={information} />
-      </section>
+      <Header header={information} />
       <Suspense>{children}</Suspense>
       <ScrollUp />
-      <section>
-        <Suspense>
-          <Consultation />
-          <Footer footer={information} />
-        </Suspense>
-      </section>
+      <Suspense>
+        <Consultation />
+        <Footer footer={information} />
+      </Suspense>
     </div>
   );
 };
