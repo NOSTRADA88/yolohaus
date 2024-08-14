@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
 import { photoAbout } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { AboutPagesData } from "../../interfaces";
+import { AboutPagesData, Description } from "../../interfaces";
+import { fetchAboutData } from "../../api/about";
 
 const AboutCompany = () => {
   const [aboutData, setAboutData] = useState<AboutPagesData>({
@@ -11,24 +11,38 @@ const AboutCompany = () => {
     metaDescription: "",
     title: "",
     titleMini: "",
-    description: [],
+    description: [] as Description[],
     titleMiniTwo: "",
-    descriptionTwo: [],
+    descriptionTwo: [] as Description[],
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const aboutDataResponse = await fetchAboutData();
+        const response = await fetchAboutData();
 
         setAboutData({
-          metaTitle: aboutDataResponse.Metadata.MetaTitle,
-          metaDescription: aboutDataResponse.Metadata.MetaDescription,
-          title: aboutDataResponse.Title,
-          titleMini: aboutDataResponse.About.Information[0].Title,
-          description: aboutDataResponse.About.Information[0].Description,
-          titleMiniTwo: aboutDataResponse.About.Information[1].Title,
-          descriptionTwo: aboutDataResponse.About.Information[1].Description,
+          metaTitle: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          titleMini: response.About.Information[0].Title,
+          description: response.About.Information[0].Description.map(
+            (desc: any) => ({
+              children: desc.children.map((child: any) => ({
+                text: child.text,
+                type: child.type,
+              })),
+            })
+          ),
+          titleMiniTwo: response.About.Information[1].Title,
+          descriptionTwo: response.About.Information[1].Description.map(
+            (desc: any) => ({
+              children: desc.children.map((child: any) => ({
+                text: child.text,
+                type: child.type,
+              })),
+            })
+          ),
         });
       } catch (error) {
         console.error("Ошибка запроса:", error);
@@ -37,6 +51,7 @@ const AboutCompany = () => {
     fetchData();
   }, []);
 
+  console.log(aboutData);
   return (
     <div>
       <Helmet>

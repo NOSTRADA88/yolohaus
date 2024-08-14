@@ -18,8 +18,6 @@ export const fetchHomeData = () =>
     "About.Photo,About.Information,Greetings.Photo,Metadata,Mortgage.Photos,Recommendations.List.Icon,Recommendations.List.BgPhoto,ContactsMap.WorkTime,PopularCottages.Projects.Photos,PopularCottages.projects.Parameters,PopularCottages.projects.Complectation"
   );
 
-export const fetchAboutData = () =>
-  fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");
 
 export const fetchProjectsData = () =>
   fetchData(

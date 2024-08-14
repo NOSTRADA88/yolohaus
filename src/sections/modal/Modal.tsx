@@ -223,6 +223,7 @@ const Modal = ({ closeModal }: ModalProps) => {
               Отправляя форму, я даю согласие на обработку
               <br />{" "}
               <Link
+                onClick={closeModal}
                 className="underline cursor-pointer "
                 to={`${slug.privacy}`}
               >

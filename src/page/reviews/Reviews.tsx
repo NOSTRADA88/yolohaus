@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { fetchAboutData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
@@ -11,8 +10,6 @@ const Reviews = () => {
     metaTitle: "",
     metaDescription: "",
     title: "",
-    titleAbout: "",
-    slugAbout: "",
     reviews: [],
   });
 
@@ -20,15 +17,10 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetchReviewsPage();
-        // убрать либо использовать useQuery для этого фетча
-        const aboutResponse = await fetchAboutData();
         setReviewsData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          // Опять запрос ради слага и тайтла. Переделать
-          titleAbout: aboutResponse.Title,
-          slugAbout: aboutResponse.slug,
           reviews: response.spisok_otzyvovs.data.map((review: any) => ({
             url: review.attributes.URL,
             title: review.attributes.Title,

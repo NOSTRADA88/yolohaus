@@ -28,7 +28,6 @@ const Blog = () => {
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
           title: response.Title,
-          // Делать дорогостоящий запрос для тайтла ?? нужно переделать
           posts: response.posts_list.data.map((post: any) => ({
             title: post.attributes.Title,
             text: post.attributes.BlogText,

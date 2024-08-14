@@ -13,7 +13,6 @@ export interface DescriptionChild {
 }
 
 export interface Description {
-  id: number;
   type: string;
   children: DescriptionChild[];
 }
@@ -465,7 +464,23 @@ export interface ReviewsData {
   metaTitle: string;
   metaDescription: string;
   title: string;
-  titleAbout: string;
-  slugAbout: string;
   reviews: Review[];
+}
+
+// Stocks Page
+
+export interface StockItem {
+  PromotionTime: string;
+  ShortTitle: string;
+  LongTitle: string;
+  Price: string;
+  Description: Description[];
+  Photo: Photo;
+}
+
+export interface StocksData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  stock_list: StockItem[];
 }
