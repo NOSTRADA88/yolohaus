@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPrivacyPolicyData } from "../../api";
+import { fetchPrivacyPolicyPage } from "../../api";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
@@ -16,22 +16,21 @@ const PrivacyPolicy = () => {
     }
   );
 
-  const fetchData = async () => {
-    try {
-      const privacyData = await fetchPrivacyPolicyData();
-      setPrivacyPolicyData({
-        metaTitle: privacyData.Metadata.MetaTitle,
-        metaDescription: privacyData.Metadata.MetaDescription,
-        title: privacyData.Title,
-        description: privacyData.Description,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+      const fetchPrivacyPolicy = async () => {
+          try {
+              const privacyData = await fetchPrivacyPolicyPage();
+              setPrivacyPolicyData({
+                  metaTitle: privacyData.Metadata.MetaTitle,
+                  metaDescription: privacyData.Metadata.MetaDescription,
+                  title: privacyData.Title,
+                  description: privacyData.Description,
+              });
+          } catch (error) {
+              console.error("Ошибка запроса:", error);
+          }
+      };
+      fetchPrivacyPolicy();
   }, []);
 
   const renderTextWithHighlights = (text: string) => {

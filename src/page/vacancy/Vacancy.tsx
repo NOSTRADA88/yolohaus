@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData, fetchVacancyData } from "../../api";
+import { fetchAboutData } from "../../api";
 import { ActiveVacancies, Switch } from "../../components/vacancy";
 import { ContactBanner } from "../../sections/banner";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
+import {fetchVacancyPage} from "../../api/vacancy";
 
 interface ListItem {
   type: string;
@@ -51,24 +52,23 @@ const Vacancy = () => {
 
   const [activeTab, setActiveTab] = useState<TabType>("activeVacancies");
 
-  const fetchData = async () => {
-    try {
-      const vacancyData = await fetchVacancyData();
-      const aboutData = await fetchAboutData();
-
-      setData({
-        metaTitle: vacancyData.Metadata.MetaTitle,
-        metaDescription: vacancyData.Metadata.MetaDescription,
-        title: vacancyData.Title,
-        titleAbout: aboutData.Title,
-        vacancies: vacancyData.Vacancies.data,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchVacancyPage();
+        const aboutData = await fetchAboutData();
+
+        setData({
+          metaTitle: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          titleAbout: aboutData.Title,
+          vacancies: response.Vacancies.data,
+        });
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
     fetchData();
   }, []);
 

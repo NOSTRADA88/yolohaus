@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { fetchStocksData } from "../../api";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Modal } from "../../sections/modal";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import {fetchStocksPage} from "../../api/stocks";
 
 interface StockItem {
   id: number;
@@ -53,27 +53,26 @@ const Stocks = () => {
   const [isEndOfList, setIsEndOfList] = useState(false);
   const stocksPerPage = 7;
 
-  const fetchData = async () => {
-    try {
-      const stocksDataResponse = await fetchStocksData();
-      setStocksData({
-        metaTitle: stocksDataResponse.Metadata.MetaTitle,
-        metaDescription: stocksDataResponse.Metadata.MetaDescription,
-        title: stocksDataResponse.Title,
-        stock_list: stocksDataResponse.stock_list,
-      });
-      setVisibleStocks(
-        stocksDataResponse.stock_list.data.slice(0, stocksPerPage)
-      );
-      if (stocksDataResponse.stock_list.data.length <= stocksPerPage) {
-        setIsEndOfList(true);
-      }
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchStocksPage();
+        setStocksData({
+          metaTitle: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          stock_list: response.stock_list,
+        });
+        setVisibleStocks(
+            response.stock_list.data.slice(0, stocksPerPage)
+        );
+        if (response.stock_list.data.length <= stocksPerPage) {
+          setIsEndOfList(true);
+        }
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
     fetchData();
   }, []);
 

@@ -21,15 +21,6 @@ export const fetchHomeData = () =>
 export const fetchAboutData = () =>
   fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");
 
-export const fetchReviewsData = () =>
-  fetchData("/api/otzyvy", "Metadata,spisok_otzyvovs.Photo");
-
-export const fetchGuaranteeData = () =>
-  fetchData("/api/garantiya", "Metadata,Information,Photo");
-
-export const fetchVacancyData = () =>
-  fetchData("/api/vakansii", "Metadata,Vacancies");
-
 export const fetchProjectsData = () =>
   fetchData(
     "/api/proekty",
@@ -42,9 +33,6 @@ export const fetchContactData = () =>
     "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions"
   );
 
-export const fetchServicesData = () =>
-  fetchData("/api/uslugi", "Metadata,Services.Photo");
-
 export const fetchServicesDetailsData = async (servicesSlug: string) => {
   const response = await axiosInstanse.get(
     `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
@@ -55,7 +43,7 @@ export const fetchServicesDetailsData = async (servicesSlug: string) => {
   throw new Error("no service data");
 };
 
-export const fetchPrivacyPolicyData = () =>
+export const fetchPrivacyPolicyPage = () =>
   fetchData("/api/politika-konfidenczialnosti", "Metadata");
 
 export const fetchBuiltHousesData = () =>
@@ -82,23 +70,4 @@ export const fetchProjectDetailData = async (projectsSlug: string) => {
     return response.data.data.attributes.ProjectsList;
   }
   throw new Error("no project data");
-};
-
-export const fetchStocksData = () =>
-  fetchData("/api/akczii", "stock_list.Photo,Metadata");
-
-export const fetchBlogData = () =>
-  fetchData("/api/blog", "posts_list.Media,Metadata");
-
-export const fetchMortgageData = () =>
-  fetchData("/api/ipoteka", "Metadata,banks_list.Photo,Photo");
-
-export const fetchBlogDetailData = async (blogSlug: string) => {
-  const response = await axiosInstanse.get(
-    `${API_URL}/api/blog?populate[posts_list][filters][slug][$eq]=${blogSlug}&populate[Metadata]=*&populate[posts_list][populate][Metadata]=*&populate[posts_list][populate][Media]=*`
-  );
-  if (response.status === 200) {
-    return response.data.data.attributes.posts_list;
-  }
-  throw new Error("no blog data");
 };

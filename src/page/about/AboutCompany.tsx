@@ -15,25 +15,25 @@ const AboutCompany = () => {
     titleMiniTwo: "",
     descriptionTwo: [],
   });
-  const fetchData = async () => {
-    try {
-      const aboutDataResponse = await fetchAboutData();
-
-      setAboutData({
-        metaTitle: aboutDataResponse.Metadata.MetaTitle,
-        metaDescription: aboutDataResponse.Metadata.MetaDescription,
-        title: aboutDataResponse.Title,
-        titleMini: aboutDataResponse.About.Information[0].Title,
-        description: aboutDataResponse.About.Information[0].Description,
-        titleMiniTwo: aboutDataResponse.About.Information[1].Title,
-        descriptionTwo: aboutDataResponse.About.Information[1].Description,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const aboutDataResponse = await fetchAboutData();
+
+        setAboutData({
+          metaTitle: aboutDataResponse.Metadata.MetaTitle,
+          metaDescription: aboutDataResponse.Metadata.MetaDescription,
+          title: aboutDataResponse.Title,
+          titleMini: aboutDataResponse.About.Information[0].Title,
+          description: aboutDataResponse.About.Information[0].Description,
+          titleMiniTwo: aboutDataResponse.About.Information[1].Title,
+          descriptionTwo: aboutDataResponse.About.Information[1].Description,
+        });
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
     fetchData();
   }, []);
 

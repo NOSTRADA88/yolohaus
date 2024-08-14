@@ -238,10 +238,7 @@ export interface CardDescriptionQuote {
 
 export interface CardDescriptionImage {
   type: "image";
-  image: {
-    url: string;
-    alternativeText: string;
-  };
+  photo: Photo;
 }
 
 export type CardDescription =
@@ -252,10 +249,10 @@ export type CardDescription =
   | CardDescriptionImage;
 
 export interface Post {
-  Title: string;
-  BlogText: CardDescription[];
+  title: string;
+  text: CardDescription[];
   slug: string;
-  Media: Photo[];
+  photo: Photo[];
 }
 
 export interface BlogsData {
@@ -264,7 +261,7 @@ export interface BlogsData {
   title: string;
   titleBlog?: string;
   titleAbout: string;
-  posts_list: Post[];
+  posts: Post[];
 }
 
 export interface BlogDetailProps {
@@ -456,15 +453,11 @@ export interface PrivacyPolicyData {
 }
 
 // Reviews Page
-interface ReviewAttributes {
-  Title: string;
-  URL: string;
-  Photo: Photo;
-}
 
 interface Review {
-  id: number;
-  attributes: ReviewAttributes;
+  title: string;
+  url: string;
+  photo: Photo;
 }
 
 export interface ReviewsData {

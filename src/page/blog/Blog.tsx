@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData, fetchBlogData } from "../../api";
+import { fetchAboutData } from "../../api";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,7 @@ import {
   CardDescriptionParagraph,
   CardDescriptionText,
 } from "../../interfaces";
+import {fetchBlogPage} from "../../api/blog";
 
 const Blog = () => {
   const [blogData, setBlogData] = useState<BlogsData>({
@@ -19,37 +20,36 @@ const Blog = () => {
     metaDescription: "",
     title: "",
     titleAbout: "",
-    posts_list: [],
+    posts: [],
   });
 
-  const fetchData = async () => {
-    try {
-      const blogsDataResponse = await fetchBlogData();
-      const aboutData = await fetchAboutData();
-
-      console.log(blogsDataResponse);
-      setBlogData({
-        metaTitle: blogsDataResponse.Metadata.MetaTitle,
-        metaDescription: blogsDataResponse.Metadata.MetaDescription,
-        title: blogsDataResponse.Title,
-        titleAbout: aboutData.Title,
-        posts_list: blogsDataResponse.posts_list.data.map((post: any) => ({
-          Title: post.attributes.Title,
-          BlogText: post.attributes.BlogText,
-          slug: post.attributes.slug,
-          Media: post.attributes.Media.data.map((photo: any) => ({
-            name: photo.attributes.name,
-            url: photo.attributes.url,
-          })),
-        })),
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    const fetchBlog = async () => {
+      try {
+        const response = await fetchBlogPage();
+        // убрать либо использовать useQuery для этого фетча
+        const aboutData = await fetchAboutData();
+        setBlogData({
+          metaTitle: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          // Делать дорогостоящий запрос для тайтла ?? нужно переделать
+          titleAbout: aboutData.Title,
+          posts: response.posts_list.data.map((post: any) => ({
+            title: post.attributes.Title,
+            text: post.attributes.BlogText,
+            slug: post.attributes.slug,
+            photo: post.attributes.Media.data.map((photo: any) => ({
+              name: photo.attributes.name,
+              url: photo.attributes.url,
+            })),
+          })),
+        });
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
+    fetchBlog()
   }, []);
 
   console.log(blogData);
@@ -89,7 +89,7 @@ const Blog = () => {
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
-          {blogData.posts_list.map((post) => (
+          {blogData.posts.map((post) => (
             <div className="mb-8">
               <Link
                 to={`${slug.blog}/${post.slug}`}
@@ -97,7 +97,7 @@ const Blog = () => {
               >
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
                   <img
-                    src={`${API_URL}${post.Media[0].url}`}
+                    src={`${API_URL}${post.photo[0].url}`}
                     alt="Stock"
                     className="w-full h-[250px] object-cover object-center"
                   />
@@ -111,11 +111,11 @@ const Blog = () => {
                 <div className="flex flex-col w-full justify-between p-[10px] mt-4 cursor-pointer group">
                   <div>
                     <p className="text-maingray font-bold font-museo text-2xl max-sm:text-lg group-hover:text-orange">
-                      {post.Title}
+                      {post.title}
                     </p>
                     <div className="mt-5">
                       <p className="text-base font-light font-museo text-maingray text-justify">
-                        {getFirstTwoParagraphsText(post.BlogText)}
+                        {getFirstTwoParagraphsText(post.text)}
                       </p>
                       <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container">
                         <Link

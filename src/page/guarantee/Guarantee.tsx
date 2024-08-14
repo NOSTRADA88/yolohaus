@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAboutData, fetchGuaranteeData } from "../../api";
+import { fetchAboutData } from "../../api";
 import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import { AboutPagesData } from "../../interfaces";
+import {fetchGuaranteePage} from "../../api/guarantee";
 
 const Guarantee = () => {
   const [guaranteeData, setGuaranteeData] = useState<AboutPagesData>({
@@ -18,27 +19,26 @@ const Guarantee = () => {
     descriptionTwo: [],
   });
 
-  const fetchData = async () => {
-    try {
-      const guaranteeDataResponse = await fetchGuaranteeData();
-      const aboutDataResponse = await fetchAboutData();
-
-      setGuaranteeData({
-        metaTitle: guaranteeDataResponse.Metadata.MetaTitle,
-        metaDescription: guaranteeDataResponse.Metadata.MetaDescription,
-        title: guaranteeDataResponse.Title,
-        titleAbout: aboutDataResponse.Title,
-        titleMini: guaranteeDataResponse.Information[0].Title,
-        description: guaranteeDataResponse.Information[0].Description,
-        titleMiniTwo: guaranteeDataResponse.Information[1].Title,
-        descriptionTwo: guaranteeDataResponse.Information[1].Description,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchGuaranteePage();
+        const aboutDataResponse = await fetchAboutData();
+
+        setGuaranteeData({
+          metaTitle: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          titleAbout: aboutDataResponse.Title,
+          titleMini: response.Information[0].Title,
+          description: response.Information[0].Description,
+          titleMiniTwo: response.Information[1].Title,
+          descriptionTwo: response.Information[1].Description,
+        });
+      } catch (error) {
+        console.error("Ошибка запроса:", error);
+      }
+    };
     fetchData();
   }, []);
 

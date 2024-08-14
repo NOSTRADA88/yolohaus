@@ -1,10 +1,10 @@
 import { lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchMortgageData } from "../../api";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { MortgageData } from "../../interfaces";
+import {fetchMortgagePage} from "../../api/mortgage";
 
 const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
@@ -52,14 +52,14 @@ const MortgageAbout = () => {
 
   const fetchData = async () => {
     try {
-      const mortgageDataResponse = await fetchMortgageData();
+      const response = await fetchMortgagePage();
       setMortgageData({
-        metaTitle: mortgageDataResponse.Metadata.MetaTitle,
-        metaDescription: mortgageDataResponse.Metadata.MetaDescription,
-        title: mortgageDataResponse.Title,
-        titleDescription: mortgageDataResponse.TitleDescription,
-        description: mortgageDataResponse.Description,
-        banks: mortgageDataResponse.banks_list.data,
+        metaTitle: response.Metadata.MetaTitle,
+        metaDescription: response.Metadata.MetaDescription,
+        title: response.Title,
+        titleDescription: response.TitleDescription,
+        description: response.Description,
+        banks: response.banks_list.data,
       });
     } catch (error) {
       console.error("Ошибка запроса:", error);

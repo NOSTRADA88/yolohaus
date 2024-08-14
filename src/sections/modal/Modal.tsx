@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import InputMask from "react-input-mask";
 import axios from "axios";
-import { fetchPrivacyPolicyData } from "../../api";
+import { fetchPrivacyPolicyPage } from "../../api";
 import { Link } from "react-router-dom";
 
 interface ModalProps {
@@ -106,7 +106,7 @@ const Modal = ({ closeModal }: ModalProps) => {
 
   const fetchData = async () => {
     try {
-      const privacyData = await fetchPrivacyPolicyData();
+      const privacyData = await fetchPrivacyPolicyPage();
       setSlugPrivacy(privacyData.slug);
     } catch (error) {
       console.error("Ошибка запроса:", error);
