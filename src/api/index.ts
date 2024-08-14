@@ -1,6 +1,7 @@
 import { API_URL, axiosInstanse } from "../constants";
 
 export const fetchData = async (endpoint: string, populateParams: string) => {
+  console.log("endpoint: ", endpoint)
   const url = `${API_URL}${endpoint}${
     populateParams ? `?populate=${populateParams}` : ""
   }`;
@@ -101,29 +102,3 @@ export const fetchBlogDetailData = async (blogSlug: string) => {
   }
   throw new Error("no blog data");
 };
-
-export const fetchStocksSlug = () => fetchData("/api/akczii", "");
-
-export const fetchBlogSlug = () => fetchData("/api/blog", "");
-
-export const fetchVacancySlug = () => fetchData("/api/vakansii", "");
-
-export const fetchGuaranteeSlug = () => fetchData("/api/garantiya", "");
-
-export const fetchMortgageeSlug = () => fetchData("/api/ipoteka", "");
-
-export const fetchContactsSlug = () => fetchData("/api/kontakty", "");
-
-export const fetchAboutCompanySlug = () => fetchData("/api/o-kompanii", "");
-
-export const fetchReviewsSlug = () => fetchData("/api/otzyvy", "");
-
-export const fetchPrivacyPolicySlug = () =>
-  fetchData("/api/politika-konfidenczialnosti", "");
-
-export const fetchBuiltHousesSlug = () =>
-  fetchData("/api/postroennye-doma", "");
-
-export const fetchProjectsSlug = () => fetchData("/api/proekty", "");
-
-export const fetchServicesSlug = () => fetchData("/api/uslugi", "");
