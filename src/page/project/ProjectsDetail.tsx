@@ -1,177 +1,185 @@
-import { useEffect, useState } from "react";
-import { fetchProjectDetailData, fetchProjectsData } from "../../api";
-import {
-  AboutHouses,
-  OptionsHouses,
-  SliderHouses,
-} from "../../components/builtHouses";
-import { useLocation } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import Technology from "../../components/projects/Technology";
-import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { slug } from "../../constants";
-import {
-  Complectation,
-  HousesData,
-  ProjectsDetailProps,
-} from "../../interfaces";
+// import { useEffect, useState } from "react";
+// import {
+//   AboutHouses,
+//   OptionsHouses,
+//   SliderHouses,
+// } from "../../components/builtHouses";
+// import { useLocation } from "react-router-dom";
+// import { Helmet } from "react-helmet";
+// import Technology from "../../components/projects/Technology";
+// import { Breadcrumbs } from "../../sections/breadcrumbs";
+// import { slug } from "../../constants";
+// import {
+//   Complectation,
+//   HousesData,
+//   ProjectsDetailProps,
+// } from "../../interfaces";
+// import { fetchProjectDetailData, fetchProjectsPage } from "../../api/projects";
 
-const ProjectsDetail = ({
-  projectsSlug,
-  initialTechnology,
-}: ProjectsDetailProps) => {
-  const [projectData, setProjectData] = useState({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleProjects: "",
-    projects: [] as HousesData[],
-    complectations: [] as Complectation[],
-  });
-  const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const [intermediateTitle, setIntermediateTitle] = useState<string>("");
+// const ProjectsDetail = ({
+//   projectsSlug,
+//   initialTechnology,
+// }: ProjectsDetailProps) => {
+//   const [projectData, setProjectData] = useState({
+//     metaTitle: "",
+//     metaDescription: "",
+//     title: "",
+//     titleProjects: "",
+//     projects: [] as HousesData[],
+//     complectations: [] as Complectation[],
+//   });
+//   const [loading, setLoading] = useState(true);
+//   const location = useLocation();
+//   const [intermediateTitle, setIntermediateTitle] = useState<string>("");
 
-  const fetchData = async () => {
-    try {
-      const projectDetailData = await fetchProjectDetailData(projectsSlug);
-      const projectsData = await fetchProjectsData();
+//   const fetchData = async () => {
+//     try {
+//       const projectDetailData = await fetchProjectDetailData(projectsSlug);
+//       const projectsData = await fetchProjectsPage();
 
-      if (projectDetailData.data && projectDetailData.data.length > 0) {
-        const newProjectData = {
-          metaTitle: projectDetailData.data[0].attributes.Metadata.MetaTitle,
-          metaDescription:
-            projectDetailData.data[0].attributes.Metadata.MetaDescription,
-          title: projectDetailData.data[0].attributes.Title,
-          projects: projectDetailData.data,
-          complectations: projectDetailData.data[0].attributes.Complectation,
-          titleProjects: projectsData.Title,
-        };
+//       if (projectDetailData.data && projectDetailData.data.length > 0) {
+//         const newProjectData = {
+//           metaTitle: projectDetailData.data[0].attributes.Metadata.MetaTitle,
+//           metaDescription:
+//             projectDetailData.data[0].attributes.Metadata.MetaDescription,
+//           title: projectDetailData.data[0].attributes.Title,
+//           projects: projectDetailData.data,
+//           complectations: projectDetailData.data[0].attributes.Complectation,
+//           titleProjects: projectsData.Title,
+//         };
 
-        setProjectData(newProjectData);
-        setIntermediateTitle(projectDetailData.data[0].attributes.Title);
+//         setProjectData(newProjectData);
+//         setIntermediateTitle(projectDetailData.data[0].attributes.Title);
 
-        const urlParts = location.pathname.split("-");
-        const technologyFromUrl = urlParts[urlParts.length - 1];
-        if (["sip", "karkas", "gazobeton"].includes(technologyFromUrl)) {
-          const technologyMap = {
-            sip: "СИП",
-            karkas: "Каркас",
-            gazobeton: "Газобетон",
-          };
-          updateTitle(
-            technologyMap[technologyFromUrl as keyof typeof technologyMap],
-            projectDetailData.data[0].attributes.Title
-          );
-        }
-      }
+//         const urlParts = location.pathname.split("-");
+//         const technologyFromUrl = urlParts[urlParts.length - 1];
+//         if (["sip", "karkas", "gazobeton"].includes(technologyFromUrl)) {
+//           const technologyMap = {
+//             sip: "СИП",
+//             karkas: "Каркас",
+//             gazobeton: "Газобетон",
+//           };
+//           updateTitle(
+//             technologyMap[technologyFromUrl as keyof typeof technologyMap],
+//             projectDetailData.data[0].attributes.Title
+//           );
+//         }
+//       }
 
-      setLoading(false);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-      setLoading(false);
-    }
-  };
+//       setLoading(false);
+//     } catch (error) {
+//       console.error("Ошибка запроса:", error);
+//       setLoading(false);
+//     }
+//   };
 
-  const updateTitle = (technology: string, initialTitle?: string) => {
-    const technologyNames = ["СИП", "Каркас", "Газобетон"];
-    let { metaTitle, metaDescription, title } = projectData;
+//   const updateTitle = (technology: string, initialTitle?: string) => {
+//     const technologyNames = ["СИП", "Каркас", "Газобетон"];
+//     let { metaTitle, metaDescription, title } = projectData;
 
-    if (initialTitle) {
-      title = initialTitle;
-    }
+//     if (initialTitle) {
+//       title = initialTitle;
+//     }
 
-    technologyNames.forEach((name) => {
-      title = title.replace(` из ${name}`, "");
-      metaTitle = metaTitle.replace(` из ${name}`, "");
-      metaDescription = metaDescription.replace(` из ${name}`, "");
-    });
+//     technologyNames.forEach((name) => {
+//       title = title.replace(` из ${name}`, "");
+//       metaTitle = metaTitle.replace(` из ${name}`, "");
+//       metaDescription = metaDescription.replace(` из ${name}`, "");
+//     });
 
-    title = `${title} из ${technology}`;
-    metaTitle = `${title}`;
-    metaDescription = `Yolohaus дом под ключ. ${title}`;
+//     title = `${title} из ${technology}`;
+//     metaTitle = `${title}`;
+//     metaDescription = `Yolohaus дом под ключ. ${title}`;
 
-    setProjectData((prevData) => ({
-      ...prevData,
-      title,
-      metaTitle,
-      metaDescription,
-    }));
-  };
+//     setProjectData((prevData) => ({
+//       ...prevData,
+//       title,
+//       metaTitle,
+//       metaDescription,
+//     }));
+//   };
 
-  useEffect(() => {
-    const fetchDataAndSetTitle = async () => {
-      await fetchData();
-      if (initialTechnology) {
-        const technologyMap = {
-          sip: "СИП",
-          karkas: "Каркас",
-          gazobeton: "Газобетон",
-        };
-        if (projectData.projects.length > 0) {
-          updateTitle(
-            technologyMap[initialTechnology as keyof typeof technologyMap],
-            projectData.projects[0].attributes.Title
-          );
-        }
-      }
-    };
+//   useEffect(() => {
+//     const fetchDataAndSetTitle = async () => {
+//       await fetchData();
+//       if (initialTechnology) {
+//         const technologyMap = {
+//           sip: "СИП",
+//           karkas: "Каркас",
+//           gazobeton: "Газобетон",
+//         };
+//         if (projectData.projects.length > 0) {
+//           updateTitle(
+//             technologyMap[initialTechnology as keyof typeof technologyMap],
+//             projectData.projects[0].attributes.Title
+//           );
+//         }
+//       }
+//     };
 
-    fetchDataAndSetTitle();
-  }, [projectsSlug, initialTechnology, location.pathname]);
+//     fetchDataAndSetTitle();
+//   }, [projectsSlug, initialTechnology, location.pathname]);
 
-  const breadcrumbItems = [
-    { title: projectData.titleProjects, slug: slug.projects },
-  ];
+//   const breadcrumbItems = [
+//     { title: projectData.titleProjects, slug: slug.projects },
+//   ];
 
-  if (initialTechnology) {
-    breadcrumbItems.push({
-      title: intermediateTitle,
-      slug: `${slug.projects}/${projectsSlug}`,
-    });
-  }
+//   if (initialTechnology) {
+//     breadcrumbItems.push({
+//       title: intermediateTitle,
+//       slug: `${slug.projects}/${projectsSlug}`,
+//     });
+//   }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
-      </div>
-    );
-  }
-  return (
-    <div>
-      <Helmet>
-        <title>{projectData.metaTitle}</title>
-        <meta name="description" content={projectData.metaDescription} />
-      </Helmet>
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
-        <Breadcrumbs items={breadcrumbItems} finalTitle={projectData.title} />
-        <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
-          {projectData.projects.length > 0 && (
-            <>
-              <div className="flex justify-between max-lg:flex-col">
-                <SliderHouses details={projectData.projects} />
-                <OptionsHouses details={projectData.projects} />
-              </div>
-              <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
-                Технология строительства
-              </h2>
-              <Technology
-                updateTitle={(technology) => updateTitle(technology)}
-                complectations={projectData.complectations}
-                currentProjectSlug={projectsSlug}
-                slugProjects={slug.projects}
-                initialTechnology={initialTechnology}
-              />
-              <div className="mt-10">
-                <AboutHouses details={projectData.projects} />
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+//   if (loading) {
+//     return (
+//       <div className="flex justify-center items-center mt-8 mb-8">
+//         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+//       </div>
+//     );
+//   }
+//   return (
+//     <div>
+//       <Helmet>
+//         <title>{projectData.metaTitle}</title>
+//         <meta name="description" content={projectData.metaDescription} />
+//       </Helmet>
+//       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
+//         <Breadcrumbs items={breadcrumbItems} finalTitle={projectData.title} />
+//         <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
+//           {projectData.projects.length > 0 && (
+//             <>
+//               <div className="flex justify-between max-lg:flex-col">
+//                 <SliderHouses details={projectData.projects} />
+//                 <OptionsHouses details={projectData.projects} />
+//               </div>
+//               <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
+//                 Технология строительства
+//               </h2>
+//               <Technology
+//                 updateTitle={(technology) => updateTitle(technology)}
+//                 complectations={projectData.complectations}
+//                 currentProjectSlug={projectsSlug}
+//                 slugProjects={slug.projects}
+//                 initialTechnology={initialTechnology}
+//               />
+//               <div className="mt-10">
+//                 <AboutHouses details={projectData.projects} />
+//               </div>
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export { ProjectsDetail };
+
+import React from "react";
+
+const ProjectsDetail = () => {
+  return <div></div>;
 };
 
 export { ProjectsDetail };

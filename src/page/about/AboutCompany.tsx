@@ -1,57 +1,19 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { photoAbout } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { AboutPagesData, Description } from "../../interfaces";
-import { fetchAboutData } from "../../api/about";
+import useAboutPage from "../../hooks/useAboutPage";
 
 const AboutCompany = () => {
-  const [aboutData, setAboutData] = useState<AboutPagesData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleMini: "",
-    description: [] as Description[],
-    titleMiniTwo: "",
-    descriptionTwo: [] as Description[],
-  });
+  const aboutData = useAboutPage();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchAboutData();
+  if (!aboutData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
 
-        setAboutData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          titleMini: response.About.Information[0].Title,
-          description: response.About.Information[0].Description.map(
-            (desc: any) => ({
-              children: desc.children.map((child: any) => ({
-                text: child.text,
-                type: child.type,
-              })),
-            })
-          ),
-          titleMiniTwo: response.About.Information[1].Title,
-          descriptionTwo: response.About.Information[1].Description.map(
-            (desc: any) => ({
-              children: desc.children.map((child: any) => ({
-                text: child.text,
-                type: child.type,
-              })),
-            })
-          ),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  console.log(aboutData);
   return (
     <div>
       <Helmet>

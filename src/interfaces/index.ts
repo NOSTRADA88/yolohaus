@@ -60,9 +60,6 @@ export interface HomeProps {
 }
 
 export interface MainScreenProps {
-  isModalOpen: boolean;
-  closeModal: () => void;
-  openModal: () => void;
   rawOne?: string;
   rawTwo?: string;
 }
@@ -85,9 +82,10 @@ export interface PopularProjectsProps {
 }
 
 export interface Project {
-  title: string;
+  id: number;
   slug: string;
-  kits: Complectation[];
+  title: string;
+  prices: Prices[];
   parameters: {
     houseArea: string;
     builtUpArea: string;
@@ -112,9 +110,6 @@ export interface RecommendationProps {
 }
 
 export interface ContactProps {
-  isModalOpen: boolean;
-  closeModal: () => void;
-  openModal: () => void;
   address?: string;
   email?: string;
   phone?: string;
@@ -270,71 +265,20 @@ export interface BlogDetailProps {
 
 // Built Houses & Projects Page
 
-export interface Technology {
-  id: number;
-  attributes: {
-    NameForStrapi: string;
-    Equipment: Description[];
-  };
+export interface Prices {
+  basePrice: string;
+  standardPrice: string;
+  comfortPrice: string;
 }
 
-export interface Complectation {
-  id: number;
-  Description: Description[];
-  BasePrice: string;
-  StandardPrice: string;
-  ComfortPrice: string;
-  Slug: {
-    id: number;
-    BuildingTechnology: string;
-  };
-  Metadata: {
-    id: number;
-    MetaTitle: string;
-    MetaDescription: string;
-  };
-  complectations: {
-    data: Technology[];
-  };
+export interface ProjectsList {
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  projects: Project[];
+  icons: Photo[];
 }
 
-export interface HousesAttributes {
-  Title: string;
-  YouTube: string;
-  isRecommended: boolean;
-  slug: string;
-  Description: Description[];
-  ShortDescription: Description[];
-  Parameters: {
-    id: number;
-    Area: string;
-    Location: string;
-    Days: number;
-    HouseArea: string;
-    BuiltUpArea: string;
-    Floors: number;
-    KitchenLivingRoomArea: string;
-    Bedrooms: number;
-    Toilets: number;
-    TerraceAndPorchArea: string;
-    Width: string;
-    Height: string;
-    ConstructionPeriod: string;
-  };
-  Complectation: Complectation[];
-  BuildingTechnology: {
-    id: number;
-    BuildingTechnology: string;
-  };
-  Photos: {
-    data: Photo[];
-  };
-}
-
-export interface HousesData {
-  id: number;
-  attributes: HousesAttributes;
-}
 export interface HouseDetailProps {
   houseSlug: string;
 }
@@ -344,25 +288,25 @@ export interface ProjectsDetailProps {
   initialTechnology?: string;
 }
 
-export interface SliderHousesProps {
-  details: HousesData[];
-}
+// export interface SliderHousesProps {
+//   details: HousesData[];
+// }
 
-export interface OptionsHousesProps {
-  details: HousesData[];
-}
+// export interface OptionsHousesProps {
+//   details: HousesData[];
+// }
 
-export interface TechnologyProps {
-  complectations: Complectation[];
-  currentProjectSlug: string;
-  slugProjects: string;
-  updateTitle: (technology: string) => void;
-  initialTechnology?: string;
-}
+// export interface TechnologyProps {
+//   complectations: Complectation[];
+//   currentProjectSlug: string;
+//   slugProjects: string;
+//   updateTitle: (technology: string) => void;
+//   initialTechnology?: string;
+// }
 
-export interface AboutHousesProps {
-  details: HousesData[];
-}
+// export interface AboutHousesProps {
+//   details: HousesData[];
+// }
 
 // Contact page
 
@@ -409,7 +353,7 @@ export interface EmployeeCardProps {
   employees: Employee[];
 }
 
-// Mortfage page
+// Mortgage page
 export interface Bank {
   id: number;
   attributes: {
@@ -503,7 +447,12 @@ export interface Vacancies {
   workingConditions: CardDescriptionList[];
   requirements: CardDescriptionList[];
 }
-
+export interface VacancyPagesData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  vacancies: Vacancies[];
+}
 export interface ActiveVacanciesProps {
   vacancies: Vacancies[];
 }

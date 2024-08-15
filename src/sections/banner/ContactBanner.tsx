@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BgVacancy } from "../../assets";
-import { fetchHeaderFooterData } from "../../api/footer&header";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
 import { formatPhoneNumber } from "../../constants";
 import { ContactBannerProps } from "../../interfaces";
+import useHeaderFooter from "../../hooks/useHeaderFooter";
+import { useModal } from "../../hooks/useModal";
 
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
-  const [phone, setPhone] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const phoneData = useHeaderFooter();
+
+  const { isModalOpen, openModal, closeModal } = useModal();
   const location = useLocation();
 
   const isVacansiiPage = location.pathname.includes("vacancies");
 
-  const fetchData = async () => {
-    try {
-      const phoneData = await fetchHeaderFooterData();
-      setPhone(phoneData.Phone.Number);
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+  if (!phoneData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
   return (
     <div>
       {descriptionInfo && descriptionInfo.length > 0 ? (
@@ -76,7 +64,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
                 <h2 className="text-white text-center text-base max-xl:px-10 max-sm:text-sm">
                   Свяжитесь с нами по номеру
                   <span className="underline cursor-pointer transition-all duration-300 text-lg hover:text-orange max-sm:text-base">
-                    {formatPhoneNumber(phone)}
+                    {formatPhoneNumber(phoneData.phoneNumber)}
                   </span>
                   , и специалисты «Yolo Haus» помогут вам выбрать дом вашей
                   мечты. <br />
@@ -103,7 +91,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
       ) : (
         <RenderVacansiiMessage
           isVacansiiPage={isVacansiiPage}
-          phone={phone}
+          phone={phoneData.phoneNumber}
           openModal={openModal}
         />
       )}

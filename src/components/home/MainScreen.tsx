@@ -2,14 +2,10 @@ import { useEffect } from "react";
 import { BgMain } from "../../assets";
 import { Modal } from "../../sections/modal";
 import { MainScreenProps } from "../../interfaces";
+import { useModal } from "../../hooks/useModal";
 
-const MainScreen = ({
-  isModalOpen,
-  closeModal,
-  openModal,
-  rawOne,
-  rawTwo,
-}: MainScreenProps) => {
+const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
+  const { isModalOpen, openModal, closeModal } = useModal();
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "preload";

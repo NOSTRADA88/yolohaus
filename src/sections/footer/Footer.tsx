@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
@@ -6,9 +6,10 @@ import { navLinks, slug } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
 import { LogoMainWhite } from "../../assets";
 import { HeaderProps } from "../../interfaces";
+import { useModal } from "../../hooks/useModal";
 
 const Footer = ({ footer }: HeaderProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   return (
     <div>
       <div className="bg-maingray p-8">
@@ -23,17 +24,15 @@ const Footer = ({ footer }: HeaderProps) => {
             </a>
             <ul className="flex gap-4 items-center justify-center h-20 max-lg:gap-2 max-xl:h-16 max-[850px]:hidden">
               {navLinks.map((link, index) => (
-                <React.Fragment key={index}>
-                  <li className="relative">
-                    <Link
-                      to={link.href}
-                      className="text-white hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                  <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>
-                </React.Fragment>
+                <li key={index} className="relative flex items-center">
+                  <Link
+                    to={link.href}
+                    className="text-white hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider"
+                  >
+                    {link.label}
+                  </Link>
+                  <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5] ml-4"></div>
+                </li>
               ))}
             </ul>
           </div>
@@ -73,7 +72,7 @@ const Footer = ({ footer }: HeaderProps) => {
               />
               <div
                 className="flex gap-[3.5px] items-center"
-                onClick={() => setIsModalOpen(true)}
+                onClick={openModal}
               >
                 <div className="parallelogram h-10 border-l-[1px] border-orange"></div>
                 <div className="flex justify-center items-center transition-all duration-300 cursor-pointer hover:bg-orange hover:text-white transform parallelogram w-[172px] h-10 border-[1px] border-orange">
@@ -86,7 +85,7 @@ const Footer = ({ footer }: HeaderProps) => {
           </div>
         </div>
       </div>
-      {isModalOpen && <Modal closeModal={() => setIsModalOpen(false)} />}
+      {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
 };

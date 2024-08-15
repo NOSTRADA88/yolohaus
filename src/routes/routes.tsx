@@ -174,14 +174,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path={slug.built}
           element={
             <Layout>
               <BuiltHouses />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path={slug.stocks}
           element={
@@ -214,14 +214,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path={`${slug.built}/:slug`}
           element={
             <Layout>
               <HouseDetailRoute />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path={`${slug.services}/:slug`}
           element={
@@ -230,14 +230,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path={`${slug.projects}/:slug`}
           element={
             <Layout>
               <ProjectsDetailRoute />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path={"/*"}
           element={
@@ -256,26 +256,26 @@ const ServiceDetailRoute = () => {
   return <ServiceDetail servicesSlug={slug ?? ""} />;
 };
 
-const HouseDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  return <HouseDetail houseSlug={slug ?? ""} />;
-};
+// const HouseDetailRoute = () => {
+//   const { slug } = useParams<{ slug: string }>();
+//   return <HouseDetail houseSlug={slug ?? ""} />;
+// };
 
-const ProjectsDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const location = useLocation();
-  const urlParts = location.pathname.split("/").pop()?.split("-") || [];
-  const technologySlug = urlParts[urlParts.length - 1];
-  const baseProjectSlug = urlParts.slice(0, -1).join("-");
-  const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
-  const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
-  return (
-    <ProjectsDetail
-      projectsSlug={projectsSlug}
-      initialTechnology={isTechnology ? technologySlug : ""}
-    />
-  );
-};
+// const ProjectsDetailRoute = () => {
+//   const { slug } = useParams<{ slug: string }>();
+//   const location = useLocation();
+//   const urlParts = location.pathname.split("/").pop()?.split("-") || [];
+//   const technologySlug = urlParts[urlParts.length - 1];
+//   const baseProjectSlug = urlParts.slice(0, -1).join("-");
+//   const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
+//   const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
+//   return (
+//     <ProjectsDetail
+//       projectsSlug={projectsSlug}
+//       initialTechnology={isTechnology ? technologySlug : ""}
+//     />
+//   );
+// };
 
 const BlogDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();

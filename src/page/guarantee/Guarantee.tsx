@@ -1,54 +1,19 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-import { AboutPagesData, Description } from "../../interfaces";
-import { fetchGuaranteePage } from "../../api/guarantee";
+import useGuaranteePage from "../../hooks/useGuaranteePage";
 
 const Guarantee = () => {
-  const [guaranteeData, setGuaranteeData] = useState<AboutPagesData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleMini: "",
-    description: [] as Description[],
-    titleMiniTwo: "",
-    descriptionTwo: [] as Description[],
-  });
+  const guaranteeData = useGuaranteePage();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchGuaranteePage();
-        setGuaranteeData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          titleMini: response.Information[0].Title,
-          description: response.Information[0].Description.map((desc: any) => ({
-            children: desc.children.map((child: any) => ({
-              text: child.text,
-              type: child.type,
-            })),
-          })),
-          titleMiniTwo: response.Information[1].Title,
-          descriptionTwo: response.Information[1].Description.map(
-            (desc: any) => ({
-              children: desc.children.map((child: any) => ({
-                text: child.text,
-                type: child.type,
-              })),
-            })
-          ),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
+  if (!guaranteeData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
   const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
   return (

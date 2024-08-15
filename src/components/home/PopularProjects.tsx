@@ -104,7 +104,7 @@ const PopularProjects = ({
                 </div>
               </div>
               <p className="font-museo mt-6 text-orange text-xl font-bold">
-                Цена от {formatPrice(getMinPrice(project.kits))} ₽
+                Цена от {formatPrice(getMinPrice(project.prices))} ₽
               </p>
             </div>
           </Link>

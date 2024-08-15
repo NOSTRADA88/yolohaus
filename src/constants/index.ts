@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Complectation } from "../interfaces";
+import { Prices } from "../interfaces";
 
 export const API_URL = "https://nostrada-kys.ru";
 const token =
@@ -64,16 +64,21 @@ export function formatPhoneNumber(number: string | undefined) {
   );
 }
 
-export const getMinPrice = (kits: Complectation[]): number => {
+export const getMinPrice = (kits: Prices[] = []): number => {
+  if (!kits || kits.length === 0) {
+    return 0;
+  }
+
   const prices = kits.map((kit) =>
     Math.min(
-      parsePrice(kit.BasePrice),
-      parsePrice(kit.StandardPrice),
-      parsePrice(kit.ComfortPrice)
+      parsePrice(kit.basePrice),
+      parsePrice(kit.standardPrice),
+      parsePrice(kit.comfortPrice)
     )
   );
   return Math.min(...prices);
 };
+
 const parsePrice = (price: string | null): number => {
   return price ? parseInt(price.replace(/\D/g, ""), 10) : Infinity;
 };

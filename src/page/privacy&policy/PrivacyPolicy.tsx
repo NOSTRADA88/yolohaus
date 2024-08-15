@@ -1,42 +1,19 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
-import { Description, PrivacyPolicyData } from "../../interfaces";
-import { fetchPrivacyPolicyPage } from "../../api/privacy&policy";
+import usePrivacyPolicyPage from "../../hooks/usePrivacyPolicyPage";
 
 const PrivacyPolicy = () => {
-  const [privacyPolicyData, setPrivacyPolicyData] = useState<PrivacyPolicyData>(
-    {
-      metaTitle: "",
-      metaDescription: "",
-      title: "",
-      description: [] as Description[],
-    }
-  );
+  const privacyPolicyData = usePrivacyPolicyPage();
 
-  useEffect(() => {
-    const fetchPrivacyPolicy = async () => {
-      try {
-        const privacyData = await fetchPrivacyPolicyPage();
-        setPrivacyPolicyData({
-          metaTitle: privacyData.Metadata.MetaTitle,
-          metaDescription: privacyData.Metadata.MetaDescription,
-          title: privacyData.Title,
-          description: privacyData.Description.map((desc: any) => ({
-            children: desc.children.map((child: any) => ({
-              text: child.text,
-              type: child.type,
-            })),
-          })),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchPrivacyPolicy();
-  }, []);
+  if (!privacyPolicyData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
 
   const renderTextWithHighlights = (text: string) => {
     const parts = text.split(/(YoloHaus)/);
@@ -61,7 +38,7 @@ const PrivacyPolicy = () => {
         <Breadcrumbs finalTitle={privacyPolicyData.title} />
         <div className="mt-10">
           {privacyPolicyData.description.map((paragraph, index) => (
-            <p key={index} className="text-justify mb-6 ">
+            <p key={index} className="text-justify mb-6">
               {paragraph.children.map((child, childIndex) => (
                 <span
                   key={childIndex}

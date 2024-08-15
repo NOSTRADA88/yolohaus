@@ -3,17 +3,16 @@ import { Yolo } from "../../assets";
 import { ContactProps } from "../../interfaces";
 import { Modal } from "../../sections/modal";
 import { formatPhoneNumber } from "../../constants";
+import { useModal } from "../../hooks/useModal";
 
 const Contact = ({
-  isModalOpen,
-  closeModal,
-  openModal,
   address,
   email,
   phone,
   info,
   yandexMapURL,
 }: ContactProps) => {
+  const { isModalOpen, openModal, closeModal } = useModal();
   return (
     <YMaps>
       <div className="mt-14 relative">

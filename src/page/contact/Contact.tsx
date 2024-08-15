@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import {
   ContactInfo,
@@ -6,61 +5,18 @@ import {
   ProductionsList,
 } from "../../components/contact";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {
-  ContactPage, ContactsMap,
-  Description,
-  Employee,
-} from "../../interfaces";
-import { fetchContactPage } from "../../api/contact";
-
+import useContactPage from "../../hooks/useContactPage";
 
 const Contact = () => {
-  const [contactData, setContactData] = useState<ContactPage>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleMini: "",
-    description: [] as Description[],
-    email: "",
-    phone: "",
-    address: "",
-    urlAddressOffice: "",
-    weekdays: "",
-    weekends: "",
-    productions: [] as ContactsMap[],
-    employees: [] as Employee[],
-  });
+  const contactData = useContactPage();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchContactPage();
-        setContactData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          titleMini: response.Information.Title,
-          description: response.Information.Description,
-          email: response.Information.Email,
-          phone: response.Phone.Number,
-          address: response.Address,
-          urlAddressOffice: response.YandexMapURL,
-          weekdays: response.WorkingTime.Weekdays,
-          weekends: response.WorkingTime.Weekends,
-          productions: response.Productions.data.map((production: any) => ({
-            name: production.attributes.Name,
-            address: production.attributes.Address,
-            yandexMapURL: production.attributes.YandexMapURL
-          })),
-          employees: response.Employees.data,
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchData();
-  }, []);
-  console.log(contactData)
+  if (!contactData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
   return (
     <div>
       <Helmet>

@@ -56,11 +56,7 @@ interface ServicesData {
 }
 
 const Services = () => {
-  const {
-    data: servicesData,
-    isLoading,
-    error,
-  } = useQuery<ServicesData>({
+  const { data: servicesData, error } = useQuery<ServicesData>({
     queryKey: ["services"],
     queryFn: async () => {
       const servicesDataResponse = await fetchServicesPage();
@@ -72,10 +68,6 @@ const Services = () => {
       };
     },
   });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
     return <div>Error: {(error as Error).message}</div>;

@@ -1,4 +1,4 @@
 import { fetchData } from "./index";
 
-export const fetchAboutData = () =>
+export const fetchAboutPage= () =>
   fetchData("/api/o-kompanii", "Metadata,About.Photo,About.Information");

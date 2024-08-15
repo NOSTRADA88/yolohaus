@@ -3,63 +3,27 @@ import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Modal } from "../../sections/modal";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { fetchStocksPage } from "../../api/stocks";
-import { StockItem, StocksData } from "../../interfaces";
+import useStocksPage from "../../hooks/useStocksPage";
+import { useModal } from "../../hooks/useModal";
 
 const Stocks = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [stocksData, setStocksData] = useState<StocksData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    stocks: [] as StockItem[],
-  });
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isEndOfList, setIsEndOfList] = useState(false);
-  const stocksPerPage = 7;
+  const stocksPerPage = 9;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchStocksPage();
-        setStocksData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          stocks: response.stock_list.data.map((stock: any) => ({
-            promotionTime: stock.attributes.PromotionTime,
-            shortTitle: stock.attributes.ShortTitle,
-            longTitle: stock.attributes.LongTitle,
-            price: stock.attributes.Price,
-            description: stock.attributes.Description.map((desc: any) => ({
-              children: desc.children.map((child: any) => ({
-                text: child.text,
-                type: child.type,
-              })),
-            })),
-            photo: {
-              name: stock.attributes.Photo.data.attributes.name,
-              url: stock.attributes.Photo.data.attributes.url,
-            },
-          })),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const stocksData = useStocksPage();
 
   const loadMoreStocks = useCallback(() => {
     if (isEndOfList) return;
 
     const nextPage = currentPage + 1;
     setCurrentPage(nextPage);
-    if (nextPage * stocksPerPage >= stocksData.stocks.length) {
+    if (nextPage * stocksPerPage >= (stocksData?.stocks.length || 0)) {
       setIsEndOfList(true);
     }
-  }, [currentPage, stocksData.stocks.length, stocksPerPage, isEndOfList]);
+  }, [currentPage, isEndOfList, stocksPerPage, stocksData?.stocks.length]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -81,13 +45,13 @@ const Stocks = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  if (!stocksData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
 
   const visibleStocks = stocksData.stocks.slice(0, currentPage * stocksPerPage);
 
@@ -103,7 +67,9 @@ const Stocks = () => {
 
         <div className="mt-10">
           {visibleStocks.map((stock) => (
-            <div className="mb-8">
+            <div className="mb-8" key={stock.shortTitle}>
+              {" "}
+              {/* Ensure shortTitle is unique */}
               <div className="flex justify-between bg-lightwhite p-5 mt-16 max-sm:flex-col max-sm:mt-10">
                 <h2 className="text-xl font-medium font-museo text-maingray ">
                   {stock.shortTitle}

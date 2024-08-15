@@ -1,41 +1,18 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { ReviewsData } from "../../interfaces";
-import {fetchReviewsPage} from "../../api/reviews";
+import useReviewsPage from "../../hooks/useReviewsPage";
 
 const Reviews = () => {
-  const [reviewsData, setReviewsData] = useState<ReviewsData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    reviews: [],
-  });
+  const reviewsData = useReviewsPage();
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetchReviewsPage();
-        setReviewsData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          reviews: response.spisok_otzyvovs.data.map((review: any) => ({
-            url: review.attributes.URL,
-            title: review.attributes.Title,
-            photo: {
-              url: review.attributes.Photo.data.attributes.url,
-              name: review.attributes.Photo.data.attributes.name
-            }})),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchReviews();
-  }, []);
-
+  if (!reviewsData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
   return (
     <div>
       <Helmet>
@@ -53,7 +30,7 @@ const Reviews = () => {
               target="_blank"
             >
               <div className="flex justify-center items-center w-full h-full p-10 bg-lightwhite hover:bg-orange cursor-pointer">
-                <img src={`${API_URL}${review.photo.url}`} alt={review.title}/>
+                <img src={`${API_URL}${review.photo.url}`} alt={review.title} />
               </div>
             </a>
           ))}

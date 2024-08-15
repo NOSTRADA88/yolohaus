@@ -26,28 +26,27 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
   }, [dropdownIndex, navLinks]);
 
   return (
-    <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2">
+    <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2 ">
       <ul className="flex gap-7 items-center justify-center h-20 max-xl:gap-6 max-lg:gap-[14px]">
         {navLinks.map((link, index) => (
-          <React.Fragment key={index}>
-            <li
-              onMouseEnter={() => setDropdownIndex(index)}
-              onMouseLeave={() => setDropdownIndex(null)}
-              className="relative"
+          <li
+            key={index}
+            onMouseEnter={() => setDropdownIndex(index)}
+            onMouseLeave={() => setDropdownIndex(null)}
+            className="relative"
+          >
+            <Link
+              to={link.href}
+              className="text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider flex items-center mr-7"
             >
-              <Link
-                to={link.href}
-                className="text-maingray hover:text-orange transition-all duration-300 font-museo font-medium text-xs uppercase tracking-wider flex items-center justify-center"
-              >
-                {link.label}
-                {link.submenu && <span className="ml-1 mb-1 font-bold">⌵</span>}
-              </Link>
-              {link.submenu && dropdownIndex === index && SubMenu && (
-                <SubMenu submenu={link.submenu} />
-              )}
-            </li>
-            <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5]"></div>
-          </React.Fragment>
+              {link.label}
+              {link.submenu && <span className="ml-1 mb-1 font-bold">⌵</span>}
+            </Link>
+            {link.submenu && dropdownIndex === index && SubMenu && (
+              <SubMenu submenu={link.submenu} />
+            )}
+            <div className="parallelogram h-4 border-l-[1px] border-[#E5E5E5] absolute top-0 right-0"></div>
+          </li>
         ))}
       </ul>
     </div>

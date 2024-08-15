@@ -2,9 +2,8 @@ import { lazy, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
+import useMortgagePage from "../../hooks/useMortgagePage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { MortgageData } from "../../interfaces";
-import {fetchMortgagePage} from "../../api/mortgage";
 
 const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
@@ -18,14 +17,7 @@ const formatNumber = (number: number) => {
 };
 
 const MortgageAbout = () => {
-  const [mortgageData, setMortgageData] = useState<MortgageData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleDescription: "",
-    description: [],
-    banks: [],
-  });
+  const mortgageData = useMortgagePage();
 
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
@@ -49,26 +41,6 @@ const MortgageAbout = () => {
   const handleShowAllRows = () => {
     setShowAllRows(true);
   };
-
-  const fetchData = async () => {
-    try {
-      const response = await fetchMortgagePage();
-      setMortgageData({
-        metaTitle: response.Metadata.MetaTitle,
-        metaDescription: response.Metadata.MetaDescription,
-        title: response.Title,
-        titleDescription: response.TitleDescription,
-        description: response.Description,
-        banks: response.banks_list.data,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const calculateMortgage = (currentRate: number) => {
     const monthlyRate = currentRate / 100 / 12;
@@ -167,7 +139,7 @@ const MortgageAbout = () => {
   };
 
   const handleSelectBank = (bankId: number) => {
-    const selectedBank = mortgageData.banks.find((bank) => bank.id === bankId);
+    const selectedBank = mortgageData?.banks.find((bank) => bank.id === bankId);
     if (selectedBank) {
       setBank(bankId);
       setRate(parseFloat(selectedBank.attributes.Rate));
@@ -182,9 +154,20 @@ const MortgageAbout = () => {
   };
 
   useEffect(() => {
-    setLoanAmount(projectCost - initialPayment);
-    calculateMortgage(rate);
-  }, [bank, rate, projectCost, initialPayment, term, termType, startDate]);
+    if (mortgageData) {
+      setLoanAmount(projectCost - initialPayment);
+      calculateMortgage(rate);
+    }
+  }, [
+    mortgageData,
+    bank,
+    rate,
+    projectCost,
+    initialPayment,
+    term,
+    termType,
+    startDate,
+  ]);
 
   const pieData = [
     { name: "Основной долг", value: loanAmount },
@@ -226,6 +209,13 @@ const MortgageAbout = () => {
     ),
   }));
 
+  if (!mortgageData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
   return (
     <div>
       <Helmet>

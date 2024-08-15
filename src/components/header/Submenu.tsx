@@ -11,8 +11,8 @@ interface SubmenuProps {
 const Submenu: React.FC<SubmenuProps> = ({ submenu }) => {
   return (
     <ul
-      className="submenu absolute left-0 transition-all duration-300 bg-lightwhite submenu-open animate-fadeIn"
-      style={{ width: "150%", marginLeft: "-25%" }}
+      className="submenu absolute left-0 transition-all duration-300 bg-lightwhite submenu-open animate-fadeIn "
+      style={{ width: "130%", marginLeft: "-30%" }}
     >
       {submenu.map((sublink, subIndex) => (
         <li key={subIndex} className="whitespace-nowrap">

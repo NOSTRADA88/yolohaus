@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MobileMenu, Navbar } from "../../components/header";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
@@ -7,18 +7,11 @@ import { HeaderProps } from "../../interfaces";
 import { navLinks } from "../../constants";
 import { FormatPhoneNumber } from "../phone";
 import { LogoMainBlack } from "../../assets";
+import { useModal } from "../../hooks/useModal";
 
 const Header = ({ header }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   useEffect(() => {
     if (mobileMenuOpen) {

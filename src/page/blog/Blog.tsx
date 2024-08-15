@@ -1,49 +1,23 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import {
-  BlogsData,
   CardDescription,
   CardDescriptionParagraph,
   CardDescriptionText,
 } from "../../interfaces";
-import { fetchBlogPage } from "../../api/blog";
-
+import useBlogPage from "../../hooks/useBlogPage";
 const Blog = () => {
-  const [blogData, setBlogData] = useState<BlogsData>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    posts: [],
-  });
+  const blogData = useBlogPage();
 
-  useEffect(() => {
-    const fetchBlog = async () => {
-      try {
-        const response = await fetchBlogPage();
-
-        setBlogData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          posts: response.posts_list.data.map((post: any) => ({
-            title: post.attributes.Title,
-            text: post.attributes.BlogText,
-            slug: post.attributes.slug,
-            photo: post.attributes.Media.data.map((photo: any) => ({
-              name: photo.attributes.name,
-              url: photo.attributes.url,
-            })),
-          })),
-        });
-      } catch (error) {
-        console.error("Ошибка запроса:", error);
-      }
-    };
-    fetchBlog();
-  }, []);
+  if (!blogData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
 
   const truncateText = (text: string | undefined, limit: number) => {
     if (!text) return "";
