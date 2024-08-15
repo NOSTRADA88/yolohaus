@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { Consultation } from "../components/footer";
 import { Header, Footer } from "../sections";
-import { Suspense } from "react";
 import { ScrollUp } from "../sections/scroll";
 import useHeaderFooter from "../hooks/useHeaderFooter";
 
@@ -20,15 +19,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     );
   }
   return (
-    // TODO почистить suspense
     <div>
-      <Header header={informationData} />
-      <Suspense>{children}</Suspense>
-      <ScrollUp />
-      <Suspense>
+        <Header header={informationData} />
+        {children}
+        <ScrollUp />
         <Consultation />
         <Footer footer={informationData} />
-      </Suspense>
+
     </div>
   );
 };
