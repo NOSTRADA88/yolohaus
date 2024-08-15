@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import SwitchTechnology from "./SwitchTechnology";
-import { DescriptionChild, TechnologyProps } from "../../interfaces";
+import {
+  Description,
+  DescriptionChild,
+  TechnologyProps,
+} from "../../interfaces";
 
 const Technology: React.FC<TechnologyProps> = ({
   complectations,
@@ -24,29 +28,41 @@ const Technology: React.FC<TechnologyProps> = ({
   };
 
   const renderTable = () => {
-    if (!selectedTechnology) return null;
+    if (!selectedTechnology) {
+      return null;
+    }
 
     const filteredComplectations = complectations.filter((project) => {
-      const projectComplectations = project.bundles || [];
-      return projectComplectations.some((bundle) =>
-        bundle.name.includes(selectedTechnology)
-      );
+      const projectTechnology = project.slug.toLowerCase();
+      return projectTechnology === selectedTechnology.toLowerCase();
     });
 
+    if (filteredComplectations.length === 0) {
+      return null;
+    }
+
+    const [currentProject] = filteredComplectations;
+
+    const { basePrice, standardPrice, comfortPrice, bundles } = currentProject;
+
     function convertDescriptionToElements(
-      description: DescriptionChild[]
+      description: Description[]
     ): React.ReactNode[] {
       if (!description) return [];
       return description.map((desc, index) => (
-        <p key={index}>
-          {desc.children?.map((child, childIndex) => (
-            <span key={childIndex} className={child.bold ? "font-bold " : ""}>
+        <p key={index} className="mb-2">
+          {desc.children.map((child: DescriptionChild, childIndex: number) => (
+            <span key={childIndex} className={child.bold ? "font-bold" : ""}>
               {child.text}
             </span>
           ))}
         </p>
       ));
     }
+
+    const uniqueTypes = Array.from(
+      new Set(bundles.map((bundle) => bundle.type))
+    );
 
     return (
       <div className="overflow-y-auto max-sm:max-h-[600px]">
@@ -56,116 +72,86 @@ const Technology: React.FC<TechnologyProps> = ({
         >
           <thead>
             <tr className="h-10">
-              <th className="bg-[#E9E9E9] font-museo text-maingray text-base w-[274px] text-left p-5 ">
+              <th className="bg-[#E9E9E9] font-museo text-maingray text-base w-[274px] text-left p-5">
                 Комплектация
               </th>
-              <th className="bg-orange font-museo text-white text-base w-[274px] ">
+              <th className="bg-orange font-museo text-white text-base w-[274px] text-center">
                 Базовая
               </th>
-              <th className="bg-[#E0861D] font-museo text-white text-base w-[274px] ">
+              <th className="bg-[#E0861D] font-museo text-white text-base w-[274px] text-center">
                 Стандарт
               </th>
-              <th className="bg-[#BF6F12] font-museo text-white text-base w-[274px] ">
+              <th className="bg-[#BF6F12] font-museo text-white text-base w-[274px] text-center">
                 Комфорт
               </th>
             </tr>
           </thead>
           <tbody>
-            {filteredComplectations.map((project) => {
-              const projectComplectations = project.bundles || [];
-              const baseComplectation = projectComplectations.find(
-                (complectation) => complectation.name.includes("Базовая")
-              );
-              const standardComplectation = projectComplectations.find(
-                (complectation) => complectation.name.includes("Стандарт")
-              );
-              const comfortComplectation = projectComplectations.find(
-                (complectation) => complectation.name.includes("Комфорт")
-              );
-
-              const basePrice = project.basePrice || "—";
-              const standardPrice = project.standardPrice || "—";
-              const comfortPrice = project.comfortPrice || "—";
-
-              const allEquipmentTypes = Array.from(
-                new Set(
-                  projectComplectations.flatMap(
-                    (complectation) =>
-                      complectation.description?.map(
-                        (equipment) => equipment.type
-                      ) || []
-                  )
-                )
-              );
-
-              return (
-                <React.Fragment key={project.slug}>
-                  <tr className="h-16">
-                    <td className="font-museo text-maingray text-base font-bold p-5 max-md:text-sm">
-                      Цена
-                    </td>
-                    <td className="text-center font-museo text-orange text-xl font-bold">
-                      {basePrice}
-                    </td>
-                    <td className="text-center font-museo text-orange text-xl font-bold">
-                      {standardPrice}
-                    </td>
-                    <td className="text-center font-museo text-orange text-xl font-bold">
-                      {comfortPrice}
-                    </td>
-                  </tr>
-
-                  {allEquipmentTypes.map((type) => (
-                    <tr
-                      key={type}
-                      className="odd:bg-[#EEEEEE] even:bg-gray-100 align-top"
-                    >
-                      <td className="font-museo text-maingray text-base font-bold p-5 max-md:text-sm">
-                        {type}
-                      </td>
-                      {["Базовая", "Стандарт", "Комфорт"].map((category) => {
-                        let complectation;
-                        switch (category) {
-                          case "Базовая":
-                            complectation = baseComplectation;
-                            break;
-                          case "Стандарт":
-                            complectation = standardComplectation;
-                            break;
-                          case "Комфорт":
-                            complectation = comfortComplectation;
-                            break;
-                          default:
-                            complectation = null;
-                            break;
-                        }
-
-                        const equipment = complectation
-                          ? complectation.description.find(
-                              (equipment) => equipment.type === type
-                            )
-                          : null;
-
-                        return (
-                          <td
-                            className="text-left p-5 align-top font-museo text-sm text-maingray font-light max-md:p-3"
-                            key={category}
-                          >
-                            {equipment ? (
-                              convertDescriptionToElements(equipment.children)
-                            ) : (
-                              <p className="text-center p-5 align-top font-museo text-sm text-maingray font-light">
-                                —
-                              </p>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </React.Fragment>
-              );
-            })}
+            <tr className="h-16">
+              <td className="font-museo text-maingray text-base font-bold p-5 max-md:text-sm">
+                Цена
+              </td>
+              <td className="text-center font-museo text-orange text-xl font-bold">
+                {basePrice || "—"}
+              </td>
+              <td className="text-center font-museo text-orange text-xl font-bold">
+                {standardPrice || "—"}
+              </td>
+              <td className="text-center font-museo text-orange text-xl font-bold">
+                {comfortPrice || "—"}
+              </td>
+            </tr>
+            {uniqueTypes.map((type, index) => (
+              <React.Fragment key={index}>
+                <tr className={`h-10 ${index % 2 !== 0 ? "" : "bg-[#EEEEEE]"}`}>
+                  <td className="font-museo text-maingray text-base font-bold p-5 max-md:text-sm align-top">
+                    {type}
+                  </td>
+                  <td className="text-left p-5 align-top font-museo text-sm text-maingray font-light max-md:p-3">
+                    {bundles.find(
+                      (bundle) =>
+                        bundle.type === type && bundle.name.includes("Базовая")
+                    )
+                      ? convertDescriptionToElements(
+                          bundles.find(
+                            (bundle) =>
+                              bundle.type === type &&
+                              bundle.name.includes("Базовая")
+                          )!.description
+                        )
+                      : "—"}
+                  </td>
+                  <td className="text-left p-5 align-top font-museo text-sm text-maingray font-light max-md:p-3">
+                    {bundles.find(
+                      (bundle) =>
+                        bundle.type === type && bundle.name.includes("Стандарт")
+                    )
+                      ? convertDescriptionToElements(
+                          bundles.find(
+                            (bundle) =>
+                              bundle.type === type &&
+                              bundle.name.includes("Стандарт")
+                          )!.description
+                        )
+                      : "—"}
+                  </td>
+                  <td className="text-left p-5 align-top font-museo text-sm text-maingray font-light max-md:p-3">
+                    {bundles.find(
+                      (bundle) =>
+                        bundle.type === type && bundle.name.includes("Комфорт")
+                    )
+                      ? convertDescriptionToElements(
+                          bundles.find(
+                            (bundle) =>
+                              bundle.type === type &&
+                              bundle.name.includes("Комфорт")
+                          )!.description
+                        )
+                      : "—"}
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </div>

@@ -250,6 +250,27 @@ export interface BlogDetailProps {
 
 // Built Houses & Projects Page
 
+export interface BuiltHouse {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  slug: string;
+  parameters: {
+    houseArea: string;
+    location: string;
+    constructionPeriod: string;
+  };
+  photo: Photo;
+}
+
+export interface BuiltHouses {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  icons: Photo[];
+  houses: BuiltHouse[];
+}
+
 interface Bundle {
   type: string;
   description: Description[];

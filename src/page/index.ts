@@ -15,7 +15,7 @@ import { ProjectsDetail } from "./project/ProjectsDetail";
 import { ServiceDetail } from "./services/ServiceDetail";
 import { Services } from "./services/Services";
 import { Stocks } from "./stocks/Stocks";
-import { Reviews } from './reviews/Reviews';
+import { Reviews } from "./reviews/Reviews";
 
 export {
   Reviews,

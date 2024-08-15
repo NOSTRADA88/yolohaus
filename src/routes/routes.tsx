@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import {
@@ -18,18 +24,10 @@ import {
   ServiceDetail,
   BlogDetail,
   ProjectsDetail,
+  Houses,
+  HousesDetail,
 } from "../page";
 import { slug } from "../constants";
-
-// const BuiltHouses = lazy(() =>
-//   import("../page/built/Houses").then((module) => ({ default: module.Houses }))
-// );
-
-// const HouseDetail = lazy(() =>
-//   import("../page/built/HousesDetail").then((module) => ({
-//     default: module.HousesDetail,
-//   }))
-// );
 
 const RoutesComponent = () => {
   // if (!slugs) {
@@ -118,14 +116,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        {/* <Route
+        <Route
           path={slug.built}
           element={
             <Layout>
-              <BuiltHouses />
+              <Houses />
             </Layout>
           }
-        /> */}
+        />
         <Route
           path={slug.stocks}
           element={
@@ -158,14 +156,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        {/* <Route
+        <Route
           path={`${slug.built}/:slug`}
           element={
             <Layout>
               <HouseDetailRoute />
             </Layout>
           }
-        /> */}
+        />
         <Route
           path={`${slug.services}/:slug`}
           element={
@@ -200,10 +198,10 @@ const ServiceDetailRoute = () => {
   return <ServiceDetail servicesSlug={slug ?? ""} />;
 };
 
-// const HouseDetailRoute = () => {
-//   const { slug } = useParams<{ slug: string }>();
-//   return <HouseDetail houseSlug={slug ?? ""} />;
-// };
+const HouseDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <HousesDetail houseSlug={slug ?? ""} />;
+};
 
 const ProjectsDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();

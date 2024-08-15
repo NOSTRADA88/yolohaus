@@ -3,12 +3,12 @@ import { fetchProjectDetailData } from "../api/projects";
 import { Project, ProjectsDetailProps } from "../interfaces";
 
 const useProjectsDetailPage = ({ projectsSlug }: ProjectsDetailProps) => {
-  const [projectsData, setProjectData] = useState<Project>();
+  const [projectData, setProjectData] = useState<Project | null>();
+
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchProjectData = async () => {
       try {
         const response = await fetchProjectDetailData(projectsSlug);
-        console.log(response);
         setProjectData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
@@ -50,7 +50,10 @@ const useProjectsDetailPage = ({ projectsSlug }: ProjectsDetailProps) => {
                 name: complectation.attributes.NameForStrapi,
               }))
             ),
-            slug: kit.Slug,
+            slug:
+              typeof kit.Slug === "string"
+                ? kit.Slug
+                : kit.Slug.BuildingTechnology,
             metaTitle: kit.Metadata.MetaTitle,
             metaDescription: kit.Metadata.metaDescription,
           })),
@@ -59,10 +62,11 @@ const useProjectsDetailPage = ({ projectsSlug }: ProjectsDetailProps) => {
         console.error(error);
       }
     };
-    fetchProject();
+
+    fetchProjectData();
   }, [projectsSlug]);
 
-  return projectsData;
+  return { projectData, setProjectData };
 };
 
 export default useProjectsDetailPage;

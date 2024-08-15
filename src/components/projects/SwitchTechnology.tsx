@@ -9,13 +9,13 @@ interface SwitchTechnologyProps {
   slugProjects: string;
 }
 
-const SwitchTechnology = ({
+const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
   onTechnologySelect,
   updateTitle,
   slugs,
   currentProjectSlug,
   slugProjects,
-}: SwitchTechnologyProps) => {
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -51,7 +51,7 @@ const SwitchTechnology = ({
     technologySlugs.forEach((slug) => {
       newSlug = newSlug.replace(new RegExp(`-${slug}$`), "");
     });
-    return `${slugProjects}/${newSlug}-${technologySlug}`;
+    return `${slugProjects}/${newSlug}-${technologySlug}`; // This constructs the correct URL
   };
 
   const getCurrentTechnology = () => {
@@ -72,7 +72,9 @@ const SwitchTechnology = ({
           className={`border flex items-center justify-center w-[191px] h-[47px] cursor-pointer hover:border-orange ${
             getCurrentTechnology() === technology ? "bg-orange" : ""
           }`}
-          onClick={() => handleTechnologySelect(technology, slugs[index])}
+          onClick={() =>
+            handleTechnologySelect(technology, technologySlugs[index])
+          }
         >
           <p
             className={`font-museo text-lg text-maingray font-bold transition-all duration-300 ${
