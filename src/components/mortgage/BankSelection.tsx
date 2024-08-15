@@ -8,6 +8,7 @@ const BankSelection: React.FC<BankSelectionProps> = ({
   selectedBank,
   onSelectBank,
 }) => {
+    console.log(banks)
   return (
     <aside className="lg:w-1/4">
       <h3 className="text-xl font-museo font-medium text-maingray mb-4">
@@ -27,14 +28,14 @@ const BankSelection: React.FC<BankSelectionProps> = ({
               <div className="flex justify-between items-center">
                 <div className="flex-1 flex justify-center">
                   <img
-                    src={`${API_URL}${bank.attributes.Photo.url}`}
-                    alt={bank.attributes.Title}
+                    src={`${API_URL}${bank.photo.url}`}
+                    alt={bank.title}
                     className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
                   />
                 </div>
                 <div className="flex justify-end ml-auto mr-2">
                   <a
-                    href={bank.attributes.URL}
+                    href={bank.url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

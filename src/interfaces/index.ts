@@ -356,12 +356,10 @@ export interface EmployeeCardProps {
 // Mortgage page
 export interface Bank {
   id: number;
-  attributes: {
-    Photo: Photo;
-    Rate: string;
-    Title: string;
-    URL: string;
-  };
+  photo: Photo;
+  rate: string;
+  title: string;
+  url: string;
 }
 
 export interface MortgageData {

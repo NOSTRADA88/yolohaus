@@ -12,7 +12,6 @@ import { MortgageAbout } from "./mortgage/MortgageAbout";
 import { PrivacyPolicy } from "./privacy&policy/PrivacyPolicy";
 import { Projects } from "./project/Projects";
 import { ProjectsDetail } from "./project/ProjectsDetail";
-import { Reviews } from "./reviews/Reviews";
 import { ServiceDetail } from "./services/ServiceDetail";
 import { Services } from "./services/Services";
 import { Stocks } from "./stocks/Stocks";
@@ -31,7 +30,6 @@ export {
   PrivacyPolicy,
   Projects,
   ProjectsDetail,
-  Reviews,
   ServiceDetail,
   Services,
   Stocks,

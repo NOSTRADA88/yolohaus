@@ -19,7 +19,7 @@ const AboutCompany = lazy(() =>
 
 const Reviews = lazy(() =>
   import("../page/reviews/Reviews").then((module) => ({
-    default: module.Reviews,
+    default: module.default,
   }))
 );
 const Guarantee = lazy(() =>

@@ -84,3 +84,6 @@ const parsePrice = (price: string | null): number => {
 };
 
 export const formatPrice = (price: number) => price.toLocaleString("ru-RU");
+
+export const MAX_TERM_YEARS = 30;
+export const MAX_TERM_MONTHS = 360;

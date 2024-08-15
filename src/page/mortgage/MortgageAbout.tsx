@@ -1,13 +1,10 @@
-import { lazy, useEffect, useState } from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import { Helmet } from "react-helmet";
-import { BankSelection, MortgageForm } from "../../components/mortgage";
+import {BankSelection, CalculationResults, MortgageForm} from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
 import useMortgagePage from "../../hooks/useMortgagePage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
-const CalculationResults = lazy(
-  () => import("../../components/mortgage/CalculationResults")
-);
+import {MAX_TERM_MONTHS, MAX_TERM_YEARS} from "../../constants";
 
 const formatNumber = (number: number) => {
   return new Intl.NumberFormat("ru-RU", {
@@ -18,7 +15,7 @@ const formatNumber = (number: number) => {
 
 const MortgageAbout = () => {
   const mortgageData = useMortgagePage();
-
+  console.log(mortgageData)
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
@@ -117,8 +114,8 @@ const MortgageAbout = () => {
     setRateError("");
 
     if (
-      (termType === "years" && term > 30) ||
-      (termType === "months" && term > 360)
+      (termType === "years" && term > MAX_TERM_YEARS) ||
+      (termType === "months" && term > MAX_TERM_MONTHS)
     ) {
       setTermError("Срок не может быть больше 30 лет или 360 месяцев.");
       hasError = true;
@@ -138,11 +135,11 @@ const MortgageAbout = () => {
     setShowAllRows(false);
   };
 
-  const handleSelectBank = (bankId: number) => {
+  const handleSelectBank = useCallback((bankId: number) => {
     const selectedBank = mortgageData?.banks.find((bank) => bank.id === bankId);
     if (selectedBank) {
       setBank(bankId);
-      setRate(parseFloat(selectedBank.attributes.Rate));
+      setRate(parseFloat(selectedBank.rate));
       setLoanAmount(projectCost - initialPayment);
       setMonthlyPayment(0);
       setTotalDebt(0);
@@ -151,7 +148,7 @@ const MortgageAbout = () => {
       setShowResults(false);
       setShowAllRows(false);
     }
-  };
+  }, [mortgageData]);
 
   useEffect(() => {
     if (mortgageData) {
@@ -169,10 +166,10 @@ const MortgageAbout = () => {
     startDate,
   ]);
 
-  const pieData = [
+  const pieData = useMemo(() => [
     { name: "Основной долг", value: loanAmount },
     { name: "Проценты", value: overpayment },
-  ];
+  ], [loanAmount, overpayment]);
 
   const barData: any[] = [];
   let remainingDebt = loanAmount;

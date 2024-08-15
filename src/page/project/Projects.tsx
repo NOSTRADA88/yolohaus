@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet";
-import LazyLoad from "react-lazyload";
 import { Link } from "react-router-dom";
 import { API_URL, formatPrice, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
@@ -180,18 +179,11 @@ const Projects = () => {
                     Популярное
                   </span>
                 )}
-                <LazyLoad
-                  height={200}
-                  offset={300}
-                  once
-                  placeholder={<div className="w-full h-full bg-gray-300" />}
-                >
-                  <img
-                    src={`${API_URL}${project.photo.url}`}
-                    alt={project.photo.name}
-                    className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
-                  />
-                </LazyLoad>
+                <img
+                  src={`${API_URL}${project.photo.url}`}
+                  alt={project.photo.name}
+                  className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                />
               </div>
               <div className="p-4">
                 <h2 className="font-museo font-bold text-2xl text-maingray">
