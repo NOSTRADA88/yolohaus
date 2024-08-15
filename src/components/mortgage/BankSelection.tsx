@@ -8,7 +8,6 @@ const BankSelection: React.FC<BankSelectionProps> = ({
   selectedBank,
   onSelectBank,
 }) => {
-    console.log(banks)
   return (
     <aside className="lg:w-1/4">
       <h3 className="text-xl font-museo font-medium text-maingray mb-4">
@@ -34,11 +33,7 @@ const BankSelection: React.FC<BankSelectionProps> = ({
                   />
                 </div>
                 <div className="flex justify-end ml-auto mr-2">
-                  <a
-                    href={bank.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={bank.url} target="_blank" rel="noopener noreferrer">
                     <img
                       src={LinkBank}
                       alt="link"

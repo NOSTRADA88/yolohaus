@@ -20,6 +20,7 @@ const Footer = ({ footer }: HeaderProps) => {
                 src={LogoMainWhite}
                 alt="logo"
                 className="h-auto max-w-full object-contain w-52 cursor-pointer"
+                loading="lazy"
               />
             </a>
             <ul className="flex gap-4 items-center justify-center h-20 max-lg:gap-2 max-xl:h-16 max-[850px]:hidden">
@@ -62,6 +63,7 @@ const Footer = ({ footer }: HeaderProps) => {
                       src={`${API_URL}${social.photo.url}`}
                       alt={social.photo.name}
                       className="w-4 h-4 filter-footer-svg absolute block left-1.5 top-1.5"
+                      loading="lazy"
                     />
                   </a>
                 ))}

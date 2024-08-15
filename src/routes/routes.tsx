@@ -1,17 +1,25 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import {
-    Home, ErrorPage, Reviews, AboutCompany, Guarantee, Vacancy,
-    Projects, Contact, Services, PrivacyPolicy, Stocks, Blog, MortgageAbout, ServiceDetail, BlogDetail
+  Home,
+  ErrorPage,
+  Reviews,
+  AboutCompany,
+  Guarantee,
+  Vacancy,
+  Projects,
+  Contact,
+  Services,
+  PrivacyPolicy,
+  Stocks,
+  Blog,
+  MortgageAbout,
+  ServiceDetail,
+  BlogDetail,
+  ProjectsDetail,
 } from "../page";
 import { slug } from "../constants";
-
 
 // const BuiltHouses = lazy(() =>
 //   import("../page/built/Houses").then((module) => ({ default: module.Houses }))
@@ -20,12 +28,6 @@ import { slug } from "../constants";
 // const HouseDetail = lazy(() =>
 //   import("../page/built/HousesDetail").then((module) => ({
 //     default: module.HousesDetail,
-//   }))
-// );
-
-// const ProjectsDetail = lazy(() =>
-//   import("../page/project/ProjectsDetail").then((module) => ({
-//     default: module.ProjectsDetail,
 //   }))
 // );
 
@@ -172,14 +174,14 @@ const RoutesComponent = () => {
             </Layout>
           }
         />
-        {/* <Route
+        <Route
           path={`${slug.projects}/:slug`}
           element={
             <Layout>
               <ProjectsDetailRoute />
             </Layout>
           }
-        /> */}
+        />
         <Route
           path={"/*"}
           element={
@@ -203,21 +205,21 @@ const ServiceDetailRoute = () => {
 //   return <HouseDetail houseSlug={slug ?? ""} />;
 // };
 
-// const ProjectsDetailRoute = () => {
-//   const { slug } = useParams<{ slug: string }>();
-//   const location = useLocation();
-//   const urlParts = location.pathname.split("/").pop()?.split("-") || [];
-//   const technologySlug = urlParts[urlParts.length - 1];
-//   const baseProjectSlug = urlParts.slice(0, -1).join("-");
-//   const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
-//   const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
-//   return (
-//     <ProjectsDetail
-//       projectsSlug={projectsSlug}
-//       initialTechnology={isTechnology ? technologySlug : ""}
-//     />
-//   );
-// };
+const ProjectsDetailRoute = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const urlParts = location.pathname.split("/").pop()?.split("-") || [];
+  const technologySlug = urlParts[urlParts.length - 1];
+  const baseProjectSlug = urlParts.slice(0, -1).join("-");
+  const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
+  const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
+  return (
+    <ProjectsDetail
+      projectsSlug={projectsSlug}
+      initialTechnology={isTechnology ? technologySlug : ""}
+    />
+  );
+};
 
 const BlogDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();

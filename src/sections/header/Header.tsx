@@ -38,6 +38,7 @@ const Header = ({ header }: HeaderProps) => {
               src={LogoMainBlack}
               alt="header logo"
               className="h-auto max-w-full object-contain cursor-pointer w-52"
+              loading="eager"
             />
           </Link>
           <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
@@ -59,6 +60,7 @@ const Header = ({ header }: HeaderProps) => {
                     src={`${API_URL}${social.photo.url}`}
                     alt={social.photo.name}
                     className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5"
+                    loading="eager"
                   />
                 </a>
               ))}

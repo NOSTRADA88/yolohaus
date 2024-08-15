@@ -1,80 +1,19 @@
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
-import { useQuery } from "@tanstack/react-query";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { fetchServicesPage } from "../../api/services";
-
-interface DescriptionText {
-  type: string;
-  text: string;
-}
-
-interface ServiceDescription {
-  type: string;
-  children: DescriptionText[];
-}
-
-interface ServiceCard {
-  Title: string;
-  Description: ServiceDescription[];
-  Photo: {
-    data: {
-      attributes: {
-        url: string;
-        Title: string;
-      };
-    };
-  };
-}
-
-interface ServiceAttributes {
-  Title: string;
-  slug: string;
-  ServiceDescription: ServiceDescription[];
-  Metadata: { MetaTitle: string; MetaDescription: string };
-  Card: ServiceCard[];
-  Photo: {
-    data: {
-      attributes: {
-        url: string;
-      };
-    };
-  };
-}
-
-interface Service {
-  id: number;
-  attributes: ServiceAttributes;
-}
-
-interface ServicesData {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  services: Service[];
-}
+import { Service } from "../../interfaces";
+import useServicesPage from "../../hooks/useServicesPage";
 
 const Services = () => {
-  const { data: servicesData, error } = useQuery<ServicesData>({
-    queryKey: ["services"],
-    queryFn: async () => {
-      const servicesDataResponse = await fetchServicesPage();
-      return {
-        metaTitle: servicesDataResponse.Metadata.MetaTitle,
-        metaDescription: servicesDataResponse.Metadata.MetaDescription,
-        title: servicesDataResponse.Title,
-        services: servicesDataResponse.Services.data,
-      };
-    },
-  });
-
-  if (error) {
-    return <div>Error: {(error as Error).message}</div>;
-  }
+  const servicesData = useServicesPage();
 
   if (!servicesData) {
-    return null;
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
   }
   const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
 
@@ -91,19 +30,16 @@ const Services = () => {
                  max-[500px]:grid-cols-1"
         >
           {servicesData.services.map((service: Service) => (
-            <Link
-              to={`${slug.services}/${service.attributes.slug}`}
-              key={service.id}
-            >
+            <Link to={`${slug.services}/${service.slug}`}>
               <div className="relative group">
                 <div
                   className="bg-white opacity-50 
                                         group-hover:opacity-100 transition-all duration-300"
                 >
-                  {service.attributes.Photo.data && (
+                  {service.photo && (
                     <img
-                      src={`${API_URL}${service.attributes.Photo.data.attributes.url}`}
-                      alt={service.attributes.Title}
+                      src={`${API_URL}${service.photo.url}`}
+                      alt={service.title}
                       className="w-[280px] h-[280px] object-cover max-[1000px]:w-[240px] max-[1000px]:h-[240px]  
                                              max-[950px]:w-[350px]    max-[850px]:w-[300px] max-md:w-[250px] max-[500px]:w-[350px] 
                                              max-[400px]:w-[280px]"
@@ -118,10 +54,10 @@ const Services = () => {
                 >
                   <div className="flex justify-between items-center w-full">
                     <Link
-                      to={`${slug.services}/${service.attributes.slug}`}
+                      to={`${slug.services}/${service.slug}`}
                       className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium"
                     >
-                      {service.attributes.Title}
+                      {service.title}
                     </Link>
                     <p className="text-orange arrow-icon"> ➜ </p>
                   </div>

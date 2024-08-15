@@ -1,6 +1,7 @@
 // Description
 
 interface Child {
+  bold?: boolean;
   text: string;
   type: string;
 }
@@ -79,22 +80,6 @@ export interface PopularProjectsProps {
   title?: string;
   popularProject?: Project[];
   icons?: Photo[];
-}
-
-export interface Project {
-  id: number;
-  slug: string;
-  title: string;
-  prices: Prices[];
-  parameters: {
-    houseArea: string;
-    builtUpArea: string;
-    width: string;
-    height: string;
-    constructionPeriod: string;
-    bedrooms: string;
-  };
-  photo: Photo;
 }
 
 export interface OurRecommendation {
@@ -265,10 +250,44 @@ export interface BlogDetailProps {
 
 // Built Houses & Projects Page
 
-export interface Prices {
+interface Bundle {
+  type: string;
+  description: Description[];
+  name: string;
+}
+
+export interface Kit {
   basePrice: string;
   standardPrice: string;
   comfortPrice: string;
+  bundles: Bundle[];
+  slug: string;
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export interface Project {
+  metaTitle: string;
+  metaDescription: string;
+  slug: string;
+  title: string;
+  prices?: Kit[];
+  parameters: {
+    houseArea: string;
+    builtUpArea: string;
+    width: string;
+    height: string;
+    constructionPeriod: string;
+    bedrooms: string;
+    toilets: string;
+    terraceAndPorchArea: string;
+    floors: string;
+    kitchenLivingRoomArea: string;
+  };
+  photo: Photo;
+  shortDescription?: Description[];
+  description: Description[];
+  kits: Kit[];
 }
 
 export interface ProjectsList {
@@ -288,25 +307,25 @@ export interface ProjectsDetailProps {
   initialTechnology?: string;
 }
 
-// export interface SliderHousesProps {
-//   details: HousesData[];
-// }
+export interface SliderHousesProps {
+  details: Project[];
+}
 
-// export interface OptionsHousesProps {
-//   details: HousesData[];
-// }
+export interface OptionsHousesProps {
+  details: Project[];
+}
 
-// export interface TechnologyProps {
-//   complectations: Complectation[];
-//   currentProjectSlug: string;
-//   slugProjects: string;
-//   updateTitle: (technology: string) => void;
-//   initialTechnology?: string;
-// }
+export interface TechnologyProps {
+  complectations: Kit[];
+  currentProjectSlug: string;
+  slugProjects: string;
+  updateTitle: (technology: string) => void;
+  initialTechnology?: string;
+}
 
-// export interface AboutHousesProps {
-//   details: HousesData[];
-// }
+export interface AboutHousesProps {
+  details: Project[];
+}
 
 // Contact page
 
@@ -421,7 +440,7 @@ export interface StocksData {
 // Contact Banner
 
 export interface ContactBannerProps {
-  descriptionInfo?: CardDescription[];
+  descriptionInfo?: Description[];
 }
 
 //Breadcrumbs
@@ -453,4 +472,34 @@ export interface VacancyPagesData {
 }
 export interface ActiveVacanciesProps {
   vacancies: Vacancies[];
+}
+
+// Services Page
+
+export interface Card {
+  title: string;
+  description: CardDescription[];
+  photo?: Photo;
+}
+
+export interface Service {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  slug?: string;
+  photo?: Photo;
+  serviceDescription: Description[];
+  header: string;
+  card: Card[];
+}
+
+export interface ServicesData {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  services: Service[];
+}
+
+export interface ServiceDetailProps {
+  servicesSlug: string;
 }

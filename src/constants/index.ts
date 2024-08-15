@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Prices } from "../interfaces";
+import { Kit } from "../interfaces";
 
 export const API_URL = "https://nostrada-kys.ru";
 const token =
@@ -64,7 +64,7 @@ export function formatPhoneNumber(number: string | undefined) {
   );
 }
 
-export const getMinPrice = (kits: Prices[] = []): number => {
+export const getMinPrice = (kits: Kit[] = []): number => {
   if (!kits || kits.length === 0) {
     return 0;
   }

@@ -1,10 +1,14 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
-import {BankSelection, CalculationResults, MortgageForm} from "../../components/mortgage";
+import {
+  BankSelection,
+  CalculationResults,
+  MortgageForm,
+} from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
 import useMortgagePage from "../../hooks/useMortgagePage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {MAX_TERM_MONTHS, MAX_TERM_YEARS} from "../../constants";
+import { MAX_TERM_MONTHS, MAX_TERM_YEARS } from "../../constants";
 
 const formatNumber = (number: number) => {
   return new Intl.NumberFormat("ru-RU", {
@@ -15,7 +19,7 @@ const formatNumber = (number: number) => {
 
 const MortgageAbout = () => {
   const mortgageData = useMortgagePage();
-  console.log(mortgageData)
+  console.log(mortgageData);
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
@@ -135,20 +139,25 @@ const MortgageAbout = () => {
     setShowAllRows(false);
   };
 
-  const handleSelectBank = useCallback((bankId: number) => {
-    const selectedBank = mortgageData?.banks.find((bank) => bank.id === bankId);
-    if (selectedBank) {
-      setBank(bankId);
-      setRate(parseFloat(selectedBank.rate));
-      setLoanAmount(projectCost - initialPayment);
-      setMonthlyPayment(0);
-      setTotalDebt(0);
-      setOverpayment(0);
-      setEndDate("");
-      setShowResults(false);
-      setShowAllRows(false);
-    }
-  }, [mortgageData]);
+  const handleSelectBank = useCallback(
+    (bankId: number) => {
+      const selectedBank = mortgageData?.banks.find(
+        (bank) => bank.id === bankId
+      );
+      if (selectedBank) {
+        setBank(bankId);
+        setRate(parseFloat(selectedBank.rate));
+        setLoanAmount(projectCost - initialPayment);
+        setMonthlyPayment(0);
+        setTotalDebt(0);
+        setOverpayment(0);
+        setEndDate("");
+        setShowResults(false);
+        setShowAllRows(false);
+      }
+    },
+    [mortgageData]
+  );
 
   useEffect(() => {
     if (mortgageData) {
@@ -166,10 +175,13 @@ const MortgageAbout = () => {
     startDate,
   ]);
 
-  const pieData = useMemo(() => [
-    { name: "Основной долг", value: loanAmount },
-    { name: "Проценты", value: overpayment },
-  ], [loanAmount, overpayment]);
+  const pieData = useMemo(
+    () => [
+      { name: "Основной долг", value: loanAmount },
+      { name: "Проценты", value: overpayment },
+    ],
+    [loanAmount, overpayment]
+  );
 
   const barData: any[] = [];
   let remainingDebt = loanAmount;

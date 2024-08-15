@@ -6,7 +6,7 @@ export const fetchServicesPage = () =>
 
 export const fetchServicesDetailsPage = async (servicesSlug: string) => {
   const response = await axiosInstanse.get(
-    `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Metadata]=*&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
+    `${API_URL}/api/uslugi?populate[Services][filters][slug][$eq]=${servicesSlug}&populate[Services][populate][Card][populate][Photo]=*&populate[Services][populate][Metadata]=*`
   );
   if (response.status === 200) {
     return response.data.data.attributes.Services;

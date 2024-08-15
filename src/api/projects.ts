@@ -7,12 +7,12 @@ export const fetchProjectsPage = () =>
     "Metadata,Icons.Photo,Projects.Photos,Projects.Metadata,Projects.Parameters,Projects.Complectation"
   );
 
-export const fetchProjectDetailData = async (projectsSlug: string) => {
+export const fetchProjectDetailData = async (slug: string) => {
   const response = await axiosInstanse.get(
-    `${API_URL}/api/proekty?populate[ProjectsList][filters][slug][$eq]=${projectsSlug}&populate[Metadata]=*&populate[ProjectsList][populate][Parameters]=*&populate[ProjectsList][populate][Metadata]=*&populate[ProjectsList][populate][Complectation][populate]=Slug,Metadata,complectations.Equipment,DescriptionList&populate[ProjectsList][populate][Photos]=*`
+    `${API_URL}/api/spisok-proektovs?[filters][slug][$eq]=${slug}&populate=Metadata,Photos,Parameters,ShortDescription,Description&populate=Complectation.Metadata,Complectation.Slug,Complectation.complectations.Equipment,Complectation.TechnologyDescription`
   );
   if (response.status === 200) {
-    return response.data.data.attributes.ProjectsList;
+    return response.data.data[0].attributes;
   }
   throw new Error("no project data");
 };

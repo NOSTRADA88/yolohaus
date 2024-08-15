@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { BgMain } from "../../assets";
 import { Modal } from "../../sections/modal";
 import { MainScreenProps } from "../../interfaces";
@@ -6,24 +5,13 @@ import { useModal } from "../../hooks/useModal";
 
 const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "image";
-    link.href = BgMain;
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, [BgMain]);
-
   return (
     <div className="relative flex items-center justify-center">
       <img
         src={BgMain}
         alt="banner"
         className="h-[472px] w-full object-cover  bg-cover bg-center relative max-xl:h-[350px] max-md:h-[300px]"
+        loading="eager"
       />
       <div className="absolute inset-0 bg-[#2B2A29] opacity-70"></div>
       <div className="absolute inset-0 flex items-center justify-center flex-col">

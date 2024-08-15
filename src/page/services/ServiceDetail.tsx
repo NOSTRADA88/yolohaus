@@ -1,101 +1,23 @@
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { ContactBanner } from "../../sections/banner";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {fetchServicesDetailsPage, fetchServicesPage} from "../../api/services";
-
-interface CardDescriptionText {
-  type: "text";
-  text: string;
-}
-
-interface CardDescriptionListItem {
-  type: "list-item";
-  children: CardDescriptionText[];
-}
-
-interface CardDescriptionList {
-  type: "list";
-  format: "unordered";
-  children: CardDescriptionListItem[];
-}
-
-interface CardDescriptionParagraph {
-  type: "paragraph";
-  children: CardDescriptionText[];
-}
-
-type CardDescription = CardDescriptionParagraph | CardDescriptionList;
-
-interface CardPhoto {
-  data: {
-    attributes: {
-      url: string;
-      Title: string;
-    };
-  };
-}
-
-interface ServiceData {
-  id: number;
-  Title: string;
-  Description: CardDescription[];
-  Photo: CardPhoto;
-}
-
-interface ServiceDetailProps {
-  servicesSlug: string;
-}
-
-interface ServiceState {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  titleMini: string;
-  descriptionInfo: CardDescription[];
-  titleServices: string;
-  services: ServiceData[];
-}
+import { ServiceDetailProps } from "../../interfaces";
+import useServiceDetailPage from "../../hooks/useServiceDetailPage";
 
 const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
-  const [serviceData, setServiceData] = useState<ServiceState>({
-    metaTitle: "",
-    metaDescription: "",
-    title: "",
-    titleMini: "",
-    descriptionInfo: [],
-    titleServices: "",
-    services: [],
+  const serviceData = useServiceDetailPage({
+    servicesSlug: servicesSlug || "",
   });
 
-  const fetchData = async () => {
-    try {
-      const detailsData = await fetchServicesDetailsPage(servicesSlug);
-      const servicesData = await fetchServicesPage();
-
-      setServiceData({
-        metaTitle: detailsData.data[0].attributes.Metadata.MetaTitle,
-        metaDescription:
-          detailsData.data[0].attributes.Metadata.MetaDescription,
-        title: detailsData.data[0].attributes.Title,
-        descriptionInfo: detailsData.data[0].attributes.ServiceDescription,
-        services: detailsData.data[0].attributes.Card,
-        titleMini: detailsData.data[0].attributes.Header,
-        titleServices: servicesData.Title,
-      });
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const breadcrumbItems = [
-    { title: serviceData.titleServices, slug: slug.services },
-  ];
+  if (!serviceData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
+  const breadcrumbItems = [{ title: "Услуги", slug: slug.services }];
 
   return (
     <div>
@@ -105,26 +27,27 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={serviceData.title} />
-        <ContactBanner descriptionInfo={serviceData.descriptionInfo} />
+
+        <ContactBanner descriptionInfo={serviceData.serviceDescription} />
         <div className="mt-20">
           <h2 className="font-museo font-bold text-2xl max-md:text-xl ">
-            {serviceData.titleMini}
+            {serviceData.header}
           </h2>
           <div className="grid grid-cols-3 gap-6 mt-10 max-lg:grid-cols-2 max-md:grid-cols-1">
-            {serviceData.services.length > 0 &&
-              serviceData.services.map((service) => (
-                <div key={service.id} className="mb-4 border border-[#E5E5E5] ">
-                  {service.Photo && service.Photo.data && (
+            {serviceData.card.length > 0 &&
+              serviceData.card.map((service) => (
+                <div className="mb-4 border border-[#E5E5E5] ">
+                  {service.photo && (
                     <img
-                      src={`${API_URL}${service.Photo.data.attributes.url}`}
-                      alt={service.Photo.data.attributes.Title}
+                      src={`${API_URL}${service.photo.url}`}
+                      alt={service.photo.name}
                       className="w-full max-md:h-[250px] max-md:object-cover max-sm:h-[200px]"
                     />
                   )}
                   <h3 className="font-museo font-bold text-base p-4">
-                    {service.Title}
+                    {service.title}
                   </h3>
-                  {service.Description.map((desc, index) => (
+                  {service.description.map((desc, index) => (
                     <div key={index} className="px-4 py-2">
                       {desc.type === "paragraph" && (
                         <p className="font-museo text-sm font-light text-justify">
