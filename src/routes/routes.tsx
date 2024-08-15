@@ -1,91 +1,33 @@
-import { lazy } from "react";
 import {
   BrowserRouter,
   Route,
   Routes,
-  useLocation,
   useParams,
 } from "react-router-dom";
 import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
-import { Home, ErrorPage } from "../page";
+import {
+    Home, ErrorPage, Reviews, AboutCompany, Guarantee, Vacancy,
+    Projects, Contact, Services, PrivacyPolicy, Stocks, Blog, MortgageAbout, ServiceDetail, BlogDetail
+} from "../page";
 import { slug } from "../constants";
 
-const AboutCompany = lazy(() =>
-  import("../page/about/AboutCompany").then((module) => ({
-    default: module.AboutCompany,
-  }))
-);
 
-const Reviews = lazy(() =>
-  import("../page/reviews/Reviews").then((module) => ({
-    default: module.default,
-  }))
-);
-const Guarantee = lazy(() =>
-  import("../page/guarantee/Guarantee").then((module) => ({
-    default: module.Guarantee,
-  }))
-);
-const Vacancy = lazy(() =>
-  import("../page/vacancy/Vacancy").then((module) => ({
-    default: module.Vacancy,
-  }))
-);
-const Projects = lazy(() =>
-  import("../page/project/Projects").then((module) => ({
-    default: module.Projects,
-  }))
-);
-const Contact = lazy(() =>
-  import("../page/contact/Contact").then((module) => ({
-    default: module.Contact,
-  }))
-);
-const Services = lazy(() =>
-  import("../page/services/Services").then((module) => ({
-    default: module.Services,
-  }))
-);
-const PrivacyPolicy = lazy(() =>
-  import("../page/privacy&policy/PrivacyPolicy").then((module) => ({
-    default: module.PrivacyPolicy,
-  }))
-);
-const BuiltHouses = lazy(() =>
-  import("../page/built/Houses").then((module) => ({ default: module.Houses }))
-);
-const Stocks = lazy(() =>
-  import("../page/stocks/Stocks").then((module) => ({ default: module.Stocks }))
-);
-const Blog = lazy(() =>
-  import("../page/blog/Blog").then((module) => ({ default: module.Blog }))
-);
-const MortgageAbout = lazy(() =>
-  import("../page/mortgage/MortgageAbout").then((module) => ({
-    default: module.MortgageAbout,
-  }))
-);
-const ServiceDetail = lazy(() =>
-  import("../page/services/ServiceDetail").then((module) => ({
-    default: module.ServiceDetail,
-  }))
-);
-const HouseDetail = lazy(() =>
-  import("../page/built/HousesDetail").then((module) => ({
-    default: module.HousesDetail,
-  }))
-);
-const ProjectsDetail = lazy(() =>
-  import("../page/project/ProjectsDetail").then((module) => ({
-    default: module.ProjectsDetail,
-  }))
-);
-const BlogDetail = lazy(() =>
-  import("../page/blog/BlogDetail").then((module) => ({
-    default: module.BlogDetail,
-  }))
-);
+// const BuiltHouses = lazy(() =>
+//   import("../page/built/Houses").then((module) => ({ default: module.Houses }))
+// );
+
+// const HouseDetail = lazy(() =>
+//   import("../page/built/HousesDetail").then((module) => ({
+//     default: module.HousesDetail,
+//   }))
+// );
+
+// const ProjectsDetail = lazy(() =>
+//   import("../page/project/ProjectsDetail").then((module) => ({
+//     default: module.ProjectsDetail,
+//   }))
+// );
 
 const RoutesComponent = () => {
   // if (!slugs) {
