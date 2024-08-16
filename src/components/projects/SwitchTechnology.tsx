@@ -1,17 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-interface SwitchTechnologyProps {
-  onTechnologySelect: (technology: string) => void;
-  slugs: string[];
-  updateTitle: (technology: string) => void;
-  currentProjectSlug: string;
-  slugProjects: string;
-}
+import { SwitchTechnologyProps } from "../../interfaces";
 
 const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
   onTechnologySelect,
-  updateTitle,
+  updateMetaData,
   slugs,
   currentProjectSlug,
   slugProjects,
@@ -30,8 +23,8 @@ const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
     if (selectedTech) {
       const techIndex = technologySlugs.indexOf(selectedTech);
       const selectedTechnology = technologyNames[techIndex];
-      onTechnologySelect(selectedTechnology);
-      updateTitle(selectedTechnology);
+      onTechnologySelect(selectedTechnology, selectedTech);
+      updateMetaData(selectedTechnology);
     }
   }, [location.pathname]);
 
@@ -39,8 +32,8 @@ const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
     technology: string,
     technologySlug: string
   ) => {
-    onTechnologySelect(technology);
-    updateTitle(technology);
+    onTechnologySelect(technology, technologySlug);
+    updateMetaData(technology);
 
     const newURL = constructURL(currentProjectSlug, technologySlug);
     navigate(newURL, { replace: true });

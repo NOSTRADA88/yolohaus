@@ -14,7 +14,6 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
       </div>
     );
   }
-
   function convertDescriptionToElements(
     description: CardDescription[]
   ): React.ReactNode[] {
@@ -172,10 +171,10 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
         <Breadcrumbs items={breadcrumbItems} finalTitle={postData.title} />
         <div className="mt-10">
           <div className="mb-8">
-            {postData.photo.length > 0 && (
+            {postData.photo && (
               <img
-                src={`${API_URL}${postData.photo[0].url}`}
-                alt="Blog"
+                src={`${API_URL}${postData.photo.url}`}
+                alt={postData.photo.name}
                 className="w-full h-[250px] object-cover object-center mb-4 "
               />
             )}

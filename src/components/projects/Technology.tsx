@@ -10,8 +10,10 @@ const Technology: React.FC<TechnologyProps> = ({
   complectations,
   currentProjectSlug,
   slugProjects,
-  updateTitle,
+  updateMetaData,
   initialTechnology,
+  onTechnologySelect,
+  isTechnologySelected,
 }) => {
   const [selectedTechnology, setSelectedTechnology] = useState<string>(
     initialTechnology || ""
@@ -20,15 +22,29 @@ const Technology: React.FC<TechnologyProps> = ({
   useEffect(() => {
     if (initialTechnology) {
       setSelectedTechnology(initialTechnology);
+      const technologyMap = {
+        sip: "СИП",
+        karkas: "Каркас",
+        gazobeton: "Газобетон",
+      };
+      updateMetaData(
+        technologyMap[initialTechnology as keyof typeof technologyMap]
+      );
+    } else {
+      updateMetaData(null);
     }
   }, [initialTechnology]);
 
-  const handleTechnologySelect = (technology: string) => {
+  const handleTechnologySelect = (
+    technology: string,
+    technologySlug: string
+  ) => {
     setSelectedTechnology(technology);
+    onTechnologySelect(technology, technologySlug);
   };
 
   const renderTable = () => {
-    if (!selectedTechnology) {
+    if (!isTechnologySelected || !selectedTechnology) {
       return null;
     }
 
@@ -162,12 +178,14 @@ const Technology: React.FC<TechnologyProps> = ({
     <div>
       <SwitchTechnology
         onTechnologySelect={handleTechnologySelect}
+        updateMetaData={updateMetaData}
         slugs={complectations.map((completion) => completion.slug)}
         currentProjectSlug={currentProjectSlug}
         slugProjects={slugProjects}
-        updateTitle={updateTitle}
+        selectedTechnology={selectedTechnology}
       />
-      {renderTable()}
+
+      {isTechnologySelected && renderTable()}
     </div>
   );
 };

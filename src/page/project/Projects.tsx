@@ -165,6 +165,7 @@ const Projects = () => {
         <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
           {visibleProjects.map((project, index) => (
             <Link
+              key={project.slug}
               to={`${slug.projects}/${project.slug}`}
               className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px] h-[320px]
               max-xl:w-full max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"

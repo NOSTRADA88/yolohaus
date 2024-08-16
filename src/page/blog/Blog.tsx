@@ -10,7 +10,6 @@ import {
 import useBlogPage from "../../hooks/useBlogPage";
 const Blog = () => {
   const blogData = useBlogPage();
-
   if (!blogData) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -62,8 +61,8 @@ const Blog = () => {
               >
                 <div className="relative w-[60%] overflow-hidden max-lg:w-full h-[250px]">
                   <img
-                    src={`${API_URL}${post.photo[0].url}`}
-                    alt="Stock"
+                    src={`${API_URL}${post.photo.url}`}
+                    alt={post.photo.name}
                     className="w-full h-[250px] object-cover object-center"
                   />
                   <div className="absolute top-0 left-[-10px] bg-maingray text-xs px-3 py-2 opacity-80 parallelogram">

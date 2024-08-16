@@ -9,10 +9,10 @@ const useBlogDetailPage = ({ blogSlug }: BlogDetailProps) => {
       try {
         const response = await fetchBlogDetailPage(blogSlug);
         setPostData({
-          metaTile: response.data[0].attributes.Metadata.MetaTitle,
-          metaDescription: response.data[0].attributes.Metadata.MetaDescription,
-          title: response.data[0].attributes.Title,
-          text: response.data[0].attributes.BlogText.map((item: any) => {
+          metaTile: response.Metadata.MetaTitle,
+          metaDescription: response.Metadata.MetaDescription,
+          title: response.Title,
+          text: response.BlogText.map((item: any) => {
             switch (item.type) {
               case "paragraph":
                 return {
@@ -78,10 +78,11 @@ const useBlogDetailPage = ({ blogSlug }: BlogDetailProps) => {
                 return item;
             }
           }),
-          photo: response.data[0].attributes.Media.data.map((photo: any) => ({
-            name: photo.attributes.name,
-            url: photo.attributes.url,
-          })),
+          photo: {
+            type: "photo",
+            name: response.Media.data[0].attributes.name,
+            url: response.Media.data[0].attributes.url,
+         }
         });
       } catch (error) {
         console.error("Ошибка запроса:", error);
@@ -89,7 +90,6 @@ const useBlogDetailPage = ({ blogSlug }: BlogDetailProps) => {
     };
     fetchPostData();
   }, [blogSlug]);
-
   return postData;
 };
 

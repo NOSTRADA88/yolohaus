@@ -9,7 +9,6 @@ const useBlogPage = () => {
     const fetchBlog = async () => {
       try {
         const response = await fetchBlogPage();
-
         setBlogData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
@@ -18,10 +17,10 @@ const useBlogPage = () => {
             title: post.attributes.Title,
             text: post.attributes.BlogText,
             slug: post.attributes.slug,
-            photo: post.attributes.Media.data.map((photo: any) => ({
-              name: photo.attributes.name,
-              url: photo.attributes.url,
-            })),
+            photo: {
+              name: post.attributes.Media.data[0].attributes.name,
+              url: post.attributes.Media.data[0].attributes.url,
+            },
           })),
         });
       } catch (error) {

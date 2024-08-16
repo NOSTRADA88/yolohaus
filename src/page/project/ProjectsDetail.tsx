@@ -1,102 +1,115 @@
 import { useEffect, useState } from "react";
-import {
-  AboutHouses,
-  OptionsHouses,
-  SliderHouses,
-} from "../../components/builtHouses";
-import { useLocation } from "react-router-dom";
+import { AboutHouses, OptionsHouses } from "../../components/builtHouses";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import { ProjectsDetailProps } from "../../interfaces";
 import useProjectsDetailPage from "../../hooks/useProjectsDetailPage";
+
 const ProjectsDetail = ({
   projectsSlug,
   initialTechnology,
 }: ProjectsDetailProps) => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const [finalTitle, setFinalTitle] = useState<string>("");
+  const [intermediateTitle, setIntermediateTitle] = useState<string>("");
+  const [isTechnologySelected, setIsTechnologySelected] =
+    useState<boolean>(false);
   const { projectData, setProjectData } = useProjectsDetailPage({
     projectsSlug: projectsSlug || "",
   });
-//НАДО ПОЧИНИТЬ ХЛЕБНЫЕ КРОШКИ И ОТОБРАЖЕНИЕ ПРИ КЛИКЕ НА ПРЕДЫДУЩИЙ 
-  const updateTitle = (technology: string, initialTitle?: string) => {
+
+  const updateMetaData = (technology: string | null) => {
+    if (!projectData) return;
+
+    let { title, metaTitle, metaDescription } = projectData;
+
     const technologyNames = ["СИП", "Каркас", "Газобетон"];
-    let { metaTitle, metaDescription, title } = projectData || {};
-
-    if (initialTitle) {
-      title = initialTitle;
-    }
-
     technologyNames.forEach((name) => {
-      if (title) title = title.replace(` из ${name}`, "");
-      if (metaTitle) metaTitle = metaTitle.replace(` из ${name}`, "");
-      if (metaDescription)
-        metaDescription = metaDescription.replace(` из ${name}`, "");
+      title = title.replace(` из ${name}`, "");
+      metaTitle = metaTitle?.replace(` из ${name}`, "") || "";
+      metaDescription = metaDescription?.replace(` из ${name}`, "") || "";
     });
 
-    const updatedTitle = `${title} из ${technology}`;
-    metaTitle = `${updatedTitle}`;
-    metaDescription = `Yolohaus дом под ключ. ${updatedTitle}`;
+    if (technology) {
+      title = `${title} из ${technology}`;
+      metaTitle = title;
+      metaDescription = `Yolohaus дом под ключ. ${title}`;
+      setIsTechnologySelected(true);
+    } else {
+      setIsTechnologySelected(false);
+    }
 
     setProjectData((prevData) => ({
       ...prevData!,
-      title: updatedTitle || "",
-      metaTitle: metaTitle || "",
-      metaDescription: metaDescription || "",
+      title,
+      metaTitle,
+      metaDescription,
     }));
 
-    setFinalTitle(updatedTitle);
+    setFinalTitle(title);
   };
 
   useEffect(() => {
-    const fetchDataAndSetTitle = async () => {
-      if (projectData) {
-        let initialTitle = projectData.title || "";
-        if (initialTechnology) {
-          const technologyMap = {
-            sip: "СИП",
-            karkas: "Каркас",
-            gazobeton: "Газобетон",
-          };
-          updateTitle(
-            technologyMap[initialTechnology as keyof typeof technologyMap],
-            initialTitle
-          );
-        } else {
-          setFinalTitle(initialTitle);
-        }
-        setLoading(false);
-      }
+    if (!projectData) return;
+
+    // Only set intermediateTitle if it hasn't been set yet
+    if (!intermediateTitle) {
+      setIntermediateTitle(projectData.title);
+    }
+
+    // Determine if a technology is selected based on the current path
+    const currentPath = location.pathname;
+    const technologySlugs = ["sip", "karkas", "gazobeton"];
+    const selectedTechSlug = technologySlugs.find((slug) =>
+      currentPath.endsWith(`-${slug}`)
+    );
+
+    // Map slug to technology name
+    const technologyMap = {
+      sip: "СИП",
+      karkas: "Каркас",
+      gazobeton: "Газобетон",
     };
 
-    fetchDataAndSetTitle();
-  }, [projectsSlug, initialTechnology, location.pathname, projectData]);
+    const technologyName = selectedTechSlug
+      ? technologyMap[selectedTechSlug as keyof typeof technologyMap]
+      : null;
 
-  useEffect(() => {
-    if (projectData?.title && !finalTitle) {
+    // Update meta data only if technology is selected
+    if (technologyName && !isTechnologySelected) {
+      updateMetaData(technologyName);
+    } else if (!technologyName) {
       setFinalTitle(projectData.title);
+      setIsTechnologySelected(false);
     }
-  }, [projectData?.title, finalTitle]);
 
-  const breadcrumbItems = [
-    { title: "Проекты и цены", slug: slug.projects },
-    {
-      title: projectData?.title || "",
-      slug: `${slug.projects}/${projectsSlug}`,
-    },
-  ];
+    setLoading(false);
+  }, [projectData, location.pathname, intermediateTitle, isTechnologySelected]);
 
-  if (finalTitle && finalTitle !== projectData?.title) {
+  const handleTechnologySelect = (
+    technology: string,
+    technologySlug: string
+  ) => {
+    updateMetaData(technology);
+    const newURL = `${slug.projects}/${projectsSlug}-${technologySlug}`;
+    navigate(newURL, { replace: true });
+  };
+
+  const breadcrumbItems = [{ title: "Проекты и цены", slug: slug.projects }];
+
+  if (isTechnologySelected) {
     breadcrumbItems.push({
-      title: finalTitle,
+      title: intermediateTitle,
       slug: `${slug.projects}/${projectsSlug}`,
     });
   }
 
-  if (!projectData) {
+  if (!projectData || loading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -114,18 +127,19 @@ const ProjectsDetail = ({
         <Breadcrumbs items={breadcrumbItems} finalTitle={finalTitle} />
         <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
           <div className="flex justify-between max-lg:flex-col">
-            {/* <SliderHouses details={[projectData]} /> */}
             <OptionsHouses details={[projectData]} />
           </div>
           <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
             Технология строительства
           </h2>
           <Technology
-            updateTitle={(technology) => updateTitle(technology)}
+            updateMetaData={updateMetaData}
             complectations={projectData.kits}
             currentProjectSlug={projectsSlug}
             slugProjects={slug.projects}
             initialTechnology={initialTechnology}
+            onTechnologySelect={handleTechnologySelect}
+            isTechnologySelected={isTechnologySelected}
           />
           <div className="mt-10">
             <AboutHouses details={[projectData]} />

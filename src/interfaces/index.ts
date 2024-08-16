@@ -233,7 +233,7 @@ export interface Post {
   slug?: string;
   title: string;
   text: CardDescription[];
-  photo: Photo[];
+  photo: Photo;
 }
 
 export interface BlogsData {
@@ -341,8 +341,19 @@ export interface TechnologyProps {
   complectations: Kit[];
   currentProjectSlug: string;
   slugProjects: string;
-  updateTitle: (technology: string) => void;
-  initialTechnology?: string;
+  updateMetaData: (technology: string | null) => void;
+  initialTechnology?: string | null;
+  onTechnologySelect: (technology: string, technologySlug: string) => void;
+  isTechnologySelected: boolean;
+}
+
+export interface SwitchTechnologyProps {
+  updateMetaData: (technology: string | null) => void;
+  onTechnologySelect: (technology: string, technologySlug: string) => void;
+  slugs: string[];
+  currentProjectSlug: string;
+  slugProjects: string;
+  selectedTechnology: string;
 }
 
 export interface AboutHousesProps {
