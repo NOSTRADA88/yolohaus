@@ -261,6 +261,7 @@ export interface BuiltHouse {
     constructionPeriod: string;
   };
   photo: Photo;
+  description: Description[];
 }
 
 export interface BuiltHouses {

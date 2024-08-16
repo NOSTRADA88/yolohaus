@@ -9,10 +9,10 @@ export const fetchBuiltHousesData = () =>
 
 export const fetchHousesDetailsData = async (houseSlug: string) => {
   const response = await axiosInstanse.get(
-    `${API_URL}/api/postroennye-doma?populate[BuiltHouses][filters][slug][$eq]=${houseSlug}&populate[Metadata]=*&populate[BuiltHouses][populate][Parameters]=*&populate[BuiltHouses][populate][Metadata]=*&populate[BuiltHouses][populate][BuildingTechnology]=*&populate[BuiltHouses][populate][Photos]=*`
+    `${API_URL}/api/spisok-postroennyh-domovs?[filters][slug][$eq]=${houseSlug}&populate=Metadata,Parameters,BuildingTechnology,Photos`
   );
   if (response.status === 200) {
-    return response.data.data.attributes.BuiltHouses;
+    return response.data.data[0].attributes;
   }
   throw new Error("no house data");
 };

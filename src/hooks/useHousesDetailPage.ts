@@ -13,13 +13,14 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
         setHouseData({
           metaTitle: response.Metadata.MetaTitle,
           metaDescription: response.Metadata.MetaDescription,
-          title: response.title,
+          title: response.Title,
           slug: response.slug,
           parameters: {
             houseArea: response.Parameters.HouseArea,
             location: response.Parameters.Location,
             constructionPeriod: response.Parameters.ConstructionPeriod,
           },
+          description: response.Description,
           photo: response.Photos.data.map((photo: any) => ({
             name: photo.attributes.name,
             url: photo.attributes.url,
