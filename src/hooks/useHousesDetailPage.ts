@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { BuiltHouse, HouseDetailProps } from "../interfaces";
+import { Project, HouseDetailProps } from "../interfaces";
 import { fetchHousesDetailsData } from "../api/built";
 
 const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
-  const [houseData, setHouseData] = useState<BuiltHouse>();
+  const [houseData, setHouseData] = useState<Project>();
 
   useEffect(() => {
     const fetchBuiltHouseData = async () => {
@@ -20,8 +20,9 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
             location: response.Parameters.Location,
             constructionPeriod: response.Parameters.ConstructionPeriod,
           },
+          buildingTechnology: response.BuildingTechnology.BuildingTechnology,
           description: response.Description,
-          photo: response.Photos.data.map((photo: any) => ({
+          photos: response.Photos.data.map((photo: any) => ({
             name: photo.attributes.name,
             url: photo.attributes.url,
           })),

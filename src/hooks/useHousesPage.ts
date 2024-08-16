@@ -26,10 +26,10 @@ const useHousesPage = () => {
               constructionPeriod:
                 house.attributes.Parameters.ConstructionPeriod,
             },
-            photo: {
-              url: house.attributes.Photos.data[0].attributes.url,
-              name: house.attributes.Photos.data[0].attributes.name,
-            },
+            photos: house.attributes.Photos.data.map((photo: any) => ({
+              url: photo.attributes.url,
+              name: photo.attributes.name,
+            })),
           })),
         });
       } catch (error) {

@@ -3,11 +3,11 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { BuiltHouse } from "../../interfaces";
+import { Project } from "../../interfaces";
 import useHousesPage from "../../hooks/useHousesPage";
 
 const Houses = () => {
-  const [visibleHouses, setVisibleHouses] = useState<BuiltHouse[]>([]);
+  const [visibleHouses, setVisibleHouses] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEndOfList, setIsEndOfList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -85,8 +85,8 @@ const Houses = () => {
             >
               <div className="relative max-w-full overflow-hidden">
                 <img
-                  src={`${API_URL}${house.photo.url}`}
-                  alt={house.photo.name}
+                  src={`${API_URL}${house.photos[0].url}`}
+                  alt={house.photos[0].name}
                   className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
                 />
               </div>

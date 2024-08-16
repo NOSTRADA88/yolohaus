@@ -36,8 +36,8 @@ const PopularProjects = ({
           >
             <div className="relative max-w-full overflow-hidden">
               <img
-                src={`${API_URL}${project.photo.url}`}
-                alt={project.photo.name}
+                src={`${API_URL}${project.photos[0].url}`}
+                alt={project.photos[0].name}
                 className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>

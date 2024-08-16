@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { AboutHouses, OptionsHouses } from "../../components/builtHouses";
+import {
+  AboutHouses,
+  OptionsHouses,
+  SliderHouses,
+} from "../../components/builtHouses";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
@@ -120,13 +124,14 @@ const ProjectsDetail = ({
   return (
     <div>
       <Helmet>
-        <title>{projectData.metaTitle || ""}</title>
-        <meta name="description" content={projectData.metaDescription || ""} />
+        <title>{projectData.metaTitle}</title>
+        <meta name="description" content={projectData.metaDescription} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={finalTitle} />
         <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
           <div className="flex justify-between max-lg:flex-col">
+            <SliderHouses details={[projectData]} />
             <OptionsHouses details={[projectData]} />
           </div>
           <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
@@ -134,7 +139,7 @@ const ProjectsDetail = ({
           </h2>
           <Technology
             updateMetaData={updateMetaData}
-            complectations={projectData.kits}
+            complectations={projectData.kits || []}
             currentProjectSlug={projectsSlug}
             slugProjects={slug.projects}
             initialTechnology={initialTechnology}

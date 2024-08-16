@@ -250,26 +250,12 @@ export interface BlogDetailProps {
 
 // Built Houses & Projects Page
 
-export interface BuiltHouse {
-  metaTitle: string;
-  metaDescription: string;
-  title: string;
-  slug: string;
-  parameters: {
-    houseArea: string;
-    location: string;
-    constructionPeriod: string;
-  };
-  photo: Photo;
-  description: Description[];
-}
-
 export interface BuiltHouses {
   metaTitle: string;
   metaDescription: string;
   title: string;
   icons: Photo[];
-  houses: BuiltHouse[];
+  houses: Project[];
 }
 
 interface Bundle {
@@ -288,28 +274,33 @@ export interface Kit {
   metaDescription: string;
 }
 
+interface Parameters {
+  houseArea: string;
+  builtUpArea?: string;
+  location?: string;
+  width?: string;
+  height?: string;
+  constructionPeriod: string;
+  bedrooms?: string;
+  toilets?: string;
+  terraceAndPorchArea?: string;
+  floors?: string;
+  kitchenLivingRoomArea?: string;
+}
+
 export interface Project {
   metaTitle: string;
   metaDescription: string;
+  youtube?: YouTubeData;
   slug: string;
   title: string;
   prices?: Kit[];
-  parameters: {
-    houseArea: string;
-    builtUpArea: string;
-    width: string;
-    height: string;
-    constructionPeriod: string;
-    bedrooms: string;
-    toilets: string;
-    terraceAndPorchArea: string;
-    floors: string;
-    kitchenLivingRoomArea: string;
-  };
-  photo: Photo;
+  parameters: Parameters;
+  buildingTechnology?: string;
+  photos: Photo[];
   shortDescription?: Description[];
   description: Description[];
-  kits: Kit[];
+  kits?: Kit[];
 }
 
 export interface ProjectsList {

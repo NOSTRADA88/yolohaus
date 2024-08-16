@@ -14,7 +14,7 @@ const useProjectsDetailPage = ({ projectsSlug }: ProjectsDetailProps) => {
           metaDescription: response.Metadata.MetaDescription,
           slug: response.slug,
           title: response.Title,
-          photo: response.Photos.data.map((photo: any) => ({
+          photos: response.Photos.data.map((photo: any) => ({
             name: photo.attributes.name,
             url: photo.attributes.url,
           })),

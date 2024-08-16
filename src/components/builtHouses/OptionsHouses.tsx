@@ -23,7 +23,7 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
       </h2>
       {details.map((detail, index) => (
         <div key={index}>
-          {/* {detail.BuildingTechnology && (
+          {detail.buildingTechnology && (
             <>
               <div className="flex justify-between items-center py-3">
                 <p className=" font-museo font-bold text-base text-maingray">
@@ -31,27 +31,27 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
                 </p>
 
                 <p className="font-museo font-light text-base text-maingray">
-                  {detail.attributes.BuildingTechnology.BuildingTechnology}
+                  {detail.buildingTechnology}
                 </p>
               </div>
 
               <hr className="border-[#C4C4C4]" />
             </>
-          )} */}
+          )}
 
-          {/* {detail.attributes.Parameters.Location && (
+          {detail.parameters.location && (
             <>
               <div className="flex justify-between items-center py-3 ">
                 <p className=" font-museo font-bold text-base text-maingray">
                   Расположение
                 </p>
                 <p className="font-museo font-light text-base text-maingray  w-[60%] text-end max-sm:w-1/2">
-                  {detail.attributes.Parameters.Location}
+                  {detail.parameters.location}
                 </p>
               </div>
               <hr className="border-[#C4C4C4]" />
             </>
-          )} */}
+          )}
           {detail.parameters.houseArea && (
             <>
               <div className="flex justify-between items-center py-3">

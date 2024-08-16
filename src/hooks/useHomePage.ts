@@ -62,12 +62,10 @@ const useHomePage = () => {
                   project.attributes.Parameters.ConstructionPeriod,
                 bedrooms: project.attributes.Parameters.Bedrooms,
               },
-              photo: {
-                name: project.attributes.Photos.data[0].attributes.name,
-                url: project.attributes.Photos.data[0].attributes.url,
-                width: project.attributes.Photos.data[0].attributes.width,
-                height: project.attributes.Photos.data[0].attributes.height,
-              },
+              photos: project.attributes.Photos.data.map((photo: any) => ({
+                url: photo.attributes.url,
+                name: photo.attributes.name,
+              })),
             })
           ),
         },
