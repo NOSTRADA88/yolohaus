@@ -9,7 +9,8 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const informationData = useHeaderFooter();
+    // TODO ДАЖЕ ТУТ 0o
+  const {informationData, isLoading, error} = useHeaderFooter();
 
   if (!informationData) {
     return (

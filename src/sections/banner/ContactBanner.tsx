@@ -8,12 +8,13 @@ import useHeaderFooter from "../../hooks/useHeaderFooter";
 import { useModal } from "../../hooks/useModal";
 
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
-  const phoneData = useHeaderFooter();
+  // TODO это чё ваще за фатафак с мобилкой <_>
+  const {informationData, isLoading, error} = useHeaderFooter();
   const { isModalOpen, openModal, closeModal } = useModal();
   const location = useLocation();
   const isVacansiiPage = location.pathname.includes("vacancies");
 
-  if (!phoneData) {
+  if (!informationData || isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -49,7 +50,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
                 <h2 className="text-white text-center text-base max-xl:px-10 max-sm:text-sm">
                   Свяжитесь с нами по номеру
                   <span className="underline cursor-pointer transition-all duration-300 text-lg hover:text-orange max-sm:text-base">
-                    {formatPhoneNumber(phoneData.phoneNumber)}
+                    {formatPhoneNumber(informationData.phoneNumber)}
                   </span>
                   , и специалисты «Yolo Haus» помогут вам выбрать дом вашей
                   мечты. <br />
@@ -73,7 +74,7 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
       ) : (
         <RenderVacansiiMessage
           isVacansiiPage={isVacansiiPage}
-          phone={phoneData.phoneNumber}
+          phone={informationData.phoneNumber}
           openModal={openModal}
         />
       )}

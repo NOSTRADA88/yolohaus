@@ -1,4 +1,4 @@
 import {fetchData} from "./index";
 
-export const fetchVacancyPage = () =>
-    fetchData("/api/vakansii", "Metadata,Vacancies");
+export const fetchVacancyPage = (signal: AbortSignal) =>
+    fetchData("/api/vakansii", "Metadata,Vacancies", signal);

@@ -1,3 +1,10 @@
+// Shared
+
+interface Metadata {
+  title: string;
+  description: string;
+}
+
 // Description
 
 interface Child {
@@ -169,8 +176,7 @@ export interface formatPhoneNumberProps {
 // About & Guarantee  Page
 
 export interface AboutPagesData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   titleAbout?: string;
   titleMini: string;
@@ -228,8 +234,7 @@ export type CardDescription =
   | CardDescriptionImage;
 
 export interface Post {
-  metaTile: string;
-  metaDescription: string;
+  metadata: Metadata;
   slug?: string;
   title: string;
   text: CardDescription[];
@@ -237,8 +242,7 @@ export interface Post {
 }
 
 export interface BlogsData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   titleBlog?: string;
   posts: Post[];
@@ -251,8 +255,7 @@ export interface BlogDetailProps {
 // Built Houses & Projects Page
 
 export interface BuiltHouses {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   icons: Photo[];
   houses: Project[];
@@ -265,13 +268,12 @@ interface Bundle {
 }
 
 export interface Kit {
+  metadata: Metadata;
   basePrice: string;
   standardPrice: string;
   comfortPrice: string;
   bundles: Bundle[];
   slug: string;
-  metaTitle: string;
-  metaDescription: string;
 }
 
 interface Parameters {
@@ -289,8 +291,7 @@ interface Parameters {
 }
 
 export interface Project {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   youtube?: YouTubeData;
   slug: string;
   title: string;
@@ -304,9 +305,8 @@ export interface Project {
 }
 
 export interface ProjectsList {
+  metadata: Metadata;
   title: string;
-  metaTitle: string;
-  metaDescription: string;
   projects: Project[];
   icons: Photo[];
 }
@@ -362,8 +362,7 @@ export interface Employee {
 }
 
 export interface ContactPage {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   titleMini: string;
   description: Description[];
@@ -406,8 +405,7 @@ export interface Bank {
 }
 
 export interface MortgageData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   titleDescription: string;
   description: Description[];
@@ -423,8 +421,7 @@ export interface BankSelectionProps {
 // Privacy & Policy page
 
 export interface PrivacyPolicyData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   description: Description[];
 }
@@ -438,8 +435,7 @@ interface Review {
 }
 
 export interface ReviewsData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   reviews: Review[];
 }
@@ -456,8 +452,7 @@ export interface StockItem {
 }
 
 export interface StocksData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   stocks: StockItem[];
 }
@@ -488,12 +483,13 @@ export interface Vacancies {
   workingConditions: CardDescriptionList[];
   requirements: CardDescriptionList[];
 }
+
 export interface VacancyPagesData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   vacancies: Vacancies[];
 }
+
 export interface ActiveVacanciesProps {
   vacancies: Vacancies[];
 }
@@ -507,8 +503,7 @@ export interface Card {
 }
 
 export interface Service {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   slug?: string;
   photo?: Photo;
@@ -518,8 +513,7 @@ export interface Service {
 }
 
 export interface ServicesData {
-  metaTitle: string;
-  metaDescription: string;
+  metadata: Metadata;
   title: string;
   services: Service[];
 }

@@ -5,9 +5,10 @@ import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useReviewsPage from "../../hooks/useReviewsPage";
 
 const Reviews: React.FC = () => {
-    const reviewsData = useReviewsPage();
+    // TODO aaaa isLoading error
+    const {reviewsData, isLoading, error} = useReviewsPage();
 
-    if (!reviewsData) {
+    if (!reviewsData || isLoading) {
         return (
             <div className="flex justify-center items-center mt-8 mb-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -18,8 +19,8 @@ const Reviews: React.FC = () => {
     return (
         <div>
             <Helmet>
-                <title>{reviewsData.metaTitle}</title>
-                <meta name="description" content={reviewsData.metaDescription} />
+                <title>{reviewsData.metadata.title}</title>
+                <meta name="description" content={reviewsData.metadata.description} />
             </Helmet>
             <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
                 <Breadcrumbs finalTitle={reviewsData.title} />

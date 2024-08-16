@@ -23,26 +23,27 @@ const ProjectsDetail = ({
   const [intermediateTitle, setIntermediateTitle] = useState<string>("");
   const [isTechnologySelected, setIsTechnologySelected] =
     useState<boolean>(false);
-  const { projectData, setProjectData } = useProjectsDetailPage({
+  // TODO обработать убрать всё лишнее отсюда =(
+  const { projectData, setProjectData, isLoading, error } = useProjectsDetailPage({
     projectsSlug: projectsSlug || "",
   });
 
   const updateMetaData = (technology: string | null) => {
     if (!projectData) return;
 
-    let { title, metaTitle, metaDescription } = projectData;
+    let { title, metadata } = projectData;
 
     const technologyNames = ["СИП", "Каркас", "Газобетон"];
     technologyNames.forEach((name) => {
       title = title.replace(` из ${name}`, "");
-      metaTitle = metaTitle?.replace(` из ${name}`, "") || "";
-      metaDescription = metaDescription?.replace(` из ${name}`, "") || "";
+      metadata.title = metadata.title?.replace(` из ${name}`, "") || "";
+      metadata.description = metadata.description?.replace(` из ${name}`, "") || "";
     });
 
     if (technology) {
       title = `${title} из ${technology}`;
-      metaTitle = title;
-      metaDescription = `Yolohaus дом под ключ. ${title}`;
+      metadata.title = title;
+      metadata.description = `Yolohaus дом под ключ. ${title}`;
       setIsTechnologySelected(true);
     } else {
       setIsTechnologySelected(false);
@@ -51,8 +52,7 @@ const ProjectsDetail = ({
     setProjectData((prevData) => ({
       ...prevData!,
       title,
-      metaTitle,
-      metaDescription,
+      metadata,
     }));
 
     setFinalTitle(title);
@@ -124,8 +124,8 @@ const ProjectsDetail = ({
   return (
     <div>
       <Helmet>
-        <title>{projectData.metaTitle}</title>
-        <meta name="description" content={projectData.metaDescription} />
+        <title>{projectData.metadata.title}</title>
+        <meta name="description" content={projectData.metadata.description} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={finalTitle} />

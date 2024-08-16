@@ -1,7 +1,8 @@
 import { fetchData } from ".";
 
-export const fetchContactPage = () =>
+export const fetchContactPage = (signal: AbortSignal) =>
   fetchData(
     "/api/kontakty",
-    "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions,Phone"
+    "Metadata,Information.Photo,WorkingTime,Employees.Photo,Productions,Phone",
+      signal
   );

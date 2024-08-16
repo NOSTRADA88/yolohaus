@@ -1,4 +1,4 @@
 import { fetchData } from ".";
 
-export const fetchPrivacyPolicyPage = () =>
-  fetchData("/api/politika-konfidenczialnosti", "Metadata");
+export const fetchPrivacyPolicyPage = (signal: AbortSignal) =>
+  fetchData("/api/politika-konfidenczialnosti", "Metadata", signal);

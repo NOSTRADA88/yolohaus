@@ -18,8 +18,8 @@ const formatNumber = (number: number) => {
 };
 
 const MortgageAbout = () => {
-  const mortgageData = useMortgagePage();
-  console.log(mortgageData);
+  const {mortgageData, isLoading, error} = useMortgagePage();
+  // TODO как обычно, выносим вё это говнище в секции, делаем обработку загрузки и ошибку
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
@@ -228,8 +228,8 @@ const MortgageAbout = () => {
   return (
     <div>
       <Helmet>
-        <title>{mortgageData.metaTitle}</title>
-        <meta name="description" content={mortgageData.metaDescription} />
+        <title>{mortgageData.metadata.title}</title>
+        <meta name="description" content={mortgageData.metadata.description} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs finalTitle={mortgageData.title} />

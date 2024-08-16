@@ -10,16 +10,17 @@ const Houses = () => {
   const [visibleHouses, setVisibleHouses] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEndOfList, setIsEndOfList] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const lastHouseRef = useRef<HTMLAnchorElement | null>(null);
 
   const housesPerPage = 9;
-  const housesData = useHousesPage();
 
+  const {housesData, isLoading, error} = useHousesPage();
+  // TODO вынести логику, добавить обработку isLoading и ошибки!!!!!!
   const loadMoreHouses = useCallback(() => {
-    if (!housesData || isEndOfList || isLoading) return;
+    if (!housesData || isEndOfList || isLoadingMore) return;
 
-    setIsLoading(true);
+    setIsLoadingMore(true);
     const nextPage = currentPage + 1;
     const newHouses = housesData.houses.slice(
       currentPage * housesPerPage,
@@ -34,17 +35,17 @@ const Houses = () => {
     if (newHouses.length < housesPerPage) {
       setIsEndOfList(true);
     }
-    setIsLoading(false);
-  }, [currentPage, housesData, isEndOfList, isLoading]);
+    setIsLoadingMore(false);
+  }, [currentPage, housesData, isEndOfList, isLoadingMore]);
 
   const handleScroll = useCallback(() => {
-    if (!lastHouseRef.current || isEndOfList || isLoading) return;
+    if (!lastHouseRef.current || isEndOfList || isLoadingMore) return;
 
     const lastHouseRect = lastHouseRef.current.getBoundingClientRect();
     if (lastHouseRect.bottom <= window.innerHeight) {
       loadMoreHouses();
     }
-  }, [isEndOfList, loadMoreHouses, isLoading]);
+  }, [isEndOfList, loadMoreHouses, isLoadingMore]);
 
   useEffect(() => {
     if (housesData) {
@@ -70,8 +71,8 @@ const Houses = () => {
   return (
     <div>
       <Helmet>
-        <title>{housesData.metaTitle}</title>
-        <meta name="description" content={housesData.metaDescription} />
+        <title>{housesData.metadata.title}</title>
+        <meta name="description" content={housesData.metadata.description} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <Breadcrumbs finalTitle={housesData.title} />
@@ -132,7 +133,7 @@ const Houses = () => {
             </Link>
           ))}
         </div>
-        {isLoading && (
+        {isLoadingMore && (
           <div className="flex justify-center items-center mt-8 mb-8">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
           </div>

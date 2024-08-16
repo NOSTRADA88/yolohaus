@@ -10,15 +10,17 @@ import {
 import useHomePage from "../../hooks/useHomePage";
 
 const Home = () => {
-  const homeData = useHomePage();
+  const {homeData, isLoading, error} = useHomePage();
 
-  if (!homeData) {
+  //TODO сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
+  if (!homeData || isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
       </div>
     );
   }
+
   return (
     <div>
       <Helmet>

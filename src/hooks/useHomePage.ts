@@ -3,10 +3,12 @@ import { HomeData } from "../interfaces";
 import { fetchHomePage } from "../api/home";
 const useHomePage = () => {
   const [homeData, setHomeData] = useState<HomeData>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error>()
 
-  const fetchHome = useCallback(async () => {
+  const fetchHome = useCallback(async (signal: AbortSignal) => {
     try {
-      const response = await fetchHomePage();
+      const response = await fetchHomePage(signal);
       setHomeData({
         meta: {
           title: response.Metadata.MetaTitle,
@@ -99,16 +101,24 @@ const useHomePage = () => {
           yandexMapURL: response.ContactsMap.YandexMapURL,
         },
       });
-    } catch (e) {
-      console.error(e);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error);
+      } else {
+        setError(Error(`unknown error occurred: ${error}`))
+      }
+    } finally {
+      setIsLoading(false)
     }
   }, []);
 
   useEffect(() => {
-    fetchHome();
+    const abortController = new AbortController();
+    fetchHome(abortController.signal);
+    return () => abortController.abort()
   }, [fetchHome]);
 
-  return homeData;
+  return {homeData, isLoading, error};
 };
 
 export default useHomePage;

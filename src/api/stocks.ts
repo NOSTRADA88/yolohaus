@@ -1,4 +1,4 @@
 import {fetchData} from "./index";
 
-export const fetchStocksPage = () =>
-    fetchData("/api/akczii", "stock_list.Photo,Metadata");
+export const fetchStocksPage = (signal: AbortSignal) =>
+    fetchData("/api/akczii", "stock_list.Photo,Metadata", signal);

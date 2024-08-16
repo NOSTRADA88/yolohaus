@@ -18,8 +18,10 @@ const Projects = () => {
   const [isEndOfList, setIsEndOfList] = useState(false);
   const projectsPerPage = 9;
 
-  const homeData = useHomePage();
-  const projectsData = useProjectsPage();
+  // TODO вынести отсюда лишнюю логику обработать isLoading и error. Анриал просто рефакторить такое...
+  // сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
+  const {homeData, isLoading: isLoadingHome, error: errorHome} = useHomePage();
+  const {projectsData, isLoading: isLoadingProjects, error: errorProjects} = useProjectsPage();
   const lastProjectRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
@@ -147,12 +149,12 @@ const Projects = () => {
       </div>
     );
   }
-
+  // TODO чтобы тут были только хуки и импорты...
   return (
     <>
       <Helmet>
-        <title>{projectsData.metaTitle}</title>
-        <meta name="description" content={projectsData.metaDescription} />
+        <title>{projectsData.metadata.title}</title>
+        <meta name="description" content={projectsData.metadata.description} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <Breadcrumbs finalTitle={projectsData.title} />

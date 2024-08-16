@@ -1,40 +1,52 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { fetchMortgagePage } from "../api/mortgage";
 import { MortgageData } from "../interfaces";
 
 const useMortgagePage = () => {
   const [mortgageData, setMortgageData] = useState<MortgageData>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error>()
 
-  useEffect(() => {
-    const fetchMortgageData = async () => {
-      try {
-        const response = await fetchMortgagePage();
-        setMortgageData({
-          metaTitle: response.Metadata.MetaTitle,
-          metaDescription: response.Metadata.MetaDescription,
-          title: response.Title,
-          titleDescription: response.TitleDescription,
-          description: response.Description,
-          banks: response.banks_list.data.map((bank: any) => ({
-            id: bank.id,
-            photo: {
-              name: bank.attributes.Photo.data.attributes.name,
-              url: bank.attributes.Photo.data.attributes.url
-            },
-            rate: bank.attributes.Rate,
-            title: bank.attributes.Title,
-            url: bank.attributes.URL
-          })),
-        });
-      } catch (error) {
-        console.error("Failed to fetch mortgage data", error);
+  const fetchMortgageData = useCallback(async (signal: AbortSignal) => {
+    try {
+      const response = await fetchMortgagePage(signal);
+      setMortgageData({
+        metadata: {
+          title: response.Metadata.MetaTitle,
+          description: response.Metadata.MetaDescription,
+        },
+        title: response.Title,
+        titleDescription: response.TitleDescription,
+        description: response.Description,
+        banks: response.banks_list.data.map((bank: any) => ({
+          id: bank.id,
+          photo: {
+            name: bank.attributes.Photo.data.attributes.name,
+            url: bank.attributes.Photo.data.attributes.url
+          },
+          rate: bank.attributes.Rate,
+          title: bank.attributes.Title,
+          url: bank.attributes.URL
+        })),
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error);
+      } else {
+        setError(Error(`unknown error occurred: ${error}`))
       }
-    };
-
-    fetchMortgageData();
+    } finally {
+      setIsLoading(false)
+    }
   }, []);
 
-  return mortgageData;
+  useEffect(() => {
+    const abortController = new AbortController;
+    fetchMortgageData(abortController.signal);
+    return () => abortController.abort()
+  }, []);
+
+  return {mortgageData, isLoading, error};
 };
 
 export default useMortgagePage;

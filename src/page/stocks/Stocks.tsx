@@ -13,7 +13,9 @@ const Stocks = () => {
   const [isEndOfList, setIsEndOfList] = useState(false);
   const stocksPerPage = 9;
 
-  const stocksData = useStocksPage();
+  //TODO ВЫНЕСТИ и обработать херабору снизу
+
+  const {stocksData, isLoading: isLoadingStocks, error} = useStocksPage();
 
   const loadMoreStocks = useCallback(() => {
     if (isEndOfList) return;
@@ -58,8 +60,8 @@ const Stocks = () => {
   return (
     <div>
       <Helmet>
-        <title>{stocksData.metaTitle}</title>
-        <meta name="description" content={stocksData.metaDescription} />
+        <title>{stocksData.metadata.title}</title>
+        <meta name="description" content={stocksData.metadata.description} />
       </Helmet>
 
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">

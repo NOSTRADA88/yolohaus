@@ -6,9 +6,9 @@ import { Service } from "../../interfaces";
 import useServicesPage from "../../hooks/useServicesPage";
 
 const Services = () => {
-  const servicesData = useServicesPage();
-
-  if (!servicesData) {
+  const {servicesData, isLoading, error} = useServicesPage();
+    // TODO я уже умер 0:41
+  if (!servicesData || isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -20,8 +20,8 @@ const Services = () => {
   return (
     <div>
       <Helmet>
-        <title>{servicesData.metaTitle}</title>
-        <meta name="description" content={servicesData.metaDescription} />
+        <title>{servicesData.metadata.title}</title>
+        <meta name="description" content={servicesData.metadata.description} />
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={servicesData.title} />
