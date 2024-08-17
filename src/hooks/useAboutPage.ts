@@ -9,6 +9,8 @@ const useAboutPage = () => {
 
   const fetchAboutData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchAboutPage(signal);
       if (response) {
         setAboutData({
@@ -52,7 +54,7 @@ const useAboutPage = () => {
     const abortController = new AbortController();
     fetchAboutData(abortController.signal)
     return () => abortController.abort();
-  }, [fetchAboutData]);
+  }, []);
 
   return { aboutData, isLoading, error };
 };

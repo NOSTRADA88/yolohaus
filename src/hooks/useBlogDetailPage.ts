@@ -9,6 +9,8 @@ const useBlogDetailPage = ({ blogSlug }: BlogDetailProps) => {
 
   const fetchPostData = useCallback(async (blogSlug: string, signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchBlogDetailPage(blogSlug, signal);
       setPostData({
         metadata: {
@@ -103,7 +105,7 @@ const useBlogDetailPage = ({ blogSlug }: BlogDetailProps) => {
     const abortController = new AbortController();
     fetchPostData(blogSlug, abortController.signal)
     return () => abortController.abort()
-  }, [fetchPostData, blogSlug]);
+  }, [blogSlug]);
 
   return {postData, isLoading, error};
 };

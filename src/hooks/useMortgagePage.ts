@@ -9,6 +9,8 @@ const useMortgagePage = () => {
 
   const fetchMortgageData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchMortgagePage(signal);
       setMortgageData({
         metadata: {

@@ -9,6 +9,8 @@ const usePrivacyPolicyPage = () => {
 
   const fetchPrivacyPolicyData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchPrivacyPolicyPage(signal);
       setPrivacyPolicyData({
         metadata: {

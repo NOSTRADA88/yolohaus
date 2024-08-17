@@ -9,6 +9,8 @@ const useContactPage = () => {
 
   const fetchContactData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchContactPage(signal);
       setContactData({
         metadata: {
@@ -55,7 +57,7 @@ const useContactPage = () => {
     const abortController = new AbortController;
     fetchContactData(abortController.signal);
     return () => abortController.abort()
-  }, [contactData]);
+  }, []);
 
   return {contactData, isLoading, error};
 };

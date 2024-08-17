@@ -2,7 +2,6 @@ import { API_URL, formatPhoneNumber } from "../../constants";
 import { EmployeeCardProps } from "../../interfaces";
 
 const EmployeeCard = ({ employees }: EmployeeCardProps) => {
-  console.log(employees);
   return (
     <div className="mt-20">
       <h2 className="font-museo font-bold text-2xl mb-4 max-md:text-xl">

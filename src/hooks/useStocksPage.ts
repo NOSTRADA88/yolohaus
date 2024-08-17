@@ -9,6 +9,8 @@ const useStocksPage = () => {
 
   const fetchStocksData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchStocksPage(signal);
       setStocksData({
         metadata: {
@@ -48,7 +50,7 @@ const useStocksPage = () => {
     const abortController = new AbortController;
     fetchStocksData(abortController.signal);
     return () => abortController.abort();
-  }, [stocksData]);
+  }, []);
 
   return {stocksData, isLoading, error};
 };

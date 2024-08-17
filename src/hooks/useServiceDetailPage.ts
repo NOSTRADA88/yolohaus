@@ -9,6 +9,8 @@ const useServiceDetailPage = ({ servicesSlug }: ServiceDetailProps) => {
 
   const fetchServiceDetailData = useCallback(async (servicesSlug: string, signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchServicesDetailsPage(servicesSlug, signal);
       setServiceData({
         metadata: {
@@ -81,7 +83,7 @@ const useServiceDetailPage = ({ servicesSlug }: ServiceDetailProps) => {
     const abortController = new AbortController;
     fetchServiceDetailData(servicesSlug, abortController.signal);
     return () => abortController.abort();
-  }, [servicesSlug, serviceData]);
+  }, [servicesSlug]);
 
   return {serviceData, isLoading, error};
 };

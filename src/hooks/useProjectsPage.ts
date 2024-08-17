@@ -9,6 +9,8 @@ const useProjectsPage = () => {
 
   const fetchProjectsData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchProjectsPage(signal);
       setProjectsData({
         metadata: {
@@ -59,7 +61,7 @@ const useProjectsPage = () => {
     const abortController = new AbortController;
     fetchProjectsData(abortController.signal);
     return () => abortController.abort();
-  }, [projectsData]);
+  }, []);
 
   return {projectsData, isLoading, error};
 };

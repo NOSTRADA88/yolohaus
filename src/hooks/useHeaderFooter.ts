@@ -9,6 +9,8 @@ const useHeaderFooter = () => {
 
   const fetchInformationData = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchHeaderFooterData();
       setInformationData({
         info: response.HeaderInfo,
@@ -34,7 +36,7 @@ const useHeaderFooter = () => {
 
   useEffect(() => {
     fetchInformationData();
-  }, [informationData]);
+  }, []);
 
   return {informationData, isLoading, error};
 };

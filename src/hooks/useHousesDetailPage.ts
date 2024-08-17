@@ -9,6 +9,8 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
 
   const fetchBuiltHouseData = useCallback (async(houseSlug: string, signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchHousesDetailsData(houseSlug, signal);
       setHouseData({
         metadata: {
@@ -44,7 +46,7 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
     const abortController = new AbortController;
     fetchBuiltHouseData(houseSlug, abortController.signal);
     return () => abortController.abort();
-  }, [houseSlug, houseData]);
+  }, [houseSlug]);
 
   return {houseData, isLoading, error};
 };

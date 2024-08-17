@@ -9,6 +9,8 @@ const useHousesPage = () => {
 
   const fetchBuiltHouses = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchBuiltHousesData(signal);
       setHousesData({
         metadata: {

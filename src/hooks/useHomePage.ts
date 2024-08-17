@@ -8,6 +8,8 @@ const useHomePage = () => {
 
   const fetchHome = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchHomePage(signal);
       setHomeData({
         meta: {
@@ -116,7 +118,7 @@ const useHomePage = () => {
     const abortController = new AbortController();
     fetchHome(abortController.signal);
     return () => abortController.abort()
-  }, [fetchHome]);
+  }, []);
 
   return {homeData, isLoading, error};
 };

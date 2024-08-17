@@ -9,6 +9,8 @@ const useReviewsPage = () => {
 
   const fetchReviewsData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchReviewsPage(signal);
       setReviewsData({
         metadata: {
@@ -40,7 +42,7 @@ const useReviewsPage = () => {
     const abortController = new AbortController;
     fetchReviewsData(abortController.signal);
     return () => abortController.abort();
-  }, [reviewsData]);
+  }, []);
 
   return {reviewsData, isLoading, error};
 };

@@ -9,6 +9,8 @@ const useVacancyPage = () => {
 
   const fetchVacancyData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchVacancyPage(signal);
       setVacancyData({
         metadata: {
@@ -39,7 +41,7 @@ const useVacancyPage = () => {
     const abortController = new AbortController;
     fetchVacancyData(abortController.signal);
     return () => abortController.abort();
-  }, [vacancyData]);
+  }, []);
 
   return {vacancyData, isLoading, error};
 };

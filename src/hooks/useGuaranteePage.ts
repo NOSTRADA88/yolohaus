@@ -9,6 +9,8 @@ const useGuaranteePage = () => {
 
   const fetchGuaranteeData = useCallback(async (signal: AbortSignal) => {
     try {
+      setIsLoading(true);
+      setError(undefined);
       const response = await fetchGuaranteePage(signal);
       setGuaranteeData({
         metadata: {
@@ -48,7 +50,7 @@ const useGuaranteePage = () => {
     const abortController = new AbortController;
     fetchGuaranteeData(abortController.signal);
     return () => abortController.abort()
-  }, [guaranteeData]);
+  }, []);
 
   return {guaranteeData, isLoading, error};
 };
