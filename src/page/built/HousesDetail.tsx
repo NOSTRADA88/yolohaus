@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet";
-
 import {
   AboutHouses,
   OptionsHouses,
@@ -25,6 +24,9 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
       </div>
     );
   }
+
+  console.log(houseData)
+
   return (
     <div>
       <Helmet>

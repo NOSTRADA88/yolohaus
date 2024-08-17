@@ -24,8 +24,8 @@ const Home = () => {
   return (
     <div>
       <Helmet>
-        <title>{homeData.meta.title}</title>
-        <meta name="description" content={homeData.meta.description} />
+        <title>{homeData.metadata.title}</title>
+        <meta name="description" content={homeData.metadata.description} />
       </Helmet>
       <MainScreen
         rawOne={homeData.greetings.rawOne}

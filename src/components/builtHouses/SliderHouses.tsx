@@ -21,7 +21,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
     }));
 
     const youTubeData: YouTubeData | null = detail.youtube
-      ? JSON.parse(detail.youtube.url)
+      ? detail.youtube
       : null;
 
     const videos: VideoMediaItem[] = youTubeData

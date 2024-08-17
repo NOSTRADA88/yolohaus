@@ -119,10 +119,7 @@ export interface ContactsMap {
 }
 
 export interface HomeData {
-  meta: {
-    title: string;
-    description: string;
-  };
+  metadata: Metadata;
   greetings: {
     rawOne: string;
     rawTwo: string;

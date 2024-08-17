@@ -12,9 +12,9 @@ const useHomePage = () => {
       setError(undefined);
       const response = await fetchHomePage(signal);
       setHomeData({
-        meta: {
+        metadata: {
           title: response.Metadata.MetaTitle,
-          description: response.Metadata.MetaDescription,
+          description: response.Metadata.MetaDescription
         },
         greetings: {
           rawOne: response.Greetings.RawOne,
