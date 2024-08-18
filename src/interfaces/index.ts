@@ -1,6 +1,6 @@
 // Shared
 
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 interface Metadata {
   title: string;

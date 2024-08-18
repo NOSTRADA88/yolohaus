@@ -1,25 +1,15 @@
-import { useEffect, useState, useCallback, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, formatPrice, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { Project } from "../../interfaces";
+
 import useHomePage from "../../hooks/useHomePage";
 import useProjectsPage from "../../hooks/useProjectsPage";
+import useSortedProjects from "../../hooks/useSortedProjects";
+import usePaginatedProjects from "../../hooks/usePaginatedProjects";
 
 const Projects = () => {
-  const [sortBy, setSortBy] = useState<"popularity" | "area" | "price" | null>(
-    null
-  );
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [visibleProjects, setVisibleProjects] = useState<Project[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isEndOfList, setIsEndOfList] = useState(false);
-  const projectsPerPage = 9;
-
-  // TODO вынести отсюда лишнюю логику обработать isLoading и error. Анриал просто рефакторить такое...
-  // сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
   const {
     homeData,
     isLoading: isLoadingHome,
@@ -30,134 +20,41 @@ const Projects = () => {
     isLoading: isLoadingProjects,
     error: errorProjects,
   } = useProjectsPage();
-  const lastProjectRef = useRef<HTMLAnchorElement | null>(null);
 
-  useEffect(() => {
-    if (projectsData) {
-      const sortedProjects = sortProjects(projectsData.projects);
-      const initialProjects = sortedProjects.slice(0, projectsPerPage);
-      setVisibleProjects(initialProjects);
-      setIsEndOfList(initialProjects.length >= sortedProjects.length);
-      setCurrentPage(1);
-    }
-  }, [projectsData, sortBy, sortDirection]);
+  const { sortedProjects, sortBy, sortDirection, toggleSortBy, resetSort } =
+    useSortedProjects(projectsData ?? null, homeData ?? null);
 
-  const loadMoreProjects = useCallback(() => {
-    if (!projectsData || isEndOfList) return;
+  const { visibleProjects, isEndOfList, lastProjectRef } =
+    usePaginatedProjects(sortedProjects);
 
-    const nextPage = currentPage + 1;
-    const sortedProjects = sortProjects(projectsData.projects);
-    const newProjects = sortedProjects.slice(
-      currentPage * projectsPerPage,
-      nextPage * projectsPerPage
-    );
-
-    if (newProjects.length > 0) {
-      setVisibleProjects((prevProjects) => [...prevProjects, ...newProjects]);
-      setCurrentPage(nextPage);
-    }
-
-    if (
-      newProjects.length < projectsPerPage ||
-      visibleProjects.length + newProjects.length >= sortedProjects.length
-    ) {
-      setIsEndOfList(true);
-    }
-  }, [
-    currentPage,
-    projectsData,
-    sortBy,
-    sortDirection,
-    isEndOfList,
-    visibleProjects.length,
-  ]);
-
-  const handleScroll = useCallback(() => {
-    if (!lastProjectRef.current || isEndOfList || !projectsData) return;
-
-    const lastProjectRect = lastProjectRef.current.getBoundingClientRect();
-    if (
-      lastProjectRect.bottom <= window.innerHeight &&
-      visibleProjects.length < projectsData.projects.length
-    ) {
-      loadMoreProjects();
-    }
-  }, [isEndOfList, loadMoreProjects, projectsData, visibleProjects.length]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
-  const sortProjects = (projectsToSort: Project[]) => {
-    if (!projectsData || !homeData) return projectsToSort;
-
-    let sortedProjects = [...projectsToSort];
-
-    const popularSet = new Set(
-      homeData.popularProjects.popularProject.map((p) => p.slug)
-    );
-
-    if (sortBy === "popularity") {
-      sortedProjects.sort((a, b) => {
-        const aIsPopular = popularSet.has(a.slug);
-        const bIsPopular = popularSet.has(b.slug);
-        if (aIsPopular === bIsPopular) return 0;
-        return (sortDirection === "asc" ? -1 : 1) * (aIsPopular ? 1 : -1);
-      });
-    } else if (sortBy === "area") {
-      sortedProjects.sort(
-        (a, b) =>
-          (sortDirection === "asc" ? -1 : 1) *
-          (parseFloat(a.parameters.houseArea) -
-            parseFloat(b.parameters.houseArea))
-      );
-    } else if (sortBy === "price") {
-      sortedProjects.sort(
-        (a, b) =>
-          (sortDirection === "asc" ? -1 : 1) *
-          (getMinPrice(a.prices) - getMinPrice(b.prices))
-      );
-    }
-
-    return sortedProjects;
-  };
-
-  const toggleSortBy = (criteria: "popularity" | "area" | "price") => {
-    if (sortBy === criteria) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(criteria);
-      setSortDirection("asc");
-    }
-    setCurrentPage(1);
-    if (projectsData) {
-      const sortedProjects = sortProjects(projectsData.projects);
-      const initialProjects = sortedProjects.slice(0, projectsPerPage);
-      setVisibleProjects(initialProjects);
-      setIsEndOfList(initialProjects.length >= sortedProjects.length);
-    }
-  };
-
-  const resetSort = () => {
-    setSortBy(null);
-    setSortDirection("asc");
-    setCurrentPage(1);
-    if (projectsData) {
-      const initialProjects = projectsData.projects.slice(0, projectsPerPage);
-      setVisibleProjects(initialProjects);
-      setIsEndOfList(initialProjects.length >= projectsData.projects.length);
-    }
-  };
-
-  if (!projectsData) {
+  if (isLoadingHome || isLoadingProjects) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
       </div>
     );
   }
-  // TODO чтобы тут были только хуки и импорты...
+
+  if (errorHome || errorProjects) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!projectsData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-gray-500 text-lg font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Helmet>
