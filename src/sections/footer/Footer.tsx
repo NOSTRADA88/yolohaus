@@ -19,7 +19,9 @@ const Footer = ({ footer }: HeaderProps) => {
               <img
                 src={LogoMainWhite}
                 alt="logo"
-                className="h-auto max-w-full object-contain w-52 cursor-pointer"
+                height={200}
+                width={100}
+                className=" w-52 cursor-pointer"
                 loading="lazy"
               />
             </a>

@@ -30,15 +30,13 @@ const PopularProjects = ({
           <Link
             to={`${slug.projects}/${project.slug}`}
             key={index}
-            className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-[350px]  h-[320px] max-xl:w-full  max-md:h-full
-            max-[350px]:w-[280px]
-            transition-all duration-300 hover:shadow-2xl group"
+            className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] transition-all duration-300 hover:shadow-2xl group"
           >
-            <div className="relative max-w-full overflow-hidden">
+            <div className="relative  overflow-hidden ">
               <img
                 src={`${API_URL}${project.photos[0].url}`}
                 alt={project.photos[0].name}
-                className="w-[350px] h-[180px] max-xl:w-full max-xl:object-center max-xl:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                className="transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>
             <div className="p-4">

@@ -23,7 +23,6 @@ const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
               <img
                 src={`${API_URL}${photo.url}`}
                 alt={`Банк ${photo.name}`}
-                className="w-[300px] h-auto max-lg:w-[150px]"
                 width={photo.width}
                 height={photo.height}
               />

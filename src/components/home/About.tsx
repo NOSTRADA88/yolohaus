@@ -51,7 +51,13 @@ const About = ({ title, information }: AboutProps) => {
           </div>
         </div>
         <div className="mt-12 max-[1111px]:hidden">
-          <img src={photoAbout} alt="photoAbout" className="h-[350px]" />
+          <img
+            src={photoAbout}
+            alt="photoAbout"
+            width={100}
+            height={100}
+            className="h-[420px]"
+          />
         </div>
       </div>
     </div>

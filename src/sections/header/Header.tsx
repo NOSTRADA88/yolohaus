@@ -25,7 +25,7 @@ const Header = ({ header }: HeaderProps) => {
     <div className="w-full max-w-[1111px] mx-auto">
       <div className="flex justify-between items-center mt-10 max-xl:flex-col">
         <div className="flex gap-4 items-center max-xl:mb-4 max-md:flex-col ">
-          <div className="hidden max-[800px]:block absolute left-4 top-12 ">
+          <div className="hidden max-[850px]:block absolute left-4 top-12 ">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Menu"
@@ -37,7 +37,9 @@ const Header = ({ header }: HeaderProps) => {
             <img
               src={LogoMainBlack}
               alt="header logo"
-              className="h-auto max-w-full object-contain cursor-pointer w-52"
+              className="cursor-pointer w-52"
+              height={200}
+              width={100}
               loading="eager"
             />
           </Link>
@@ -83,7 +85,7 @@ const Header = ({ header }: HeaderProps) => {
           </div>
         </div>
       </div>
-      <div className="max-[800px]:hidden">
+      <div className="max-[850px]:hidden">
         <Navbar navLinks={navLinks} />
       </div>
       {mobileMenuOpen && (

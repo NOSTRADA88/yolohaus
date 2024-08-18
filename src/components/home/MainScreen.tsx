@@ -10,7 +10,9 @@ const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
       <img
         src={BgMain}
         alt="banner"
-        className="h-[472px] w-full object-cover  bg-cover bg-center relative max-xl:h-[350px] max-md:h-[300px]"
+        width={"100%"}
+        height={472}
+        className="h-[472px] object-cover  relative max-xl:h-[350px] max-md:h-[300px]"
         loading="eager"
       />
       <div className="absolute inset-0 bg-[#2B2A29] opacity-70"></div>

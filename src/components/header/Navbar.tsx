@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
 
   return (
     <div className="w-full bg-lightwhite mt-8 max-xl:mt-4 max-lg:mt-2 ">
-      <ul className="flex gap-7 items-center justify-center h-20 max-xl:gap-6 max-lg:gap-[14px]">
+      <ul className="flex gap-7 items-center justify-center h-20 max-xl:gap-6 max-lg:gap-2">
         {navLinks.map((link, index) => (
           <li
             key={index}

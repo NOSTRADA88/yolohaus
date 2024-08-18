@@ -122,7 +122,7 @@ a:hover .filter-footer-svg {
 .arrow-container:hover .arrow-icon {
   transform: rotate(180deg);
 }
-.ymaps-2-1-79-ground-pane {
+/* .ymaps-2-1-79-ground-pane {
   filter: grayscale(100%);
 }
 
@@ -132,19 +132,14 @@ a:hover .filter-footer-svg {
 
 .ymaps-2-1-79-copyrights-pane {
   display: none;
-}
-html::-webkit-scrollbar {
-  width: 8px;
-}
+} */
 
-html::-webkit-scrollbar-thumb {
-  background-color: #ea9635;
-  border-radius: 6px;
+html::-webkit-scrollbar {
+  display: none;
 }
 
 html::-webkit-scrollbar-track {
-  background-color: #ffffff;
-  border-radius: 8px;
+  scrollbar-width: none; 
 }
 
 .custom-list {

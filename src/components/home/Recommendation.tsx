@@ -6,7 +6,7 @@ import { slug } from "../../constants";
 const Recommendation = ({ title, recommendations }: RecommendationProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
-      <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl max-md:leading-normal max-sm:pr-10">
+      <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl max-xl:leading-normal max-sm:pr-10">
         {title}
       </h1>
 
@@ -26,9 +26,9 @@ const Recommendation = ({ title, recommendations }: RecommendationProps) => {
             <img
               src={`${API_URL}${rec.icon.url}`}
               alt={rec.icon.name}
-              width={rec.icon.width}
-              height={rec.icon.height}
-              className="mx-auto relative z-10 transition-opacity duration-500 group-hover:opacity-0"
+              width={100}
+              height={100}
+              className="mx-auto relative z-10 transition-opacity duration-500 group-hover:opacity-0 h-12"
             />
             <div className="flex justify-center items-center">
               <h2 className="text-center text-maingray font-museo font-light text-lg mt-4 relative z-10 transition-opacity duration-500 group-hover:opacity-0 md:text-base">
@@ -51,12 +51,14 @@ const Recommendation = ({ title, recommendations }: RecommendationProps) => {
           to={slug.reviews}
           className="relative p-20 border bg-orange overflow-hidden "
         >
-          <div className="relative w-full h-full overflow-hidden group hover:scale-150 hover:transition-all hover:duration-500 cursor-pointer ">
+          <div className="relative  overflow-hidden group hover:scale-150 hover:transition-all hover:duration-500 cursor-pointer ">
             <div className="flex justify-center items-center ">
               <img
                 src={ReviewsIcon}
                 alt="Icon representing reviews"
-                className="w-full h-full object-contain max-xl:w-[100px] max-xl:h-[100px]  "
+                className="max-xl:w-[150px]"
+                width={100}
+                height={100}
               />
             </div>
           </div>

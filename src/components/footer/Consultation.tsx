@@ -164,7 +164,6 @@ const Consultation = () => {
               alt="photoAbout"
               width="500"
               height="350"
-              className="w-full h-[350px] object-cover"
             />
           </div>
         </div>
