@@ -20,9 +20,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
       height: photo.height,
     }));
 
-    const youTubeData: YouTubeData | null = detail.youtube
-      ? detail.youtube
-      : null;
+    const youTubeData: YouTubeData | null = detail.youtube || null;
 
     const videos: VideoMediaItem[] = youTubeData
       ? [

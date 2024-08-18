@@ -31,15 +31,17 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
             name: photo.attributes.name,
             url: photo.attributes.url,
           })),
-          youtube: {
-            url: JSON.parse(response.YouTube).url,
-            title: JSON.parse(response.YouTube).title,
-            thumbnail: JSON.parse(response.YouTube).thumbnail,
-            mime: JSON.parse(response.YouTube).mime,
-            rawData: {
-              html: JSON.parse(response.YouTube).rawData.html,
-            },
-          },
+          youtube: response.YouTube
+            ? {
+                url: JSON.parse(response.YouTube).url,
+                title: JSON.parse(response.YouTube).title,
+                thumbnail: JSON.parse(response.YouTube).thumbnail,
+                mime: JSON.parse(response.YouTube).mime,
+                rawData: {
+                  html: JSON.parse(response.YouTube).rawData.html,
+                },
+              }
+            : undefined,
         });
       } catch (error: unknown) {
         if (error instanceof Error) {

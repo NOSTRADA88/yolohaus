@@ -11,4 +11,5 @@ import photoMortgage from './ipoteka.webp'
 import photoAbout from './about.webp'
 import photoGuarantee from './garantia.webp'
 import photoContact from './contact.webp'
-export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact};
+import map from "./map.webp"
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map};

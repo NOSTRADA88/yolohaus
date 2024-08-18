@@ -1,5 +1,5 @@
 import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { Yolo } from "../../assets";
+import { map, Yolo } from "../../assets";
 import { ContactProps } from "../../interfaces";
 import { Modal } from "../../sections/modal";
 import { formatPhoneNumber } from "../../constants";
@@ -82,7 +82,7 @@ const Contact = ({
           {isModalOpen && <Modal closeModal={closeModal} />}
         </div>
         <div className="">
-          <Map
+          {/* <Map
             className={"w-full h-[390px]"}
             defaultState={{ center: [60.051894, 30.313452], zoom: 15 }}
           >
@@ -94,7 +94,14 @@ const Contact = ({
                 iconImageHref: Yolo,
               }}
             />
-          </Map>
+          </Map> */}
+          <img
+            src={map}
+            alt="map"
+            width={"100%"}
+            height={390}
+            className="w-full h-[390px] object-cover object-center"
+          />
         </div>
       </div>
     </YMaps>
