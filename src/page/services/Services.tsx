@@ -6,8 +6,8 @@ import { Service } from "../../interfaces";
 import useServicesPage from "../../hooks/useServicesPage";
 
 const Services = () => {
-  const {servicesData, isLoading, error} = useServicesPage();
-    // TODO я уже умер 0:41
+  const { servicesData, isLoading, error } = useServicesPage();
+  // TODO я уже умер 0:41
   if (!servicesData || isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -33,28 +33,23 @@ const Services = () => {
             <Link to={`${slug.services}/${service.slug}`} key={index}>
               <div className="relative group">
                 <div
-                  className="bg-white opacity-50 
+                  className="relative overflow-hidden group bg-white opacity-50 
                                         group-hover:opacity-100 transition-all duration-300"
                 >
                   {service.photo && (
                     <img
                       src={`${API_URL}${service.photo.url}`}
                       alt={service.title}
-                      className="w-[280px] h-[280px] object-cover max-[1000px]:w-[240px] max-[1000px]:h-[240px]  
-                                             max-[950px]:w-[350px]    max-[850px]:w-[300px] max-md:w-[250px] max-[500px]:w-[350px] 
-                                             max-[400px]:w-[280px]"
+                      width={100}
+                      height={100}
                     />
                   )}
-                </div>
-                <div
-                  className="absolute bottom-10 left-10 bg-white p-4 group-hover:shadow-md w-[280px] max-[1000px]:w-[240px]
-                                max-[950px]:w-[300px] max-[950px]:left-24 max-[850px]:left-8 max-[850px]:w-[260px] max-md:w-[220px] max-[500px]:w-[350px]
-                                max-[500px]:left-10  max-[400px]:w-[280px] max-[400px]:left-5
-                                h-[60px] flex items-center"
-                >
-                  <div className="flex justify-between items-center w-full">
+                  <div
+                    className="absolute bottom-5 right-0 bg-white p-4 group-hover:shadow-md w-[280px] max-xl:w-[250px] max-[950px]:w-[300px] max-md:w-[250px] max-sm:w-[230px] 
+                   h-[60px] flex items-center justify-between"
+                  >
                     <span className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium">
-                            {service.title}
+                      {service.title}
                     </span>
                     <p className="text-orange arrow-icon"> ➜ </p>
                   </div>

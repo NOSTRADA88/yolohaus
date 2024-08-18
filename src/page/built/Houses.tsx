@@ -15,7 +15,7 @@ const Houses = () => {
 
   const housesPerPage = 9;
 
-  const {housesData, isLoading, error} = useHousesPage();
+  const { housesData, isLoading, error } = useHousesPage();
   // TODO вынести логику, добавить обработку isLoading и ошибки!!!!!!
   const loadMoreHouses = useCallback(() => {
     if (!housesData || isEndOfList || isLoadingMore) return;
@@ -76,21 +76,24 @@ const Houses = () => {
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <Breadcrumbs finalTitle={housesData.title} />
-        <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-sm:grid-cols-1">
+        <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-md:grid-cols-1">
           {visibleHouses.map((house, index) => (
             <Link
               to={`${slug.built}/${house.slug}`}
               key={house.slug}
-              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] w-full h-[375px] max-md:h-full max-[350px]:w-[280px] transition-all duration-300 hover:shadow-2xl group"
+              className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] transition-all duration-300 hover:shadow-2xl group "
               ref={index === visibleHouses.length - 1 ? lastHouseRef : null}
             >
-              <div className="relative max-w-full overflow-hidden">
+              <div className="relative overflow-hidden h-[200px]  flex items-center justify-center max-md:h-[400px] max-sm:h-auto">
                 <img
                   src={`${API_URL}${house.photos[0].url}`}
                   alt={house.photos[0].name}
-                  className="w-full h-[220px] max-xl:w-full max-lg:object-center max-lg:object-cover transition-transform duration-300 ease-in-out group-hover:scale-125"
+                  width={350}
+                  height={200}
+                  className=" transition-transform duration-300 ease-in-out group-hover:scale-125"
                 />
               </div>
+
               <div className="p-4">
                 <h2 className="font-museo font-bold text-2xl text-maingray">
                   {house.title}

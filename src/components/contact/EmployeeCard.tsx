@@ -14,7 +14,9 @@ const EmployeeCard = ({ employees }: EmployeeCardProps) => {
               <img
                 src={`${API_URL}${employee.photo.url}`}
                 alt={`${employee.photo.name}`}
-                className="w-[280px] h-[280px] object-cover object-center max-[800px]:w-[250px] max-[800px]:h-[250px]"
+                width={100}
+                height={100}
+                className="w-[280px] object-cover object-center max-[800px]:w-[250px] "
               />
             </div>
             <div className="flex flex-col">

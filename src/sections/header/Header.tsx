@@ -39,7 +39,7 @@ const Header = ({ header }: HeaderProps) => {
               alt="header logo"
               className="cursor-pointer w-52"
               height={200}
-              width={100}
+              width={50}
               loading="eager"
             />
           </Link>

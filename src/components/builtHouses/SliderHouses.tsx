@@ -97,7 +97,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 key={index}
                 src={`${API_URL}${media.url}`}
                 alt={`${index}`}
-                className="absolute top-0 left-0 w-full h-full object-center cursor-pointer max-lg:object-cover  max-lg:object-center"
+                className="absolute top-0 left-0 w-full h-full cursor-pointer  object-cover  object-center"
                 style={{
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
@@ -109,7 +109,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
             return (
               <div
                 key={index}
-                className="absolute top-0 left-0 flex justify-center items-center cursor-pointer w-full h-full max-lg:object-cover  max-lg:object-center"
+                className="absolute top-0 left-0 flex justify-center items-center cursor-pointer w-full h-full  object-cover  object-center"
                 style={{
                   opacity: index === activeMediaIndex ? 1 : 0,
                   transition: "opacity 0.5s ease-in-out",
@@ -119,7 +119,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={media.thumbnail}
                   alt={`Thumbnail for video ${index}`}
-                  className="w-full h-full transition duration-500"
+                  className="w-full h-full transition duration-500  object-cover  object-center"
                 />
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
                   <img src={Youtube} className="w-20" alt="youtube" />
@@ -220,7 +220,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                 <img
                   src={`${API_URL}${mediaItems[thumbnailIndex].url}`}
                   alt={`${thumbnailIndex}`}
-                  className="w-full h-full  transition duration-500 max-lg:object-cover  max-lg:object-center"
+                  className="w-full h-full  transition duration-500 object-cover  object-center"
                 />
               ) : (
                 <div className="relative w-full h-full">
@@ -229,7 +229,7 @@ const SliderHouses = ({ details }: SliderHousesProps) => {
                       (mediaItems[thumbnailIndex] as VideoMediaItem).thumbnail
                     }
                     alt={`thumbnail-${thumbnailIndex}`}
-                    className="w-full h-full  transition duration-500 max-lg:object-cover  max-lg:object-center"
+                    className="w-full h-full  transition duration-500 object-cover  object-center"
                     style={{ objectFit: "cover" }}
                   />
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

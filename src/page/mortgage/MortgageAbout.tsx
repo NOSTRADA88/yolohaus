@@ -258,11 +258,13 @@ const MortgageAbout = () => {
               </div>
             ))}
           </div>
-          <div className=" mt-[50px] max-[1111px]:hidden">
+          <div className=" mt-[32px] max-[1111px]:hidden">
             <img
               src={photoMortgage}
               alt="MortgagePhoto"
-              className="w-full h-[320px] object-cover object-center"
+              width={150}
+              height={320}
+              className="h-[300px] "
             />
           </div>
         </div>

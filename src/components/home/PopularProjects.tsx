@@ -32,10 +32,12 @@ const PopularProjects = ({
             key={index}
             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] transition-all duration-300 hover:shadow-2xl group"
           >
-            <div className="relative  overflow-hidden ">
+            <div className="relative overflow-hidden ">
               <img
                 src={`${API_URL}${project.photos[0].url}`}
                 alt={project.photos[0].name}
+                width={350}
+                height={220}
                 className="transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>

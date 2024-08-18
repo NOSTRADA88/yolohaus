@@ -5,7 +5,7 @@ import { slug } from "../../constants";
 import useGuaranteePage from "../../hooks/useGuaranteePage";
 
 const Guarantee = () => {
-  const {guaranteeData, isLoading, error} = useGuaranteePage();
+  const { guaranteeData, isLoading, error } = useGuaranteePage();
 
   //TODO сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
   // Сделать норм обработку ошибки error
@@ -55,7 +55,9 @@ const Guarantee = () => {
             <img
               src={photoGuarantee}
               alt="photoGuarantee"
-              className="w-[540px]"
+              width={100}
+              height={100}
+              className="h-[320px]"
             />
           </div>
         </div>

@@ -24,9 +24,10 @@ const ProjectsDetail = ({
   const [isTechnologySelected, setIsTechnologySelected] =
     useState<boolean>(false);
   // TODO обработать убрать всё лишнее отсюда =(
-  const { projectData, setProjectData, isLoading, error } = useProjectsDetailPage({
-    projectsSlug: projectsSlug || "",
-  });
+  const { projectData, setProjectData, isLoading, error } =
+    useProjectsDetailPage({
+      projectsSlug: projectsSlug || "",
+    });
 
   const updateMetaData = (technology: string | null) => {
     if (!projectData) return;
@@ -37,7 +38,8 @@ const ProjectsDetail = ({
     technologyNames.forEach((name) => {
       title = title.replace(` из ${name}`, "");
       metadata.title = metadata.title?.replace(` из ${name}`, "") || "";
-      metadata.description = metadata.description?.replace(` из ${name}`, "") || "";
+      metadata.description =
+        metadata.description?.replace(` из ${name}`, "") || "";
     });
 
     if (technology) {

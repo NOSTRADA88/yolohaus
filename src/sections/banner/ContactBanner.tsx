@@ -9,7 +9,7 @@ import { useModal } from "../../hooks/useModal";
 
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
   // TODO это чё ваще за фатафак с мобилкой <_>
-  const {informationData, isLoading, error} = useHeaderFooter();
+  const { informationData, isLoading, error } = useHeaderFooter();
   const { isModalOpen, openModal, closeModal } = useModal();
   const location = useLocation();
   const isVacansiiPage = location.pathname.includes("vacancies");
@@ -43,6 +43,8 @@ const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
             <img
               src={BgVacancy}
               alt="banner"
+              width={100}
+              height={100}
               className="mt-4 h-52 object-cover bg-cover bg-center max-[450px]:h-64"
             />
             <div className="absolute inset-0 bg-maingray bg-opacity-50 flex items-center justify-center">

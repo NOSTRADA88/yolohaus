@@ -55,7 +55,13 @@ const ContactInfo = ({
           </div>
         </div>
         <div className="max-xl:hidden mt-5">
-          <img src={photoContact} alt="photoContact" className="w-[540px]" />
+          <img
+            src={photoContact}
+            alt="photoContact"
+            className="w-[540px]"
+            width={100}
+            height={100}
+          />
         </div>
       </div>
       <div className="grid grid-cols-1 gap-3 mt-5 max-xl:grid-cols-2 max-xl:gap-10 max-sm:grid-cols-1 max-sm:gap-3">

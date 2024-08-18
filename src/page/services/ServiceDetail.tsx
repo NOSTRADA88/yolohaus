@@ -6,7 +6,7 @@ import { ServiceDetailProps } from "../../interfaces";
 import useServiceDetailPage from "../../hooks/useServiceDetailPage";
 
 const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
-  const {serviceData, isLoading, error} = useServiceDetailPage({
+  const { serviceData, isLoading, error } = useServiceDetailPage({
     servicesSlug: servicesSlug || "",
   });
 
@@ -43,7 +43,8 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
                     <img
                       src={`${API_URL}${service.photo.url}`}
                       alt={service.photo.name}
-                      className="w-full max-md:h-[250px] max-md:object-cover max-sm:h-[200px]"
+                      width={100}
+                      height={100}
                     />
                   )}
                   <h3 className="font-museo font-bold text-base p-4">

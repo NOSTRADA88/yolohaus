@@ -15,7 +15,7 @@ const Stocks = () => {
 
   //TODO ВЫНЕСТИ и обработать херабору снизу
 
-  const {stocksData, isLoading: isLoadingStocks, error} = useStocksPage();
+  const { stocksData, isLoading: isLoadingStocks, error } = useStocksPage();
 
   const loadMoreStocks = useCallback(() => {
     if (isEndOfList) return;
@@ -85,6 +85,8 @@ const Stocks = () => {
                   <img
                     src={`${API_URL}${stock.photo.url}`}
                     alt="Stock"
+                    width={150}
+                    height={300}
                     className="w-full h-[300px] object-cover object-center"
                   />
                   <div className="absolute top-0 left-[-10px] bg-maingray text-xs px-3 py-2 opacity-80 parallelogram">

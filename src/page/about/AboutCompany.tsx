@@ -4,7 +4,7 @@ import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useAboutPage from "../../hooks/useAboutPage";
 
 const AboutCompany = () => {
-  const {aboutData, isLoading, error} = useAboutPage();
+  const { aboutData, isLoading, error } = useAboutPage();
 
   //TODO сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
   if (isLoading || !aboutData) {
@@ -49,7 +49,7 @@ const AboutCompany = () => {
             ))}
           </div>
           <div className="mt-[66px]  max-[1111px]:hidden">
-            <img src={photoAbout} alt="photoAbout" />
+            <img src={photoAbout} alt="photoAbout" width={100} height={100} />
           </div>
         </div>
         <div className=" bg-lightwhite mt-8 p-5">
