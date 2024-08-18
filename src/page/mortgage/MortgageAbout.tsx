@@ -18,7 +18,7 @@ const formatNumber = (number: number) => {
 };
 
 const MortgageAbout = () => {
-  const {mortgageData, isLoading, error} = useMortgagePage();
+  const { mortgageData, isLoading, error } = useMortgagePage();
   // TODO как обычно, выносим вё это говнище в секции, делаем обработку загрузки и ошибку
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
@@ -81,7 +81,7 @@ const MortgageAbout = () => {
 
   const validateRate = (value: number) => {
     if (value <= 0) {
-      return "Введите положительную процентную ставку.";
+      return "Введите процентную ставку.";
     }
     return "";
   };

@@ -24,8 +24,6 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
     );
   }
 
-  console.log(houseData);
-
   return (
     <div>
       <Helmet>

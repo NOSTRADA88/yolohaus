@@ -415,6 +415,24 @@ export interface BankSelectionProps {
   onSelectBank: (bankId: number) => void;
 }
 
+export interface MortgageFormProps {
+  projectCost: number;
+  initialPayment: number;
+  loanAmount: number;
+  rate: number;
+  term: number;
+  termType: string;
+  startDate: string;
+  onProjectCostChange: (value: number) => void;
+  onInitialPaymentChange: (value: number) => void;
+  onRateChange: (value: number) => void;
+  onTermChange: (value: number) => void;
+  onTermTypeChange: (value: string) => void;
+  onStartDateChange: (value: string) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  termError: string;
+  rateError: string;
+}
 // Privacy & Policy page
 
 export interface PrivacyPolicyData {

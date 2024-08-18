@@ -1,23 +1,5 @@
 import React from "react";
-
-interface MortgageFormProps {
-  projectCost: number;
-  initialPayment: number;
-  loanAmount: number;
-  rate: number;
-  term: number;
-  termType: string;
-  startDate: string;
-  onProjectCostChange: (value: number) => void;
-  onInitialPaymentChange: (value: number) => void;
-  onRateChange: (value: number) => void;
-  onTermChange: (value: number) => void;
-  onTermTypeChange: (value: string) => void;
-  onStartDateChange: (value: string) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  termError: string;
-  rateError: string;
-}
+import { MortgageFormProps } from "../../interfaces";
 
 const MortgageForm: React.FC<MortgageFormProps> = ({
   projectCost,
@@ -108,7 +90,7 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
             type="number"
             id="rate"
             name="rate"
-            value={rate}
+            value={rate || ""}
             onChange={(e) => onRateChange(Number(e.target.value))}
             className={`mt-1 block w-full py-2 px-3 border ${
               rateError ? "border-red-500" : "border-contact"
@@ -132,7 +114,7 @@ const MortgageForm: React.FC<MortgageFormProps> = ({
                 type="number"
                 id="term"
                 name="term"
-                value={term}
+                value={term || ""}
                 onChange={(e) => onTermChange(Number(e.target.value))}
                 className={`mt-1 block w-full py-2 px-3 border ${
                   termError ? "border-red-500" : "border-contact"
