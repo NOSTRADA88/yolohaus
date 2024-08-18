@@ -26,6 +26,12 @@
 @tailwind components;
 @tailwind utilities;
 
+img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .filter-svg {
   filter: invert(35%) sepia(79%) saturate(0%) hue-rotate(86deg) brightness(118%)
     contrast(119%);
