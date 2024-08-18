@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { slug } from "../../constants";
 import { AboutHousesProps, DescriptionChild } from "../../interfaces";
 
 const AboutHouses = ({ details }: AboutHousesProps) => {
+  const location = useLocation();
+
+  const isProjectsPage = location.pathname.includes("/projects");
+  const isBuiltPage = location.pathname.includes("/built");
+
+  const linkTo = isProjectsPage
+    ? slug.projects
+    : isBuiltPage
+    ? slug.built
+    : "/";
   return (
     <div id="more">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">
@@ -29,7 +39,7 @@ const AboutHouses = ({ details }: AboutHousesProps) => {
         <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
           <p className="text-orange  rotate-180"> ➜ </p>
           <Link
-            to={`${slug.projects}`}
+            to={`${linkTo}`}
             className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"
           >
             Назад к проектам

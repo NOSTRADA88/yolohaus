@@ -10,8 +10,7 @@ import { HouseDetailProps } from "../../interfaces";
 import useHousesDetailPage from "../../hooks/useHousesDetailPage";
 
 const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
-
-  const {houseData, isLoading, error} = useHousesDetailPage({
+  const { houseData, isLoading, error } = useHousesDetailPage({
     houseSlug: houseSlug || "",
   });
 
@@ -25,7 +24,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
     );
   }
 
-  console.log(houseData)
+  console.log(houseData);
 
   return (
     <div>
@@ -40,7 +39,7 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
             <SliderHouses details={[houseData]} />
             <OptionsHouses details={[houseData]} />
           </div>
-          <AboutHouses details={[houseData]} />*
+          <AboutHouses details={[houseData]} />
         </div>
       </div>
     </div>

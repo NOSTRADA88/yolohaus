@@ -158,7 +158,7 @@ const Consultation = () => {
             </form>
           </div>
 
-          <div className="w-full">
+          <div className="w-full max-[1111px]:hidden">
             <img
               src={ConsultationPhoto}
               alt="photoAbout"
