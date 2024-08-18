@@ -191,4 +191,4 @@ const BlogDetail = ({ blogSlug }: BlogDetailProps) => {
   );
 };
 
-export { BlogDetail };
+export default BlogDetail;

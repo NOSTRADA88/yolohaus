@@ -40,7 +40,6 @@ const Header = ({ header }: HeaderProps) => {
               className="cursor-pointer w-52"
               height={200}
               width={50}
-              loading="eager"
             />
           </Link>
           <p className="text-base font-museo font-light mb-4 max-md:mb-0 max-md:text-center max-md:text-sm">
@@ -62,7 +61,6 @@ const Header = ({ header }: HeaderProps) => {
                     src={`${API_URL}${social.photo.url}`}
                     alt={social.photo.name}
                     className="w-4 h-4 filter-svg absolute block left-1.5 top-1.5"
-                    loading="eager"
                   />
                 </a>
               ))}

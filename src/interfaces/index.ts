@@ -1,5 +1,7 @@
 // Shared
 
+import {ReactNode} from "react";
+
 interface Metadata {
   title: string;
   description: string;
@@ -535,4 +537,8 @@ export interface ServicesData {
 
 export interface ServiceDetailProps {
   servicesSlug: string;
+}
+
+export interface LayoutProps {
+  children: ReactNode;
 }

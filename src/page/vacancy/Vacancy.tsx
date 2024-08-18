@@ -40,4 +40,4 @@ const Vacancy = () => {
   );
 };
 
-export { Vacancy };
+export default Vacancy ;

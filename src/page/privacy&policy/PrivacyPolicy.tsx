@@ -56,4 +56,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export { PrivacyPolicy };
+export default PrivacyPolicy;

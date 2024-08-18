@@ -34,4 +34,4 @@ const ErrorPage = () => {
   );
 };
 
-export { ErrorPage };
+export default ErrorPage;

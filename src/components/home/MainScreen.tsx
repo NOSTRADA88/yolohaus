@@ -13,7 +13,6 @@ const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
         width={"100%"}
         height={472}
         className="h-[472px] object-cover  relative max-xl:h-[350px] max-md:h-[300px]"
-        loading="eager"
       />
       <div className="absolute inset-0 bg-[#2B2A29] opacity-70"></div>
       <div className="absolute inset-0 flex items-center justify-center flex-col">

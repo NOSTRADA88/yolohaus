@@ -16,7 +16,7 @@ const EmployeeCard = ({ employees }: EmployeeCardProps) => {
                 alt={`${employee.photo.name}`}
                 width={100}
                 height={100}
-                className="w-[280px] object-cover object-center max-[800px]:w-[250px] "
+                className="w-[280px] object-cover object-center max-[800px]:w-[250px] h-[280px] max-[800px]:h-[250px]"
               />
             </div>
             <div className="flex flex-col">

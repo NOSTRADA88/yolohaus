@@ -2,6 +2,7 @@ import { API_URL, formatPrice, getMinPrice } from "../../constants";
 import { Link } from "react-router-dom";
 import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
+import {memo} from "react";
 const PopularProjects = ({
   title,
   popularProject,
@@ -114,4 +115,4 @@ const PopularProjects = ({
   );
 };
 
-export default PopularProjects;
+export default memo(PopularProjects);

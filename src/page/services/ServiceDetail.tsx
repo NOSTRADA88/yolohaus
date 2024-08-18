@@ -84,4 +84,4 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
   );
 };
 
-export { ServiceDetail };
+export default ServiceDetail;

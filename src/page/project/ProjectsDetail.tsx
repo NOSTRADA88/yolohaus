@@ -157,4 +157,4 @@ const ProjectsDetail = ({
   );
 };
 
-export { ProjectsDetail };
+export default ProjectsDetail;

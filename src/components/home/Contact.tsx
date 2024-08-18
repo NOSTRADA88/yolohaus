@@ -1,9 +1,9 @@
-import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { map, Yolo } from "../../assets";
+import { map } from "../../assets";
 import { ContactProps } from "../../interfaces";
 import { Modal } from "../../sections/modal";
 import { formatPhoneNumber } from "../../constants";
 import { useModal } from "../../hooks/useModal";
+import {memo} from "react";
 
 const Contact = ({
   address,
@@ -14,7 +14,6 @@ const Contact = ({
 }: ContactProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
   return (
-    <YMaps>
       <div className="mt-14 relative">
         <div
           className="absolute top-35 left-[calc((100%-1111px)/2)]
@@ -82,19 +81,6 @@ const Contact = ({
           {isModalOpen && <Modal closeModal={closeModal} />}
         </div>
         <div className="">
-          {/* <Map
-            className={"w-full h-[390px]"}
-            defaultState={{ center: [60.051894, 30.313452], zoom: 15 }}
-          >
-            <Placemark
-              geometry={[60.051894, 30.313452]}
-              options={{
-                iconLayout: "default#image",
-                iconImageSize: [39, 43],
-                iconImageHref: Yolo,
-              }}
-            />
-          </Map> */}
           <img
             src={map}
             alt="map"
@@ -104,8 +90,7 @@ const Contact = ({
           />
         </div>
       </div>
-    </YMaps>
   );
 };
 
-export default Contact;
+export default memo(Contact);

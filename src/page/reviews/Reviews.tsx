@@ -49,4 +49,4 @@ const Reviews: React.FC = () => {
   );
 };
 
-export { Reviews };
+export default Reviews;

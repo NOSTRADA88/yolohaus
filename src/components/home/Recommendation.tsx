@@ -3,6 +3,7 @@ import { ReviewsIcon } from "../../assets";
 import { Link } from "react-router-dom";
 import { RecommendationProps } from "../../interfaces";
 import { slug } from "../../constants";
+import {memo} from "react";
 const Recommendation = ({ title, recommendations }: RecommendationProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
@@ -73,4 +74,4 @@ const Recommendation = ({ title, recommendations }: RecommendationProps) => {
   );
 };
 
-export default Recommendation;
+export default memo(Recommendation);

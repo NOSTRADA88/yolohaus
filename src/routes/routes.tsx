@@ -9,25 +9,27 @@ import Layout from "../layouts/layout";
 import ScrollToTop from "../components/ScrollToTop";
 import {
   Home,
-  ErrorPage,
-  Reviews,
-  AboutCompany,
-  Guarantee,
-  Vacancy,
   Projects,
-  Contact,
   Services,
-  PrivacyPolicy,
   Stocks,
-  Blog,
   MortgageAbout,
-  ServiceDetail,
-  BlogDetail,
-  ProjectsDetail,
   Houses,
-  HousesDetail,
 } from "../page";
 import { slug } from "../constants";
+import { lazy, Suspense } from "react";
+
+const AboutCompany = lazy(() => import("../page/about/AboutCompany"))
+const Vacancy = lazy(() => import("../page/vacancy/Vacancy"))
+const Blog = lazy(() => import("../page/blog/Blog"))
+const Contact = lazy(() => import("../page/contact/Contact"))
+const ServiceDetail = lazy(() => import("../page/services/ServiceDetail"))
+const HousesDetail = lazy(() => import("../page/built/HousesDetail"))
+const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail"))
+const ErrorPage = lazy(() => import("../page/error/Error"))
+const PrivacyPolicy = lazy(() => import("../page/privacy&policy/PrivacyPolicy"))
+const BlogDetail = lazy(() => import("../page/blog/BlogDetail"))
+const Guarantee = lazy(() => import("../page/guarantee/Guarantee"))
+const Reviews = lazy(() => import("../page/reviews/Reviews"))
 
 const ServiceDetailRoute = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -55,6 +57,7 @@ const ProjectsDetailRoute = () => {
     );
 };
 
+// TODO добавить колёсико в fallback для suspense =)
 const BlogDetailRoute = () => {
     const { slug } = useParams<{ slug: string }>();
     return <BlogDetail blogSlug={slug ?? ""} />;
@@ -71,19 +74,19 @@ const RoutesComponent = () => {
                 />
                 <Route
                     path={slug.about}
-                    element={<Layout children={<AboutCompany />}/>}
+                    element={<Layout children={<Suspense children={<AboutCompany />} />} />}
                 />
                 <Route
                     path={slug.reviews}
-                    element={<Layout children={<Reviews />}/>}
+                    element={<Layout children={<Suspense children={<Reviews />}/>}/>}
                 />
                 <Route
                     path={slug.guarantee}
-                    element={<Layout children={<Guarantee />}/>}
+                    element={<Layout children={<Suspense children={<Guarantee />}/>}/>}
                 />
                 <Route
                     path={slug.vacancies}
-                    element={<Layout children={<Vacancy />}/>}
+                    element={<Layout children={<Suspense children={<Vacancy />}/>}/>}
                 />
                 <Route
                     path={slug.projects}
@@ -91,7 +94,7 @@ const RoutesComponent = () => {
                 />
                 <Route
                     path={slug.contact}
-                    element={<Layout children={<Contact />}/>}
+                    element={<Layout children={<Suspense children={<Contact />}/>}/>}
                 />
                 <Route
                     path={slug.services}
@@ -107,7 +110,7 @@ const RoutesComponent = () => {
                 />
                 <Route
                     path={slug.blog}
-                    element={<Layout children={<Blog />}/>}
+                    element={<Layout children={<Suspense children={<Blog />}/>}/>}
                 />
                 <Route
                     path={slug.mortgage}
@@ -115,27 +118,27 @@ const RoutesComponent = () => {
                 />
                 <Route
                     path={`${slug.blog}/:slug`}
-                    element={<Layout children={<BlogDetailRoute />}/>}
+                    element={<Layout children={<Suspense children={<BlogDetailRoute />}/>}/>}
                 />
                 <Route
                     path={`${slug.built}/:slug`}
-                    element={<Layout children={<HouseDetailRoute />}/>}
+                    element={<Layout children={<Suspense children={<HouseDetailRoute />}/>}/>}
                 />
                 <Route
                     path={`${slug.services}/:slug`}
-                    element={<Layout children={<ServiceDetailRoute />}/>}
+                    element={<Layout children={<Suspense children={<ServiceDetailRoute />}/>}/>}
                 />
                 <Route
                     path={`${slug.projects}/:slug`}
-                    element={<Layout children={<ProjectsDetailRoute />}/>}
+                    element={<Layout children={<Suspense children={<ProjectsDetailRoute />}/>}/>}
                 />
                 <Route
                     path={"/*"}
-                    element={<Layout children={<ErrorPage />}/>}
+                    element={<Layout children={<Suspense children={<ErrorPage />}/>}/>}
                 />
                 <Route
                     path={slug.privacy}
-                    element={<Layout children={<PrivacyPolicy />}/>}
+                    element={<Layout children={<Suspense children={<PrivacyPolicy />}/>}/>}
                 />
             </Routes>
         </BrowserRouter>

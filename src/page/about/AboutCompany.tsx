@@ -76,4 +76,4 @@ const AboutCompany = () => {
   );
 };
 
-export { AboutCompany };
+export default AboutCompany;

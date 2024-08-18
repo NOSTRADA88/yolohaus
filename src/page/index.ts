@@ -1,39 +1,15 @@
-import { AboutCompany } from "./about/AboutCompany";
-import { Guarantee } from "./guarantee/Guarantee";
-import { Vacancy } from "./vacancy/Vacancy";
-import { Blog } from "./blog/Blog";
-import { BlogDetail } from "./blog/BlogDetail";
 import { Houses } from "./built/Houses";
-import { HousesDetail } from "./built/HousesDetail";
-import { Contact } from "./contact/Contact";
-import { ErrorPage } from "./error/Error";
 import { Home } from "./home/Home";
 import { MortgageAbout } from "./mortgage/MortgageAbout";
-import { PrivacyPolicy } from "./privacy&policy/PrivacyPolicy";
 import { Projects } from "./project/Projects";
-import { ProjectsDetail } from "./project/ProjectsDetail";
-import { ServiceDetail } from "./services/ServiceDetail";
 import { Services } from "./services/Services";
 import { Stocks } from "./stocks/Stocks";
-import { Reviews } from "./reviews/Reviews";
 
 export {
-  Reviews,
-  AboutCompany,
-  Guarantee,
-  Vacancy,
-  Blog,
-  BlogDetail,
-  Houses,
-  HousesDetail,
-  Contact,
-  ErrorPage,
   Home,
-  PrivacyPolicy,
   Projects,
-  ProjectsDetail,
-  ServiceDetail,
-  Services,
-  Stocks,
+  Houses,
   MortgageAbout,
+  Stocks,
+  Services,
 };

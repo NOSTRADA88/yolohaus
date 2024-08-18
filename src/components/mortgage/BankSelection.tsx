@@ -30,6 +30,8 @@ const BankSelection: React.FC<BankSelectionProps> = ({
                     src={`${API_URL}${bank.photo.url}`}
                     alt={bank.title}
                     className="w-40 h-10 max-xl:w-32 max-[1050px]:w-24 max-lg:w-40"
+                    width={160}
+                    height={40}
                   />
                 </div>
                 <div className="flex justify-end ml-auto mr-2">
@@ -37,7 +39,9 @@ const BankSelection: React.FC<BankSelectionProps> = ({
                     <img
                       src={LinkBank}
                       alt="link"
-                      className="w-5 h-5  image-hover transition-opacity duration-300 max-[1050px]:w-4 max-lg:w-5"
+                      className="w-5 h-5  image-hover transition-opacity duration-300 max-[1050px]:w-4 max-lg:w-5 object-fill"
+                      width={20}
+                      height={20}
                     />
                   </a>
                 </div>
