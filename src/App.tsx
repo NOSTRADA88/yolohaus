@@ -5,9 +5,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RoutesComponent />
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient} children={<RoutesComponent />}/>
   );
 }
 

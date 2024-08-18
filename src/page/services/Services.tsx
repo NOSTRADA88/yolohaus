@@ -29,8 +29,8 @@ const Services = () => {
           className="grid grid-cols-3 mt-10 gap-20 max-xl:gap-10 max-[950px]:grid-cols-2
                  max-[500px]:grid-cols-1"
         >
-          {servicesData.services.map((service: Service) => (
-            <Link to={`${slug.services}/${service.slug}`}>
+          {servicesData.services.map((service: Service, index: number) => (
+            <Link to={`${slug.services}/${service.slug}`} key={index}>
               <div className="relative group">
                 <div
                   className="bg-white opacity-50 
@@ -53,12 +53,9 @@ const Services = () => {
                                 h-[60px] flex items-center"
                 >
                   <div className="flex justify-between items-center w-full">
-                    <Link
-                      to={`${slug.services}/${service.slug}`}
-                      className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium"
-                    >
-                      {service.title}
-                    </Link>
+                    <span className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium">
+                            {service.title}
+                    </span>
                     <p className="text-orange arrow-icon"> ➜ </p>
                   </div>
                 </div>

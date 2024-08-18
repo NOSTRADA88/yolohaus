@@ -29,199 +29,117 @@ import {
 } from "../page";
 import { slug } from "../constants";
 
-const RoutesComponent = () => {
-  // if (!slugs) {
-  //   return (
-  //     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
-  //       <div className="flex justify-center items-center mt-8 mb-8">
-  //         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route
-          path={slug.main}
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.about}
-          element={
-            <Layout>
-              <AboutCompany />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.reviews}
-          element={
-            <Layout>
-              <Reviews />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.guarantee}
-          element={
-            <Layout>
-              <Guarantee />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.vacancies}
-          element={
-            <Layout>
-              <Vacancy />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.projects}
-          element={
-            <Layout>
-              <Projects />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.contact}
-          element={
-            <Layout>
-              <Contact />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.services}
-          element={
-            <Layout>
-              <Services />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.privacy}
-          element={
-            <Layout>
-              <PrivacyPolicy />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.built}
-          element={
-            <Layout>
-              <Houses />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.stocks}
-          element={
-            <Layout>
-              <Stocks />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.blog}
-          element={
-            <Layout>
-              <Blog />
-            </Layout>
-          }
-        />
-        <Route
-          path={slug.mortgage}
-          element={
-            <Layout>
-              <MortgageAbout />
-            </Layout>
-          }
-        />
-        <Route
-          path={`${slug.blog}/:slug`}
-          element={
-            <Layout>
-              <BlogDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path={`${slug.built}/:slug`}
-          element={
-            <Layout>
-              <HouseDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path={`${slug.services}/:slug`}
-          element={
-            <Layout>
-              <ServiceDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path={`${slug.projects}/:slug`}
-          element={
-            <Layout>
-              <ProjectsDetailRoute />
-            </Layout>
-          }
-        />
-        <Route
-          path={"/*"}
-          element={
-            <Layout>
-              <ErrorPage />
-            </Layout>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
-  );
-};
-
 const ServiceDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  return <ServiceDetail servicesSlug={slug ?? ""} />;
+    const { slug } = useParams<{ slug: string }>();
+    return <ServiceDetail servicesSlug={slug ?? ""} />;
 };
 
 const HouseDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  return <HousesDetail houseSlug={slug ?? ""} />;
+    const { slug } = useParams<{ slug: string }>();
+    return <HousesDetail houseSlug={slug ?? ""} />;
 };
 
 const ProjectsDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const location = useLocation();
-  const urlParts = location.pathname.split("/").pop()?.split("-") || [];
-  const technologySlug = urlParts[urlParts.length - 1];
-  const baseProjectSlug = urlParts.slice(0, -1).join("-");
-  const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
-  const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
-  return (
-    <ProjectsDetail
-      projectsSlug={projectsSlug}
-      initialTechnology={isTechnology ? technologySlug : ""}
-    />
-  );
+    const { slug } = useParams<{ slug: string }>();
+    const location = useLocation();
+    const urlParts = location.pathname.split("/").pop()?.split("-") || [];
+    const technologySlug = urlParts[urlParts.length - 1];
+    const baseProjectSlug = urlParts.slice(0, -1).join("-");
+    const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
+    const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
+    return (
+        <ProjectsDetail
+            projectsSlug={projectsSlug}
+            initialTechnology={isTechnology ? technologySlug : ""}
+        />
+    );
 };
 
 const BlogDetailRoute = () => {
-  const { slug } = useParams<{ slug: string }>();
-  return <BlogDetail blogSlug={slug ?? ""} />;
+    const { slug } = useParams<{ slug: string }>();
+    return <BlogDetail blogSlug={slug ?? ""} />;
+};
+
+const RoutesComponent = () => {
+    return (
+        <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+                <Route
+                    path={slug.main}
+                    element={<Layout children={<Home />}/>}
+                />
+                <Route
+                    path={slug.about}
+                    element={<Layout children={<AboutCompany />}/>}
+                />
+                <Route
+                    path={slug.reviews}
+                    element={<Layout children={<Reviews />}/>}
+                />
+                <Route
+                    path={slug.guarantee}
+                    element={<Layout children={<Guarantee />}/>}
+                />
+                <Route
+                    path={slug.vacancies}
+                    element={<Layout children={<Vacancy />}/>}
+                />
+                <Route
+                    path={slug.projects}
+                    element={<Layout children={<Projects />}/>}
+                />
+                <Route
+                    path={slug.contact}
+                    element={<Layout children={<Contact />}/>}
+                />
+                <Route
+                    path={slug.services}
+                    element={<Layout children={<Services />} />}
+                />
+                <Route
+                    path={slug.built}
+                    element={<Layout children={<Houses />}/>}
+                />
+                <Route
+                    path={slug.stocks}
+                    element={<Layout children={<Stocks />} />}
+                />
+                <Route
+                    path={slug.blog}
+                    element={<Layout children={<Blog />}/>}
+                />
+                <Route
+                    path={slug.mortgage}
+                    element={<Layout children={<MortgageAbout />}/>}
+                />
+                <Route
+                    path={`${slug.blog}/:slug`}
+                    element={<Layout children={<BlogDetailRoute />}/>}
+                />
+                <Route
+                    path={`${slug.built}/:slug`}
+                    element={<Layout children={<HouseDetailRoute />}/>}
+                />
+                <Route
+                    path={`${slug.services}/:slug`}
+                    element={<Layout children={<ServiceDetailRoute />}/>}
+                />
+                <Route
+                    path={`${slug.projects}/:slug`}
+                    element={<Layout children={<ProjectsDetailRoute />}/>}
+                />
+                <Route
+                    path={"/*"}
+                    element={<Layout children={<ErrorPage />}/>}
+                />
+                <Route
+                    path={slug.privacy}
+                    element={<Layout children={<PrivacyPolicy />}/>}
+                />
+            </Routes>
+        </BrowserRouter>
+    );
 };
 
 export default RoutesComponent;

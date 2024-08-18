@@ -37,8 +37,8 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
           </h2>
           <div className="grid grid-cols-3 gap-6 mt-10 max-lg:grid-cols-2 max-md:grid-cols-1">
             {serviceData.card.length > 0 &&
-              serviceData.card.map((service) => (
-                <div className="mb-4 border border-[#E5E5E5] ">
+              serviceData.card.map((service, index) => (
+                <div className="mb-4 border border-[#E5E5E5]" key={index}>
                   {service.photo && (
                     <img
                       src={`${API_URL}${service.photo.url}`}

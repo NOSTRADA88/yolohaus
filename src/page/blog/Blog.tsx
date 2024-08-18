@@ -57,8 +57,8 @@ const Blog = () => {
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
-          {blogData.posts.map((post) => (
-            <div className="mb-8">
+          {blogData.posts.map((post, index) => (
+            <div className="mb-8" key={index}>
               <Link
                 to={`${slug.blog}/${post.slug}`}
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
@@ -86,12 +86,9 @@ const Blog = () => {
                         {getFirstTwoParagraphsText(post.text)}
                       </p>
                       <div className="flex justify-start items-center mt-5 gap-2 cursor-pointer arrow-container">
-                        <Link
-                          to={`/${slug.blog}/${post.slug}`}
-                          className="text-orange uppercase text-sm font-medium tracking-wider"
-                        >
-                          Подробнее{" "}
-                        </Link>
+                        <span className="text-orange uppercase text-sm font-medium tracking-wider">
+                          Подробнее
+                        </span>
                         <p className="text-orange arrow-icon"> ➜ </p>
                       </div>
                     </div>
