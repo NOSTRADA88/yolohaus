@@ -1,32 +1,23 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { SwitchTechnologyProps } from "../../interfaces";
+import { useInitializeTechnology } from "../../hooks/useInitializeTechnology";
+import {
+  constructURL,
+  getCurrentTechnology,
+  technologyNames,
+  technologySlugs,
+} from "../../utilts/technologyUtils";
 
 const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
   onTechnologySelect,
   updateMetaData,
-  slugs,
   currentProjectSlug,
   slugProjects,
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const technologyNames = ["СИП", "Каркас", "Газобетон"];
-  const technologySlugs = ["sip", "karkas", "gazobeton"];
-
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const selectedTech = technologySlugs.find((slug) =>
-      currentPath.endsWith(`-${slug}`)
-    );
-    if (selectedTech) {
-      const techIndex = technologySlugs.indexOf(selectedTech);
-      const selectedTechnology = technologyNames[techIndex];
-      onTechnologySelect(selectedTechnology, selectedTech);
-      updateMetaData(selectedTechnology);
-    }
-  }, [location.pathname]);
+  useInitializeTechnology(onTechnologySelect, updateMetaData);
 
   const handleTechnologySelect = (
     technology: string,
@@ -35,27 +26,14 @@ const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
     onTechnologySelect(technology, technologySlug);
     updateMetaData(technology);
 
-    const newURL = constructURL(currentProjectSlug, technologySlug);
+    const newURL = constructURL(
+      currentProjectSlug,
+      technologySlug,
+      slugProjects
+    );
     navigate(newURL, { replace: true });
   };
-
-  const constructURL = (baseSlug: string, technologySlug: string) => {
-    let newSlug = baseSlug;
-    technologySlugs.forEach((slug) => {
-      newSlug = newSlug.replace(new RegExp(`-${slug}$`), "");
-    });
-    return `${slugProjects}/${newSlug}-${technologySlug}`; // This constructs the correct URL
-  };
-
-  const getCurrentTechnology = () => {
-    const currentPath = location.pathname;
-    const selectedTech = technologySlugs.find((slug) =>
-      currentPath.endsWith(`-${slug}`)
-    );
-    return selectedTech
-      ? technologyNames[technologySlugs.indexOf(selectedTech)]
-      : "";
-  };
+  const currentTechnology = getCurrentTechnology(window.location.pathname);
 
   return (
     <div className="flex gap-2 mt-5 mb-5">
@@ -63,7 +41,7 @@ const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
         <button
           key={technology}
           className={`border flex items-center justify-center w-[191px] h-[47px] cursor-pointer hover:border-orange ${
-            getCurrentTechnology() === technology ? "bg-orange" : ""
+            currentTechnology === technology ? "bg-orange" : ""
           }`}
           onClick={() =>
             handleTechnologySelect(technology, technologySlugs[index])
@@ -71,7 +49,7 @@ const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
         >
           <p
             className={`font-museo text-lg text-maingray font-bold transition-all duration-300 ${
-              getCurrentTechnology() === technology ? "text-white" : ""
+              currentTechnology === technology ? "text-white" : ""
             }`}
           >
             {technology}

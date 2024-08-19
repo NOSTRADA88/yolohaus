@@ -1,120 +1,32 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import {
   AboutHouses,
   OptionsHouses,
   SliderHouses,
 } from "../../components/builtHouses";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Technology from "../../components/projects/Technology";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
+import { useProjectDetails } from "../../hooks/useProjectDetails";
+import { useInView } from "react-intersection-observer";
 import { slug } from "../../constants";
 import { ProjectsDetailProps } from "../../interfaces";
-import useProjectsDetailPage from "../../hooks/useProjectsDetailPage";
-import { useInView } from "react-intersection-observer";
 
 const ProjectsDetail = ({
   projectsSlug,
   initialTechnology,
 }: ProjectsDetailProps) => {
-  const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [finalTitle, setFinalTitle] = useState<string>("");
-  const [intermediateTitle, setIntermediateTitle] = useState<string>("");
-  const [isTechnologySelected, setIsTechnologySelected] =
-    useState<boolean>(false);
-  // TODO обработать убрать всё лишнее отсюда =(
-  const { projectData, setProjectData, isLoading, error } =
-    useProjectsDetailPage({
-      projectsSlug: projectsSlug || "",
-    });
-
-  const updateMetaData = (technology: string | null) => {
-    if (!projectData) return;
-
-    let { title, metadata } = projectData;
-
-    const technologyNames = ["СИП", "Каркас", "Газобетон"];
-    technologyNames.forEach((name) => {
-      title = title.replace(` из ${name}`, "");
-      metadata.title = metadata.title?.replace(` из ${name}`, "") || "";
-      metadata.description =
-        metadata.description?.replace(` из ${name}`, "") || "";
-    });
-
-    if (technology) {
-      title = `${title} из ${technology}`;
-      metadata.title = title;
-      metadata.description = `Yolohaus дом под ключ. ${title}`;
-      setIsTechnologySelected(true);
-    } else {
-      setIsTechnologySelected(false);
-    }
-
-    setProjectData((prevData) => ({
-      ...prevData!,
-      title,
-      metadata,
-    }));
-
-    setFinalTitle(title);
-  };
-
-  useEffect(() => {
-    if (!projectData) return;
-
-    // Only set intermediateTitle if it hasn't been set yet
-    if (!intermediateTitle) {
-      setIntermediateTitle(projectData.title);
-    }
-
-    // Determine if a technology is selected based on the current path
-    const currentPath = location.pathname;
-    const technologySlugs = ["sip", "karkas", "gazobeton"];
-    const selectedTechSlug = technologySlugs.find((slug) =>
-      currentPath.endsWith(`-${slug}`)
-    );
-
-    // Map slug to technology name
-    const technologyMap = {
-      sip: "СИП",
-      karkas: "Каркас",
-      gazobeton: "Газобетон",
-    };
-
-    const technologyName = selectedTechSlug
-      ? technologyMap[selectedTechSlug as keyof typeof technologyMap]
-      : null;
-
-    // Update meta data only if technology is selected
-    if (technologyName && !isTechnologySelected) {
-      updateMetaData(technologyName);
-    } else if (!technologyName) {
-      setFinalTitle(projectData.title);
-      setIsTechnologySelected(false);
-    }
-
-    setLoading(false);
-  }, [projectData, location.pathname, intermediateTitle, isTechnologySelected]);
-
-  const handleTechnologySelect = (
-    technology: string,
-    technologySlug: string
-  ) => {
-    updateMetaData(technology);
-    const newURL = `${slug.projects}/${projectsSlug}-${technologySlug}`;
-    navigate(newURL, { replace: true });
-  };
-
-  const breadcrumbItems = [{ title: "Проекты и цены", slug: slug.projects }];
-
-  if (isTechnologySelected) {
-    breadcrumbItems.push({
-      title: intermediateTitle,
-      slug: `${slug.projects}/${projectsSlug}`,
-    });
-  }
+  const {
+    loading,
+    finalTitle,
+    projectData,
+    isLoading,
+    error,
+    isTechnologySelected,
+    updateMetaData,
+    handleTechnologySelect,
+    intermediateTitle,
+  } = useProjectDetails({ projectsSlug, initialTechnology });
 
   const { ref: refTechnology, inView: inViewTechnology } = useInView({
     triggerOnce: true,
@@ -122,7 +34,8 @@ const ProjectsDetail = ({
   const { ref: refAbout, inView: inViewAbout } = useInView({
     triggerOnce: true,
   });
-  if (isLoading) {
+
+  if (isLoading || loading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -148,6 +61,15 @@ const ProjectsDetail = ({
         </div>
       </div>
     );
+  }
+
+  const breadcrumbItems = [{ title: "Проекты и цены", slug: slug.projects }];
+
+  if (isTechnologySelected) {
+    breadcrumbItems.push({
+      title: intermediateTitle,
+      slug: `${slug.projects}/${projectsSlug}`,
+    });
   }
 
   return (

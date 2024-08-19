@@ -355,19 +355,18 @@ export interface OptionsHousesProps {
 }
 
 export interface TechnologyProps {
+  initialTechnology: string | null | undefined;
   complectations: Kit[];
-  currentProjectSlug: string;
-  slugProjects: string;
   updateMetaData: (technology: string | null) => void;
-  initialTechnology?: string | null;
   onTechnologySelect: (technology: string, technologySlug: string) => void;
   isTechnologySelected: boolean;
+  currentProjectSlug: string;
+  slugProjects: string;
 }
 
 export interface SwitchTechnologyProps {
   updateMetaData: (technology: string | null) => void;
   onTechnologySelect: (technology: string, technologySlug: string) => void;
-  slugs: string[];
   currentProjectSlug: string;
   slugProjects: string;
   selectedTechnology: string;
