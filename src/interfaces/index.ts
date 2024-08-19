@@ -165,6 +165,28 @@ export interface HeaderProps {
   footer?: FooterHeader;
 }
 
+export interface MobileMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface NavLink {
+  href: string;
+  label: string;
+  submenu?: { href: string; label: string }[];
+}
+
+export interface NavbarProps {
+  navLinks: NavLink[];
+}
+
+export interface SubmenuProps {
+  submenu: {
+    href: string;
+    label: string;
+  }[];
+}
+
 // Phone Number
 
 export interface formatPhoneNumberProps {
@@ -252,7 +274,12 @@ export interface BlogDetailProps {
 }
 
 // Built Houses & Projects Page
-
+export interface SortProps {
+  sortBy: "popularity" | "area" | "price" | null;
+  sortDirection: "asc" | "desc";
+  toggleSortBy: (criteria: "popularity" | "area" | "price") => void;
+  resetSort: () => void;
+}
 export interface BuiltHouses {
   metadata: Metadata;
   title: string;
@@ -435,6 +462,21 @@ export interface MortgageFormProps {
   termError: string;
   rateError: string;
 }
+
+export interface CalculationResultsProps {
+  monthlyPayment: number;
+  totalDebt: number;
+  overpayment: number;
+  endDate: string;
+  pieData: any[];
+  barData: any[];
+  tableData: any[];
+  showAllRows: boolean;
+  handleShowAllRows: () => void;
+  term: number;
+  termType: string;
+}
+
 // Privacy & Policy page
 
 export interface PrivacyPolicyData {
@@ -492,7 +534,12 @@ export interface BreadcrumbsProps {
 }
 
 //Vacancy Page
+export type TabType = "activeVacancies" | "brigade";
 
+export interface SwitchProps {
+  activeTab: string;
+  setActiveTab: (tab: TabType) => void;
+}
 export interface Vacancies {
   id: number;
   title: string;

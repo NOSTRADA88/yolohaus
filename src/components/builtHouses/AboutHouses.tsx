@@ -13,6 +13,7 @@ const AboutHouses = ({ details }: AboutHousesProps) => {
     : isBuiltPage
     ? slug.built
     : "/";
+
   return (
     <div id="more">
       <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mb-5">

@@ -5,9 +5,9 @@ import { Modal } from "../modal";
 import { Link } from "react-router-dom";
 import { HeaderProps } from "../../interfaces";
 import { navLinks } from "../../constants";
-import { FormatPhoneNumber } from "../phone";
 import { LogoMainBlack } from "../../assets";
 import { useModal } from "../../hooks/useModal";
+import FormatPhoneNumber from "../../utilts/FormatPhoneNumber";
 
 const Header = ({ header }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,6 +100,7 @@ const Header = ({ header }: HeaderProps) => {
         }`}
         onClick={() => setMobileMenuOpen(false)}
       ></div>
+
       {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );

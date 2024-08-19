@@ -1,4 +1,4 @@
-import { formatPhoneNumberProps } from "../../interfaces";
+import { formatPhoneNumberProps } from "../interfaces";
 
 const FormatPhoneNumber = ({ phoneNumber, color }: formatPhoneNumberProps) => {
   if (!phoneNumber) {

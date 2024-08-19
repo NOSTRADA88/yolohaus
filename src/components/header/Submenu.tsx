@@ -1,12 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-interface SubmenuProps {
-  submenu: {
-    href: string;
-    label: string;
-  }[];
-}
+import { SubmenuProps } from "../../interfaces";
 
 const Submenu: React.FC<SubmenuProps> = ({ submenu }) => {
   return (

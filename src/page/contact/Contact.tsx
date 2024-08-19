@@ -6,16 +6,41 @@ import {
 } from "../../components/contact";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useContactPage from "../../hooks/useContactPage";
+import { useInView } from "react-intersection-observer";
 
 const Contact = () => {
-  const {contactData, isLoading, error} = useContactPage();
+  const { contactData, isLoading, error } = useContactPage();
 
-    //TODO сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
-    // Сделать норм обработку ошибки error
-  if (!contactData || isLoading) {
+  const { ref: refEmployeeCard, inView: inViewEmployeeCard } = useInView({
+    triggerOnce: true,
+  });
+  const { ref: refProductionsList, inView: inViewProductionsList } = useInView({
+    triggerOnce: true,
+  });
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!contactData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
       </div>
     );
   }
@@ -38,11 +63,20 @@ const Contact = () => {
           weekends={contactData.weekends}
           urlAddressOffice={contactData.urlAddressOffice}
         />
-        <ProductionsList productions={contactData.productions} />
-        <EmployeeCard employees={contactData.employees} />
+
+        <div ref={refProductionsList}>
+          {inViewProductionsList && (
+            <ProductionsList productions={contactData.productions} />
+          )}
+          <div ref={refEmployeeCard}>
+            {inViewEmployeeCard && (
+              <EmployeeCard employees={contactData.employees} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Contact ;
+export default Contact;

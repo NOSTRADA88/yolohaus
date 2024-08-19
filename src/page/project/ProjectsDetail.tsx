@@ -11,6 +11,7 @@ import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import { ProjectsDetailProps } from "../../interfaces";
 import useProjectsDetailPage from "../../hooks/useProjectsDetailPage";
+import { useInView } from "react-intersection-observer";
 
 const ProjectsDetail = ({
   projectsSlug,
@@ -115,10 +116,36 @@ const ProjectsDetail = ({
     });
   }
 
-  if (!projectData || loading) {
+  const { ref: refTechnology, inView: inViewTechnology } = useInView({
+    triggerOnce: true,
+  });
+  const { ref: refAbout, inView: inViewAbout } = useInView({
+    triggerOnce: true,
+  });
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!projectData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
       </div>
     );
   }
@@ -139,17 +166,21 @@ const ProjectsDetail = ({
           <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
             Технология строительства
           </h2>
-          <Technology
-            updateMetaData={updateMetaData}
-            complectations={projectData.kits || []}
-            currentProjectSlug={projectsSlug}
-            slugProjects={slug.projects}
-            initialTechnology={initialTechnology}
-            onTechnologySelect={handleTechnologySelect}
-            isTechnologySelected={isTechnologySelected}
-          />
-          <div className="mt-10">
-            <AboutHouses details={[projectData]} />
+          <div ref={refTechnology}>
+            {inViewTechnology && (
+              <Technology
+                updateMetaData={updateMetaData}
+                complectations={projectData.kits || []}
+                currentProjectSlug={projectsSlug}
+                slugProjects={slug.projects}
+                initialTechnology={initialTechnology}
+                onTechnologySelect={handleTechnologySelect}
+                isTechnologySelected={isTechnologySelected}
+              />
+            )}
+          </div>
+          <div ref={refAbout} className="mt-10">
+            {inViewAbout && <AboutHouses details={[projectData]} />}
           </div>
         </div>
       </div>

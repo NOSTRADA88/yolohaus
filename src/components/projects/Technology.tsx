@@ -5,6 +5,7 @@ import {
   DescriptionChild,
   TechnologyProps,
 } from "../../interfaces";
+import { useInView } from "react-intersection-observer";
 
 const Technology: React.FC<TechnologyProps> = ({
   complectations,
@@ -18,7 +19,9 @@ const Technology: React.FC<TechnologyProps> = ({
   const [selectedTechnology, setSelectedTechnology] = useState<string>(
     initialTechnology || ""
   );
-
+  const { ref: refSwitch, inView: inViewSwitch } = useInView({
+    triggerOnce: true,
+  });
   useEffect(() => {
     if (initialTechnology) {
       setSelectedTechnology(initialTechnology);
@@ -176,14 +179,18 @@ const Technology: React.FC<TechnologyProps> = ({
 
   return (
     <div>
-      <SwitchTechnology
-        onTechnologySelect={handleTechnologySelect}
-        updateMetaData={updateMetaData}
-        slugs={complectations.map((completion) => completion.slug)}
-        currentProjectSlug={currentProjectSlug}
-        slugProjects={slugProjects}
-        selectedTechnology={selectedTechnology}
-      />
+      <div ref={refSwitch} className="mt-10">
+        {inViewSwitch && (
+          <SwitchTechnology
+            onTechnologySelect={handleTechnologySelect}
+            updateMetaData={updateMetaData}
+            slugs={complectations.map((completion) => completion.slug)}
+            currentProjectSlug={currentProjectSlug}
+            slugProjects={slugProjects}
+            selectedTechnology={selectedTechnology}
+          />
+        )}
+      </div>
 
       {isTechnologySelected && renderTable()}
     </div>

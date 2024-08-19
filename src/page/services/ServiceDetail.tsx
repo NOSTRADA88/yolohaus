@@ -10,11 +10,30 @@ const ServiceDetail = ({ servicesSlug }: ServiceDetailProps) => {
     servicesSlug: servicesSlug || "",
   });
 
-  // TODO тут тоже
-  if (!serviceData || isLoading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!serviceData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
       </div>
     );
   }

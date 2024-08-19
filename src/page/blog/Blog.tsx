@@ -2,19 +2,27 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import {
-  CardDescription,
-  CardDescriptionParagraph,
-  CardDescriptionText,
-} from "../../interfaces";
 import useBlogPage from "../../hooks/useBlogPage";
+import usePaginatedItems from "../../hooks/usePaginatedItems";
+
+import useFormattedText from "../../hooks/useFormattedText";
 
 const Blog = () => {
-  const {blogData, isLoading, error} = useBlogPage();
+  const { blogData, isLoading, error } = useBlogPage();
+  const {
+    visibleItems: visiblePosts,
+    isEndOfList,
+    isLoadingMore,
+    lastItemRef,
+  } = usePaginatedItems({
+    items: blogData ? blogData.posts : [],
+  });
 
-  //TODO сделать страницку, что типа данных нема, отдельно if (!aboutData) {<div>...</div>}
-  // Сделать норм обработку ошибки error
-  if (!blogData || isLoading) {
+  const { getFirstTwoParagraphsText } = useFormattedText();
+
+  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
+
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
@@ -22,31 +30,25 @@ const Blog = () => {
     );
   }
 
-  const truncateText = (text: string | undefined, limit: number) => {
-    if (!text) return "";
-    if (text.length <= limit) {
-      return text;
-    }
-    return text.substring(0, limit);
-  };
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
 
-  const getFirstTwoParagraphsText = (blogText: CardDescription[]) => {
-    const paragraphs = blogText
-      .filter(
-        (block): block is CardDescriptionParagraph => block.type === "paragraph"
-      )
-      .slice(0, 2);
-    const text = paragraphs
-      .map((paragraph) =>
-        paragraph.children
-          .map((child: CardDescriptionText) => truncateText(child.text, 300))
-          .join(" ")
-      )
-      .join(" ");
-    return text + (paragraphs.length > 1 ? "..." : "");
-  };
-
-  const breadcrumbItems = [{ title: "О компании", slug: slug.about }];
+  if (!blogData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -57,8 +59,12 @@ const Blog = () => {
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={blogData.title} />
         <div className="mt-10">
-          {blogData.posts.map((post, index) => (
-            <div className="mb-8" key={index}>
+          {visiblePosts.map((post, index) => (
+            <div
+              className="mb-8"
+              key={index}
+              ref={index === visiblePosts.length - 1 ? lastItemRef : null}
+            >
               <Link
                 to={`${slug.blog}/${post.slug}`}
                 className="flex shadow-[0_0_20px_rgba(0,0,0,0.25)] mt-8 items-start max-lg:flex-col hover:shadow-[0_0_30px_rgba(0,0,0,0.25)]"
@@ -98,9 +104,14 @@ const Blog = () => {
             </div>
           ))}
         </div>
+        {isLoadingMore && !isEndOfList && (
+          <div className="flex justify-center items-center mt-8 mb-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Blog ;
+export default Blog;

@@ -5,13 +5,32 @@ import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useReviewsPage from "../../hooks/useReviewsPage";
 
 const Reviews: React.FC = () => {
-  // TODO aaaa isLoading error
   const { reviewsData, isLoading, error } = useReviewsPage();
 
-  if (!reviewsData || isLoading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!reviewsData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
       </div>
     );
   }

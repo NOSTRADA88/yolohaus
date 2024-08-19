@@ -8,18 +8,12 @@ import {
 import { photoMortgage } from "../../assets";
 import useMortgagePage from "../../hooks/useMortgagePage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { MAX_TERM_MONTHS, MAX_TERM_YEARS } from "../../constants";
-
-const formatNumber = (number: number) => {
-  return new Intl.NumberFormat("ru-RU", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(number);
-};
+import { formatNumber, MAX_TERM_MONTHS, MAX_TERM_YEARS } from "../../constants";
+import { useInView } from "react-intersection-observer";
 
 const MortgageAbout = () => {
   const { mortgageData, isLoading, error } = useMortgagePage();
-  // TODO как обычно, выносим вё это говнище в секции, делаем обработку загрузки и ошибку
+
   const [bank, setBank] = useState<number>(0);
   const [projectCost, setProjectCost] = useState<number>(1000000);
   const [initialPayment, setInitialPayment] = useState<number>(200000);
@@ -218,13 +212,37 @@ const MortgageAbout = () => {
     ),
   }));
 
-  if (!mortgageData) {
+  const { ref: refResult, inView: inViewResult } = useInView({
+    triggerOnce: true,
+  });
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text-red-500 text-base font-museo">
+          Произошла ошибка. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
+  if (!mortgageData) {
+    return (
+      <div className="flex justify-center items-center mt-8 mb-8">
+        <div className="text- text-base font-museo">
+          Данные недоступны. Пожалуйста, попробуйте позже.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Helmet>
@@ -315,24 +333,27 @@ const MortgageAbout = () => {
                   termError={termError}
                   rateError={rateError}
                 />
-                {showResults &&
-                  monthlyPayment > 0 &&
-                  ((termType === "years" && term <= 30) ||
-                    (termType === "months" && term <= 360)) && (
-                    <CalculationResults
-                      monthlyPayment={monthlyPayment}
-                      totalDebt={totalDebt}
-                      overpayment={overpayment}
-                      endDate={endDate}
-                      pieData={pieData}
-                      barData={barData}
-                      tableData={tableData}
-                      showAllRows={showAllRows}
-                      handleShowAllRows={handleShowAllRows}
-                      term={term}
-                      termType={termType}
-                    />
-                  )}
+                <div ref={refResult}>
+                  {inViewResult &&
+                    showResults &&
+                    monthlyPayment > 0 &&
+                    ((termType === "years" && term <= 30) ||
+                      (termType === "months" && term <= 360)) && (
+                      <CalculationResults
+                        monthlyPayment={monthlyPayment}
+                        totalDebt={totalDebt}
+                        overpayment={overpayment}
+                        endDate={endDate}
+                        pieData={pieData}
+                        barData={barData}
+                        tableData={tableData}
+                        showAllRows={showAllRows}
+                        handleShowAllRows={handleShowAllRows}
+                        term={term}
+                        termType={termType}
+                      />
+                    )}
+                </div>
               </div>
             </div>
           </div>

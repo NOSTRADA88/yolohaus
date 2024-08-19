@@ -1,9 +1,4 @@
-interface SortProps {
-  sortBy: "popularity" | "area" | "price" | null;
-  sortDirection: "asc" | "desc";
-  toggleSortBy: (criteria: "popularity" | "area" | "price") => void;
-  resetSort: () => void;
-}
+import { SortProps } from "../../interfaces";
 
 const Sort = ({
   sortBy,

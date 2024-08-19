@@ -2,11 +2,7 @@ import { Link } from "react-router-dom";
 import { memo } from "react";
 import { LogoMainBlack } from "../../assets";
 import { navLinks } from "../../constants";
-
-interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { MobileMenuProps } from "../../interfaces";
 
 const MobileMenu = memo(({ isOpen, onClose }: MobileMenuProps) => {
   return (

@@ -13,28 +13,10 @@ import {
   Legend,
 } from "recharts";
 
-interface CalculationResultsProps {
-  monthlyPayment: number;
-  totalDebt: number;
-  overpayment: number;
-  endDate: string;
-  pieData: any[];
-  barData: any[];
-  tableData: any[];
-  showAllRows: boolean;
-  handleShowAllRows: () => void;
-  term: number;
-  termType: string;
-}
+import { CalculationResultsProps } from "../../interfaces";
+import { formatNumber } from "../../constants";
 
 const COLORS = ["#EA9635", "#2B2A29"];
-
-const formatNumber = (number: number) => {
-  return new Intl.NumberFormat("ru-RU", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(number);
-};
 
 const renderTooltip = (props: any) => {
   const { active, payload } = props;

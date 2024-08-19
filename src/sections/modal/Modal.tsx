@@ -1,98 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import React, { useEffect } from "react";
 import { PatternFormat } from "react-number-format";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { slug } from "../../constants";
+import { useFileSelection } from "../../hooks/useFileSelection";
+import { useFormSubmission } from "../../hooks/useFormSubmission";
+import truncateFileName from "../../utilts/truncateFileName";
 
 interface ModalProps {
   closeModal: () => void;
 }
 
 const Modal = ({ closeModal }: ModalProps) => {
-  const [, setErrors] = useState<{ [key: string]: string[] }>({});
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
+  const { selectedFiles, handleFileChange, handleRemoveFile } =
+    useFileSelection();
   const {
     register,
     handleSubmit,
-    reset,
-    setValue,
-    watch,
     formState: { errors: formErrors },
-    setError,
-  } = useForm();
-  const { name, phone, message } = watch();
-  const recordForm: SubmitHandler<FieldValues> = async (data) => {
-    if (!name || !phone || !message) {
-      if (!name)
-        setError("name", { type: "manual", message: "Введите ваше имя" });
-      if (!phone)
-        setError("phone", { type: "manual", message: "Введите ваш телефон" });
-      if (!message)
-        setError("message", {
-          type: "manual",
-          message: "Введите ваше сообщение",
-        });
-      return;
-    }
-
-    try {
-      const currentUrl = window.location.href;
-      data.url = currentUrl;
-
-      const formData = new FormData();
-
-      formData.append("name", data.name);
-      formData.append("phone", data.phone);
-      formData.append("message", data.message);
-      formData.append("url", data.url);
-
-      selectedFiles.forEach((file) => {
-        formData.append("files", file);
-      });
-
-      const response = await axios.post(`http://149.154.65.51/send`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("Данные успешно отправлены");
-        reset();
-        setErrors({});
-        setValue("phone", "");
-        setSelectedFiles([]);
-        closeModal();
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        console.error("Ошибка запроса:", error);
-      }
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      setSelectedFiles(Array.from(files));
-    }
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
-  const truncateFileName = (fileName: string, maxLength: number) => {
-    if (fileName.length <= maxLength) return fileName;
-    const extIndex = fileName.lastIndexOf(".");
-    const extension = fileName.substring(extIndex);
-    const name = fileName.substring(0, extIndex);
-    return `${name.substring(0, maxLength)}...${extension}`;
-  };
+    setValue,
+    recordForm,
+  } = useFormSubmission(selectedFiles, closeModal);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

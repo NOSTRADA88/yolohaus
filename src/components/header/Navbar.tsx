@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SubmenuComponent from "./Submenu";
-
-interface NavLink {
-  href: string;
-  label: string;
-  submenu?: { href: string; label: string }[];
-}
-
-interface NavbarProps {
-  navLinks: NavLink[];
-}
+import { NavbarProps } from "../../interfaces";
 
 const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);

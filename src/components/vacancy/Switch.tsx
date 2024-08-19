@@ -1,16 +1,11 @@
-type TabType = "activeVacancies" | "brigade";
-
-interface SwitchProps {
-  activeTab: string;
-  setActiveTab: (tab: TabType) => void;
-}
+import { SwitchProps } from "../../interfaces";
 
 const Switch = ({ activeTab, setActiveTab }: SwitchProps) => {
   return (
     <div className="flex gap-2 mt-10  mb-5 max-sm:flex-col">
       <div
         className={`bg-orange p-2 cursor-pointer ${
-          activeTab === "activeVacancies" ? "bg-darkorange" : ""
+          activeTab === "activeVacancies" ? "bg-opacity-70" : ""
         }`}
         onClick={() => setActiveTab("activeVacancies")}
       >
@@ -20,7 +15,7 @@ const Switch = ({ activeTab, setActiveTab }: SwitchProps) => {
       </div>
       <div
         className={`bg-orange p-2 cursor-pointer ${
-          activeTab === "brigade" ? "bg-darkorange" : ""
+          activeTab === "brigade" ? " bg-opacity-70" : ""
         }`}
         onClick={() => setActiveTab("brigade")}
       >

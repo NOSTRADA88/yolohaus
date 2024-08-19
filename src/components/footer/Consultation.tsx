@@ -1,69 +1,14 @@
-import { useState } from "react";
+import React from "react";
 import { ConsultationPhoto } from "../../assets";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
 import { PatternFormat } from "react-number-format";
 import { Link, useLocation } from "react-router-dom";
 import { slug } from "../../constants";
+import { useConsultationForm } from "../../hooks/useConsultationForm";
 
 const Consultation = () => {
-  const [, setErrors] = useState<{ [key: string]: string[] }>({});
   const location = useLocation();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    formState: { errors: formErrors },
-    setError,
-  } = useForm();
-  const { name, phone, message } = watch();
-  const recordForm: SubmitHandler<FieldValues> = async (data) => {
-    if (!name || !phone || !message) {
-      if (!name)
-        setError("name", { type: "manual", message: "Введите ваше имя" });
-      if (!phone)
-        setError("phone", { type: "manual", message: "Введите ваш телефон" });
-      if (!message)
-        setError("message", {
-          type: "manual",
-          message: "Введите ваше сообщение",
-        });
-      return;
-    }
-
-    try {
-      const currentUrl = window.location.href;
-      data.url = currentUrl;
-
-      const formData = new FormData();
-
-      formData.append("name", data.name);
-      formData.append("phone", data.phone);
-      formData.append("message", data.message);
-      formData.append("url", data.url);
-
-      const response = await axios.post("http://149.154.65.51/send", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.status === 200) {
-        console.log("Данные успешно отправлены");
-        reset();
-        setErrors({});
-        setValue("phone", "");
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        console.error("Ошибка запроса:", error);
-      }
-    }
-  };
+  const { register, handleSubmit, recordForm, formErrors, setValue } =
+    useConsultationForm();
 
   return (
     <div className="bg-orange">
@@ -72,12 +17,12 @@ const Consultation = () => {
           location.pathname === "/" ? "max-sm:pt-52" : ""
         }`}
       >
-        <div className="flex justify-center max-[1111px]:flex-col ">
-          <div className="flex flex-col w-full mx-auto max-[1111px]:items-center max-md:items-start">
+        <div className="grid grid-cols-2 gap-8 max-[1111px]:grid-cols-1 max-[1111px]:gap-4">
+          <div className="flex flex-col w-full mx-auto">
             <h1 className="text-white font-museo font-bold text-3xl mb-4 max-md:text-2xl">
               Нужна консультация?
             </h1>
-            <p className="font-museo font-light text-sm text-white mr-20">
+            <p className="font-museo font-light text-sm text-white">
               Опытный специалист поможет разобраться во всех тонкостях
               домостроения
             </p>
@@ -87,7 +32,7 @@ const Consultation = () => {
             >
               <div className="flex flex-col mt-10 mb-5">
                 <div className="flex justify-between mb-2">
-                  <div className="flex-grow ">
+                  <div className="flex-grow">
                     <input
                       type="text"
                       className="w-full h-10 pl-2 font-museo text-xs font-light text-maingray bg-[#f9e0c3]"
@@ -158,12 +103,12 @@ const Consultation = () => {
             </form>
           </div>
 
-          <div className="w-full max-[1111px]:hidden">
+          <div className="flex justify-center items-center max-[1111px]:hidden">
             <img
               src={ConsultationPhoto}
               alt="photoAbout"
-              width="500"
-              height="350"
+              width={350}
+              height={200}
             />
           </div>
         </div>

@@ -87,3 +87,10 @@ export const formatPrice = (price: number) => price.toLocaleString("ru-RU");
 
 export const MAX_TERM_YEARS = 30;
 export const MAX_TERM_MONTHS = 360;
+
+export const formatNumber = (number: number) => {
+  return new Intl.NumberFormat("ru-RU", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(number);
+};
