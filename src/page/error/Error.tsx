@@ -1,6 +1,5 @@
-import { faHouseCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { errorIcon } from "../../assets";
 
 const ErrorPage = () => {
   return (
@@ -22,12 +21,16 @@ const ErrorPage = () => {
         </div>
       </div>
       <div className="mt-10 flex justify-center flex-col items-center gap-10">
-        <p className="font-light text-xl font-museo leading-normal text-justify">
-          Извините, страница не найдена.
+        <p className="font-light text-xl font-museo leading-normal text-center">
+          Извините, но запрашиваемая страница не существует. <br /> Возможно,
+          она была удалена или перемещена.
         </p>
-        <FontAwesomeIcon
-          icon={faHouseCircleExclamation}
-          className="text-orange arrow-icon text-4xl"
+        <img
+          src={errorIcon}
+          alt="error"
+          width={20}
+          height={20}
+          className="w-40"
         />
       </div>
     </div>

@@ -12,4 +12,5 @@ import photoAbout from './about.webp'
 import photoGuarantee from './garantia.webp'
 import photoContact from './contact.webp'
 import map from "./map.webp"
-export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map};
+import errorIcon from "./building.svg"
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map, errorIcon};
