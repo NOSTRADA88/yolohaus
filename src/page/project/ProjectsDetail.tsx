@@ -26,6 +26,7 @@ const ProjectsDetail = ({
     updateMetaData,
     handleTechnologySelect,
     intermediateTitle,
+    minPriceForSelectedTechnology,
   } = useProjectDetails({ projectsSlug, initialTechnology });
 
   const { ref: refTechnology, inView: inViewTechnology } = useInView({
@@ -83,7 +84,10 @@ const ProjectsDetail = ({
         <div className="flex flex-col mt-20 max-xl:mt-10 max-sm:mt-5">
           <div className="flex justify-between max-lg:flex-col">
             <SliderHouses details={[projectData]} />
-            <OptionsHouses details={[projectData]} />
+            <OptionsHouses
+              details={[projectData]}
+              minPrice={minPriceForSelectedTechnology}
+            />
           </div>
           <h2 className="font-museo font-bold text-2xl max-md:text-xl text-maingray mt-10">
             Технология строительства

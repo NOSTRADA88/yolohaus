@@ -294,6 +294,7 @@ interface Bundle {
 }
 
 export interface Kit {
+  kits: never[];
   metadata: Metadata;
   basePrice: string;
   standardPrice: string;
@@ -352,6 +353,7 @@ export interface SliderHousesProps {
 
 export interface OptionsHousesProps {
   details: Project[];
+  minPrice?: number;
 }
 
 export interface TechnologyProps {

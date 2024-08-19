@@ -3,7 +3,7 @@ import { OptionsHousesProps } from "../../interfaces";
 import { formatPrice, getMinPrice } from "../../constants";
 import { useModal } from "../../hooks/useModal";
 
-const OptionsHouses = ({ details }: OptionsHousesProps) => {
+const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const scrollToMore = (
@@ -162,14 +162,17 @@ const OptionsHouses = ({ details }: OptionsHousesProps) => {
         {details.map((detail, index) => (
           <div key={index}>
             {detail.kits && (
-              <>
-                <p className="font-museo text-orange text-xl font-bold">
-                  от {formatPrice(getMinPrice(detail.kits))} ₽
-                </p>
-              </>
+              <p className="font-museo text-orange text-xl font-bold">
+                от{" "}
+                {minPrice
+                  ? formatPrice(minPrice)
+                  : formatPrice(getMinPrice(detail.kits))}{" "}
+                ₽
+              </p>
             )}
           </div>
         ))}
+
         <div
           className="flex gap-[3.5px] items-center mb-4 mt-5"
           onClick={openModal}

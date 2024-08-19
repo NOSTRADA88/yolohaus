@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { slug } from "../constants";
+import { getMinPrice, slug } from "../constants";
 import { ProjectsDetailProps } from "../interfaces";
 import useProjectsDetailPage from "./useProjectsDetailPage";
 
@@ -92,6 +92,11 @@ export const useProjectDetails = ({
     navigate(newURL, { replace: true });
   };
 
+  const minPriceForSelectedTechnology = getMinPrice(
+    projectData?.kits?.filter(
+      (kit) => kit.slug.toLowerCase() === initialTechnology?.toLowerCase()
+    )
+  );
   return {
     loading,
     finalTitle,
@@ -102,5 +107,6 @@ export const useProjectDetails = ({
     updateMetaData,
     handleTechnologySelect,
     intermediateTitle,
+    minPriceForSelectedTechnology,
   };
 };
