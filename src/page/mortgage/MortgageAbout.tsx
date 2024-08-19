@@ -1,220 +1,51 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { Suspense } from "react";
 import { Helmet } from "react-helmet";
-import {
-  BankSelection,
-  CalculationResults,
-  MortgageForm,
-} from "../../components/mortgage";
+import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { photoMortgage } from "../../assets";
-import useMortgagePage from "../../hooks/useMortgagePage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { formatNumber, MAX_TERM_MONTHS, MAX_TERM_YEARS } from "../../constants";
+import { useMortgageCalculator } from "../../hooks/useMortgageCalculator";
 import { useInView } from "react-intersection-observer";
 
+const CalculationResults = React.lazy(
+  () => import("../../components/mortgage/CalculationResults")
+);
+
 const MortgageAbout = () => {
-  const { mortgageData, isLoading, error } = useMortgagePage();
-
-  const [bank, setBank] = useState<number>(0);
-  const [projectCost, setProjectCost] = useState<number>(1000000);
-  const [initialPayment, setInitialPayment] = useState<number>(200000);
-  const [loanAmount, setLoanAmount] = useState<number>(800000);
-  const [term, setTerm] = useState<number>(30);
-  const [termType, setTermType] = useState<string>("months");
-  const [rate, setRate] = useState<number>(0);
-  const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
-  const [totalDebt, setTotalDebt] = useState<number>(0);
-  const [overpayment, setOverpayment] = useState<number>(0);
-  const [endDate, setEndDate] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
-  const [showAllRows, setShowAllRows] = useState(false);
-  const [showResults, setShowResults] = useState<boolean>(false);
-  const [termError, setTermError] = useState<string>("");
-  const [rateError, setRateError] = useState<string>("");
-
-  const handleShowAllRows = () => {
-    setShowAllRows(true);
-  };
-
-  const calculateMortgage = (currentRate: number) => {
-    const monthlyRate = currentRate / 100 / 12;
-    const numberOfPayments = termType === "years" ? term * 12 : term;
-
-    if (numberOfPayments > 600) {
-      setMonthlyPayment(0);
-      setTotalDebt(0);
-      setOverpayment(0);
-      setEndDate("");
-      return;
-    }
-
-    const monthlyPaymentCalc =
-      (loanAmount * monthlyRate) /
-      (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
-    const totalPayment = monthlyPaymentCalc * numberOfPayments;
-    const totalInterest = totalPayment - loanAmount;
-    const endDateCalc = new Date(startDate);
-    endDateCalc.setMonth(endDateCalc.getMonth() + numberOfPayments);
-
-    setMonthlyPayment(monthlyPaymentCalc);
-    setTotalDebt(totalPayment);
-    setOverpayment(totalInterest);
-    setEndDate(endDateCalc.toLocaleDateString());
-  };
-
-  const validateTerm = (value: number) => {
-    if (
-      (termType === "years" && value > 30) ||
-      (termType === "months" && value > 365)
-    ) {
-      return "Срок не может быть больше 30 лет или 365 месяцев.";
-    }
-    return "";
-  };
-
-  const validateRate = (value: number) => {
-    if (value <= 0) {
-      return "Введите процентную ставку.";
-    }
-    return "";
-  };
-
-  const handleInputChange =
-    (
-      setter: (value: number) => void,
-      errorSetter: (message: string) => void,
-      validator: (value: number) => string
-    ) =>
-    (value: number) => {
-      const errorMessage = validator(value);
-      errorSetter(errorMessage);
-      setter(value);
-      setShowResults(false);
-    };
-
-  const handleTermTypeChange = (value: string) => {
-    setTermType(value);
-    setTermError(validateTerm(term));
-    setShowResults(false);
-  };
-
-  const handleStartDateChange = (value: string) => {
-    setStartDate(value);
-    setShowResults(false);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let hasError = false;
-
-    setTermError("");
-    setRateError("");
-
-    if (
-      (termType === "years" && term > MAX_TERM_YEARS) ||
-      (termType === "months" && term > MAX_TERM_MONTHS)
-    ) {
-      setTermError("Срок не может быть больше 30 лет или 360 месяцев.");
-      hasError = true;
-    }
-
-    if (rate <= 0) {
-      setRateError("Введите процентную ставку.");
-      hasError = true;
-    }
-
-    if (hasError) {
-      return;
-    }
-
-    calculateMortgage(rate);
-    setShowResults(true);
-    setShowAllRows(false);
-  };
-
-  const handleSelectBank = useCallback(
-    (bankId: number) => {
-      const selectedBank = mortgageData?.banks.find(
-        (bank) => bank.id === bankId
-      );
-      if (selectedBank) {
-        setBank(bankId);
-        setRate(parseFloat(selectedBank.rate));
-        setLoanAmount(projectCost - initialPayment);
-        setMonthlyPayment(0);
-        setTotalDebt(0);
-        setOverpayment(0);
-        setEndDate("");
-        setShowResults(false);
-        setShowAllRows(false);
-      }
-    },
-    [mortgageData]
-  );
-
-  useEffect(() => {
-    if (mortgageData) {
-      setLoanAmount(projectCost - initialPayment);
-      calculateMortgage(rate);
-    }
-  }, [
+  const {
     mortgageData,
+    isLoading,
+    error,
     bank,
-    rate,
     projectCost,
     initialPayment,
+    loanAmount,
     term,
     termType,
+    rate,
+    monthlyPayment,
+    totalDebt,
+    overpayment,
+    endDate,
     startDate,
-  ]);
-
-  const pieData = useMemo(
-    () => [
-      { name: "Основной долг", value: loanAmount },
-      { name: "Проценты", value: overpayment },
-    ],
-    [loanAmount, overpayment]
-  );
-
-  const barData: any[] = [];
-  let remainingDebt = loanAmount;
-
-  for (let i = 0; i < (termType === "years" ? term * 12 : term); i++) {
-    const interestPayment = remainingDebt * (rate / 100 / 12);
-    const principalPayment = monthlyPayment - interestPayment;
-    remainingDebt -= principalPayment;
-
-    const paymentDate = new Date(startDate);
-    paymentDate.setMonth(paymentDate.getMonth() + i);
-
-    barData.push({
-      name: paymentDate.getFullYear().toString(),
-      month: paymentDate.toLocaleString("ru-RU", {
-        month: "long",
-        year: "numeric",
-      }),
-      "Основной долг": principalPayment,
-      Проценты: interestPayment,
-    });
-  }
-
-  const tableData = barData.map((item, index) => ({
-    month: item.month,
-    payment: formatNumber(monthlyPayment),
-    principal: formatNumber(item["Основной долг"]),
-    interest: formatNumber(item["Проценты"]),
-    remainingDebt: formatNumber(
-      loanAmount -
-        barData
-          .slice(0, index + 1)
-          .reduce((sum, payment) => sum + payment["Основной долг"], 0)
-    ),
-  }));
+    showAllRows,
+    showResults,
+    termError,
+    rateError,
+    pieData,
+    barData,
+    tableData,
+    handleShowAllRows,
+    handleInputChange,
+    handleTermTypeChange,
+    handleStartDateChange,
+    handleSubmit,
+    handleSelectBank,
+  } = useMortgageCalculator();
 
   const { ref: refResult, inView: inViewResult } = useInView({
     triggerOnce: true,
   });
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -226,7 +57,7 @@ const MortgageAbout = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="text-red-500 text-base font-museo">
+        <div className="text-red-500 text-base font-museо">
           Произошла ошибка. Пожалуйста, попробуйте позже.
         </div>
       </div>
@@ -236,7 +67,7 @@ const MortgageAbout = () => {
   if (!mortgageData) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="text- text-base font-museo">
+        <div className="text-base font-museо">
           Данные недоступны. Пожалуйста, попробуйте позже.
         </div>
       </div>
@@ -253,12 +84,10 @@ const MortgageAbout = () => {
         <Breadcrumbs finalTitle={mortgageData.title} />
         <div className="flex justify-between items-center max-xl:mt-20 max-md:mt-10">
           <div className="flex flex-col w-[60%] max-[1111px]:w-full">
-            <div className=" bg-lightwhite p-5">
-              <div className="flex items-center">
-                <p className="font-light text-xl font-museо leading-normal text-justify text-maingray">
-                  {mortgageData.titleDescription}
-                </p>
-              </div>
+            <div className="bg-lightwhite p-5">
+              <p className="font-light text-xl font-museо leading-normal text-justify text-maingray">
+                {mortgageData.titleDescription}
+              </p>
             </div>
             {mortgageData.description.map((item, index) => (
               <div
@@ -276,13 +105,13 @@ const MortgageAbout = () => {
               </div>
             ))}
           </div>
-          <div className=" mt-[32px] max-[1111px]:hidden">
+          <div className="mt-[32px] max-[1111px]:hidden">
             <img
               src={photoMortgage}
               alt="MortgagePhoto"
               width={150}
               height={320}
-              className="h-[300px] "
+              className="h-[300px]"
             />
           </div>
         </div>
@@ -297,7 +126,6 @@ const MortgageAbout = () => {
                 selectedBank={bank}
                 onSelectBank={handleSelectBank}
               />
-
               <div className="w-full">
                 <MortgageForm
                   projectCost={projectCost}
@@ -307,26 +135,10 @@ const MortgageAbout = () => {
                   term={term}
                   termType={termType}
                   startDate={startDate}
-                  onProjectCostChange={handleInputChange(
-                    setProjectCost,
-                    () => {},
-                    () => ""
-                  )}
-                  onInitialPaymentChange={handleInputChange(
-                    setInitialPayment,
-                    () => {},
-                    () => ""
-                  )}
-                  onRateChange={handleInputChange(
-                    setRate,
-                    setRateError,
-                    validateRate
-                  )}
-                  onTermChange={handleInputChange(
-                    setTerm,
-                    setTermError,
-                    validateTerm
-                  )}
+                  onProjectCostChange={handleInputChange("projectCost")}
+                  onInitialPaymentChange={handleInputChange("initialPayment")}
+                  onRateChange={handleInputChange("rate")}
+                  onTermChange={handleInputChange("term")}
                   onTermTypeChange={handleTermTypeChange}
                   onStartDateChange={handleStartDateChange}
                   onSubmit={handleSubmit}
@@ -334,11 +146,8 @@ const MortgageAbout = () => {
                   rateError={rateError}
                 />
                 <div ref={refResult}>
-                  {inViewResult &&
-                    showResults &&
-                    monthlyPayment > 0 &&
-                    ((termType === "years" && term <= 30) ||
-                      (termType === "months" && term <= 360)) && (
+                  {inViewResult && showResults && monthlyPayment > 0 && (
+                    <Suspense fallback={isLoading}>
                       <CalculationResults
                         monthlyPayment={monthlyPayment}
                         totalDebt={totalDebt}
@@ -352,7 +161,8 @@ const MortgageAbout = () => {
                         term={term}
                         termType={termType}
                       />
-                    )}
+                    </Suspense>
+                  )}
                 </div>
               </div>
             </div>
