@@ -59,7 +59,6 @@ const ProjectsDetailRoute = () => {
   );
 };
 
-// TODO добавить колёсико в fallback для suspense =)
 const BlogDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();
   return <BlogDetail blogSlug={slug ?? ""} />;

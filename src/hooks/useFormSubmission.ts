@@ -19,21 +19,18 @@ export const useFormSubmission = (
   const { name, phone, message } = watch();
 
   const recordForm: SubmitHandler<FieldValues> = async (data) => {
-    if (!name || !phone || !message) {
-      if (!name)
-        setError("name", { type: "manual", message: "Введите ваше имя" });
-      if (!phone)
-        setError("phone", {
-          type: "manual",
-          message: "Введите ваш телефон",
-        });
-      if (!message)
-        setError("message", {
-          type: "manual",
-          message: "Введите ваше сообщение",
-        });
-      return;
-    }
+    if (!name)
+      setError("name", { type: "manual", message: "Введите ваше имя" });
+    if (!phone)
+      setError("phone", {
+        type: "manual",
+        message: "Введите ваш телефон",
+      });
+    if (!message)
+      setError("message", {
+        type: "manual",
+        message: "Введите ваше сообщение",
+      });
 
     try {
       const currentUrl = window.location.href;

@@ -4,7 +4,7 @@ import { fetchHomePage } from "../api/home";
 const useHomePage = () => {
   const [homeData, setHomeData] = useState<HomeData>();
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error>()
+  const [error, setError] = useState<Error>();
 
   const fetchHome = useCallback(async (signal: AbortSignal) => {
     try {
@@ -14,7 +14,7 @@ const useHomePage = () => {
       setHomeData({
         metadata: {
           title: response.Metadata.MetaTitle,
-          description: response.Metadata.MetaDescription
+          description: response.Metadata.MetaDescription,
         },
         greetings: {
           rawOne: response.Greetings.RawOne,
@@ -107,20 +107,20 @@ const useHomePage = () => {
       if (error instanceof Error) {
         setError(error);
       } else {
-        setError(Error(`unknown error occurred: ${error}`))
+        setError(Error(`unknown error occurred: ${error}`));
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
     fetchHome(abortController.signal);
-    return () => abortController.abort()
+    return () => abortController.abort();
   }, []);
 
-  return {homeData, isLoading, error};
+  return { homeData, isLoading, error };
 };
 
 export default useHomePage;

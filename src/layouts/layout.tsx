@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
 const Layout = ({ children }: LayoutProps) => {
-  const { informationData, isLoading, error } = useHeaderFooter();
+  const { informationData, error } = useHeaderFooter();
 
   const { ref: refConsultation, inView: inViewConsultation } = useInView({
     triggerOnce: true,
@@ -23,29 +23,11 @@ const Layout = ({ children }: LayoutProps) => {
     triggerOnce: true,
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
         <div className="text-red-500 text-base font-museo">
           Произошла ошибка. Пожалуйста, попробуйте позже.
-        </div>
-      </div>
-    );
-  }
-
-  if (!informationData) {
-    return (
-      <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="text- text-base font-museo">
-          Данные недоступны. Пожалуйста, попробуйте позже.
         </div>
       </div>
     );
