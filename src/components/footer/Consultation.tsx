@@ -1,4 +1,3 @@
-import React from "react";
 import { ConsultationPhoto } from "../../assets";
 import { PatternFormat } from "react-number-format";
 import { Link, useLocation } from "react-router-dom";

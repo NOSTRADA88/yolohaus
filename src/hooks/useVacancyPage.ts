@@ -1,11 +1,11 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchVacancyPage } from "../api/vacancy";
 import { VacancyPagesData } from "../interfaces";
 
 const useVacancyPage = () => {
   const [vacancyData, setVacancyData] = useState<VacancyPagesData>();
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error>()
+  const [error, setError] = useState<Error>();
 
   const fetchVacancyData = useCallback(async (signal: AbortSignal) => {
     try {
@@ -15,7 +15,7 @@ const useVacancyPage = () => {
       setVacancyData({
         metadata: {
           title: response.Metadata.MetaTitle,
-          description: response.Metadata.MetaDescription
+          description: response.Metadata.MetaDescription,
         },
         title: response.Title,
         vacancies: response.Vacancies.data.map((vacancy: any) => ({
@@ -30,20 +30,20 @@ const useVacancyPage = () => {
       if (error instanceof Error) {
         setError(error);
       } else {
-        setError(Error(`unknown error occurred: ${error}`))
+        setError(Error(`unknown error occurred: ${error}`));
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    const abortController = new AbortController;
+    const abortController = new AbortController();
     fetchVacancyData(abortController.signal);
     return () => abortController.abort();
   }, []);
 
-  return {vacancyData, isLoading, error};
+  return { vacancyData, isLoading, error };
 };
 
 export default useVacancyPage;
