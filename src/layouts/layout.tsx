@@ -4,7 +4,6 @@ import { ScrollUp } from "../sections/scroll";
 import useHeaderFooter from "../hooks/useHeaderFooter";
 import { LayoutProps } from "../interfaces";
 import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
 
 const Layout = ({ children }: LayoutProps) => {
   const { informationData, error } = useHeaderFooter();
@@ -12,9 +11,7 @@ const Layout = ({ children }: LayoutProps) => {
   const { ref: refConsultation, inView: inViewConsultation } = useInView({
     triggerOnce: true,
   });
-  useEffect(() => {
-    console.log("inViewConsultation:", inViewConsultation); // Проверка изменения состояния
-  }, [inViewConsultation]);
+
   const { ref: refFooter, inView: inViewFooter } = useInView({
     triggerOnce: true,
   });

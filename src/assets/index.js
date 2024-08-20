@@ -4,6 +4,7 @@ import ConsultationPhoto from "./photo-consultation.webp";
 import BgVacancy from "./bgvacancy.webp";
 import Youtube from "./youtube.webp";
 import BgMain from "./bgmain.webp";
+import bgMainSmall from "./bgMainSmall.webp";
 import LogoMainBlack from "./CompanyLogoBlack.svg"
 import LogoMainWhite from "./СompanyLogoWhite.svg"
 import LinkBank from './link.svg'
@@ -13,4 +14,4 @@ import photoGuarantee from './garantia.webp'
 import photoContact from './contact.webp'
 import map from "./map.webp"
 import errorIcon from "./building.svg"
-export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map, errorIcon};
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map, errorIcon, bgMainSmall};
