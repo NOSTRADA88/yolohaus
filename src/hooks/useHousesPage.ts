@@ -1,11 +1,11 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchBuiltHousesData } from "../api/built";
 import { BuiltHouses } from "../interfaces";
 
 const useHousesPage = () => {
   const [housesData, setHousesData] = useState<BuiltHouses>();
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error>()
+  const [error, setError] = useState<Error>();
 
   const fetchBuiltHouses = useCallback(async (signal: AbortSignal) => {
     try {
@@ -28,8 +28,7 @@ const useHousesPage = () => {
           parameters: {
             houseArea: house.attributes.Parameters.HouseArea,
             location: house.attributes.Parameters.Location,
-            constructionPeriod:
-            house.attributes.Parameters.ConstructionPeriod,
+            constructionPeriod: house.attributes.Parameters.ConstructionPeriod,
           },
           photos: house.attributes.Photos.data.map((photo: any) => ({
             url: photo.attributes.url,
@@ -41,20 +40,21 @@ const useHousesPage = () => {
       if (error instanceof Error) {
         setError(error);
       } else {
-        setError(Error(`unknown error occurred: ${error}`))
+        setError(Error(`unknown error occurred: ${error}`));
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }, []);
 
+  console.log(housesData);
   useEffect(() => {
-    const abortController = new AbortController;
+    const abortController = new AbortController();
     fetchBuiltHouses(abortController.signal);
-    return () => abortController.abort()
+    return () => abortController.abort();
   }, []);
 
-  return {housesData, isLoading, error};
+  return { housesData, isLoading, error };
 };
 
 export default useHousesPage;

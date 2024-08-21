@@ -55,7 +55,7 @@ const useHousesDetailPage = ({ houseSlug }: HouseDetailProps) => {
     },
     [houseSlug]
   );
-
+  console.log(houseData);
   useEffect(() => {
     const abortController = new AbortController();
     fetchBuiltHouseData(houseSlug, abortController.signal);

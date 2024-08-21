@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import usePaginatedItems from "../../hooks/usePaginatedItems"; // Import the generalized hook
-import useHousesPage from "../../hooks/useHousesPage"; // Hook to fetch houses data
+import usePaginatedItems from "../../hooks/usePaginatedItems";
+import useHousesPage from "../../hooks/useHousesPage";
+import { SkeletonHouse } from "../../skeleton/SkeletonHouse";
 
 const Houses = () => {
   const { housesData, isLoading, error } = useHousesPage();
@@ -18,8 +19,15 @@ const Houses = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
+      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
+        <Breadcrumbs finalTitle="Построенные дома" />
+        <div className="grid grid-cols-3 gap-20 mt-10 max-xl:gap-10 max-lg:grid-cols-2 max-lg:gap-14 max-md:grid-cols-1">
+          {Array(6)
+            .fill(0)
+            .map((_, index) => (
+              <SkeletonHouse key={index} />
+            ))}
+        </div>
       </div>
     );
   }
@@ -37,7 +45,7 @@ const Houses = () => {
   if (!housesData) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="text- text-base font-museo">
+        <div className="text-gray-500 text-lg font-museo">
           Данные недоступны. Пожалуйста, попробуйте позже.
         </div>
       </div>
@@ -50,8 +58,13 @@ const Houses = () => {
         <Helmet>
           <title>{housesData.metadata.title}</title>
           <meta name="description" content={housesData.metadata.description} />
-          {housesData.houses.map(house => (
-              <link rel="preload" href={`${API_URL}/${house.photos[0].url}`} as="image"/>
+          {housesData.houses.map((house) => (
+            <link
+              key={house.slug}
+              rel="preload"
+              href={`${API_URL}/${house.photos[0].url}`}
+              as="image"
+            />
           ))}
         </Helmet>
       )}
