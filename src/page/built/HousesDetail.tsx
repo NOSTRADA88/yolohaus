@@ -5,10 +5,11 @@ import {
   SliderHouses,
 } from "../../components/builtHouses";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import { slug } from "../../constants";
+import {API_URL, slug} from "../../constants";
 import { HouseDetailProps } from "../../interfaces";
 import useHousesDetailPage from "../../hooks/useHousesDetailPage";
 import { useInView } from "react-intersection-observer";
+import React from "react";
 
 const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   const { houseData, isLoading, error } = useHousesDetailPage({
@@ -52,6 +53,9 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
       <Helmet>
         <title>{houseData.metadata.title}</title>
         <meta name="description" content={houseData.metadata.description} />
+        {houseData.photos.map(photo => (
+            <link rel="preload" href={`${API_URL}/${photo.url}`} as="image"/>
+        ))}
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={houseData.title} />

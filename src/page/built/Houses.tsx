@@ -50,6 +50,9 @@ const Houses = () => {
         <Helmet>
           <title>{housesData.metadata.title}</title>
           <meta name="description" content={housesData.metadata.description} />
+          {housesData.houses.map(house => (
+              <link rel="preload" href={`${API_URL}/${house.photos[0].url}`} as="image"/>
+          ))}
         </Helmet>
       )}
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">

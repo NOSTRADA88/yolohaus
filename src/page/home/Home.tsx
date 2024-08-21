@@ -9,6 +9,8 @@ import {
 } from "../../components/home";
 import useHomePage from "../../hooks/useHomePage";
 import { useInView } from "react-intersection-observer";
+import {BgMain, ConsultationPhoto} from "../../assets";
+import {API_URL} from "../../constants";
 
 const Home = () => {
   const { homeData, isLoading, error } = useHomePage();
@@ -58,12 +60,20 @@ const Home = () => {
 
   return (
     <div>
-      <Helmet>
-        <title>{homeData.metadata.title}</title>
-        <meta name="description" content={homeData.metadata.description} />
-      </Helmet>
-      <MainScreen
-        rawOne={homeData.greetings.rawOne}
+        <Helmet>
+            <title>{homeData.metadata.title}</title>
+            <meta name="description" content={homeData.metadata.description}/>
+            <link rel="preload" href={BgMain} as="image"/>
+            {homeData.mortgage.photos.map(photo => (
+                <link rel="preload" href={`${API_URL}/${photo.url}`}/>
+            ))}
+            {homeData.popularProjects.popularProject.map(project => (
+                <link rel="preload" href={`${API_URL}/${project.photos[0].url}`} as="image"/>
+            ))}
+            <link rel="preload" href={ConsultationPhoto} as="image"/>
+        </Helmet>
+        <MainScreen
+            rawOne={homeData.greetings.rawOne}
         rawTwo={homeData.greetings.rawTwo}
       />
       <div ref={refMortgage}>

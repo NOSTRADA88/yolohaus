@@ -9,6 +9,7 @@ import useProjectsPage from "../../hooks/useProjectsPage";
 import useSortedProjects from "../../hooks/useSortedProjects";
 
 import usePaginatedItems from "../../hooks/usePaginatedItems";
+import React from "react";
 
 const Projects = () => {
   const {
@@ -66,6 +67,9 @@ const Projects = () => {
       <Helmet>
         <title>{projectsData.metadata.title}</title>
         <meta name="description" content={projectsData.metadata.description} />
+        {projectsData.projects.map(project => (
+            <link rel="preload" href={`${API_URL}/${project.photos[0].url}`} as="image"/>
+        ))}
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
         <Breadcrumbs finalTitle={projectsData.title} />

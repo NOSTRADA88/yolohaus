@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { errorIcon } from "../../assets";
 
+//TODO helmet для страницы ErrorPage с метадатой и прелоудом для фотки
 const ErrorPage = () => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12  max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
