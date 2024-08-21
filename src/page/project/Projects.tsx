@@ -7,7 +7,6 @@ import useHomePage from "../../hooks/useHomePage";
 import useProjectsPage from "../../hooks/useProjectsPage";
 import useSortedProjects from "../../hooks/useSortedProjects";
 import usePaginatedItems from "../../hooks/usePaginatedItems";
-import { SkeletonProject } from "../../skeleton/SkeletonProject";
 
 const Projects = () => {
   const {
@@ -34,25 +33,11 @@ const Projects = () => {
 
   if (isLoadingHome || isLoadingProjects) {
     return (
-      <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-20 max-md:mb-28">
-        <Breadcrumbs finalTitle="Проекты и цены" />
-        <Sort
-          sortBy={sortBy}
-          sortDirection={sortDirection}
-          toggleSortBy={toggleSortBy}
-          resetSort={resetSort}
-        />
-        <div className="grid grid-cols-3 gap-8 mt-10 max-xl:grid-cols-2 max-md:grid-cols-1">
-          {Array(6)
-            .fill(0)
-            .map((_, index) => (
-              <SkeletonProject key={index} />
-            ))}
-        </div>
+      <div className="flex flex-col justify-center items-center mt-8 mb-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
       </div>
     );
   }
-
   if (errorHome || errorProjects) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -103,7 +88,7 @@ const Projects = () => {
               className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] transition-all duration-300 hover:shadow-2xl group"
             >
               <Link to={`${slug.projects}/${project.slug}`}>
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden ">
                   {homeData?.popularProjects.popularProject.some(
                     (p) => p.slug === project.slug
                   ) && (
@@ -115,7 +100,7 @@ const Projects = () => {
                     src={`${API_URL}${project.photos[0].url}`}
                     alt={project.photos[0].name}
                     width={350}
-                    height={220}
+                    height={200}
                     className="transition-transform duration-300 ease-in-out group-hover:scale-125"
                   />
                 </div>
