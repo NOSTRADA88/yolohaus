@@ -34,7 +34,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div>
       <Header header={informationData} />
 
-      <div className="min-h-screen">{children}</div>
+      {children}
       <div ref={refScroll}>{inViewScroll && <ScrollUp />}</div>
 
       <div ref={refConsultation} style={{ minHeight: "300px" }}>
