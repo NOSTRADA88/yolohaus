@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-import usePaginatedItems from "../../hooks/usePaginatedItems";
-import useHousesPage from "../../hooks/useHousesPage";
+import usePaginatedItems from "../../hooks/usePaginatedItems"; // Import the generalized hook
+import useHousesPage from "../../hooks/useHousesPage"; // Hook to fetch houses data
+
 const Houses = () => {
   const { housesData, isLoading, error } = useHousesPage();
   const {
@@ -17,11 +18,12 @@ const Houses = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center mt-8 mb-8">
+      <div className="flex justify-center items-center mt-8 mb-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
@@ -35,7 +37,7 @@ const Houses = () => {
   if (!housesData) {
     return (
       <div className="flex justify-center items-center mt-8 mb-8">
-        <div className="text-gray-500 text-lg font-museo">
+        <div className="text- text-base font-museo">
           Данные недоступны. Пожалуйста, попробуйте позже.
         </div>
       </div>
@@ -48,13 +50,8 @@ const Houses = () => {
         <Helmet>
           <title>{housesData.metadata.title}</title>
           <meta name="description" content={housesData.metadata.description} />
-          {housesData.houses.map((house) => (
-            <link
-              key={house.slug}
-              rel="preload"
-              href={`${API_URL}/${house.photos[0].url}`}
-              as="image"
-            />
+          {housesData.houses.map(house => (
+              <link rel="preload" href={`${API_URL}${house.photos[0].url}`} as="image"/>
           ))}
         </Helmet>
       )}

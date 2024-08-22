@@ -2,7 +2,7 @@ import { API_URL, formatPrice, getMinPrice } from "../../constants";
 import { Link } from "react-router-dom";
 import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
-import { memo } from "react";
+import {memo} from "react";
 const PopularProjects = ({
   title,
   popularProject,
@@ -33,12 +33,12 @@ const PopularProjects = ({
             key={index}
             className="bg-white shadow-md overflow-hidden cursor-pointer border-[#E5E5E5] transition-all duration-300 hover:shadow-2xl group"
           >
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden ">
               <img
                 src={`${API_URL}${project.photos[0].url}`}
                 alt={project.photos[0].name}
                 width={350}
-                height={200}
+                height={220}
                 className="transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>

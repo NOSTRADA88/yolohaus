@@ -29,18 +29,11 @@ const Layout = ({ children }: LayoutProps) => {
       </div>
     );
   }
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex flex-col justify-center items-center mt-8 mb-8">
-  //       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange"></div>
-  //     </div>
-  //   );
-  // }
+
   return (
     <div>
       <Header header={informationData} />
-
-      {children}
+      <div className="min-h-screen">{children}</div>
       <div ref={refScroll}>{inViewScroll && <ScrollUp />}</div>
 
       <div ref={refConsultation} style={{ minHeight: "300px" }}>

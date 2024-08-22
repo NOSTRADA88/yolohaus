@@ -4,12 +4,12 @@ import { fetchHeaderFooterData } from "../api/footer&header";
 
 const useHeaderFooter = () => {
   const [informationData, setInformationData] = useState<FooterHeader>();
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error>();
 
   const fetchInformationData = useCallback(async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       setError(undefined);
       const response = await fetchHeaderFooterData();
       setInformationData({
@@ -30,7 +30,7 @@ const useHeaderFooter = () => {
         setError(Error(`unknown error occurred: ${error}`));
       }
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, []);
 
@@ -38,7 +38,7 @@ const useHeaderFooter = () => {
     fetchInformationData();
   }, []);
 
-  return { informationData, isLoading, error };
+  return { informationData, error };
 };
 
 export default useHeaderFooter;
