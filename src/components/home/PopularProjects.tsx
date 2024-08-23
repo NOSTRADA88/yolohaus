@@ -2,7 +2,7 @@ import { API_URL, formatPrice, getMinPrice } from "../../constants";
 import { Link } from "react-router-dom";
 import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
-import {memo} from "react";
+import { memo } from "react";
 const PopularProjects = ({
   title,
   popularProject,
@@ -38,7 +38,7 @@ const PopularProjects = ({
                 src={`${API_URL}${project.photos[0].url}`}
                 alt={project.photos[0].name}
                 width={350}
-                height={220}
+                height={200}
                 className="transition-transform duration-300 ease-in-out group-hover:scale-125"
               />
             </div>

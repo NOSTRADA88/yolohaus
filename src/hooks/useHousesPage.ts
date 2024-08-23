@@ -49,7 +49,7 @@ const useHousesPage = () => {
   }, []);
 
   useEffect(() => {
-    const abortController = new AbortController;
+    const abortController = new AbortController();
     fetchBuiltHouses(abortController.signal);
     return () => abortController.abort()
   }, []);

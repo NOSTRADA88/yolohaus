@@ -8,7 +8,6 @@ import { navLinks } from "../../constants";
 import { LogoMainBlack } from "../../assets";
 import { useModal } from "../../hooks/useModal";
 import FormatPhoneNumber from "../../utilts/FormatPhoneNumber";
-import {Helmet} from "react-helmet";
 
 const Header = ({ header }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
