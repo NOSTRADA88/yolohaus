@@ -3,7 +3,6 @@ import { useTechnology } from "../../hooks/useTechnology";
 import SwitchTechnology from "./SwitchTechnology";
 import { TechnologyProps } from "../../interfaces";
 import { renderTable } from "../../utilts/technologyUtils";
-import { formatPrice, getMinPrice } from "../../constants";
 
 const Technology: React.FC<TechnologyProps> = ({
   complectations,
