@@ -52,7 +52,6 @@
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.8",
     "@tailwindcss/typography": "^0.5.15",
