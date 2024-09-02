@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage --watch=false"
+    "test:coverage": "vitest run --coverage --watch=false",
+    "partytown": "partytown copylib public/~partytown"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "devDependencies": {
+    "@builder.io/partytown": "^0.10.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.8",
     "@tailwindcss/typography": "^0.5.15",

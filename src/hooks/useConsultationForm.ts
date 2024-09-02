@@ -45,6 +45,9 @@ export const useConsultationForm = () => {
       if (response.status === 200) {
         reset();
         setValue("phone", "");
+        if (typeof window !== 'undefined') {
+          (<any>Window).ym(66501115, 'reachGoal', 'OrderForm');
+        }
       }
     } catch (error: any) {
       throw error
