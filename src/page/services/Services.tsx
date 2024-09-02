@@ -4,6 +4,7 @@ import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { Service } from "../../interfaces";
 import useServicesPage from "../../hooks/useServicesPage";
+import { arrowRight } from "src/assets";
 
 const Services = () => {
   const { servicesData, isLoading, error } = useServicesPage();
@@ -75,7 +76,7 @@ const Services = () => {
                     <span className="hover:text-orange text-maingray transition-all duration-300 text-base font-medium">
                       {service.title}
                     </span>
-                    <p className="text-orange arrow-icon"> ➜ </p>
+                    <img src={arrowRight} className=" arrow-icon w-5" />  
                   </div>
                 </div>
               </div>

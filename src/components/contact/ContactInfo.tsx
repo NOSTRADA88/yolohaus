@@ -1,4 +1,4 @@
-import { photoContact } from "../../assets";
+import { arrowRight, photoContact } from "../../assets";
 import { formatPhoneNumber } from "../../constants";
 import { ContactInfoProps } from "../../interfaces";
 
@@ -88,7 +88,7 @@ const ContactInfo = ({
             >
               Посмотреть на карте{" "}
             </a>
-            <p className="text-orange arrow-icon"> ➜ </p>
+            <img src={arrowRight} className=" arrow-icon w-5" />  
           </div>
         </div>
         <div>

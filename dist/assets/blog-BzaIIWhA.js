@@ -1,1 +1,0 @@
-import{f as e,n as o,A as i,o as r}from"./index-BzsnRQF3.js";const c=t=>e("/api/blog","posts_list.Media,Metadata",t),n=async(t,s)=>{try{const a=await o.get(`${i}/api/spisok-postov-dlya-blogas?[filters][slug][$eq]=${t}&populate=Metadata,Media`,{signal:s});if(a.status===200)return a.data.data[0].attributes}catch(a){throw r.isCancel(a)?a.message:a}};export{n as a,c as f};

@@ -1,3 +1,4 @@
+import { arrowRight } from "src/assets";
 import { ProductionsListProps } from "../../interfaces";
 
 const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
@@ -30,7 +31,7 @@ const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
             >
               Посмотреть на карте{" "}
             </a>
-            <p className="text-orange arrow-icon"> ➜ </p>
+            <img src={arrowRight} className=" arrow-icon w-5" />  
           </div>
         </div>
       ))}

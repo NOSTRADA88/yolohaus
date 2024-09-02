@@ -2,6 +2,7 @@ import { Modal } from "../../sections/modal";
 import { OptionsHousesProps } from "../../interfaces";
 import { formatPrice, getMinPrice } from "../../constants";
 import { useModal } from "../../hooks/useModal";
+import { arrowRight } from "src/assets";
 
 const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -208,7 +209,7 @@ const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
                 >
                   Подробнее
                 </a>
-                <p className="text-orange arrow-icon"> ➜ </p>
+                <img src={arrowRight} className=" arrow-icon w-5" />  
               </div>
             </div>
           </>

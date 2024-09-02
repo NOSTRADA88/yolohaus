@@ -13,4 +13,6 @@ import photoGuarantee from './garantia.webp'
 import photoContact from './contact.webp'
 import map from "./map.webp"
 import errorIcon from "./building.svg"
-export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map, errorIcon};
+import arrowUp from "./arrow-narrow-up-svgrepo-com.svg"
+import arrowRight from "./arrow-narrow-right-svgrepo-com.svg"
+export { Yolo, ReviewsIcon, ConsultationPhoto, BgVacancy, Youtube, BgMain, LogoMainBlack, LogoMainWhite, LinkBank, photoMortgage,photoAbout,photoGuarantee, photoContact, map, errorIcon,arrowUp,arrowRight};

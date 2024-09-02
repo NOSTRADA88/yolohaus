@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { arrowUp } from "src/assets";
 
 const ScrollUp = () => {
   const [showTopBtn, setShowTopBtn] = useState(false);
@@ -31,7 +32,7 @@ const ScrollUp = () => {
             className="transition-all duration-300 p-1 bg-orange rounded-full hover:bg-orange-dark"
           >
             <div className="rounded-full bg-orange w-10 h-10 flex items-center justify-center border-white border-2">
-              <p className="text-white arrow-icon "> ⭡ </p>
+            <img src={arrowUp} className="w-4 " />  
             </div>
           </button>
         </div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { photoAbout } from "../../assets";
+import { arrowRight, photoAbout } from "../../assets";
 import { AboutProps } from "../../interfaces";
 import { slug } from "../../constants";
 
@@ -46,7 +46,7 @@ const About = ({ title, information }: AboutProps) => {
               >
                 УЗНАТЬ БОЛЬШЕ{" "}
               </Link>
-              <p className="text-orange arrow-icon"> ➜ </p>
+              <img src={arrowRight} className=" arrow-icon w-5" />  
             </div>
           </div>
         </div>

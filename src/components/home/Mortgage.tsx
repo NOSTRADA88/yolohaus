@@ -2,6 +2,7 @@ import { API_URL } from "../../constants";
 import { Link } from "react-router-dom";
 import { MortgageMainProps } from "../../interfaces";
 import { slug } from "../../constants";
+import { arrowRight } from "src/assets";
 
 const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
   return (
@@ -36,7 +37,7 @@ const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
           >
             Подробнее{" "}
           </Link>
-          <p className="text-orange arrow-icon"> ➜ </p>
+          <img src={arrowRight} className=" arrow-icon w-5" />  
         </div>
       </div>
     </div>

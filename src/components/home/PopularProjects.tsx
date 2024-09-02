@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
 import { memo } from "react";
+import { arrowRight } from "src/assets";
 const PopularProjects = ({
   title,
   popularProject,
@@ -22,7 +23,7 @@ const PopularProjects = ({
             >
               Все проекты{" "}
             </Link>
-            <p className="text-orange arrow-icon"> ➜ </p>
+            <img src={arrowRight} className=" arrow-icon w-5" />  
           </div>
         </div>
       </div>

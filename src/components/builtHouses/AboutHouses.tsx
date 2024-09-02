@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { slug } from "../../constants";
 import { AboutHousesProps, DescriptionChild } from "../../interfaces";
+import { arrowRight } from "src/assets";
 
 const AboutHouses = ({ details }: AboutHousesProps) => {
   const location = useLocation();
@@ -38,7 +39,8 @@ const AboutHouses = ({ details }: AboutHousesProps) => {
       })}
       <div className=" bg-lightwhite p-5 w-60 max-md:w-full mt-10">
         <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
-          <p className="text-orange  rotate-180"> ➜ </p>
+          
+          <img src={arrowRight} className=" arrow-icon w-5  rotate-180" />  
           <Link
             to={`${linkTo}`}
             className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"

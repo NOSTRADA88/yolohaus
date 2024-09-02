@@ -110,7 +110,7 @@ const MortgageAbout = () => {
               </div>
             ))}
           </div>
-          <div className="mt-[32px] max-[1111px]:hidden">
+          <div className="mt-[32px] max-[1111px]:hidden ">
             <img
               src={photoMortgage}
               alt="MortgagePhoto"
