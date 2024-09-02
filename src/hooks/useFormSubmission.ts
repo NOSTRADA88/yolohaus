@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import axios from "axios";
 
@@ -6,7 +5,6 @@ export const useFormSubmission = (
   selectedFiles: File[],
   closeModal: () => void
 ) => {
-  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
   const {
     register,
     handleSubmit,
@@ -55,16 +53,11 @@ export const useFormSubmission = (
 
       if (response.status === 200) {
         reset();
-        setErrors({});
         setValue("phone", "");
         closeModal();
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        console.error("Ошибка запроса:", error);
-      }
+      throw error
     }
   };
 

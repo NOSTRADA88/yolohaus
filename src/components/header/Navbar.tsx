@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import {useState, useEffect, FC} from "react";
 import { Link } from "react-router-dom";
 import SubmenuComponent from "./Submenu";
 import { NavbarProps } from "../../interfaces";
 
-const Navbar: React.FC<NavbarProps> = ({ navLinks }) => {
+const Navbar: FC<NavbarProps> = ({ navLinks }) => {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
   const [SubMenu, setSubMenu] = useState<React.ComponentType<any> | null>(null);
 

@@ -1,13 +1,13 @@
-import React, { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet";
 import { BankSelection, MortgageForm } from "../../components/mortgage";
-import { photoMortgage } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { useMortgageCalculator } from "../../hooks/useMortgageCalculator";
 import { useInView } from "react-intersection-observer";
 import {API_URL} from "../../constants";
+import {photoMortgage} from "../../assets";
 
-const CalculationResults = React.lazy(
+const CalculationResults = lazy(
   () => import("../../components/mortgage/CalculationResults")
 );
 

@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet";
-import { photoGuarantee } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { slug } from "../../constants";
 import useGuaranteePage from "../../hooks/useGuaranteePage";
+import {photoGuarantee} from "../../assets";
 
 const Guarantee = () => {
   const { guaranteeData, isLoading, error } = useGuaranteePage();

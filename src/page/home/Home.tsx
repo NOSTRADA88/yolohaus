@@ -9,8 +9,8 @@ import {
 } from "../../components/home";
 import useHomePage from "../../hooks/useHomePage";
 import { useInView } from "react-intersection-observer";
-import { BgMain, ConsultationPhoto } from "../../assets";
 import { API_URL } from "../../constants";
+import {BgMain, ConsultationPhoto} from "../../assets";
 
 const Home = () => {
   const { homeData, isLoading, error } = useHomePage();
@@ -44,6 +44,7 @@ const Home = () => {
         <div className="text-red-500 text-base font-museo">
           Произошла ошибка. Пожалуйста, попробуйте позже.
         </div>
+          <div>{error.message}</div>
       </div>
     );
   }

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
 import { PatternFormat } from "react-number-format";
 import { Link } from "react-router-dom";
 import { slug } from "../../constants";
 import { useFileSelection } from "../../hooks/useFileSelection";
 import { useFormSubmission } from "../../hooks/useFormSubmission";
 import truncateFileName from "../../utilts/truncateFileName";
+import {memo, useEffect} from "react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -165,4 +165,4 @@ const Modal = ({ closeModal }: ModalProps) => {
   );
 };
 
-export default React.memo(Modal);
+export default memo(Modal);

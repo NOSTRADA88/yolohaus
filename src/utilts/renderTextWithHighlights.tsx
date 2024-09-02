@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { slug } from "../constants";
+import {slug} from "../constants";
+
 
 const renderTextWithHighlights = (text: string) => {
   const parts = text.split(/(YoloHaus)/);

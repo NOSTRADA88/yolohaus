@@ -1,7 +1,7 @@
-import React from "react";
 import { MortgageFormProps } from "../../interfaces";
+import {FC} from "react";
 
-const MortgageForm: React.FC<MortgageFormProps> = ({
+const MortgageForm: FC<MortgageFormProps> = ({
   projectCost,
   initialPayment,
   loanAmount,

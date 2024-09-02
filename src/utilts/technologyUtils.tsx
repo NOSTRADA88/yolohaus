@@ -1,9 +1,9 @@
-import React from "react";
 import { Description, DescriptionChild, Kit } from "../interfaces";
+import {Fragment, ReactNode} from "react";
 
 export const convertDescriptionToElements = (
   description: Description[]
-): React.ReactNode[] =>
+): ReactNode[] =>
   description.map((desc: Description, index: number) => (
     <p key={index} className="mb-2">
       {desc.children.map((child: DescriptionChild, childIndex: number) => (
@@ -70,7 +70,7 @@ export const renderTable = (
             </td>
           </tr>
           {uniqueTypes.map((type, index) => (
-            <React.Fragment key={index}>
+            <Fragment key={index}>
               <tr className={`h-10 ${index % 2 !== 0 ? "" : "bg-[#EEEEEE]"}`}>
                 <td className="font-museo text-maingray text-base font-bold p-5 max-md:text-sm align-top">
                   {type}
@@ -100,7 +100,7 @@ export const renderTable = (
                   )}
                 </td>
               </tr>
-            </React.Fragment>
+            </Fragment>
           ))}
         </tbody>
       </table>

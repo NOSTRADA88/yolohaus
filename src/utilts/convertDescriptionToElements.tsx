@@ -1,9 +1,9 @@
-import React from "react";
 import { CardDescription } from "../interfaces";
+import {ReactNode} from "react";
 
 const convertDescriptionToElements = (
   description: CardDescription[]
-): React.ReactNode[] => {
+): ReactNode[] => {
   return description.map((desc, index) => {
     if (desc.type === "paragraph") {
       return (

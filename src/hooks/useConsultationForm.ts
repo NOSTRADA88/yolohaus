@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 
 export const useConsultationForm = () => {
-  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
   const {
     register,
     handleSubmit,
@@ -46,15 +44,10 @@ export const useConsultationForm = () => {
 
       if (response.status === 200) {
         reset();
-        setErrors({});
         setValue("phone", "");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 422) {
-        setErrors(error.response.data.errors);
-      } else {
-        console.error("Ошибка запроса:", error);
-      }
+      throw error
     }
   };
 

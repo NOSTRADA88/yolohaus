@@ -1,11 +1,11 @@
-import React from "react";
-import { BgVacancy } from "../../assets";
 import { Modal } from "../modal";
 import { useLocation } from "react-router-dom";
 import { formatPhoneNumber } from "../../constants";
 import { ContactBannerProps } from "../../interfaces";
 import useHeaderFooter from "../../hooks/useHeaderFooter";
 import { useModal } from "../../hooks/useModal";
+import {memo} from "react";
+import {BgVacancy} from "../../assets";
 
 const ContactBanner = ({ descriptionInfo }: ContactBannerProps) => {
   const { informationData, error } = useHeaderFooter();
@@ -115,7 +115,7 @@ const RenderVacansiiMessage = ({
         <div className="relative">
           <div
             className=" mt-4 bg-cover bg-center p-28 max-sm:p-32"
-            style={{ backgroundImage: `url(${BgVacancy})` }}
+             style={{ backgroundImage: `url(${BgVacancy})` }}
           >
             <div className="absolute inset-0 bg-maingray bg-opacity-50 flex items-center justify-center">
               <div className="flex flex-col justify-center items-center gap-5">
@@ -153,4 +153,4 @@ const RenderVacansiiMessage = ({
   }
 };
 
-export default React.memo(ContactBanner);
+export default memo(ContactBanner);

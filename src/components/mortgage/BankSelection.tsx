@@ -1,9 +1,9 @@
-import React from "react";
 import { LinkBank } from "../../assets";
 import { API_URL } from "../../constants";
 import { BankSelectionProps } from "../../interfaces";
+import {FC} from "react";
 
-const BankSelection: React.FC<BankSelectionProps> = ({
+const BankSelection: FC<BankSelectionProps> = ({
   banks,
   selectedBank,
   onSelectBank,

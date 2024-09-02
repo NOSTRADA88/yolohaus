@@ -1,10 +1,10 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import { API_URL } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useReviewsPage from "../../hooks/useReviewsPage";
+import {FC} from "react";
 
-const Reviews: React.FC = () => {
+const Reviews: FC = () => {
   const { reviewsData, isLoading, error } = useReviewsPage();
 
   if (isLoading) {

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 
 export const useFileSelection = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       setSelectedFiles(Array.from(files));

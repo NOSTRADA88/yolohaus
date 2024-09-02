@@ -1,8 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { BreadcrumbsProps } from "../../interfaces";
+import {FC, Fragment, memo} from "react";
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
+const Breadcrumbs: FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
   return (
     <div className="flex justify-between max-xl:flex-col max-xl:gap-4">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl ">
@@ -16,7 +16,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
           Главная /{" "}
         </Link>
         {items?.map((item, index) => (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             {item.slug ? (
               <Link
                 to={item.slug}
@@ -29,7 +29,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
                 {item.title} /{" "}
               </span>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
         <p className="ml-1 font-museo font-light text-sm text-lightgray max-md:text-xs">
           {finalTitle}
@@ -39,4 +39,4 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, finalTitle }) => {
   );
 };
 
-export default React.memo(Breadcrumbs);
+export default memo(Breadcrumbs);

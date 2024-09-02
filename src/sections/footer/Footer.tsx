@@ -1,12 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
 import { navLinks, slug } from "../../constants";
-import { LogoMainWhite } from "../../assets";
 import { HeaderProps } from "../../interfaces";
 import { useModal } from "../../hooks/useModal";
 import FormatPhoneNumber from "../../utilts/FormatPhoneNumber";
+import {memo} from "react";
+import {LogoMainWhite} from "../../assets";
 
 const Footer = ({ footer }: HeaderProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -94,4 +94,4 @@ const Footer = ({ footer }: HeaderProps) => {
   );
 };
 
-export default React.memo(Footer);
+export default memo(Footer);

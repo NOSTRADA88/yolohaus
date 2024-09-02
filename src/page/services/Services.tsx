@@ -4,7 +4,6 @@ import { API_URL, slug } from "../../constants";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { Service } from "../../interfaces";
 import useServicesPage from "../../hooks/useServicesPage";
-import React from "react";
 
 const Services = () => {
   const { servicesData, isLoading, error } = useServicesPage();

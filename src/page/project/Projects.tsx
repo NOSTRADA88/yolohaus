@@ -3,13 +3,10 @@ import { Link } from "react-router-dom";
 import { API_URL, formatPrice, getMinPrice, slug } from "../../constants";
 import { Sort } from "../../components/projects";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
-
 import useHomePage from "../../hooks/useHomePage";
 import useProjectsPage from "../../hooks/useProjectsPage";
 import useSortedProjects from "../../hooks/useSortedProjects";
-
 import usePaginatedItems from "../../hooks/usePaginatedItems";
-import React from "react";
 
 const Projects = () => {
   const {

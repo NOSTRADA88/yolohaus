@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SwitchTechnologyProps } from "../../interfaces";
 import { useInitializeTechnology } from "../../hooks/useInitializeTechnology";
@@ -8,8 +7,9 @@ import {
   technologyNames,
   technologySlugs,
 } from "../../utilts/technologyUtils";
+import {FC} from "react" ;
 
-const SwitchTechnology: React.FC<SwitchTechnologyProps> = ({
+const SwitchTechnology: FC<SwitchTechnologyProps> = ({
   onTechnologySelect,
   updateMetaData,
   currentProjectSlug,

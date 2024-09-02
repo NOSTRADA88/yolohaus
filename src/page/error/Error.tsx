@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { errorIcon } from "../../assets";
+import {errorIcon} from "../../assets";
 
 //TODO helmet для страницы ErrorPage с метадатой и прелоудом для фотки
 const ErrorPage = () => {

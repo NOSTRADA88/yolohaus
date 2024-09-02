@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import {memo, useEffect, useState} from "react";
 import { MobileMenu, Navbar } from "../../components/header";
 import { API_URL } from "../../constants";
 import { Modal } from "../modal";
 import { Link } from "react-router-dom";
 import { HeaderProps } from "../../interfaces";
 import { navLinks } from "../../constants";
-import { LogoMainBlack } from "../../assets";
 import { useModal } from "../../hooks/useModal";
 import FormatPhoneNumber from "../../utilts/FormatPhoneNumber";
+import {LogoMainBlack} from "../../assets";
 
 const Header = ({ header }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -106,4 +106,4 @@ const Header = ({ header }: HeaderProps) => {
   );
 };
 
-export default React.memo(Header);
+export default memo(Header);

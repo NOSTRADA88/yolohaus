@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
-import { photoAbout } from "../../assets";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import useAboutPage from "../../hooks/useAboutPage";
+import {photoAbout} from "../../assets";
 
 const AboutCompany = () => {
   const { aboutData, isLoading, error } = useAboutPage();

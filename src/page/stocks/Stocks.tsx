@@ -1,4 +1,3 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import { API_URL, slug } from "../../constants";
 import { Modal } from "../../sections/modal";

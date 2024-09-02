@@ -9,7 +9,6 @@ import {API_URL, slug} from "../../constants";
 import { HouseDetailProps } from "../../interfaces";
 import useHousesDetailPage from "../../hooks/useHousesDetailPage";
 import { useInView } from "react-intersection-observer";
-import React from "react";
 
 const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
   const { houseData, isLoading, error } = useHousesDetailPage({

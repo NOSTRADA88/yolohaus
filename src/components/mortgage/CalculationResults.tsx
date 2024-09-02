@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import {
   Pie,
   Cell,
@@ -93,7 +93,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = memo(
                       (sum, entry) => sum + entry.value,
                       0
                     );
-                    const percent = (value / total) * 100;
+                    const percent: number = (value / total) * 100;
                     return `${name}: ${percent.toFixed(0)}%`;
                   }}
                   isAnimationActive={false}
@@ -101,7 +101,7 @@ const CalculationResults: React.FC<CalculationResultsProps> = memo(
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {pieData.map((entry, index) => (
+                  {pieData.map((_entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}

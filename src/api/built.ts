@@ -12,7 +12,8 @@ export const fetchBuiltHousesData = (signal: AbortSignal) =>
 export const fetchHousesDetailsData = async (houseSlug: string, signal: AbortSignal) => {
   try {
     const response = await axiosInstanse.get(
-        `${API_URL}/api/spisok-postroennyh-domovs?[filters][slug][$eq]=${houseSlug}&populate=Metadata,Parameters,BuildingTechnology,Photos`
+        `${API_URL}/api/spisok-postroennyh-domovs?[filters][slug][$eq]=${houseSlug}&populate=Metadata,Parameters,BuildingTechnology,Photos`,
+        {signal: signal},
     );
     if (response.status === 200) {
       return response.data.data[0].attributes;

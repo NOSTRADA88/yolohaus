@@ -1,8 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { SubmenuProps } from "../../interfaces";
+import {FC} from "react";
 
-const Submenu: React.FC<SubmenuProps> = ({ submenu }) => {
+const Submenu: FC<SubmenuProps> = ({ submenu }) => {
   return (
     <ul
       className="submenu absolute left-0 transition-all duration-300 bg-lightwhite submenu-open animate-fadeIn "
