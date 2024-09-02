@@ -45,7 +45,6 @@ export const useConsultationForm = () => {
       });
 
       if (response.status === 200) {
-        console.log("Данные успешно отправлены");
         reset();
         setErrors({});
         setValue("phone", "");

@@ -16,8 +16,7 @@ export const fetchBlogDetailPage = async (blogSlug: string, signal: AbortSignal)
         }
     } catch (error: unknown ) {
         if (axios.isCancel(error)) {
-            // TODO убрать console.log на что-нибудь другое вообще все консоль логи
-            console.log("запрос отменён: ", error.message)
+            throw error.message
         } else {
             throw error
         }

@@ -54,7 +54,6 @@ export const useFormSubmission = (
       });
 
       if (response.status === 200) {
-        console.log("Данные успешно отправлены");
         reset();
         setErrors({});
         setValue("phone", "");

@@ -18,7 +18,7 @@ export const fetchData = async (
     }
   } catch (error: unknown) {
     if (axios.isCancel(error)) {
-      console.log("запрос отменён: ", error.message);
+      throw error.message
     } else {
       throw error;
     }
