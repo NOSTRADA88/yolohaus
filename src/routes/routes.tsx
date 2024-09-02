@@ -6,7 +6,6 @@ import {
   useParams,
 } from "react-router-dom";
 import Layout from "../layouts/layout";
-import ScrollToTop from "../components/ScrollToTop";
 import {
   Home,
   Projects,
@@ -17,7 +16,6 @@ import {
 } from "../page";
 import { slug } from "../constants";
 import { lazy, Suspense } from "react";
-
 const AboutCompany = lazy(() => import("../page/about/AboutCompany"));
 const Vacancy = lazy(() => import("../page/vacancy/Vacancy"));
 const Blog = lazy(() => import("../page/blog/Blog"));
@@ -26,12 +24,11 @@ const ServiceDetail = lazy(() => import("../page/services/ServiceDetail"));
 const HousesDetail = lazy(() => import("../page/built/HousesDetail"));
 const ProjectsDetail = lazy(() => import("../page/project/ProjectsDetail"));
 const ErrorPage = lazy(() => import("../page/error/Error"));
-const PrivacyPolicy = lazy(
-  () => import("../page/privacy&policy/PrivacyPolicy")
-);
+const PrivacyPolicy = lazy(() => import("../page/privacy&policy/PrivacyPolicy"));
 const BlogDetail = lazy(() => import("../page/blog/BlogDetail"));
 const Guarantee = lazy(() => import("../page/guarantee/Guarantee"));
 const Reviews = lazy(() => import("../page/reviews/Reviews"));
+const ScrollToTop = lazy(() => import("../components/ScrollToTop"))
 
 const ServiceDetailRoute = () => {
   const { slug } = useParams<{ slug: string }>();

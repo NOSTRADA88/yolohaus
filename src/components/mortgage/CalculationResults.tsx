@@ -1,4 +1,4 @@
-import { memo } from "react";
+import {FC, memo} from "react";
 import {
   Pie,
   Cell,
@@ -21,7 +21,7 @@ import {
   tickFormatter,
 } from "../../utilts/mortgageUtils";
 
-const CalculationResults: React.FC<CalculationResultsProps> = memo(
+const CalculationResults: FC<CalculationResultsProps> = memo(
   ({
     monthlyPayment,
     totalDebt,

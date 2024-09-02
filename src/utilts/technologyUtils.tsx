@@ -18,7 +18,7 @@ export const renderTable = (
   isTechnologySelected: boolean,
   selectedTechnology: string | null,
   filteredComplectations: Kit[]
-): React.ReactNode => {
+): ReactNode => {
   if (!isTechnologySelected || !selectedTechnology) {
     return null;
   }

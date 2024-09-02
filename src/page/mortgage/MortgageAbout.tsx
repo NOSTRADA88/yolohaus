@@ -4,12 +4,10 @@ import { BankSelection, MortgageForm } from "../../components/mortgage";
 import { Breadcrumbs } from "../../sections/breadcrumbs";
 import { useMortgageCalculator } from "../../hooks/useMortgageCalculator";
 import { useInView } from "react-intersection-observer";
-import {API_URL} from "../../constants";
-import {photoMortgage} from "../../assets";
+import { API_URL } from "../../constants";
+import { photoMortgage } from "../../assets";
 
-const CalculationResults = lazy(
-  () => import("../../components/mortgage/CalculationResults")
-);
+const CalculationResults = lazy(() => import("../../components/mortgage/CalculationResults"));
 
 const MortgageAbout = () => {
   const {

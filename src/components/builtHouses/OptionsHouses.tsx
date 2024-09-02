@@ -3,19 +3,18 @@ import { OptionsHousesProps } from "../../interfaces";
 import { formatPrice, getMinPrice } from "../../constants";
 import { useModal } from "../../hooks/useModal";
 import { arrowRight } from "src/assets";
+import { MouseEvent } from "react";
 
 const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const scrollToMore = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    const element = document.getElementById("more");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+    const scrollToMore = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
+        const element = document.getElementById("more");
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
   return (
     <div className="w-full">
