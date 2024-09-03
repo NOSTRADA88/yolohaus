@@ -39,7 +39,7 @@ const About = memo(({title, information}: AboutProps) => {
                   ))}
                 </div>
               ))}
-            </div>
+      
           <div className=" bg-lightwhite mt-6 p-5">
             <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
               <Link
@@ -51,6 +51,7 @@ const About = memo(({title, information}: AboutProps) => {
               <img src={arrowRight} className=" arrow-icon w-5" width={5} height={5} />  
             </div>
           </div>
+          </div>
           <div className="mt-12 max-[1111px]:hidden">
             <img
                 src={photoAbout}
@@ -60,6 +61,7 @@ const About = memo(({title, information}: AboutProps) => {
                 className="h-[420px]"
             />
           </div>
+          
         </div>
       </div>
   );
