@@ -38,10 +38,8 @@ const About = memo(({title, information}: AboutProps) => {
                       </div>
                   ))}
                 </div>
-<<<<<<< HEAD
               ))}
             </div>
-          ))}
           <div className=" bg-lightwhite mt-6 p-5">
             <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
               <Link
@@ -51,19 +49,6 @@ const About = memo(({title, information}: AboutProps) => {
                 УЗНАТЬ БОЛЬШЕ{" "}
               </Link>
               <img src={arrowRight} className=" arrow-icon w-5" width={5} height={5} />  
-=======
-            ))}
-            <div className=" bg-lightwhite mt-6 p-5">
-              <div className="flex justify-start items-center gap-2 cursor-pointer arrow-container">
-                <Link
-                    to={slug.about}
-                    className="text-orange uppercase text-sm font-medium tracking-wider"
-                >
-                  УЗНАТЬ БОЛЬШЕ{" "}
-                </Link>
-                <img src={arrowRight} className=" arrow-icon w-5"/>
-              </div>
->>>>>>> fe218723136589e5bb5f456b366ee813ee1c0cea
             </div>
           </div>
           <div className="mt-12 max-[1111px]:hidden">
