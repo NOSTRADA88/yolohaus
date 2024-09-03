@@ -50,7 +50,7 @@ const Houses = () => {
           <title>{housesData.metadata.title}</title>
           <meta name="description" content={housesData.metadata.description} />
           {housesData.houses.map(house => (
-              <link rel="preload" href={`${API_URL}${house.photos[0].url}`} as="image"/>
+              <link rel="prefetch" href={`${API_URL}${house.photos[0].url}`} as="image" type="image/webp"/>
           ))}
         </Helmet>
       )}

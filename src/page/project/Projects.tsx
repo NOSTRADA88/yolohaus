@@ -66,9 +66,9 @@ const Projects = () => {
         <meta name="description" content={projectsData.metadata.description} />
         {projectsData.projects.map((project) => (
           <link
-            rel="preload"
+            rel="prefetch"
             href={`${API_URL}${project.photos[0].url}`}
-            as="image"
+            as="image" type="image/webp"
           />
         ))}
       </Helmet>

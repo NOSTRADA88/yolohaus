@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { SubmenuProps } from "../../interfaces";
-import {FC} from "react";
+import {FC, memo} from "react";
 
-const Submenu: FC<SubmenuProps> = ({ submenu }) => {
+const Submenu: FC<SubmenuProps> = memo(({ submenu }) => {
   return (
     <ul
       className="submenu absolute left-0 transition-all duration-300 bg-lightwhite submenu-open animate-fadeIn "
@@ -21,6 +21,6 @@ const Submenu: FC<SubmenuProps> = ({ submenu }) => {
       ))}
     </ul>
   );
-};
+});
 
 export default Submenu;

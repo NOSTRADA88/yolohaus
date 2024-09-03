@@ -1,7 +1,7 @@
 import { MortgageFormProps } from "../../interfaces";
-import {FC} from "react";
+import {FC, memo} from "react";
 
-const MortgageForm: FC<MortgageFormProps> = ({
+const MortgageForm: FC<MortgageFormProps> = memo(({
   projectCost,
   initialPayment,
   loanAmount,
@@ -161,6 +161,6 @@ const MortgageForm: FC<MortgageFormProps> = ({
       </button>
     </form>
   );
-};
+});
 
 export default MortgageForm;

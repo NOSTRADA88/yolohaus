@@ -4,7 +4,7 @@ import { PopularProjectsProps } from "../../interfaces";
 import { slug } from "../../constants";
 import { memo } from "react";
 import { arrowRight } from "src/assets";
-const PopularProjects = ({
+const PopularProjects = memo(({
   title,
   popularProject,
   icons,
@@ -114,6 +114,6 @@ const PopularProjects = ({
       </div>
     </div>
   );
-};
+});
 
 export default memo(PopularProjects);

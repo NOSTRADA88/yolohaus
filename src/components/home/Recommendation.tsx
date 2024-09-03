@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { RecommendationProps } from "../../interfaces";
 import { slug } from "../../constants";
 import {memo} from "react";
-const Recommendation = ({ title, recommendations }: RecommendationProps) => {
+const Recommendation = memo(({ title, recommendations }: RecommendationProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl max-xl:leading-normal max-sm:pr-10">
@@ -72,6 +72,6 @@ const Recommendation = ({ title, recommendations }: RecommendationProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default memo(Recommendation);

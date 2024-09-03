@@ -5,7 +5,7 @@ import { formatPhoneNumber } from "../../constants";
 import { useModal } from "../../hooks/useModal";
 import { memo } from "react";
 
-const Contact = ({
+const Contact = memo(({
   address,
   email,
   phone,
@@ -91,6 +91,6 @@ const Contact = ({
       </div>
     </div>
   );
-};
+});
 
 export default memo(Contact);

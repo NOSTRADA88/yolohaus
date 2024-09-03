@@ -1,8 +1,9 @@
 import { arrowRight, photoContact } from "../../assets";
 import { formatPhoneNumber } from "../../constants";
 import { ContactInfoProps } from "../../interfaces";
+import {memo} from "react";
 
-const ContactInfo = ({
+const ContactInfo = memo(({
   titleMini,
   description,
   address,
@@ -132,6 +133,6 @@ const ContactInfo = ({
       </div>
     </div>
   );
-};
+});
 
 export default ContactInfo;

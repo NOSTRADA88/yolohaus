@@ -2,8 +2,9 @@ import { BgMain } from "../../assets";
 import { Modal } from "../../sections/modal";
 import { MainScreenProps } from "../../interfaces";
 import { useModal } from "../../hooks/useModal";
+import {memo} from "react";
 
-const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
+const MainScreen = memo(({ rawOne, rawTwo }: MainScreenProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
   return (
     <div className="relative flex items-center justify-center">
@@ -41,6 +42,6 @@ const MainScreen = ({ rawOne, rawTwo }: MainScreenProps) => {
       {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
-};
+});
 
 export default MainScreen;

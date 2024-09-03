@@ -1,7 +1,8 @@
 import { arrowRight } from "src/assets";
 import { ProductionsListProps } from "../../interfaces";
+import {memo} from "react";
 
-const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
+const ProductionsList = memo(({ productions = [] }: ProductionsListProps) => {
   return (
     <div className="mt-12 grid grid-cols-2 gap-28  max-xl:gap-10  max-sm:grid-cols-1 max-sm:gap-3">
       {productions.map((production, index) => (
@@ -37,6 +38,6 @@ const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
       ))}
     </div>
   );
-};
+});
 
 export default ProductionsList;

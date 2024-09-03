@@ -1,6 +1,7 @@
 import { SortProps } from "../../interfaces";
+import {memo} from "react";
 
-const Sort = ({
+const Sort = memo(({
   sortBy,
   sortDirection,
   toggleSortBy,
@@ -67,6 +68,6 @@ const Sort = ({
       </div>
     </div>
   );
-};
+});
 
 export default Sort;

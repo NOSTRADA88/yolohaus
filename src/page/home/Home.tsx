@@ -64,18 +64,18 @@ const Home = () => {
       <Helmet>
         <title>{homeData.metadata.title}</title>
         <meta name="description" content={homeData.metadata.description} />
-        <link rel="preload" href={BgMain} as="image" />
+        <link rel="prefetch" href={BgMain} as="image" type="image/webp"/>
         {homeData.mortgage.photos.map((photo) => (
-          <link rel="preload" href={`${API_URL}${photo.url}`} />
+          <link rel="prefetch" href={`${API_URL}${photo.url}`} as="image"/>
         ))}
         {homeData.popularProjects.popularProject.map((project) => (
           <link
-            rel="preload"
+            rel="prefetch"
             href={`${API_URL}${project.photos[0].url}`}
-            as="image"
+            as="image" type="image/webp"
           />
         ))}
-        <link rel="preload" href={ConsultationPhoto} as="image" />
+        <link rel="prefetch" href={ ConsultationPhoto } as="image" type="image/webp" />
       </Helmet>
       <MainScreen
         rawOne={homeData.greetings.rawOne}
