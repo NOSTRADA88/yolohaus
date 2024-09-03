@@ -52,8 +52,8 @@ const HousesDetail = ({ houseSlug }: HouseDetailProps) => {
       <Helmet>
         <title>{houseData.metadata.title}</title>
         <meta name="description" content={houseData.metadata.description} />
-        {houseData.photos.map((photo, index) => (
-            <link rel="preload" href={`${API_URL}${photo.url}`} key={index} as="image"/>
+        {houseData.photos.map(photo => (
+            <link rel="prerender" href={`${API_URL}${photo.url}`} as="image" type="image/webp"/>
         ))}
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">

@@ -1,9 +1,9 @@
-import {useState, useEffect, FC, ComponentType} from "react";
+import {useState, useEffect, FC, ComponentType, memo} from "react";
 import { Link } from "react-router-dom";
 import SubmenuComponent from "./Submenu";
 import { NavbarProps } from "../../interfaces";
 
-const Navbar: FC<NavbarProps> = ({ navLinks }) => {
+const Navbar: FC<NavbarProps> = memo(({ navLinks }) => {
   const [dropdownIndex, setDropdownIndex] = useState<number | null>(null);
   const [SubMenu, setSubMenu] = useState<ComponentType<any> | null>(null);
 
@@ -42,6 +42,6 @@ const Navbar: FC<NavbarProps> = ({ navLinks }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default Navbar;

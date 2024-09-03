@@ -42,7 +42,7 @@ const Guarantee = () => {
       <Helmet>
         <title>{guaranteeData.metadata.title}</title>
         <meta name="description" content={guaranteeData.metadata.description} />
-        <link rel="preload" href={photoGuarantee} as="image"/>
+        <link rel="prefetch" href={photoGuarantee} as="image" type="image/webp"/>
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">
         <Breadcrumbs items={breadcrumbItems} finalTitle={guaranteeData.title} />

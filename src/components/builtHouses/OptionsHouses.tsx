@@ -3,9 +3,9 @@ import { OptionsHousesProps } from "../../interfaces";
 import { formatPrice, getMinPrice } from "../../constants";
 import { useModal } from "../../hooks/useModal";
 import { arrowRight } from "src/assets";
-import { MouseEvent } from "react";
+import {memo, MouseEvent} from "react";
 
-const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
+const OptionsHouses = memo(({ details, minPrice }: OptionsHousesProps) => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
     const scrollToMore = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -217,6 +217,6 @@ const OptionsHouses = ({ details, minPrice }: OptionsHousesProps) => {
       {isModalOpen && <Modal closeModal={closeModal} />}
     </div>
   );
-};
+});
 
 export default OptionsHouses;

@@ -52,7 +52,7 @@ const Stocks = () => {
         <title>{stocksData.metadata.title}</title>
         <meta name="description" content={stocksData.metadata.description} />
           {stocksData.stocks.map(stock => (
-              <link rel="preload" href={`${API_URL}${stock.photo.url}`} type="image"/>
+              <link rel="prefetch" href={`${API_URL}${stock.photo.url}`} type="image"/>
           ))}
       </Helmet>
       <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16 mb-32 max-md:mb-28">

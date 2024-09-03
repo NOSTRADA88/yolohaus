@@ -49,10 +49,7 @@ const ProjectsDetailRoute = () => {
   const isTechnology = ["sip", "karkas", "gazobeton"].includes(technologySlug);
   const projectsSlug = isTechnology ? baseProjectSlug : slug ?? "";
   return (
-    <ProjectsDetail
-      projectsSlug={projectsSlug}
-      initialTechnology={isTechnology ? technologySlug : ""}
-    />
+    <ProjectsDetail projectsSlug={projectsSlug} initialTechnology={isTechnology ? technologySlug : ""}/>
   );
 };
 

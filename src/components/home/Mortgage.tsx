@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { MortgageMainProps } from "../../interfaces";
 import { slug } from "../../constants";
 import { arrowRight } from "src/assets";
+import {memo} from "react";
 
-const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
+const Mortgage = memo(({ title, description, photos }: MortgageMainProps) => {
   return (
     <div className="w-full max-w-[1111px] mx-auto mt-20 max-[1111px]:px-12 max-sm:px-5 max-md:mt-16">
       <h1 className="text-maingray font-museo font-bold text-3xl max-md:text-2xl">
@@ -42,6 +43,6 @@ const Mortgage = ({ title, description, photos }: MortgageMainProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default Mortgage;

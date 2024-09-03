@@ -2,8 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { slug } from "../../constants";
 import { AboutHousesProps, DescriptionChild } from "../../interfaces";
 import { arrowRight } from "src/assets";
+import {memo} from "react";
 
-const AboutHouses = ({ details }: AboutHousesProps) => {
+const AboutHouses = memo(({ details }: AboutHousesProps) => {
   const location = useLocation();
 
   const isProjectsPage = location.pathname.includes("/projects");
@@ -51,6 +52,6 @@ const AboutHouses = ({ details }: AboutHousesProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default AboutHouses;
