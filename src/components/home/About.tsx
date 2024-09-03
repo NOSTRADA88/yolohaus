@@ -46,7 +46,7 @@ const About = ({ title, information }: AboutProps) => {
               >
                 УЗНАТЬ БОЛЬШЕ{" "}
               </Link>
-              <img src={arrowRight} className=" arrow-icon w-5" />  
+              <img src={arrowRight} className=" arrow-icon w-5" width={5} height={5} />  
             </div>
           </div>
         </div>

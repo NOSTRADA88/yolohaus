@@ -31,7 +31,7 @@ const ProductionsList = ({ productions = [] }: ProductionsListProps) => {
             >
               Посмотреть на карте{" "}
             </a>
-            <img src={arrowRight} className=" arrow-icon w-5" />  
+            <img src={arrowRight} className=" arrow-icon w-5" width={5} height={5} />  
           </div>
         </div>
       ))}

@@ -32,7 +32,7 @@ const ScrollUp = () => {
             className="transition-all duration-300 p-1 bg-orange rounded-full hover:bg-orange-dark"
           >
             <div className="rounded-full bg-orange w-10 h-10 flex items-center justify-center border-white border-2">
-            <img src={arrowUp} className="w-4 " />  
+            <img src={arrowUp} className="w-4 " width={5} height={5} />  
             </div>
           </button>
         </div>

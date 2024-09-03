@@ -329,6 +329,8 @@ export interface Project {
   shortDescription?: Description[];
   description: Description[];
   kits?: Kit[];
+  isPopular?: boolean;
+  lastItemRef?: React.RefObject<HTMLDivElement> | null; 
 }
 
 export interface ProjectsList {
@@ -378,6 +380,12 @@ export interface AboutHousesProps {
   details: Project[];
 }
 
+
+export interface ProjectListProps {
+  projects: Project[];
+  icons: Photo[];
+  itemType: "projects" | "built"; 
+}
 // Contact page
 
 export interface Employee {

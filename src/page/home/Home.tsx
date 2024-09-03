@@ -65,13 +65,14 @@ const Home = () => {
         <title>{homeData.metadata.title}</title>
         <meta name="description" content={homeData.metadata.description} />
         <link rel="preload" href={BgMain} as="image" />
-        {homeData.mortgage.photos.map((photo) => (
-          <link rel="preload" href={`${API_URL}${photo.url}`} />
+        {homeData.mortgage.photos.map((photo, index) => (
+          <link rel="preload" href={`${API_URL}${photo.url}`} key={index} />
         ))}
-        {homeData.popularProjects.popularProject.map((project) => (
+        {homeData.popularProjects.popularProject.map((project,index) => (
           <link
             rel="preload"
             href={`${API_URL}${project.photos[0].url}`}
+            key={index}
             as="image"
           />
         ))}
