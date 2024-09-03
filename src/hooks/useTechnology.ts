@@ -10,6 +10,7 @@ export const useTechnology = ({
   const [selectedTechnology, setSelectedTechnology] = useState<string>(
     initialTechnology || ""
   );
+  const [isTableVisible, setIsTableVisible] = useState<boolean>(Boolean(initialTechnology));
 
   useEffect(() => {
     if (initialTechnology) {
@@ -25,14 +26,19 @@ export const useTechnology = ({
     } else {
       updateMetaData(null);
     }
-  }, [initialTechnology]);
+  }, [initialTechnology, updateMetaData]);
 
   const handleTechnologySelect = (
     technology: string,
     technologySlug: string
   ) => {
-    setSelectedTechnology(technology);
-    onTechnologySelect(technology, technologySlug);
+    if (selectedTechnology === technology) {
+      setIsTableVisible((prev) => !prev);
+    } else {
+      setSelectedTechnology(technology);
+      setIsTableVisible(true);
+      onTechnologySelect(technology, technologySlug);
+    }
   };
 
   const filteredComplectations = complectations.filter((project) => {
@@ -44,5 +50,6 @@ export const useTechnology = ({
     selectedTechnology,
     handleTechnologySelect,
     filteredComplectations,
+    isTableVisible, 
   };
 };

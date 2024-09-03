@@ -124,9 +124,9 @@ const MortgageForm: FC<MortgageFormProps> = memo(({
               <select
                 value={termType}
                 onChange={(e) => onTermTypeChange(e.target.value)}
-                className="mt-1 block py-2 px-3 border border-contact rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm ml-2"
+                className="mt-1 block py-2 px-5 border border-contact rounded-md shadow-sm focus:outline-none focus:ring-orange focus:border-orange text-sm ml-2"
               >
-                <option value="months">мес.</option>
+                <option value="months" >мес. </option>
                 <option value="years">лет</option>
               </select>
             </div>
