@@ -36,7 +36,7 @@ export const useConsultationForm = () => {
       formData.append("message", data.message);
       formData.append("url", data.url);
 
-      const response = await axios.post("http://149.154.65.51/send", formData, {
+      const response = await axios.post("https://smtp.yolohaus.ru/send", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
