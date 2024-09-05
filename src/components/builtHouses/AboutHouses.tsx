@@ -41,7 +41,7 @@ const AboutHouses = memo(({ details }: AboutHousesProps) => {
       <div className=" bg-lightwhite p-5 w-60 max-md:w-full mt-10">
         <div className="flex justify-start items-center gap-2 cursor-pointer  arrow-container ">
           
-          <img src={arrowRight} className=" arrow-icon w-5  rotate-180" />  
+          <img src={arrowRight} className=" arrow-icon w-5  rotate-180" width={5} height={5}  alt="arrow"/>  
           <Link
             to={`${linkTo}`}
             className="text-orange uppercase text-sm font-medium tracking-wider  max-md:text-xs"

@@ -208,7 +208,7 @@ const OptionsHouses = memo(({ details, minPrice }: OptionsHousesProps) => {
                 >
                   Подробнее
                 </a>
-                <img src={arrowRight} className=" arrow-icon w-5" />  
+                <img src={arrowRight} className=" arrow-icon w-5" width={5} height={5}  alt="arrow"/>  
               </div>
             </div>
           </>
